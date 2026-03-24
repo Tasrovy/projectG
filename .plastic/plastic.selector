@@ -1,4 +1,0 @@
-repository "projectG@tj_project_g_96394226_86f5_4fb8_9a3c_d193d10a1e44@cloud.cn"
-  path "/"
-    br "/main"
-    co "/main"
