@@ -7,8 +7,9 @@ public class DataManager : Singleton<DataManager>
     public int cardProperty3;
     public int MoneyNum;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         cardProperty1 = 0;
         cardProperty2 = 0;
         cardProperty3 = 0;
