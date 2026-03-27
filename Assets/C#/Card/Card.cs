@@ -10,7 +10,7 @@ public class EffectCommand
     public object[] parameters;
 }
 
-public class Card : MonoBehaviour
+public class Card
 {
     public int id;
     public int cardProperty1;
