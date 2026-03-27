@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using Yarn.Unity;
@@ -21,6 +22,7 @@ public class DialogueHandler : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
 
         characterHighlightManager = GetComponent<CharacterHighlightManager>();
 
@@ -58,7 +60,46 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
-    private void HandleSkipDialogueClicked()
+    public void SendProperties(string properties)
+    {
+        if (characterHighlightManager == null)
+        {
+            characterHighlightManager = GetComponent<CharacterHighlightManager>();
+        }
+
+        if (characterHighlightManager == null)
+        {
+            Debug.LogError("CharacterHighlightManager not found on the same GameObject.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(properties))
+        {
+            Debug.LogError("SendProperties failed: input is null or empty.");
+            return;
+        }
+
+        if (!Regex.IsMatch(properties, @"^-?\d+ -?\d+ -?\d+ -?\d+$"))
+        {
+            Debug.LogError("SendProperties format error: expected exactly four integers separated by single spaces.");
+            return;
+        }
+
+        string[] parts = properties.Split(' ');
+        int[] values = new int[4];
+        for (int i = 0; i < 4; i++)
+        {
+            if (!int.TryParse(parts[i], out values[i]))
+            {
+                Debug.LogError("SendProperties parse error: one of the values is not a valid int.");
+                return;
+            }
+        }
+
+        characterHighlightManager.SetDialogueCompleteProperties(values);
+    }
+
+    private async void HandleSkipDialogueClicked()
     {
         if (dialogueRunner == null || !dialogueRunner.IsDialogueRunning)
         {
@@ -66,18 +107,18 @@ public class DialogueHandler : MonoBehaviour
             return;
         }
 
-        if (characterHighlightManager == null)
+        if (skipDialogueButton != null)
         {
-            characterHighlightManager = GetComponent<CharacterHighlightManager>();
+            skipDialogueButton.interactable = false;
         }
 
-        if (characterHighlightManager != null)
-        {
-            _ = characterHighlightManager.OnDialogueCompleteAsync();
-        }
+        await dialogueRunner.Stop();
 
-        dialogueRunner.Stop();
         HideSkipButton();
+        if (skipDialogueButton != null)
+        {
+            skipDialogueButton.interactable = true;
+        }
         wasDialogueRunning = false;
     }
 

@@ -31,6 +31,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
     private string currentSpeaker;
     [SerializeField]
     private string playerVariableName = "$MY_NAME";
+    private int[] dialogueCompleteProperties = new int[4];
 
     public string defaultName = "Player";
 
@@ -127,7 +128,43 @@ public class CharacterHighlightManager : DialoguePresenterBase
                 }
             }
         }
+
+        ApplyDialogueCompleteProperties();
+
         currentSpeaker = "";
         await YarnTask.CompletedTask;
+    }
+
+    public void SetDialogueCompleteProperties(int[] values)
+    {
+        if (values == null || values.Length != 4)
+        {
+            Debug.LogError("SetDialogueCompleteProperties requires an int array with exactly 4 values.");
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            dialogueCompleteProperties[i] = values[i];
+        }
+    }
+
+    private void ApplyDialogueCompleteProperties()
+    {
+        if (DataManager.Instance == null)
+        {
+            Debug.LogError("DataManager instance is null, cannot apply dialogue complete properties.");
+            return;
+        }
+
+        DataManager.Instance.Add(1, dialogueCompleteProperties[0]);
+        DataManager.Instance.Add(2, dialogueCompleteProperties[1]);
+        DataManager.Instance.Add(3, dialogueCompleteProperties[2]);
+        DataManager.Instance.Add(4, dialogueCompleteProperties[3]);
+
+        for (int i = 0; i < 4; i++)
+        {
+            dialogueCompleteProperties[i] = 0;
+        }
     }
 }
