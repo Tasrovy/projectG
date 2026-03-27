@@ -106,10 +106,6 @@ public class CharacterControl : MonoBehaviour
     }
 
     #region 音频功能
-    [Header("音频设置")]
-    [Tooltip("公共文件夹路径，基础路径在Resources目录下")]
-    public string audioBaseFolderPath = "Sound/";
-
     /// <summary>
     /// 读取标识符并播放音效
     /// 格式要求：sfx_charactername_soundtype 或 #sfx_charactername_soundtype
@@ -124,22 +120,20 @@ public class CharacterControl : MonoBehaviour
             tag = tag.Substring(1);
         }
 
-        string[] parts = tag.Split('_');
-        if (parts.Length >= 3 && parts[0] == "sfx")
+        // 以 sfx_ 开头则认为是音效标签
+        if (tag.StartsWith("sfx_"))
         {
-            string characterName = parts[1];
-            string soundType = parts[2];
+            // 提取 sfx_ 之后的所有内容作为音效名称
+            string audioName = tag.Substring(4);
             
-            string audioPath = $"{audioBaseFolderPath}/{characterName}/{soundType}";
-            AudioClip clip = Resources.Load<AudioClip>(audioPath);
-
-            if (clip != null)
+            if (AudioManager.Instance != null)
             {
-                AudioSource.PlayClipAtPoint(clip, Camera.main != null ? Camera.main.transform.position : Vector3.zero);
+                // 通过 AudioManager 播放单次独占音效
+                AudioManager.Instance.PlaySound(audioName);
             }
             else
             {
-                Debug.LogWarning($"[CharacterControl] 音频加载失败，在 Resources 路径中找不到: {audioPath}");
+                Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
             }
         }
     }

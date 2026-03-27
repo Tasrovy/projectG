@@ -22,7 +22,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
         public string characterName;
         public SpriteRenderer spriteRenderer;
         public Color normalColor = new(1f, 1f, 1f, 1f);
-        public Color dimColor = new(0.6f, 0.6f, 0.6f, 1f);
+        public Color dimColor = new(0.5f, 0.5f, 0.5f, 1f);
         public List<EmotionSprite> emotionSprites;
     }
 
@@ -30,7 +30,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
     public List<Character> characters;
     private string currentSpeaker;
     [SerializeField]
-    private string playerVariableName = "$my_name";
+    private string playerVariableName = "$MY_NAME";
 
     public string defaultName = "Player";
 
@@ -46,41 +46,86 @@ public class CharacterHighlightManager : DialoguePresenterBase
                 speakerName = playerName;
             }
         }
-        if (!string.IsNullOrEmpty(speakerName) && speakerName != currentSpeaker)
+        
+        // 当说话者改变时更新高亮状态，即使说话者为空（旁白）也需要更新，让所有人都变暗
+        if (speakerName != currentSpeaker)
         {
             HightlightSpeaker(speakerName);
-            currentSpeaker = speakerName;
+            currentSpeaker = string.IsNullOrEmpty(speakerName) ? "" : speakerName;
         }
         await YarnTask.CompletedTask;
     }
 
     private void HightlightSpeaker(string speaker)
     {
+        if (characters == null) return;
+
+        // 尝试获取玩家在游戏内的自定义名
+        string customPlayerName = defaultName;
+        var storage = FindAnyObjectByType<InMemoryVariableStorage>();
+        if (storage != null && storage.TryGetValue(playerVariableName, out string pName) && !string.IsNullOrEmpty(pName))
+        {
+            customPlayerName = pName;
+        }
+
         foreach (var ch in characters)
         {
-            if (ch.spriteRenderer == null) continue;
-            if (string.Equals(ch.characterName, speaker, System.StringComparison.Ordinal))
+            if (ch == null || ch.spriteRenderer == null) continue;
+
+            // 1. 常规匹配：直接字符名称对比
+            bool isSpeaking = string.Equals(ch.characterName, speaker, System.StringComparison.Ordinal);
+            
+            // 2. 特殊匹配：如果列表里的角色名是"Player"（即立绘物体的恒定名），并且当前说话的是玩家的自定义名，则同样视为该角色在说话
+            if (!isSpeaking && ch.characterName == defaultName && speaker == customPlayerName)
             {
-                ch.spriteRenderer.color = ch.normalColor;
+                isSpeaking = true;
+            }
+
+            if (isSpeaking)
+            {
+                // 强制写死：说话时设为纯白（全亮）
+                ch.spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             }
             else
             {
-                ch.spriteRenderer.color = ch.dimColor;
+                // 强制写死：未说话时设为灰色（变暗），不使用面板上的 dimColor，避免配置错误导致不现形或全亮
+                ch.spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1f);
             }
         }
     }
 
     public override async YarnTask OnDialogueStartedAsync()
     {
+        // 对话开始时，将所有配置的立绘物体显示出来
+        if (characters != null)
+        {
+            foreach (var ch in characters)
+            {
+                if (ch != null && ch.spriteRenderer != null)
+                {
+                    ch.spriteRenderer.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        // 关键点：每次对话开始前，先把所有人变暗。这样能够解决刚开始没进发言时两人全亮的问题
+        HightlightSpeaker(""); 
         await YarnTask.CompletedTask;
     }
 
     public override async YarnTask OnDialogueCompleteAsync()
     {
-        foreach (var ch in characters)
+        if (characters != null)
         {
-            if (ch.spriteRenderer != null)
-                ch.spriteRenderer.color = ch.dimColor;
+            foreach (var ch in characters)
+            {
+                if (ch != null && ch.spriteRenderer != null)
+                {
+                    ch.spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
+                    // 对话结束时隐藏立绘
+                    ch.spriteRenderer.gameObject.SetActive(false);
+                }
+            }
         }
         currentSpeaker = "";
         await YarnTask.CompletedTask;

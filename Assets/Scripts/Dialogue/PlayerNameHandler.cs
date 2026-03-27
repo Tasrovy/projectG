@@ -13,6 +13,14 @@ public class PlayerNameHandler : MonoBehaviour
     [Header("Yarn Spinner 引用")]
     public VariableStorageBehaviour variableStorage;
 
+    private void Start()
+    {
+        if (nameInputField != null)
+        {
+            nameInputField.text = defaultName;
+        }
+    }
+
     public void ConfirmName()
     {
         string playerName = nameInputField.text;
@@ -21,9 +29,11 @@ public class PlayerNameHandler : MonoBehaviour
             playerName = defaultName;
         }
 
-        variableStorage.SetValue("$my_name", playerName);
+        if (variableStorage != null)
+        {
+            variableStorage.SetValue("$MY_NAME", playerName); 
+        }
 
-        // 以下添加其余逻辑
         gameObject.SetActive(false);
     }
 }
