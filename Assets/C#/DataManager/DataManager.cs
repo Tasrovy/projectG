@@ -6,7 +6,7 @@ public class DataManager : Singleton<DataManager>
     public int cardProperty2;
     public int cardProperty3;
 
-    void awake()
+    void Awake()
     {
         cardProperty1 = 0;
         cardProperty2 = 0;

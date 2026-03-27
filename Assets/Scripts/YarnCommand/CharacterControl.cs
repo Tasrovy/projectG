@@ -108,7 +108,7 @@ public class CharacterControl : MonoBehaviour
     #region 音频功能
     [Header("音频设置")]
     [Tooltip("公共文件夹路径，基础路径在Resources目录下")]
-    public string audioBaseFolderPath = "Audio/Voice";
+    public string audioBaseFolderPath = "Sound/";
 
     /// <summary>
     /// 读取标识符并播放音效
