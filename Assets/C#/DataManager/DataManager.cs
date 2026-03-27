@@ -5,12 +5,14 @@ public class DataManager : Singleton<DataManager>
     public int cardProperty1;
     public int cardProperty2;
     public int cardProperty3;
+    public int MoneyNum;
 
     void Awake()
     {
         cardProperty1 = 0;
         cardProperty2 = 0;
         cardProperty3 = 0;
+        MoneyNum = 0;
     }
     
     public void Add(int id, int num)
@@ -22,6 +24,8 @@ public class DataManager : Singleton<DataManager>
             case 2 :AddCardProperty2(num);
                 break;
             case 3 :AddCardProperty3(num);
+                break;
+            case 4 :AddMoneyNum(num);
                 break;
             default:
                 Debug.LogError($"unknown id :{id}");
@@ -46,4 +50,15 @@ public class DataManager : Singleton<DataManager>
         if (cardProperty3 + num < 0) return;
         cardProperty3 += num;
     }
+
+    private void AddMoneyNum(int num)
+    {
+        if (MoneyNum + num < 0) return;
+        MoneyNum += num;
+    }
+
+    public int GetCardProperty1()=>cardProperty1;
+    public int GetCardProperty2()=>cardProperty2;
+    public int GetCardProperty3()=>cardProperty3;
+    public int GetMoneyNum()=>MoneyNum;
 }

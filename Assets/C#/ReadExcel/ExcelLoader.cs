@@ -43,4 +43,10 @@ public class ExcelLoader : Singleton<ExcelLoader>
             return null;
         }
     }
+
+    public static string ReadText(DataSet dataSet,string id, int index)
+    {
+        DataRow row = dataSet.Tables[0].Rows[index];
+        return row[id].ToString();
+    }
 }
