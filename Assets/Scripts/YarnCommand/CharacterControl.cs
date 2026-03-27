@@ -104,4 +104,44 @@ public class CharacterControl : MonoBehaviour
 
         targetTransform.localPosition = originalPos;
     }
+
+    #region 音频功能
+    [Header("音频设置")]
+    [Tooltip("公共文件夹路径，基础路径在Resources目录下")]
+    public string audioBaseFolderPath = "Audio/Voice";
+
+    /// <summary>
+    /// 读取标识符并播放音效
+    /// 格式要求：sfx_charactername_soundtype 或 #sfx_charactername_soundtype
+    /// </summary>
+    public void PlayAudioFromTag(string tag)
+    {
+        if (string.IsNullOrEmpty(tag)) return;
+
+        // 去除可能的 '#' 符号
+        if (tag.StartsWith("#"))
+        {
+            tag = tag.Substring(1);
+        }
+
+        string[] parts = tag.Split('_');
+        if (parts.Length >= 3 && parts[0] == "sfx")
+        {
+            string characterName = parts[1];
+            string soundType = parts[2];
+            
+            string audioPath = $"{audioBaseFolderPath}/{characterName}/{soundType}";
+            AudioClip clip = Resources.Load<AudioClip>(audioPath);
+
+            if (clip != null)
+            {
+                AudioSource.PlayClipAtPoint(clip, Camera.main != null ? Camera.main.transform.position : Vector3.zero);
+            }
+            else
+            {
+                Debug.LogWarning($"[CharacterControl] 音频加载失败，在 Resources 路径中找不到: {audioPath}");
+            }
+        }
+    }
+    #endregion
 }
