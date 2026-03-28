@@ -118,42 +118,68 @@ public class CharacterControl : MonoBehaviour
 
     #region 立绘切换
     [YarnCommand("set_character_person")]
-    public void SetCharacterPerson(string characterName)
+    public void SetCharacterPerson(string objectName, string characterName, string emotion)
     {
+        if (objectName != "Player" && objectName != "Character")
+        {
+            Debug.LogWarning($"[CharacterControl] objectName 必须是 'Player' 或 'Character'，当前为: {objectName}");
+            return;
+        }
+
         var manager = GetComponent<CharacterHighlightManager>();
         if (manager != null)
         {
             var targetConfig = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
             if (targetConfig != null)
             {
-                GameObject characterObj = GameObject.Find("Character");
-                if (characterObj != null)
+                GameObject targetObj = GameObject.Find(objectName);
+                if (targetObj != null)
                 {
-                    SpriteRenderer sr = characterObj.GetComponent<SpriteRenderer>();
+                    SpriteRenderer sr = targetObj.GetComponent<SpriteRenderer>();
                     if (sr != null)
                     {
-                        // 1. 将该配置绑定到"Character"的SpriteRenderer
+                        // 1. 将该配置绑定到对应的 SpriteRenderer
                         targetConfig.spriteRenderer = sr;
                         
-                        // 2. 将表情默认修换为列表第一项
-                        if (targetConfig.emotionSprites != null && targetConfig.emotionSprites.Count > 0)
-                        {
-                            sr.sprite = targetConfig.emotionSprites[0].sprite;
-                        }
-
-                        // 为了能正确控制亮暗，可以在此将原先占用"Character"的其它实例的spriteRenderer置空
+                        // 清理原先可能占用该 SpriteRenderer 的其它角色配置
                         foreach (var otherConfig in manager.characters)
                         {
-                            if (otherConfig != targetConfig && !IsPlayerName(otherConfig.characterName, manager))
+                            if (otherConfig != targetConfig && otherConfig.spriteRenderer == sr)
                             {
                                 otherConfig.spriteRenderer = null;
                             }
+                        }
+
+                        // 2. 找到对应 emotion 的差分图
+                        Sprite newSprite = null;
+                        if (targetConfig.emotionSprites != null)
+                        {
+                            var targetState = targetConfig.emotionSprites.Find(s => string.Equals(s.emotion, emotion, System.StringComparison.OrdinalIgnoreCase));
+                            if (targetState != null && targetState.sprite != null)
+                            {
+                                newSprite = targetState.sprite;
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"[CharacterControl] 未找到 '{characterName}' 的感情 '{emotion}' 的差分图！");
+                                // 备用方案：如果没找到特定的emotion，尝试使用第一张图
+                                if (targetConfig.emotionSprites.Count > 0)
+                                {
+                                    newSprite = targetConfig.emotionSprites[0].sprite;
+                                }
+                            }
+                        }
+
+                        // 3. 执行渐变切换
+                        if (newSprite != null)
+                        {
+                            StartCoroutine(CrossfadeSpriteRoutine(sr, newSprite, 0.4f));
                         }
                     }
                 }
                 else
                 {
-                    Debug.LogWarning("[CharacterControl] 场景中不存在名为 'Character' 的物体！");
+                    Debug.LogWarning($"[CharacterControl] 场景中不存在名为 '{objectName}' 的物体！");
                 }
             }
             else
@@ -161,6 +187,68 @@ public class CharacterControl : MonoBehaviour
                 Debug.LogWarning($"[CharacterControl] 未在管理器中找到名为 '{characterName}' 的角色配置！");
             }
         }
+    }
+
+    private IEnumerator CrossfadeSpriteRoutine(SpriteRenderer targetSR, Sprite newSprite, float duration)
+    {
+        if (targetSR == null || newSprite == null) yield break;
+
+        // 如果要更替的图片就是现在的图片，直接跳过
+        if (targetSR.sprite == newSprite) yield break;
+
+        // 当前没有任何图片时，直接淡入即可
+        if (targetSR.sprite == null)
+        {
+            Color baseColor = targetSR.color;
+            targetSR.color = new Color(baseColor.r, baseColor.g, baseColor.b, 0f);
+            targetSR.sprite = newSprite;
+            
+            float elaps = 0f;
+            while (elaps < duration)
+            {
+                elaps += Time.deltaTime;
+                targetSR.color = new Color(baseColor.r, baseColor.g, baseColor.b, Mathf.Lerp(0f, baseColor.a, elaps / duration));
+                yield return null;
+            }
+            targetSR.color = baseColor;
+            yield break;
+        }
+
+        // --- 存在原图时，执行交叉淡入淡出 (Crossfade) ---
+        Color originalColor = targetSR.color;
+        
+        // 1. 创建临时对象，承载旧图片原地淡出
+        GameObject tempObj = new GameObject("TempFadeOutSprite");
+        tempObj.transform.SetParent(targetSR.transform.parent);
+        tempObj.transform.localPosition = targetSR.transform.localPosition;
+        tempObj.transform.localScale = targetSR.transform.localScale;
+        
+        SpriteRenderer tempSR = tempObj.AddComponent<SpriteRenderer>();
+        tempSR.sprite = targetSR.sprite;
+        tempSR.color = originalColor;
+        tempSR.sortingLayerID = targetSR.sortingLayerID;
+        tempSR.sortingOrder = targetSR.sortingOrder - 1; // 调整一点层级避免Z-fighting闪烁
+
+        // 2. 将目标SR换上新图片，透明度设为0准备淡入
+        targetSR.sprite = newSprite;
+        targetSR.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+
+        // 3. 开始执行渐变
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            tempSR.color = new Color(tempSR.color.r, tempSR.color.g, tempSR.color.b, Mathf.Lerp(originalColor.a, 0f, t));
+            targetSR.color = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(0f, originalColor.a, t));
+
+            yield return null;
+        }
+
+        // 渐变结束清理
+        targetSR.color = originalColor;
+        Destroy(tempObj);
     }
     #endregion
 
