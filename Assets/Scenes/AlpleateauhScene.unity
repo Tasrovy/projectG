@@ -782,6 +782,42 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].dimColor.a
+      value: 0.6039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].dimColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].dimColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].dimColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].characterName
+      value: Traveler
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].normalColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].normalColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].normalColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: characters.Array.data[0].spriteRenderer
       value: 
       objectReference: {fileID: 982326750}
@@ -789,6 +825,46 @@ PrefabInstance:
       propertyPath: characters.Array.data[1].spriteRenderer
       value: 
       objectReference: {fileID: 2070615490}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].spriteRenderer
+      value: 
+      objectReference: {fileID: 2070615490}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[1].emotionSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[1].emotionSprites.Array.data[6].emotion
+      value: angry
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[0].emotion
+      value: peace_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[1].emotion
+      value: peace_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[2].emotion
+      value: saying
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[3].emotion
+      value: happy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[4].emotion
+      value: sad
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[5].emotion
+      value: angry
+      objectReference: {fileID: 0}
     - target: {fileID: 2958262985454349539, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
