@@ -140,15 +140,37 @@ public class CharacterHighlightManager : DialoguePresenterBase
         ApplyDialogueCompleteProperties();
 
         currentSpeaker = "";
+
+        // 在转场之前，关闭对应的背景音乐和白噪音
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopBGM();
+            AudioManager.Instance.StopWhiteNoise();
+        }
+
+        // 在所有内部逻辑和属性加成都处理完毕后，推入下一天
+        if (DayManager.Instance != null)
+        {
+            DayManager.Instance.NextDay();
+        }
+        else
+        {
+            Debug.LogWarning("DayManager instance not found. NextDay() was not called.");
+        }
+
         await YarnTask.CompletedTask;
     }
 
-    public void SetDialogueCompleteProperties(int p1, int p2, int p3, int p4)
+    public void SetDialogueCompleteProperties(int p1, int p2, int p3)
     {
         dialogueCompleteProperties[0] = p1;
         dialogueCompleteProperties[1] = p2;
         dialogueCompleteProperties[2] = p3;
-        dialogueCompleteProperties[3] = p4;
+    }
+
+    public void SetDialogueCompleteMoney(int money)
+    {
+        dialogueCompleteProperties[3] = money;
     }
 
     private void ApplyDialogueCompleteProperties()

@@ -44,6 +44,7 @@ public class CharacterControl : MonoBehaviour
         return null;
     }
 
+    #region 立绘抖动
     [YarnCommand("set_character_shake")]
     public void SetCharacterShake(string characterName, string shakeType)
     {
@@ -65,7 +66,9 @@ public class CharacterControl : MonoBehaviour
             Debug.LogWarning("[CharacterControl] 未在父物体找到 CharacterHighlightManager 组件！");
         }
     }
+    #endregion
 
+    #region 差分切换
     [YarnCommand("set_character_sprite")]
     public void SetCharacterSprite(string characterName, string emotion)
     {
@@ -111,8 +114,10 @@ public class CharacterControl : MonoBehaviour
             Debug.LogWarning("[CharacterControl] 未在父物体找到 CharacterHighlightManager 组件！");
         }
     }
+    #endregion
 
-    [YarnCommand("set_characater_person")]
+    #region 立绘切换
+    [YarnCommand("set_character_person")]
     public void SetCharacterPerson(string characterName)
     {
         var manager = GetComponent<CharacterHighlightManager>();
@@ -157,7 +162,9 @@ public class CharacterControl : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region 场景切换
     [YarnCommand("set_background")]
     public IEnumerator SetBackground(string backgroundName)
     {
@@ -185,7 +192,7 @@ public class CharacterControl : MonoBehaviour
                 return;
             }
 
-            Sprite newBackground = Resources.Load<Sprite>($"Background/{backgroundName}");
+            Sprite newBackground = Resources.Load<Sprite>($"Background/art/{backgroundName}");
             if (newBackground == null)
             {
                 Debug.LogError($"[CharacterControl] Background sprite not found at Resources/Background/{backgroundName}.");
@@ -195,6 +202,7 @@ public class CharacterControl : MonoBehaviour
             backgroundImage.sprite = newBackground;
         });
     }
+    #endregion
 
     private IEnumerator ShakeRoutine(Transform targetTransform, float duration, float magnitude, string shakeType)
     {
@@ -231,9 +239,50 @@ public class CharacterControl : MonoBehaviour
     }
 
     #region 音频功能
+    [YarnCommand("play_bgm")]
+    public void PlayBGMCommand(string audioName)
+    {
+        if (AudioManager.Instance != null)
+        {
+            if (string.IsNullOrEmpty(audioName))
+            {
+                AudioManager.Instance.StopBGM();
+            }
+            else
+            {
+                // 内部方法已含有直接切换（自动Stop上一个）的效果
+                AudioManager.Instance.PlayBGM(audioName);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
+        }
+    }
+
+    [YarnCommand("play_whitenoise")]
+    public void PlayWhiteNoiseCommand(string audioName)
+    {
+        if (AudioManager.Instance != null)
+        {
+            if (string.IsNullOrEmpty(audioName))
+            {
+                AudioManager.Instance.StopWhiteNoise();
+            }
+            else
+            {
+                AudioManager.Instance.PlayWhiteNoise(audioName);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
+        }
+    }
+
     /// <summary>
     /// 读取标识符并播放音效
-    /// 格式要求：sfx_charactername_soundtype 或 #sfx_charactername_soundtype
+    /// 格式要求：sfx_charactername_soundtype
     /// </summary>
     public void PlayAudioFromTag(string tag)
     {

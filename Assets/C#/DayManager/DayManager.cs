@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class DayManager : Singleton<DayManager>
 {
-    public Dictionary<int,UnityEvent>  dayEvents = new Dictionary<int, UnityEvent>();
+    public Dictionary<int,UnityEvent> dayEvents = new Dictionary<int, UnityEvent>();
     public int dayNumber = 1;
 
     public void NextDay()

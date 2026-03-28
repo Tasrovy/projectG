@@ -71,7 +71,7 @@ public class DialogueHandler : MonoBehaviour
         wasDialogueRunning = true;
     }
 
-    public void SetDialogueProperties(int p1, int p2, int p3, int money)
+    public void SetDialogueProperties(int p1, int p2, int p3)
     {
         if (characterHighlightManager == null)
         {
@@ -80,7 +80,26 @@ public class DialogueHandler : MonoBehaviour
 
         if (characterHighlightManager != null)
         {
-            characterHighlightManager.SetDialogueCompleteProperties(p1, p2, p3, money);
+            characterHighlightManager.SetDialogueCompleteProperties(p1, p2, p3);
+        }
+        else
+        {
+            Debug.LogError("CharacterHighlightManager not found on the same GameObject.");
+        }
+    }
+
+    public void SetDialogueMoney(int minMoney, int maxMoney)
+    {
+        if (characterHighlightManager == null)
+        {
+            characterHighlightManager = GetComponent<CharacterHighlightManager>();
+        }
+
+        if (characterHighlightManager != null)
+        {
+            // Unity中整型Random.Range是左闭右开，因此加1以确保能取到maxMoney
+            int randomMoney = Random.Range(minMoney, maxMoney + 1);
+            characterHighlightManager.SetDialogueCompleteMoney(randomMoney);
         }
         else
         {

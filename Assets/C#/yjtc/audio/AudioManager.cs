@@ -118,6 +118,7 @@ public class AudioManager : MonoBehaviour
     [Header("音频源属性")]
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource singleSource;
+    [SerializeField] private AudioSource whiteNoiseSource;
     private AudioSourcePool soundEffectPool;
 
     [Header("音高配置")]
@@ -164,6 +165,15 @@ public class AudioManager : MonoBehaviour
             singleSource = singleGo.AddComponent<AudioSource>();
             singleSource.loop = false;
             singleSource.spatialBlend = 0f;
+        }
+
+        if (whiteNoiseSource == null)
+        {
+            GameObject whiteNoiseGo = new("WhiteNoise_Source");
+            whiteNoiseGo.transform.SetParent(transform);
+            whiteNoiseSource = whiteNoiseGo.AddComponent<AudioSource>();
+            whiteNoiseSource.loop = true;
+            whiteNoiseSource.spatialBlend = 0f;
         }
 
         // 初始化音效对象池
@@ -235,6 +245,23 @@ public class AudioManager : MonoBehaviour
         if (singleSource != null && singleSource.isPlaying)
             singleSource.Stop();
     }
+
+    /// <summary>
+    /// 播放白噪音
+    /// </summary>
+    public void PlayWhiteNoise(string name, bool randomPitch = false)
+    {
+        StartCoroutine(LoadAndPlayWhiteNoise(name, randomPitch));
+    }
+
+    /// <summary>
+    /// 停止白噪音
+    /// </summary>
+    public void StopWhiteNoise()
+    {
+        if (whiteNoiseSource != null && whiteNoiseSource.isPlaying)
+            whiteNoiseSource.Stop();
+    }
     #endregion
 
     #region 协程方法
@@ -258,6 +285,29 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogError($"BGM加载失败: Sound/{fileName}");
+        }
+    }
+
+    private IEnumerator LoadAndPlayWhiteNoise(string fileName, bool randomPitch)
+    {
+        fileName = SplitName(fileName);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        yield return request;
+
+        AudioClip clip = request.asset as AudioClip;
+        if (clip != null)
+        {
+            if (randomPitch)
+                whiteNoiseSource.pitch = GetRandomPitch();
+            else
+                whiteNoiseSource.pitch = 1.0f;
+
+            whiteNoiseSource.clip = clip;
+            whiteNoiseSource.Play();
+        }
+        else
+        {
+            Debug.LogError($"白噪音加载失败: Sound/{fileName}");
         }
     }
 
