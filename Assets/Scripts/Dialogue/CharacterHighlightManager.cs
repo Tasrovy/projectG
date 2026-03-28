@@ -31,6 +31,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
     private string currentSpeaker;
     [SerializeField]
     [HideInInspector] public string playerVariableName = "$MY_NAME";
+    private int[] dialogueCompleteProperties = new int[4];
 
     public string defaultName = "Player";
 
@@ -142,6 +143,14 @@ public class CharacterHighlightManager : DialoguePresenterBase
         await YarnTask.CompletedTask;
     }
 
+    public void SetDialogueCompleteProperties(int p1, int p2, int p3, int p4)
+    {
+        dialogueCompleteProperties[0] = p1;
+        dialogueCompleteProperties[1] = p2;
+        dialogueCompleteProperties[2] = p3;
+        dialogueCompleteProperties[3] = p4;
+    }
+
     private void ApplyDialogueCompleteProperties()
     {
         if (DataManager.Instance == null)
@@ -150,15 +159,14 @@ public class CharacterHighlightManager : DialoguePresenterBase
             return;
         }
 
-        if (Properties.Instance != null)
-        {
-            DataManager.Instance.Add(1, Properties.Instance.property1);
-            DataManager.Instance.Add(2, Properties.Instance.property2);
-            DataManager.Instance.Add(3, Properties.Instance.property3);
-            DataManager.Instance.Add(4, Properties.Instance.money);
+        DataManager.Instance.Add(1, dialogueCompleteProperties[0]);
+        DataManager.Instance.Add(2, dialogueCompleteProperties[1]);
+        DataManager.Instance.Add(3, dialogueCompleteProperties[2]);
+        DataManager.Instance.Add(4, dialogueCompleteProperties[3]);
 
-            // 清空，防止下次不带属性的对话误加
-            Properties.Instance.ClearProperties();
+        for (int i = 0; i < 4; i++)
+        {
+            dialogueCompleteProperties[i] = 0;
         }
     }
 }

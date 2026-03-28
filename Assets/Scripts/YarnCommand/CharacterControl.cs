@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Yarn.Unity;
 
 public class CharacterControl : MonoBehaviour
@@ -155,6 +156,44 @@ public class CharacterControl : MonoBehaviour
                 Debug.LogWarning($"[CharacterControl] 未在管理器中找到名为 '{characterName}' 的角色配置！");
             }
         }
+    }
+
+    [YarnCommand("set_background")]
+    public IEnumerator SetBackground(string backgroundName)
+    {
+        if (string.IsNullOrWhiteSpace(backgroundName))
+        {
+            Debug.LogError("[CharacterControl] Background name is null or empty.");
+            yield break;
+        }
+
+        // YarnSpinner 会自动等待这个携程(IEnumerator)全屏完全淡入淡出结束才会走下一句话 
+        yield return TransitionManager.Instance.PlayTransition(() => 
+        {
+            // 在屏幕完全黑掉的回调瞬间，进行切图操作：
+            var backgroundObject = GameObject.Find("Background");
+            if (backgroundObject == null)
+            {
+                Debug.LogError("[CharacterControl] UI Image named 'Background' was not found in scene.");
+                return;
+            }
+
+            Image backgroundImage = backgroundObject.GetComponent<Image>();
+            if (backgroundImage == null)
+            {
+                Debug.LogError("[CharacterControl] 'Background' object does not have an Image component.");
+                return;
+            }
+
+            Sprite newBackground = Resources.Load<Sprite>($"Background/{backgroundName}");
+            if (newBackground == null)
+            {
+                Debug.LogError($"[CharacterControl] Background sprite not found at Resources/Background/{backgroundName}.");
+                return;
+            }
+
+            backgroundImage.sprite = newBackground;
+        });
     }
 
     private IEnumerator ShakeRoutine(Transform targetTransform, float duration, float magnitude, string shakeType)

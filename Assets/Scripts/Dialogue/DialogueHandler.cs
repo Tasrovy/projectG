@@ -45,22 +45,46 @@ public class DialogueHandler : MonoBehaviour
         if (wasDialogueRunning && !isDialogueRunning)
         {
             HideSkipButton();
+            // 在对话正常跑完结束后触发离场转场
+            StartCoroutine(TransitionManager.Instance.PlayTransition());
         }
 
         wasDialogueRunning = isDialogueRunning;
     }
 
-    public void StartDialogue(string yarnScript, int p1 = 0, int p2 = 0, int p3 = 0, int money = 0)
+    public void StartDialogue(string yarnScript)
     {
         if (dialogueRunner != null)
         {
-            if (Properties.Instance != null)
-            {
-                Properties.Instance.SetProperties(p1, p2, p3, money);
-            }
-            dialogueRunner.StartDialogue(yarnScript);
-            ShowSkipButton();
-            wasDialogueRunning = true;
+            StartCoroutine(StartDialogueRoutine(yarnScript));
+        }
+    }
+
+    private IEnumerator StartDialogueRoutine(string yarnScript)
+    {
+        // 保证顺序：1. 先执行完整转场（黑落 -> 停留 -> 变亮）
+        yield return TransitionManager.Instance.PlayTransition();
+        
+        // 当屏幕完全亮起转场结束后，2. 才会启动对话引擎跳出文本！
+        dialogueRunner.StartDialogue(yarnScript);
+        ShowSkipButton();
+        wasDialogueRunning = true;
+    }
+
+    public void SetDialogueProperties(int p1, int p2, int p3, int money)
+    {
+        if (characterHighlightManager == null)
+        {
+            characterHighlightManager = GetComponent<CharacterHighlightManager>();
+        }
+
+        if (characterHighlightManager != null)
+        {
+            characterHighlightManager.SetDialogueCompleteProperties(p1, p2, p3, money);
+        }
+        else
+        {
+            Debug.LogError("CharacterHighlightManager not found on the same GameObject.");
         }
     }
 
@@ -85,6 +109,9 @@ public class DialogueHandler : MonoBehaviour
             skipDialogueButton.interactable = true;
         }
         wasDialogueRunning = false;
+
+        // 如果玩家因为跳过而人工强停对话结束，那么同样触发离场的转场
+        StartCoroutine(TransitionManager.Instance.PlayTransition());
     }
 
     private void ShowSkipButton()
