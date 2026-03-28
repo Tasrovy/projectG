@@ -188,7 +188,9 @@ public class CharacterControl : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region 淡入淡出
     private IEnumerator CrossfadeSpriteRoutine(SpriteRenderer targetSR, Sprite newSprite, float duration)
     {
         if (targetSR == null || newSprite == null) yield break;
@@ -327,19 +329,30 @@ public class CharacterControl : MonoBehaviour
     }
 
     #region 音频功能
+    /// <summary>
+    /// 独立封装的路径处理功能：将下划线风格的文件参数变更为资源文件夹路径
+    /// 格式示例：folderA_folderB_filename -> folderA/folderB/filename
+    /// </summary>
+    private string FormatAudioPath(string rawParam)
+    {
+        if (string.IsNullOrWhiteSpace(rawParam)) return string.Empty;
+        return rawParam.Replace("_", "/");
+    }
+
     [YarnCommand("play_bgm")]
-    public void PlayBGMCommand(string audioPath)
+    public void PlayBGMCommand(string audioParam)
     {
         if (AudioManager.Instance != null)
         {
-            if (string.IsNullOrEmpty(audioPath))
+            if (string.IsNullOrEmpty(audioParam))
             {
                 AudioManager.Instance.StopBGM();
             }
             else
             {
-                // 内部方法已含有直接切换（自动Stop上一个）的效果，并且会自动加上 "bgm/" 前缀
-                AudioManager.Instance.PlayBGM(audioPath);
+                // AudioManager内部已经配了前缀 "Sound/bgm/"
+                // FormatAudioPath 把 level1_theme 转换成 level1/theme
+                AudioManager.Instance.PlayBGM(FormatAudioPath(audioParam));
             }
         }
         else
@@ -349,18 +362,18 @@ public class CharacterControl : MonoBehaviour
     }
 
     [YarnCommand("play_whitenoise")]
-    public void PlayWhiteNoiseCommand(string audioPath)
+    public void PlayWhiteNoiseCommand(string audioParam)
     {
         if (AudioManager.Instance != null)
         {
-            if (string.IsNullOrEmpty(audioPath))
+            if (string.IsNullOrEmpty(audioParam))
             {
                 AudioManager.Instance.StopWhiteNoise();
             }
             else
             {
-                // 内部方法会自动加上 "Whitenoise/" 前缀
-                AudioManager.Instance.PlayWhiteNoise(audioPath);
+                // AudioManager内部已经配了前缀 "Sound/Whitenoise/"
+                AudioManager.Instance.PlayWhiteNoise(FormatAudioPath(audioParam));
             }
         }
         else
@@ -371,7 +384,7 @@ public class CharacterControl : MonoBehaviour
 
     /// <summary>
     /// 读取标识符并播放音效
-    /// 格式要求：sfx_charactername_soundtype
+    /// 格式要求：sfx_文件夹1_文件夹2_文件名（例如 #sfx_Characters_Player_laugh）
     /// </summary>
     public void PlayAudioFromTag(string tag)
     {
@@ -386,28 +399,20 @@ public class CharacterControl : MonoBehaviour
         // 以 sfx_ 开头则认为是音效标签
         if (tag.StartsWith("sfx_"))
         {
-            string[] parts = tag.Split('_');
-            if (parts.Length >= 3)
+            // 提取 sfx_ 之后的所有内容
+            string rawParam = tag.Substring(4);
+            if (!string.IsNullOrEmpty(rawParam))
             {
-                // parts[0] 是 "sfx"
-                string characterName = parts[1];
-                // 提取具体的音效名字 (考虑到音效名字本身可能带下划线，将其余部分还原)
-                string soundType = tag.Substring(4 + characterName.Length + 1);
-                
                 if (AudioManager.Instance != null)
                 {
-                    // 拼接路径： Characters/角色名/音效名
-                    string path = $"Characters/{characterName}/{soundType}";
+                    // 按照封装的函数将下划线替换成路径，AudioManager层基准为 "Sound/"
+                    string path = FormatAudioPath(rawParam);
                     AudioManager.Instance.PlaySound(path);
                 }
                 else
                 {
                     Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
                 }
-            }
-            else
-            {
-                Debug.LogWarning($"[CharacterControl] 音效标签格式错误，应为 sfx_人物_音效，当前为: {tag}");
             }
         }
     }
