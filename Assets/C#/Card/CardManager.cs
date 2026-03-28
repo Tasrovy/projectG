@@ -28,7 +28,6 @@ public class CardManager : Singleton<CardManager>
     public List<CardData> cardDatas = new List<CardData>();
     public List<Card> cardSet = new List<Card>();
     public List<Card> cardInHand = new List<Card>();
-    public List<CardObject>  cardObjects = new List<CardObject>();
 
     [Header("动态稀有度概率 (和需为 1.0)")]
     [Range(0, 1)] public float probRarity1 = 0.7f; // 稀有度 1 的概率
@@ -48,12 +47,9 @@ public class CardManager : Singleton<CardManager>
         base.Awake();
         LoadAllCards();
         ImplementCardSet();
-        Debug.Log($"准备抽取{cardObjects.Count}张牌");
-        DrawCard(cardObjects.Count);
-        for (int i = 0; i < cardObjects.Count; i++)
-        {
-            cardObjects[i].card = cardInHand[i];
-        }
+        Debug.Log($"准备抽取{5}张牌");
+        DrawCard(5);
+        DUEL.Instance.Begin();
     }
 
     public void ImplementCardSet()
