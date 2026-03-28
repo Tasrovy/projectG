@@ -66,8 +66,36 @@ public class ExcelLoader : Singleton<ExcelLoader>
                         if (table.Columns.Contains(field.Name))
                         {
                             object value = row[field.Name];
-                            if (value != DBNull.Value)
-                                field.SetValue(data, Convert.ChangeType(value, field.FieldType));
+                            if (value != DBNull.Value && !string.IsNullOrWhiteSpace(value.ToString()))
+                            {
+                                try 
+                                {
+                                    // 获取 Excel 原始字符串
+                                    string rawValue = value.ToString().Trim();
+
+                                    // 核心修复：处理数值转换
+                                    if (field.FieldType == typeof(int))
+                                    {
+                                        // 先转成 double 再转 int，防止 Excel 里的 "1.0" 导致 int.Parse 报错
+                                        float f = float.Parse(rawValue);
+                                        field.SetValue(data, (int)f);
+                                    }
+                                    else if (field.FieldType == typeof(float))
+                                    {
+                                        field.SetValue(data, float.Parse(rawValue));
+                                    }
+                                    else
+                                    {
+                                        // 其他类型（string 等）使用通用转换
+                                        field.SetValue(data, Convert.ChangeType(value, field.FieldType));
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    // 这里的报错能帮你精准定位是哪一行哪一列错了
+                                    Debug.LogError($"[ExcelLoader] 转换失败！列名: {field.Name}, 单元格内容: '{value}', 错误原因: {ex.Message}");
+                                }
+                            }
                         }
                     }
 

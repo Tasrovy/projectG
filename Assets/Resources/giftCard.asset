@@ -19,10 +19,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 10
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E008\u70B9"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9"
     buff: 
     trigger: 
   - id: 11002
@@ -31,10 +31,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 10
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E8C12\u70B9"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
     trigger: 
   - id: 11003
@@ -43,10 +43,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 10
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E002\u70B9\uFF0C\u5C5E\u6027\u4E8C2\u70B9"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
     trigger: 
   - id: 11004
@@ -55,10 +55,10 @@ MonoBehaviour:
     nature3: 2
     name: "\u96EA\u8389\u724C\u624B\u69A8\u82F9\u679C\u6C41"
     sale: 10
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E092\u70B9"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E09{nature3}\u70B9"
     buff: 
     trigger: 
   - id: 11005
@@ -67,10 +67,10 @@ MonoBehaviour:
     nature3: 0
     name: "\u8BFA\u4E9A\u724C\u6CE1\u817E\u7247"
     sale: 10
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E0012\u70B9\uFF0C\u51CF\u5C11\u5C5E\u6027\u4E8C8\u70B9"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u51CF\u5C11\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
     trigger: 
   - id: 11006
@@ -79,10 +79,10 @@ MonoBehaviour:
     nature3: 0
     name: "\u91D1\u5706\u5238"
     sale: 40
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E00\uFF0C\u4E8C1\u70B9\uFF08\u5728\u5546\u5E97\u5356\u51FA\u7684\u4EF7\u503C\u8F83\u9AD8\uFF09"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
     trigger: 
   - id: 12001
@@ -91,10 +91,10 @@ MonoBehaviour:
     nature3: 2
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E00\u3001\u4E8C\u3001\u4E09\u54042\u70B9"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00\u3001\u4E8C\u3001\u4E09\u5404{nature1}\u70B9"
     buff: 
     trigger: 
   - id: 12002
@@ -103,10 +103,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E004\uFF0C\u5C5E\u6027\u4E8C6"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
     trigger: 
   - id: 12003
@@ -115,34 +115,34 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u5C5E\u6027\u4E8C20\u70B9"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
     trigger: 
   - id: 12004
     nature1: 30
-    nature2: -10
+    nature2: 0
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E0030\u70B9\uFF0C\u51CF\u5C11\u5C5E\u6027\u4E8C10\u70B9\uFF0C\u5C5E\u6027\u4E8C\u51CF\u5C11\u7684\u6570\u503C\u4E0D\u4F1A\u6539\u53D8"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u51CF\u5C11\u89D2\u8272\u7684\u5C5E\u6027\u4E8C10\u70B9\uFF0C\u5C5E\u6027\u4E8C\u51CF\u5C11\u7684\u6570\u503C\u4E0D\u4F1A\u6539\u53D8"
     buff: 
-    trigger: 
+    trigger: addNatureAtSum(-10,2)
   - id: 12005
     nature1: 8
     nature2: 0
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E008\uFF0C\u5F53\u6B64\u724C\u88AB\u526A\u679D\u65F6\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
+    made: 
+    broken: noConsumed()
+    added: 
+    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u5F53\u6B64\u724C\u88AB\u526A\u679D\u65F6\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
     buff: 
     trigger: 
   - id: 12006
@@ -151,10 +151,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E8C16\uFF0C\u5F53\u6B64\u724C\u88AB\u751F\u679D\u65F6\uFF0C\u5F80\u624B\u724C\u4E2D\u989D\u5916\u52A0\u5165\u4E00\u5F20\u6B64\u5361"
+    made: addCard(12006,1)
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u5F53\u6B64\u724C\u88AB\u751F\u679D\u65F6\uFF0C\u5F80\u624B\u724C\u4E2D\u989D\u5916\u52A0\u5165\u4E00\u5F20\u6B64\u5361"
     buff: 
     trigger: 
   - id: 12007
@@ -163,10 +163,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E8C14\u70B9\uFF0C\u88AB\u751F\u679D\u65F6\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C4\u70B9"
+    made: 
+    broken: 
+    added: addNature(4,2)
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u88AB\u751F\u679D\u65F6\uFF0C\u63D0\u5347\u5361\u724C\u7684\u5C5E\u6027\u4E8C4\u70B9"
     buff: 
     trigger: 
   - id: 12008
@@ -175,10 +175,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E0012\u70B9\uFF0C\u88AB\u751F\u957F\u65F6\uFF0C\u83B7\u5F97xx\u91D1\u5E01"
+    made: 
+    broken: 
+    added: addMoney(40)
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u88AB\u751F\u957F\u65F6\uFF0C\u83B7\u5F9740\u91D1\u5E01"
     buff: 
     trigger: 
   - id: 12009
@@ -187,10 +187,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E0040\u70B9\uFF0C\u4E0B\u56DE\u5408\u597D\u611F\u5EA6\u52A0\u6210\u51CF\u5C1150%"
+    made: 
+    broken: 
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u4E0B\u56DE\u5408\u597D\u611F\u5EA6\u52A0\u6210\u51CF\u5C1150%"
     buff: 
     trigger: 
   - id: 12010
@@ -199,10 +199,10 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E8C10\u70B9\uFF0C\u88AB\u526A\u679D\u65F6\uFF0C\u63D0\u5347\u5C5E\u6027\u4E0910\u70B9"
+    made: 
+    broken: addNatureAtSum(10,3)
+    added: 
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u88AB\u526A\u679D\u65F6\uFF0C\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E0910\u70B9"
     buff: 
     trigger: 
   - id: 12011
@@ -211,10 +211,11 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 20
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u63D0\u5347\u5C5E\u6027\u4E001\u70B9\uFF0C\u5C5E\u6027\u4E8C1\u70B9\uFF0C\u88AB\u751F\u957F\u65F6\uFF0C\u989D\u5916\u88AB\u751F\u957F1\u6B21"
+    made: 
+    broken: 
+    added: beAdded(6,1)
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u88AB\u751F\u957F\u65F6\uFF0C\u989D\u5916\u89E6\u53D1\u751F\u957F6
+      1\u6B21"
     buff: 
     trigger: 
   - id: 13001
@@ -223,9 +224,9 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 100
-    made: 0
-    broken: 0
-    added: 0
-    description: "\u8BA9\u5C5E\u6027\u4E00\u7684\u6570\u503C\u7B49\u4E8E\u5C5E\u6027\u4E8C"
+    made: 
+    broken: 
+    added: 
+    description: "\u8BA9\u89D2\u8272\u7684\u5C5E\u6027\u4E00\u7684\u6570\u503C\u7B49\u4E8E\u89D2\u8272\u7684\u5C5E\u6027\u4E8C"
     buff: 
-    trigger: 
+    trigger: addNatureFromTo(1,2)

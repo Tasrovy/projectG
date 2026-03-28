@@ -17,9 +17,9 @@ public class CardData
     public int nature3;
     public string name;
     public int sale;
-    public int made;
-    public int broken;
-    public int added;
+    public string made;
+    public string broken;
+    public string added;
     public string description;
     public string buff;
     public string trigger;
