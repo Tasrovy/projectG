@@ -6,6 +6,11 @@ public class CardEffect : Singleton<CardEffect>
 {
     // --- 这里定义所有的效果函数 ---
 
+    public void p(string str)
+    {
+        Debug.Log(str);
+    }
+    
     public void DealDamage(int amount) 
     { 
         Debug.Log($"[效果] 造成了 {amount} 点伤害"); 

@@ -1,0 +1,150 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: funcCard
+  m_EditorClassIdentifier: Assembly-CSharp::CardDatabaseSO
+  allCards:
+  - id: 21001
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u624B\u5DE51\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u624B\u5DE5\u7684\u724C"
+    buff: 
+    trigger: 
+  - id: 21002
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u7F8E\u53164"
+    buff: 
+    trigger: 
+  - id: 21003
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u62C6\u53781\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269"
+    buff: 
+    trigger: 
+  - id: 21004
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u62C6\u53781\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E8C\u63D0\u534730\u70B9"
+    buff: 
+    trigger: 
+  - id: 21005
+    nature1: 50
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u62C6\u53782\uFF0C\u5C5E\u6027\u4E00\u63D0\u534750\u70B9"
+    buff: 
+    trigger: 
+  - id: 21006
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u7F8E\u5316\uFF0C\u5C06\u5361\u4E2D\u6570\u503C\u4E0D\u8DB312\u7684\u90E8\u5206\u52A0\u6210\u523012"
+    buff: 
+    trigger: 
+  - id: 22001
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u624B\u5DE53\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u624B\u5DE5\u7684\u724C"
+    buff: 
+    trigger: 
+  - id: 22002
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u624B\u5DE51\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u666E\u901A\u793C\u7269"
+    buff: 
+    trigger: 
+  - id: 22003
+    nature1: 100
+    nature2: 0
+    nature3: 100
+    name: "\u5927\u7834\u574F"
+    sale: 0
+    description: "\u62C6\u53785\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E00\uFF0C\u4E09\u63D0\u5347100\u70B9"
+    buff: 
+    trigger: 
+  - id: 22004
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u82E5\u5361\u7EC4\u4E2D\u6709\u4E09\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u7F8E\u531640\uFF0C\u5426\u5219\u7F8E\u53165"
+    buff: 
+    trigger: 
+  - id: 22005
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: "\u51ED\u7A7A"
+    sale: 0
+    description: "\u82E5\u624B\u4E2D\u6CA1\u6709\u793C\u7269\u724C\uFF0C\u5219\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269\u5361"
+    buff: 
+    trigger: 
+  - id: 22006
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u7F8E\u53164\uFF0C\u6B64\u724C\u7F8E\u5316\u7684\u6570\u503C\u63D0\u53474"
+    buff: 
+    trigger: 
+  - id: 22007
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u62C6\u53781\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
+    buff: 
+    trigger: 
+  - id: 22008
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u5C06\u624B\u724C\u4E2D\u7684\u6240\u6709\u793C\u7269\u90FD\u53D8\u6210\u540C\u4E00\u4E2A\u968F\u673A\u793C\u7269"
+    buff: 
+    trigger: 
+  - id: 23001
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    description: "\u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u7F8E\u5316\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
+    buff: 
+    trigger: 
