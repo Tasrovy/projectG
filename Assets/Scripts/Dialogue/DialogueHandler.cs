@@ -50,53 +50,18 @@ public class DialogueHandler : MonoBehaviour
         wasDialogueRunning = isDialogueRunning;
     }
 
-    public void StartDialogue(string yarnScript)
+    public void StartDialogue(string yarnScript, int p1 = 0, int p2 = 0, int p3 = 0, int money = 0)
     {
         if (dialogueRunner != null)
         {
+            if (Properties.Instance != null)
+            {
+                Properties.Instance.SetProperties(p1, p2, p3, money);
+            }
             dialogueRunner.StartDialogue(yarnScript);
             ShowSkipButton();
             wasDialogueRunning = true;
         }
-    }
-
-    public void SendProperties(string properties)
-    {
-        if (characterHighlightManager == null)
-        {
-            characterHighlightManager = GetComponent<CharacterHighlightManager>();
-        }
-
-        if (characterHighlightManager == null)
-        {
-            Debug.LogError("CharacterHighlightManager not found on the same GameObject.");
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(properties))
-        {
-            Debug.LogError("SendProperties failed: input is null or empty.");
-            return;
-        }
-
-        if (!Regex.IsMatch(properties, @"^-?\d+ -?\d+ -?\d+ -?\d+$"))
-        {
-            Debug.LogError("SendProperties format error: expected exactly four integers separated by single spaces.");
-            return;
-        }
-
-        string[] parts = properties.Split(' ');
-        int[] values = new int[4];
-        for (int i = 0; i < 4; i++)
-        {
-            if (!int.TryParse(parts[i], out values[i]))
-            {
-                Debug.LogError("SendProperties parse error: one of the values is not a valid int.");
-                return;
-            }
-        }
-
-        characterHighlightManager.SetDialogueCompleteProperties(values);
     }
 
     private async void HandleSkipDialogueClicked()

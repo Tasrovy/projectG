@@ -11,20 +11,52 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] 
     [Header("抖动幅度")] private float shakeMagnitude = 0.1f;
 
+    // 辅助方法：判断名字是否为玩家
+    private bool IsPlayerName(string characterName, CharacterHighlightManager manager)
+    {
+        if (manager == null) return false;
+        
+        // 判断是否为默认名("Player")
+        if (string.Equals(characterName, manager.defaultName, System.StringComparison.OrdinalIgnoreCase)) 
+            return true;
+        
+        // 判断是否为玩家游戏内自定义名
+        var storage = FindAnyObjectByType<InMemoryVariableStorage>();
+        if (storage != null && storage.TryGetValue(manager.playerVariableName, out string pName))
+        {
+            if (string.Equals(characterName, pName, System.StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        
+        return false;
+    }
+
+    // 辅助方法：统一获取固定名称的 GameObject 上的 SpriteRenderer
+    private SpriteRenderer GetTargetRenderer(string characterName, CharacterHighlightManager manager)
+    {
+        string targetObjectName = IsPlayerName(characterName, manager) ? "Player" : "Character";
+        GameObject targetObj = GameObject.Find(targetObjectName);
+        if (targetObj != null)
+        {
+            return targetObj.GetComponent<SpriteRenderer>();
+        }
+        return null;
+    }
+
     [YarnCommand("set_character_shake")]
     public void SetCharacterShake(string characterName, string shakeType)
     {
         var manager = GetComponent<CharacterHighlightManager>();
         if (manager != null)
         {
-            var ch = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
-            if (ch != null && ch.spriteRenderer != null)
+            SpriteRenderer targetRenderer = GetTargetRenderer(characterName, manager);
+            if (targetRenderer != null)
             {
-                StartCoroutine(ShakeRoutine(ch.spriteRenderer.transform, shakeDuration, shakeMagnitude, shakeType));
+                StartCoroutine(ShakeRoutine(targetRenderer.transform, shakeDuration, shakeMagnitude, shakeType));
             }
             else
             {
-                Debug.LogWarning($"[CharacterControl] 找不到名为'{characterName}'的角色配置，或未赋予SpriteRenderer！");
+                Debug.LogWarning($"[CharacterControl] 找不到名为'{ (IsPlayerName(characterName, manager) ? "Player" : "Character") }'的对象，或未赋予SpriteRenderer！");
             }
         }
         else
@@ -47,17 +79,25 @@ public class CharacterControl : MonoBehaviour
             var ch = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
             if (ch != null)
             {
-                if (ch.emotionSprites != null)
+                SpriteRenderer targetRenderer = GetTargetRenderer(characterName, manager);
+                if (targetRenderer != null)
                 {
-                    var targetState = ch.emotionSprites.Find(s => string.Equals(s.emotion, emotion, System.StringComparison.OrdinalIgnoreCase));
-                    if (targetState != null && targetState.sprite != null && ch.spriteRenderer != null)
+                    if (ch.emotionSprites != null)
                     {
-                        ch.spriteRenderer.sprite = targetState.sprite;
+                        var targetState = ch.emotionSprites.Find(s => string.Equals(s.emotion, emotion, System.StringComparison.OrdinalIgnoreCase));
+                        if (targetState != null && targetState.sprite != null)
+                        {
+                            targetRenderer.sprite = targetState.sprite;
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"[CharacterControl] 未找到感情 '{emotion}' 的差分精灵图，或图片未赋值！");
+                        }
                     }
-                    else
-                    {
-                        Debug.LogWarning($"[CharacterControl] 未找到感情 '{emotion}' 的差分精灵图，或 SpriteRenderer/图片 未赋值！");
-                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"[CharacterControl] 找不到名为'{ (IsPlayerName(characterName, manager) ? "Player" : "Character") }'的对象，或未设SpriteRenderer！");
                 }
             }
             else
@@ -68,6 +108,52 @@ public class CharacterControl : MonoBehaviour
         else
         {
             Debug.LogWarning("[CharacterControl] 未在父物体找到 CharacterHighlightManager 组件！");
+        }
+    }
+
+    [YarnCommand("set_characater_person")]
+    public void SetCharacterPerson(string characterName)
+    {
+        var manager = GetComponent<CharacterHighlightManager>();
+        if (manager != null)
+        {
+            var targetConfig = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
+            if (targetConfig != null)
+            {
+                GameObject characterObj = GameObject.Find("Character");
+                if (characterObj != null)
+                {
+                    SpriteRenderer sr = characterObj.GetComponent<SpriteRenderer>();
+                    if (sr != null)
+                    {
+                        // 1. 将该配置绑定到"Character"的SpriteRenderer
+                        targetConfig.spriteRenderer = sr;
+                        
+                        // 2. 将表情默认修换为列表第一项
+                        if (targetConfig.emotionSprites != null && targetConfig.emotionSprites.Count > 0)
+                        {
+                            sr.sprite = targetConfig.emotionSprites[0].sprite;
+                        }
+
+                        // 为了能正确控制亮暗，可以在此将原先占用"Character"的其它实例的spriteRenderer置空
+                        foreach (var otherConfig in manager.characters)
+                        {
+                            if (otherConfig != targetConfig && !IsPlayerName(otherConfig.characterName, manager))
+                            {
+                                otherConfig.spriteRenderer = null;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("[CharacterControl] 场景中不存在名为 'Character' 的物体！");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"[CharacterControl] 未在管理器中找到名为 '{characterName}' 的角色配置！");
+            }
         }
     }
 
