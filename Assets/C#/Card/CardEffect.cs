@@ -6,27 +6,104 @@ public class CardEffect : Singleton<CardEffect>
 {
     // --- 这里定义所有的效果函数 ---
 
-    public void p(string str)
-    {
-        Debug.Log(str);
-    }
+    public Card CallerCard;
+
+    public bool needShengZhi;
+    public int shengZhiNum;
     
-    public void DealDamage(int amount) 
-    { 
-        Debug.Log($"[效果] 造成了 {amount} 点伤害"); 
-    }
-
-    public void DrawCard(int count) 
-    { 
-        Debug.Log($"[效果] 抽了 {count} 张牌"); 
-    }
-
-    // 支持多个参数的例子
-    public void Heal(int amount, bool playParticle)
+    public void addNature(int id, int num)
     {
-        Debug.Log($"[效果] 回复了 {amount} 点血量，播放特效: {playParticle}");
+        CallerCard.Add(id, num);
     }
 
+    public void addNatureTo(int id, int num)
+    {
+        CallerCard.AddTo(id, num);
+    }
+
+    public void addNatureAtSum(int id, int num)
+    {
+        DataManager.Instance.Add(id, num);
+    }
+
+    public void addNatureFromTo(int id1, int id2)
+    {
+        DataManager.Instance.AddNatureFromTo(id1, id2);
+    }
+
+    public void addCard(int cardID, int num)
+    {
+        CardManager.Instance.AddCard(cardID, num);
+    }
+
+    public void addRandomCard(int type, int num, int level)
+    {
+        CardManager.Instance.AddRandomCard(type, num, level);
+    }
+
+    public void addRandomCardIfNot(int type, int num, int level)
+    {
+        CardManager.Instance.AddRandomCardIfNot(type, num, level);
+    }
+
+    public void addMoney(int money)
+    {
+        DataManager.Instance.Add(4, money);
+    }
+
+    public void changeProperty(float ratio)
+    {
+        DayManager.Instance.GetNextDayEvent().AddListener( ()=>
+        {
+            DataManager.Instance.SetNature1Effect(ratio - 1);
+            DataManager.Instance.SetNature2Effect(ratio - 1);
+            DataManager.Instance.SetNature3Effect(ratio - 1);
+        });
+    }
+
+    public void beAdded(int num, int times)
+    {
+        for (int i = 0; i < times; i++)
+        {
+            CallerCard.Add(1, num);
+            CallerCard.Add(2, num);
+            CallerCard.Add(3, num);
+        }
+    }
+
+    public void beAddedTo(int num)
+    {
+        CallerCard.AddTo(1, num);
+        CallerCard.AddTo(2, num);
+        CallerCard.AddTo(3, num);
+    }
+
+    public void beMade(int num)
+    {
+        shengZhiNum = num;
+        needShengZhi = true;
+    }
+
+    public void addAddNum(int num)
+    {
+        CallerCard.added += num;
+    }
+
+    public void changeHandGift()
+    {
+        CardManager.Instance.ChangeHandGift();
+    }
+
+    public void addNatureAtSumIf(int type1, int type2)
+    {
+        int num = CallerCard.GetNatureById(type1);
+        if(num>0) DataManager.Instance.Add(type2,10);
+    }
+
+    public void addNatureByOther(int type1, int type2)
+    {
+        DataManager.Instance.Add(type2, DataManager.Instance.GetNatureById(type1)/2);
+    }
     // --- 核心执行逻辑 ---
 
     /// <summary>
@@ -89,5 +166,10 @@ public class CardEffect : Singleton<CardEffect>
             }
         }
         return result;
+    }
+
+    public void SetCallerCard(Card card)
+    {
+        CallerCard = card;
     }
 }
