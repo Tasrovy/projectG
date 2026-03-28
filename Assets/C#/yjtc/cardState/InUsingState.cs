@@ -11,8 +11,9 @@ public class InUsingState : stateBase,ICardState
 
     public void EnterState()
     {
-        EventManage.SendEvent(EventManageEnum.cardUsed, "Õ¼¿Ó£¬´«ÈëÕâÕÅ¿¨µÄÊý¾Ý");
-        print($"¿¨ÅÆ{this.name}±»Ê¹ÓÃÁË£¬½øÈëÊ¹ÓÃ×´Ì¬");
+        EventManage.SendEvent(EventManageEnum.cardUsed, "Õ¼ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        this.gameObject.GetComponent<CardObject>().Effect();
+        print($"ï¿½ï¿½ï¿½ï¿½{this.name}ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½×´Ì¬");
         cardStateMachine.ChangeState(CardState.InDeck);
     }
 
@@ -23,7 +24,6 @@ public class InUsingState : stateBase,ICardState
 
     public void UpdateState()
     {
-        throw new System.NotImplementedException();
     }
 
     // Start is called before the first frame update
