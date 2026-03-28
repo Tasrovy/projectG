@@ -10,9 +10,15 @@ public enum EventManageEnum
 
 	
     #region 玉皆透澈声明的事件
-    
+    cardUsed,          // 卡牌使用事件
+    ACardDragging, 
+    ACardOutDragging,
 
-    
+    drawPileOpen,
+    drawPileClose,
+
+
+
     #endregion
 
 
