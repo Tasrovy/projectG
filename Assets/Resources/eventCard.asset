@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 17901ae4ca614a51851eeeb5613eb046, type: 3}
   m_Name: eventCard
-  m_EditorClassIdentifier: Assembly-CSharp::CardDatabaseSO
+  m_EditorClassIdentifier: 
   allCards:
   - id: 31001
     nature1: 0
     nature2: 0
     nature3: 30
     name: "\u4E00\u8D77\u6253\u4E52\u4E53\u7403\u5427"
-    sale: 0
+    sale: 60
     description: "\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
     buff: 
     trigger: 
@@ -27,7 +27,25 @@ MonoBehaviour:
     nature2: 0
     nature3: 20
     name: "\u722C\u722C\u5C71"
-    sale: 0
+    sale: 60
     description: "\u5C5E\u6027\u4E09\u63D0\u534720\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
+    buff: 
+    trigger: 
+  - id: 3203
+    nature1: 0
+    nature2: 0
+    nature3: 20
+    name: 
+    sale: 60
+    description: "\u5C5E\u6027\u4E09\u63D0\u534720\u70B9\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
+    buff: 
+    trigger: 
+  - id: 33001
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 120
+    description: "\u83B7\u5F97\u5C5E\u6027\u4E09\uFF08\u5C5E\u6027\u4E00/2\uFF09\u70B9"
     buff: 
     trigger: 

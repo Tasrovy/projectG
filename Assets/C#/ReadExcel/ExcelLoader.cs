@@ -44,7 +44,7 @@ public class ExcelLoader : Singleton<ExcelLoader>
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         CardDatabaseSO db = ScriptableObject.CreateInstance<CardDatabaseSO>();
-
+        db.name = soName; 
         using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
         {
             using (var reader = ExcelReaderFactory.CreateReader(stream))

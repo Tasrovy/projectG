@@ -8,7 +8,6 @@ using ExcelDataReader;
 using System.Linq; // 引入 Linq 方便查询
 using Random = System.Random;
 
-// --- 基础数据类 ---
 [System.Serializable]
 public class CardData
 {
@@ -21,11 +20,6 @@ public class CardData
     public string description;
     public string buff;
     public string trigger;
-}
-
-public class CardDatabaseSO : ScriptableObject
-{
-    public List<CardData> allCards = new List<CardData>();
 }
 
 // --- 卡牌管理器 ---
