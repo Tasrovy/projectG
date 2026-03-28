@@ -13,12 +13,19 @@ using Random = System.Random;
 public class CardData
 {
     public int id;
-    public int cardProperty1;
-    public int cardProperty2;
-    public int cardProperty3;
-    public string cardName;
-    public string cardDescription;
-    public string effect;
+    public int nature1;
+    public int nature2;
+    public int nature3;
+    public string name;
+    public int sale;
+    public string description;
+    public string buff;
+    public string trigger;
+}
+
+public class CardDatabaseSO : ScriptableObject
+{
+    public List<CardData> allCards = new List<CardData>();
 }
 
 // --- 卡牌管理器 ---
@@ -91,7 +98,7 @@ public class CardManager : Singleton<CardManager>
             UpdatePityCounters(GetCardType(drawnCard.id));
             cardInHand.Add(drawnCard);
 
-            Debug.Log($"[抽牌] 抽到:{drawnCard.cardName} | ID:{drawnCard.id} | 类型:{GetCardType(drawnCard.id)} | 稀有度:{GetCardRarity(drawnCard.id)}");
+            Debug.Log($"[抽牌] 抽到:{drawnCard.name} | ID:{drawnCard.id} | 类型:{GetCardType(drawnCard.id)} | 稀有度:{GetCardRarity(drawnCard.id)}");
         }
     }
 
@@ -175,26 +182,20 @@ public class CardManager : Singleton<CardManager>
     public void LoadAllCards()
     {
         cardDatas.Clear();
-        DataSet dataSet = ExcelLoader.Instance.ReadExcel(cardExcelPath);
-        if (dataSet == null || dataSet.Tables.Count == 0) return;
 
-        DataTable table = dataSet.Tables[0];
-        foreach (DataRow row in table.Rows)
+        // 1. 调用新的 ReadExcel，它现在直接返回填充好的 ScriptableObject
+        CardDatabaseSO databaseSO = ExcelLoader.Instance.ReadExcel(cardExcelPath);
+
+        // 2. 判空保护
+        if (databaseSO == null || databaseSO.allCards.Count == 0) 
         {
-            if (row["id"] == System.DBNull.Value) continue;
-            try {
-                CardData data = new CardData {
-                    id = int.Parse(row["id"].ToString()),
-                    cardProperty1 = int.Parse(row["cardProperty1"].ToString()),
-                    cardProperty2 = int.Parse(row["cardProperty2"].ToString()),
-                    cardProperty3 = int.Parse(row["cardProperty3"].ToString()),
-                    cardName = row["cardName"].ToString(),
-                    cardDescription = row["cardDescription"].ToString(),
-                    effect = row["effect"].ToString()
-                };
-                cardDatas.Add(data);
-            } catch { }
+            Debug.LogError($"[CardManager] 无法加载数据或数据为空，路径: {cardExcelPath}");
+            return;
         }
+
+        // 3. 直接将 SO 里的数据列表赋值或添加到当前管理器中
+        cardDatas.AddRange(databaseSO.allCards);
+
         Debug.Log($"加载了 {cardDatas.Count} 张卡牌数据。");
     }
 

@@ -13,32 +13,38 @@ public class EffectCommand
 public class Card
 {
     public int id;
-    public int cardProperty1;
-    public int cardProperty2;
-    public int cardProperty3;
-    public string cardName;
-    public string cardDescription;
-    public string originEffect;
+    public int nature1;
+    public int nature2;
+    public int nature3;
+    public string name;
+    public int sale;
+    public string description;
+    public string buff;
+    public string trigger;
     public List<EffectCommand> actualEffects = new List<EffectCommand>();
 
     public void InitCard(CardData cardData)
     {
         id = cardData.id;
-        cardProperty1 = cardData.cardProperty1;
-        cardProperty2 = cardData.cardProperty2;
-        cardProperty3 = cardData.cardProperty3;
-        cardName = cardData.cardName;
-        cardDescription = cardData.cardDescription;
-        originEffect = cardData.effect;
+        nature1 = cardData.nature1;
+        nature2 = cardData.nature2;
+        nature3 = cardData.nature3;
+        name = cardData.name;
+        description = cardData.description;
+        buff = cardData.buff;
+        sale = cardData.sale;
+        trigger = cardData.trigger;
+        actualEffects.Clear();
+        ParseEffectString();
     }
     
     private void ParseEffectString()
     {
         actualEffects.Clear();
-        if (string.IsNullOrEmpty(originEffect)) return;
+        if (string.IsNullOrEmpty(trigger)) return;
 
         // 1. 支持多条指令，用分号 ';' 分隔。例如 "Add(1,2); Heal(10)"
-        string[] commands = originEffect.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] commands = trigger.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string cmd in commands)
         {
