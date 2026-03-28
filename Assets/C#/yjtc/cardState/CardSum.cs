@@ -13,6 +13,8 @@ public class CardSum : MonoBehaviour
     public float cardRise = 0.02f;
 
     public bool dragingCard=false;
+
+    public bool cardPileActive=false;
     void Awake()
     {
         if (_instance != null && _instance != this)

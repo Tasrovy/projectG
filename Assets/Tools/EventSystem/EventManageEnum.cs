@@ -14,6 +14,9 @@ public enum EventManageEnum
     ACardDragging, 
     ACardOutDragging,
 
+    drawPileOpen,
+    drawPileClose,
+
 
 
     #endregion

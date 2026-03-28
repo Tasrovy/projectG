@@ -9,11 +9,21 @@ public class CardMouseHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     RectTransform rectTransform;
     private Vector3[] worldCorners = new Vector3[4];
     bool following=false;
-
+    bool inputing=true;
     private void Awake()
     {
         cardStateMachine =transform.GetComponent<cardStateMachine>();
         rectTransform = GetComponent<RectTransform>();
+
+        EventManage.AddEvent(EventManageEnum.drawPileOpen, (a) =>
+        {
+            inputing = false;
+        });
+
+        EventManage.AddEvent(EventManageEnum.drawPileClose, (a) =>
+        {
+            inputing = true;
+        });
     }
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -39,6 +49,11 @@ public class CardMouseHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     // Update is called once per frame
     void Update()
     {
+        if(!inputing)
+        {
+            return;
+        }
+
         if(cardStateMachine.CurrentState==CardState.InHand|| cardStateMachine.CurrentState == CardState.Dragging)
         {
             if (Input.GetMouseButtonDown(0))
