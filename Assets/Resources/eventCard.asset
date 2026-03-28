@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: eventCard
+  m_EditorClassIdentifier: Assembly-CSharp::CardDatabaseSO
+  allCards:
+  - id: 31001
+    nature1: 0
+    nature2: 0
+    nature3: 30
+    name: "\u4E00\u8D77\u6253\u4E52\u4E53\u7403\u5427"
+    sale: 0
+    description: "\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
+    buff: 
+    trigger: 
+  - id: 32002
+    nature1: 0
+    nature2: 0
+    nature3: 20
+    name: "\u722C\u722C\u5C71"
+    sale: 0
+    description: "\u5C5E\u6027\u4E09\u63D0\u534720\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
+    buff: 
+    trigger: 

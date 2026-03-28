@@ -34,6 +34,7 @@ public class CardManager : Singleton<CardManager>
     public List<CardData> cardDatas = new List<CardData>();
     public List<Card> cardSet = new List<Card>();
     public List<Card> cardInHand = new List<Card>();
+    public List<CardObject>  cardObjects = new List<CardObject>();
 
     [Header("动态稀有度概率 (和需为 1.0)")]
     [Range(0, 1)] public float probRarity1 = 0.7f; // 稀有度 1 的概率
@@ -41,7 +42,7 @@ public class CardManager : Singleton<CardManager>
     [Range(0, 1)] public float probRarity3 = 0.1f; // 稀有度 3 的概率
 
     [Header("Excel配置")]
-    public string cardExcelPath = "Cards.xlsx";
+    public List<string> cardExcelPaths = new List<string> { "Cards.xlsx" };
 
     private Random rng = new Random();
 
@@ -52,8 +53,24 @@ public class CardManager : Singleton<CardManager>
     {
         base.Awake();
         LoadAllCards();
+        ImplementCardSet();
+        Debug.Log($"准备抽取{cardObjects.Count}张牌");
+        DrawCard(cardObjects.Count);
+        for (int i = 0; i < cardObjects.Count; i++)
+        {
+            cardObjects[i].card = cardInHand[i];
+        }
     }
 
+    public void ImplementCardSet()
+    {
+        Debug.Log("准备实现牌堆");
+        foreach (var data in cardDatas)
+        {
+            GenCard(data);
+        }
+    }
+    
     // 获取 ID 第一位：类型
     private int GetCardType(int id)
     {
@@ -181,22 +198,28 @@ public class CardManager : Singleton<CardManager>
 
     public void LoadAllCards()
     {
+        // 2. 【修改点】在循环外清空数据，防止重复加载
         cardDatas.Clear();
 
-        // 1. 调用新的 ReadExcel，它现在直接返回填充好的 ScriptableObject
-        CardDatabaseSO databaseSO = ExcelLoader.Instance.ReadExcel(cardExcelPath);
-
-        // 2. 判空保护
-        if (databaseSO == null || databaseSO.allCards.Count == 0) 
+        // 3. 【修改点】遍历所有的 Excel 文件路径
+        foreach (string path in cardExcelPaths)
         {
-            Debug.LogError($"[CardManager] 无法加载数据或数据为空，路径: {cardExcelPath}");
-            return;
+            if (string.IsNullOrWhiteSpace(path)) continue;
+
+            CardDatabaseSO databaseSO = ExcelLoader.Instance.ReadExcel(path);
+
+            // 判空保护：注意这里使用 continue 而不是 return，如果某张表读取失败，它会继续读取下一张表
+            if (databaseSO == null || databaseSO.allCards.Count == 0) 
+            {
+                Debug.LogWarning($"[CardManager] 无法加载数据或数据为空，已跳过文件: {path}");
+                continue; 
+            }
+
+            // 将当前表格中的所有卡牌追加到全局列表中
+            cardDatas.AddRange(databaseSO.allCards);
         }
 
-        // 3. 直接将 SO 里的数据列表赋值或添加到当前管理器中
-        cardDatas.AddRange(databaseSO.allCards);
-
-        Debug.Log($"加载了 {cardDatas.Count} 张卡牌数据。");
+        Debug.Log($"所有表格加载完毕，共加载了 {cardDatas.Count} 张卡牌数据。");
     }
 
     public void GenCard(CardData data)
