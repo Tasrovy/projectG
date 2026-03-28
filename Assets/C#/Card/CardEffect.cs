@@ -8,8 +8,6 @@ public class CardEffect : Singleton<CardEffect>
 
     public Card CallerCard;
 
-    public bool needShengZhi;
-    public int shengZhiNum;
     
     public void addNature(int id, int num)
     {
@@ -80,8 +78,8 @@ public class CardEffect : Singleton<CardEffect>
 
     public void beMade(int num)
     {
-        shengZhiNum = num;
-        needShengZhi = true;
+        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
+        ShengZhiAndJianZhiHelper.Instance.CallIt();
     }
 
     public void addAddNum(int num)

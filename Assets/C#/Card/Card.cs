@@ -101,17 +101,6 @@ public class Card
 
     public void Effect()
     {
-        if (CardEffect.Instance.needShengZhi && GetCardType(id) == 1)
-        {
-            for (int i = 0; i < CardEffect.Instance.shengZhiNum; i++)
-            {
-                Card c = new Card();
-                c.InitCard(this);
-                CardManager.Instance.AddCardInHand(c);
-            }
-        }
-        CardEffect.Instance.needShengZhi = false;
-        CardEffect.Instance.shengZhiNum = 0;
         CardEffect.Instance.SetCallerCard(this);
         foreach (var effect in actualEffects)
         {

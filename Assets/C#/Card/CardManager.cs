@@ -164,6 +164,13 @@ public class CardManager : Singleton<CardManager>
         return cardSet.IndexOf(finalChoice);
     }
 
+    public void AddToSetFromHand(Card card)
+    {
+        if(!cardInHand.Contains(card)) return;
+        cardSet.Add(card);
+        cardInHand.Remove(card);
+    }
+    
     private void UpdatePityCounters(int drawnType)
     {
         int[] monitored = { 1, 2, 3 };
