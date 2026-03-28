@@ -49,6 +49,10 @@ public class CardManager : Singleton<CardManager>
         ImplementCardSet();
         Debug.Log($"准备抽取{5}张牌");
         DrawCard(5);
+    }
+
+    private void Start()
+    {
         DUEL.Instance.Begin();
     }
 

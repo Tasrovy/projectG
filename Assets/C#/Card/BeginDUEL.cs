@@ -13,12 +13,14 @@ public class DUEL : Singleton<DUEL>
     protected override void Awake()
     {
         base.Awake();
+        Debug.Log("创建决斗单例");
         OnBeginDUEL.AddListener(InitCardObject);
         OnEndDUEL.AddListener(DestroyCardObject);
     }
     
     public void Begin()
     {
+        Debug.Log("准备开始决斗");
         OnBeginDUEL?.Invoke();
     }
 
@@ -31,8 +33,11 @@ public class DUEL : Singleton<DUEL>
     {
         DestroyCardObject();
         int num = CardManager.Instance.cardInHand.Count;
+        Debug.Log("开始创建牌");
+        Debug.Log(num);
         for (int i = 0; i < num; i++)
         {
+            Debug.Log("开始创建牌");
             GameObject go = Instantiate(cardPrefab, cardParent);
             go.GetComponent<CardObject>().card =  CardManager.Instance.cardInHand[i];
             activeObjects.Add(go);
