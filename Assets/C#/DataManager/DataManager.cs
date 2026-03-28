@@ -7,6 +7,10 @@ public class DataManager : Singleton<DataManager>
     public int cardProperty3;
     public int MoneyNum;
 
+    public float currProperty1Effect;
+    public float currProperty2Effect;
+    public float currProperty3Effect;
+
     protected override void Awake()
     {
         base.Awake();
@@ -14,6 +18,9 @@ public class DataManager : Singleton<DataManager>
         cardProperty2 = 0;
         cardProperty3 = 0;
         MoneyNum = 0;
+        currProperty1Effect = 0;
+        currProperty2Effect = 0;
+        currProperty3Effect = 0;
     }
     
     public void Add(int id, int num)
@@ -37,19 +44,19 @@ public class DataManager : Singleton<DataManager>
     private void AddCardProperty1(int num)
     {
         if(cardProperty1+num<0) return;
-        cardProperty1 += num;
+        cardProperty1 += num*(1+cardProperty1);
     }
 
     private void AddCardProperty2(int num)
     {
         if (cardProperty2 + num < 0) return;
-        cardProperty2 += num;
+        cardProperty2 += num*(1+cardProperty2);
     }
 
     private void AddCardProperty3(int num)
     {
         if (cardProperty3 + num < 0) return;
-        cardProperty3 += num;
+        cardProperty3 += num*(1+cardProperty3);
     }
 
     private void AddMoneyNum(int num)
@@ -62,4 +69,19 @@ public class DataManager : Singleton<DataManager>
     public int GetCardProperty2()=>cardProperty2;
     public int GetCardProperty3()=>cardProperty3;
     public int GetMoneyNum()=>MoneyNum;
+
+    public void SetCardProperty1Effect(float num)
+    {
+        currProperty1Effect = num;
+    }
+
+    public void SetCardProperty2Effect(float num)
+    {
+        currProperty2Effect = num;
+    }
+
+    public void SetCardProperty3Effect(float num)
+    {
+        currProperty3Effect = num;
+    }
 }

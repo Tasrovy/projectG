@@ -100,3 +100,19 @@ InitTestScene*.unity*
 .plastic/
 ignore.conf
 .idea/
+
+# 忽略 WPS 和 Office 运行时产生的临时文件
+~$*
+.~$*
+
+# 忽略 WPS 自动生成的备份文件
+*.bak
+*.tmp
+
+# 忽略 WPS 的快捷方式/索引文件
+*.wps.lnk
+*.et.lnk
+*.dps.lnk
+
+# 忽略 WPS 产生的特定临时文件夹（如果有）
+.wps/
