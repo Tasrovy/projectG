@@ -240,18 +240,18 @@ public class CharacterControl : MonoBehaviour
 
     #region 音频功能
     [YarnCommand("play_bgm")]
-    public void PlayBGMCommand(string audioName)
+    public void PlayBGMCommand(string audioPath)
     {
         if (AudioManager.Instance != null)
         {
-            if (string.IsNullOrEmpty(audioName))
+            if (string.IsNullOrEmpty(audioPath))
             {
                 AudioManager.Instance.StopBGM();
             }
             else
             {
-                // 内部方法已含有直接切换（自动Stop上一个）的效果
-                AudioManager.Instance.PlayBGM(audioName);
+                // 内部方法已含有直接切换（自动Stop上一个）的效果，并且会自动加上 "bgm/" 前缀
+                AudioManager.Instance.PlayBGM(audioPath);
             }
         }
         else
@@ -261,17 +261,18 @@ public class CharacterControl : MonoBehaviour
     }
 
     [YarnCommand("play_whitenoise")]
-    public void PlayWhiteNoiseCommand(string audioName)
+    public void PlayWhiteNoiseCommand(string audioPath)
     {
         if (AudioManager.Instance != null)
         {
-            if (string.IsNullOrEmpty(audioName))
+            if (string.IsNullOrEmpty(audioPath))
             {
                 AudioManager.Instance.StopWhiteNoise();
             }
             else
             {
-                AudioManager.Instance.PlayWhiteNoise(audioName);
+                // 内部方法会自动加上 "Whitenoise/" 前缀
+                AudioManager.Instance.PlayWhiteNoise(audioPath);
             }
         }
         else
@@ -297,17 +298,28 @@ public class CharacterControl : MonoBehaviour
         // 以 sfx_ 开头则认为是音效标签
         if (tag.StartsWith("sfx_"))
         {
-            // 提取 sfx_ 之后的所有内容作为音效名称
-            string audioName = tag.Substring(4);
-            
-            if (AudioManager.Instance != null)
+            string[] parts = tag.Split('_');
+            if (parts.Length >= 3)
             {
-                // 通过 AudioManager 播放单次独占音效
-                AudioManager.Instance.PlaySound(audioName);
+                // parts[0] 是 "sfx"
+                string characterName = parts[1];
+                // 提取具体的音效名字 (考虑到音效名字本身可能带下划线，将其余部分还原)
+                string soundType = tag.Substring(4 + characterName.Length + 1);
+                
+                if (AudioManager.Instance != null)
+                {
+                    // 拼接路径： Characters/角色名/音效名
+                    string path = $"Characters/{characterName}/{soundType}";
+                    AudioManager.Instance.PlaySound(path);
+                }
+                else
+                {
+                    Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
+                }
             }
             else
             {
-                Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
+                Debug.LogWarning($"[CharacterControl] 音效标签格式错误，应为 sfx_人物_音效，当前为: {tag}");
             }
         }
     }

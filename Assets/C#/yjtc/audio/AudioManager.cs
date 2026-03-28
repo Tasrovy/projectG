@@ -198,34 +198,34 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// 播放BGM
     /// </summary>
-    public void PlayBGM(string name, bool randomPitch = false)
+    public void PlayBGM(string path, bool randomPitch = false)
     {
-        StartCoroutine(LoadAndPlayBGM(name, randomPitch));
+        StartCoroutine(LoadAndPlayBGM(path, randomPitch));
     }
 
     /// <summary>
     /// 播放单次音效
     /// </summary>
-    public void PlaySingle(string name, bool randomPitch = false)
+    public void PlaySingle(string path, bool randomPitch = false)
     {
-        StartCoroutine(LoadAndPlaySingle(name, randomPitch));
+        StartCoroutine(LoadAndPlaySingle(path, randomPitch));
     }
-    public void PlaySingleLow(string name, bool randomPitch = false)
+    public void PlaySingleLow(string path, bool randomPitch = false)
     {
-        StartCoroutine(LoadAndPlaySingle(name, true,true));
+        StartCoroutine(LoadAndPlaySingle(path, true,true));
     }
 
     /// <summary>
     /// 播放音效（使用对象池，支持重叠）
     /// </summary>
-    public void PlaySound(string name, bool randomPitch = true)
+    public void PlaySound(string path, bool randomPitch = true)
     {
-        StartCoroutine(LoadAndPlaySound(name, true));
+        StartCoroutine(LoadAndPlaySound(path, true));
     }
 
-    public void PlaySoundLow(string name, bool randomPitch = true)
+    public void PlaySoundLow(string path, bool randomPitch = true)
     {
-        StartCoroutine(LoadAndPlaySound(name, randomPitch,true));
+        StartCoroutine(LoadAndPlaySound(path, randomPitch,true));
     }
 
     /// <summary>
@@ -249,9 +249,9 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// 播放白噪音
     /// </summary>
-    public void PlayWhiteNoise(string name, bool randomPitch = false)
+    public void PlayWhiteNoise(string path, bool randomPitch = false)
     {
-        StartCoroutine(LoadAndPlayWhiteNoise(name, randomPitch));
+        StartCoroutine(LoadAndPlayWhiteNoise(path, randomPitch));
     }
 
     /// <summary>
@@ -265,10 +265,10 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region 协程方法
-    private IEnumerator LoadAndPlayBGM(string fileName, bool randomPitch)
+    private IEnumerator LoadAndPlayBGM(string filePath, bool randomPitch)
     {
-        fileName = SplitName(fileName);
-        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/bgm/{filePath}");
         yield return request;
 
         AudioClip clip = request.asset as AudioClip;
@@ -284,14 +284,14 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"BGM加载失败: Sound/{fileName}");
+            Debug.LogError($"BGM加载失败: Sound/bgm/{filePath}");
         }
     }
 
-    private IEnumerator LoadAndPlayWhiteNoise(string fileName, bool randomPitch)
+    private IEnumerator LoadAndPlayWhiteNoise(string filePath, bool randomPitch)
     {
-        fileName = SplitName(fileName);
-        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/Whitenoise/{filePath}");
         yield return request;
 
         AudioClip clip = request.asset as AudioClip;
@@ -307,14 +307,14 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"白噪音加载失败: Sound/{fileName}");
+            Debug.LogError($"白噪音加载失败: Sound/Whitenoise/{filePath}");
         }
     }
 
-    private IEnumerator LoadAndPlaySingle(string fileName, bool randomPitch,bool lowRandom=false)
+    private IEnumerator LoadAndPlaySingle(string filePath, bool randomPitch,bool lowRandom=false)
     {
-        fileName = SplitName(fileName);
-        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/{filePath}");
         yield return request;
 
         AudioClip clip = request.asset as AudioClip;
@@ -332,14 +332,14 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"音效加载失败: Sound/{fileName}");
+            Debug.LogError($"音效加载失败: Sound/{filePath}");
         }
     }
 
-    private IEnumerator LoadAndPlaySound(string fileName, bool randomPitch,bool lowRandom=false)
+    private IEnumerator LoadAndPlaySound(string filePath, bool randomPitch,bool lowRandom=false)
     {
-        fileName = SplitName(fileName);
-        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/{filePath}");
         yield return request;
 
         AudioClip clip = request.asset as AudioClip;
@@ -363,7 +363,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"音效加载失败: Sound/{fileName}");
+            Debug.LogError($"音效加载失败: Sound/{filePath}");
         }
     }
 
