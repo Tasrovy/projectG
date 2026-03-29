@@ -17,7 +17,7 @@ public class InUsingState : stateBase,ICardState
         {
 
         }
-        
+
         print($"����{this.name}��ʹ���ˣ�����ʹ��״̬");
         cardStateMachine.ChangeState(CardState.InDeck);
     }

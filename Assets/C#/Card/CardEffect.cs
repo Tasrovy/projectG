@@ -20,6 +20,9 @@ public class CardEffect : Singleton<CardEffect>
     // 防止监听器重复添加的跟踪集合
     private static HashSet<string> registeredChangePropertyListeners = new HashSet<string>();
 
+    // 记录条件失败的卡牌ID（当beMade/beBroken条件不满足时）
+    private static HashSet<int> conditionFailedCardIds = new HashSet<int>();
+
 
     protected override void Awake()
     {
@@ -137,9 +140,14 @@ public class CardEffect : Singleton<CardEffect>
             // beMade 强制要求 GiftCardNum > 0
             if (giftCardNum <= 0)
             {
-                Debug.Log($"{currentChainCard.name} 制作失败：礼品卡不足 (当前: {giftCardNum})");
-                // 跳过当前效果，继续执行下一个
-                ExecuteNextEffect();
+                Debug.Log($"{currentChainCard.name} 制作失败：礼品卡不足 (当前: {giftCardNum})，停止执行当前效果链");
+                // 记录条件失败的卡牌ID
+                if (currentChainCard != null)
+                {
+                    MarkConditionFailed(currentChainCard.id);
+                }
+                // 条件不满足，停止执行当前效果链，开始执行下一个效果链
+                StartExecutingNextChain();
                 return;
             }
 
@@ -158,9 +166,14 @@ public class CardEffect : Singleton<CardEffect>
             // beBroken 要求其 大于 参数
             if (giftCardNum <= threshold)
             {
-                Debug.Log($"{currentChainCard.name} 消耗失败：当前礼品卡数量 {giftCardNum} 不足设定值 {threshold}");
-                // 跳过当前效果，继续执行下一个
-                ExecuteNextEffect();
+                Debug.Log($"{currentChainCard.name} 消耗失败：当前礼品卡数量 {giftCardNum} 不足设定值 {threshold}，停止执行当前效果链");
+                // 记录条件失败的卡牌ID
+                if (currentChainCard != null)
+                {
+                    MarkConditionFailed(currentChainCard.id);
+                }
+                // 条件不满足，停止执行当前效果链，开始执行下一个效果链
+                StartExecutingNextChain();
                 return;
             }
 
@@ -457,6 +470,15 @@ public class CardEffect : Singleton<CardEffect>
     {
         Debug.Log($"[CardEffect] addCardNatureToDataManager: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 将卡牌属性添加到DataManager");
         if (CallerCard == null) return;
+
+        // 检查卡牌是否条件失败
+        if (CallerCard != null && IsConditionFailed(CallerCard.id))
+        {
+            Debug.Log($"[CardEffect] addCardNatureToDataManager: 卡牌 {CallerCard.name} (ID:{CallerCard.id}) 条件失败，不执行添加属性操作");
+            // 不清除标记，让OnTrigger()处理
+            return;
+        }
+
         Debug.Log($"[CardEffect] addCardNatureToDataManager: 属性值: n1={CallerCard.nature1}, n2={CallerCard.nature2}, n3={CallerCard.nature3}");
         DataManager.Instance.Add(1, CallerCard.nature1);
         DataManager.Instance.Add(2, CallerCard.nature2);
@@ -552,5 +574,37 @@ public class CardEffect : Singleton<CardEffect>
     {
         Debug.Log($"[CardEffect] SetCallerCard: 设置当前调用者卡牌为 {card?.name ?? "null"} (ID:{card?.id ?? -1})，之前调用者卡牌为 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1})");
         CallerCard = card;
+    }
+
+    /// <summary>
+    /// 检查卡牌是否条件失败（如beMade/beBroken条件不满足）
+    /// </summary>
+    public bool IsConditionFailed(int cardId)
+    {
+        bool failed = conditionFailedCardIds.Contains(cardId);
+        Debug.Log($"[CardEffect] IsConditionFailed: 检查卡牌ID {cardId} 是否条件失败: {failed}");
+        return failed;
+    }
+
+    /// <summary>
+    /// 标记卡牌条件失败
+    /// </summary>
+    public void MarkConditionFailed(int cardId)
+    {
+        if (conditionFailedCardIds.Add(cardId))
+        {
+            Debug.Log($"[CardEffect] MarkConditionFailed: 标记卡牌ID {cardId} 条件失败");
+        }
+    }
+
+    /// <summary>
+    /// 清除卡牌的条件失败标记
+    /// </summary>
+    public void ClearConditionFailed(int cardId)
+    {
+        if (conditionFailedCardIds.Remove(cardId))
+        {
+            Debug.Log($"[CardEffect] ClearConditionFailed: 清除卡牌ID {cardId} 的条件失败标记");
+        }
     }
 }

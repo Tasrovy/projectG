@@ -344,6 +344,16 @@ public class Card
             CardEffect.Instance.Execute("addCardNatureToDataManager", new object[0]);
         }
 
+        // 检查卡牌是否条件失败（如beMade/beBroken条件不满足）
+        // 注意：条件失败的检查在addCardNatureToDataManager中已经处理，但添加监听器需要单独检查
+        if (CardEffect.Instance != null && CardEffect.Instance.IsConditionFailed(this.id))
+        {
+            Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 条件失败，不添加OnNextTurn监听器");
+            // 清除条件失败标记，避免影响后续使用
+            CardEffect.Instance.ClearConditionFailed(this.id);
+            return;
+        }
+
         DayManager.Instance.GetNextDayEvent().AddListener(OnNextTurn);
     }
 
