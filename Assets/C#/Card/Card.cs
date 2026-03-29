@@ -29,6 +29,7 @@ public class CardData
     public string nextTurn;
 }
 
+[System.Serializable]
 public class Card
 {
     public int id;

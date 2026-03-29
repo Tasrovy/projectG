@@ -37,7 +37,7 @@ MonoBehaviour:
     added: 
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
     buff: 
-    trigger: addNatureAtSum(20,3)
+    trigger: addNatureAtSum(30,3)
     nextTurn: changeProperty(1.5)
   - id: 3203
     nature1: 0
