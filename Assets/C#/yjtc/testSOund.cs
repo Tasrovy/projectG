@@ -24,6 +24,8 @@ public class testSOund : MonoBehaviour
             //GetCardDataById
             //GetFieldValue
             CardManager.Instance.AddCard(cardId,1);
+
+            
         }
 
 #endif

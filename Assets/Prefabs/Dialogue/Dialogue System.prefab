@@ -961,7 +961,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2487563843483213116}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8060940546425592418}
+        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
+        m_MethodName: HandleDialogueCompleted
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7110456264760925912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,7 +1039,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Skip
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1158,8 +1170,8 @@ MonoBehaviour:
   - {fileID: 3859336324316773513}
   - {fileID: 1639362683754660290}
   verboseLogging: 0
-  autoStart: 0
-  startNode: TryYarnScript
+  autoStart: 1
+  startNode: main_start
   runSelectedOptionAsLine: 0
   allowOptionFallthrough: 1
   onNodeStart:
@@ -1266,6 +1278,23 @@ MonoBehaviour:
       sprite: {fileID: 0}
     - emotion: angry
       sprite: {fileID: 0}
+  - characterName: Traveler
+    spriteRenderer: {fileID: 0}
+    normalColor: {r: 1, g: 1, b: 1, a: 0}
+    dimColor: {r: 1, g: 1, b: 1, a: 0.6039216}
+    emotionSprites:
+    - emotion: peace_1
+      sprite: {fileID: 0}
+    - emotion: peace_2
+      sprite: {fileID: 0}
+    - emotion: saying
+      sprite: {fileID: 0}
+    - emotion: happy
+      sprite: {fileID: 0}
+    - emotion: sad
+      sprite: {fileID: 0}
+    - emotion: angry
+      sprite: {fileID: 0}
   playerVariableName: $MY_NAME
   defaultName: Player
 --- !u!1 &8020628925107869965
@@ -1306,7 +1335,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 80}
+  m_AnchoredPosition: {x: 0, y: 600}
   m_SizeDelta: {x: -400.00003, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &8020628925107869968
@@ -1327,8 +1356,8 @@ MonoBehaviour:
     m_Top: 24
     m_Bottom: 32
   m_ChildAlignment: 4
-  m_Spacing: 10
-  m_ChildForceExpandWidth: 1
+  m_Spacing: 15
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
@@ -1417,10 +1446,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8020628925107869966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 760.00006, y: -24}
+  m_SizeDelta: {x: 1440.0001, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8020628925184811238
 CanvasRenderer:
@@ -1608,7 +1637,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 14}
+  m_margin: {x: -655.9076, y: 0, z: -659.9011, w: -0.33672312}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

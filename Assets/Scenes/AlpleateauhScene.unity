@@ -815,42 +815,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].dimColor.a
-      value: 0.6039216
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].dimColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].dimColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].dimColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].characterName
-      value: Traveler
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].normalColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].normalColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].normalColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: characters.Array.data[0].spriteRenderer
       value: 
       objectReference: {fileID: 982326750}
@@ -862,42 +826,6 @@ PrefabInstance:
       propertyPath: characters.Array.data[2].spriteRenderer
       value: 
       objectReference: {fileID: 2070615490}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[1].emotionSprites.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].emotionSprites.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[1].emotionSprites.Array.data[6].emotion
-      value: angry
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].emotionSprites.Array.data[0].emotion
-      value: peace_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].emotionSprites.Array.data[1].emotion
-      value: peace_2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].emotionSprites.Array.data[2].emotion
-      value: saying
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].emotionSprites.Array.data[3].emotion
-      value: happy
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].emotionSprites.Array.data[4].emotion
-      value: sad
-      objectReference: {fileID: 0}
-    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: characters.Array.data[2].emotionSprites.Array.data[5].emotion
-      value: angry
-      objectReference: {fileID: 0}
     - target: {fileID: 2958262985454349539, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -950,38 +878,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3134684603764530311, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_text
-      value: Skip
-      objectReference: {fileID: 0}
-    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1412172849}
-    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: HandleDialogueCompleted
-      objectReference: {fileID: 0}
-    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DialogueHandler, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7262066351540048079, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_Name
       value: Dialogue System
@@ -1030,46 +926,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8020628925107869966, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925107869968, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_Spacing
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925107869968, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_ChildForceExpandWidth
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1440.0001
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 760.00006
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -24
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925184811236, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_IgnoreLayout
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8020628925673895293, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1093,26 +949,6 @@ PrefabInstance:
     - target: {fileID: 8020628925673895293, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925673895294, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_margin.w
-      value: -0.33672312
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925673895294, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_margin.x
-      value: -655.9076
-      objectReference: {fileID: 0}
-    - target: {fileID: 8020628925673895294, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: m_margin.z
-      value: -659.9011
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309902628685535410, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: autoStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309902628685535410, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
-      propertyPath: startNode
-      value: room1_1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

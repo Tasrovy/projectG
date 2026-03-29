@@ -41,15 +41,7 @@ title: room1_1
 <<set_character_sprite Player peace_1>>
 {$MY_NAME}:又是梦啊。 #line:0ea787b 
 ->看看几点了
-    <<jump room1_2>>
-===
 
-
-title: room1_2
----
-<<play_bgm lake_sadnor1>>
-<<play_whitenoise bg1_bgWhiteNoise1>>
-<<set_character_sprite Player peace_2>>
 {$MY_NAME}已经下午四点半了吗......我睡了这么久？ #line:00812c6 
 （明明刚才还是夜里两点多......） #line:0d21b28 
 （时间的流逝好像变得不真实。） #line:0e3d4da 
@@ -117,7 +109,7 @@ C : 你怎么喊出来了！呜呜呜，就这么不相信可怜的C吗……
 ->寻找卡牌说明书 
     <<jump card1_1>>
 ->还是把盖子盖上，放回抽屉里吧
-？？？: 喂喂，这位女士，你可别把我关回去呀！
+C : 喂喂，这位女士，你可别把我关回去呀！
 <<jump room1_4>>
 ===
 
@@ -128,7 +120,7 @@ title: room1_4
 ->寻找卡牌说明书 
      <<jump card1_1>>
 ->还是把盖子盖上，放回抽屉里吧
-？？？：哎呀，你怎么还想选这一项呐？
+？？？:哎呀，你怎么还想选这一项呐？
 <<jump room1_4>>
 
 ===
@@ -136,9 +128,7 @@ title: room1_4
 title: card1_1
 ---
 
-{$MY_NAME}:111
-
-
+？？？:这样选就对啦！
 
 
 
