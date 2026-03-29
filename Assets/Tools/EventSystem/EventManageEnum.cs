@@ -17,7 +17,10 @@ public enum EventManageEnum
     drawPileOpen,
     drawPileClose,
 
+    selectCardBegin,
+    selectCardEnd,
 
+    getSelectedCard,
 
     #endregion
 
