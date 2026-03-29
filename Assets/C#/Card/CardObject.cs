@@ -10,7 +10,7 @@ public class CardObject : MonoBehaviour
 
     public void Effect()
     {
-        card.Effect();
+        card.OnTrigger();
     }
     public int GetID()=>card.id;
     public int GetNature1()=>card.nature1;

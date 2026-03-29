@@ -8,23 +8,6 @@ using ExcelDataReader;
 using System.Linq; // 引入 Linq 方便查询
 using Random = System.Random;
 
-[System.Serializable]
-public class CardData
-{
-    public int id;
-    public int nature1;
-    public int nature2;
-    public int nature3;
-    public string name;
-    public int sale;
-    public string made;
-    public string broken;
-    public string added;
-    public string description;
-    public string buff;
-    public string trigger;
-}
-
 // --- 卡牌管理器 ---
 public class CardManager : Singleton<CardManager>
 {
@@ -66,6 +49,8 @@ public class CardManager : Singleton<CardManager>
         {
             GenCard(data);
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     // 获取 ID 第一位：类型
@@ -114,6 +99,8 @@ public class CardManager : Singleton<CardManager>
 
             Debug.Log($"[抽牌] 抽到:{drawnCard.name} | ID:{drawnCard.id} | 类型:{GetCardType(drawnCard.id)} | 稀有度:{GetCardRarity(drawnCard.id)}");
         }
+
+        NotifyDeckOrHandChanged();
     }
 
     /// <summary>
@@ -164,6 +151,14 @@ public class CardManager : Singleton<CardManager>
         return cardSet.IndexOf(finalChoice);
     }
 
+    public void BreakCard(Card card)
+    {
+        //card.
+        if(!cardInHand.Contains(card)) return;
+        cardInHand.Remove(card);
+        NotifyDeckOrHandChanged();
+    }
+    
     private void UpdatePityCounters(int drawnType)
     {
         int[] monitored = { 1, 2, 3 };
@@ -191,6 +186,8 @@ public class CardManager : Singleton<CardManager>
             cardSet[k] = cardSet[n];
             cardSet[n] = value;
         }
+
+        NotifyDeckOrHandChanged();
     }
 
     public void LoadAllCards()
@@ -265,6 +262,8 @@ public class CardManager : Singleton<CardManager>
                 Debug.Log($"[AddCard] 牌堆数量不足，已印制新卡: {targetData.name} (ID:{cardID}) 并加入手牌。");
             }
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     /// <summary>
@@ -326,6 +325,8 @@ public class CardManager : Singleton<CardManager>
                 Debug.Log($"[AddRandomCard] 牌堆条件卡不足，随机生成新卡: {selectedData.name} (ID:{selectedData.id}) 加入手牌。");
             }
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     /// <summary>
@@ -399,10 +400,64 @@ public class CardManager : Singleton<CardManager>
                 Debug.Log("[ChangeHandGift] 牌堆中无 ID 为 1 的牌，已直接生成一张加入手牌。");
             }
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     public void AddCardInHand(Card card)
     {
         cardInHand.Add(card);
+        NotifyDeckOrHandChanged();
+    }
+
+    public int GetGiftCardNum()
+    {
+        int num = 0;
+        foreach (Card card in cardInHand)
+        {
+            if (GetCardType(card.id) == 1)
+                num++;
+        }
+        return num;
+    }
+
+    /// <summary>
+    /// 获取牌堆中指定卡牌ID的数量
+    /// </summary>
+    /// <param name="cardId">卡牌ID</param>
+    /// <returns>牌堆中该卡牌的数量</returns>
+    public int GetCardCountInDeck(int cardId)
+    {
+        int count = 0;
+        foreach (Card card in cardSet)
+        {
+            if (card.id == cardId)
+                count++;
+        }
+        return count;
+    }
+
+    /// <summary>
+    /// 获取牌堆中指定卡牌ID的所有卡牌列表
+    /// </summary>
+    /// <param name="cardId">卡牌ID</param>
+    /// <returns>牌堆中该卡牌的所有实例列表</returns>
+    public List<Card> GetCardsInDeckById(int cardId)
+    {
+        List<Card> result = new List<Card>();
+        foreach (Card card in cardSet)
+        {
+            if (card.id == cardId)
+                result.Add(card);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 通知牌堆或手牌发生变化
+    /// </summary>
+    private void NotifyDeckOrHandChanged()
+    {
+        EventManage.SendEvent(EventManageEnum.deckOrHandChanged, null);
     }
 }

@@ -25,6 +25,7 @@ MonoBehaviour:
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9"
     buff: 
     trigger: addNatureAtSum(30,3)
+    nextTurn: 
   - id: 32002
     nature1: 0
     nature2: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
     buff: 
     trigger: addNatureAtSum(20,3)
+    nextTurn: changeProperty(1.5)
   - id: 3203
     nature1: 0
     nature2: 0
@@ -49,6 +51,7 @@ MonoBehaviour:
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
     buff: 
     trigger: 
+    nextTurn: addRandomCard(2,1,1)
   - id: 33001
     nature1: 0
     nature2: 0
@@ -61,3 +64,4 @@ MonoBehaviour:
     description: "\u89D2\u8272\u83B7\u5F97\u5C5E\u6027\u4E09\uFF08\u89D2\u8272\u5C5E\u6027\u4E00/2\uFF09\u70B9"
     buff: 
     trigger: addNatureByOther(3,1)
+    nextTurn: 
