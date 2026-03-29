@@ -162,6 +162,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6242146638206868366}
   - {fileID: 8662608299763772623}
   - {fileID: 7697775748555915115}
   - {fileID: 458157642845621884}
@@ -169,7 +170,6 @@ RectTransform:
   - {fileID: 5684728376033352006}
   - {fileID: 7297950286971730352}
   - {fileID: 6059826316569380289}
-  - {fileID: 6242146638206868366}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -189,6 +189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff6f84a08805e104eb9a3e3a92987d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardChance_1: 60
+  CardChance_2: 30
+  CardChance_3: 10
 --- !u!1 &7314362515151173346
 GameObject:
   m_ObjectHideFlags: 0
