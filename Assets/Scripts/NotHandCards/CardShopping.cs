@@ -9,6 +9,14 @@ public class CardShopping : MonoBehaviour
     private GameObject blackOverlay;
     private Transform[] sellCards = new Transform[6];
 
+    [Tooltip("概率值，从0到100")]
+    [Range(0, 100)][SerializeField][Header("不稀有")]
+    private int CardChance_1 = 60;
+    [Range(0, 100)][SerializeField][Header("一般")]
+    private int CardChance_2 = 30;
+    [Range(0, 100)][SerializeField][Header("稀有")]
+    private int CardChance_3 = 10;
+
     private void Awake()
     {
         // 1. 动态创建并设置最底层的半透明黑幕
@@ -124,10 +132,10 @@ public class CardShopping : MonoBehaviour
         {
             int rarity = (card.id / 1000) % 10;
             int weight = 10; // 默认权重
-            if (rarity == 1) weight = 60;
-            else if (rarity == 2) weight = 30;
-            else if (rarity == 3) weight = 10;
-            
+            if (rarity == 1) weight = CardChance_1;
+            else if (rarity == 2) weight = CardChance_2;
+            else if (rarity == 3) weight = CardChance_3;
+
             weights.Add(weight);
             totalWeight += weight;
         }
