@@ -42,14 +42,20 @@ public class DialogueHandler : MonoBehaviour
         }
 
         bool isDialogueRunning = dialogueRunner.IsDialogueRunning;
+        
+        // 状态转为结束：当YarnSpinner内部真正结束时执行离场
         if (wasDialogueRunning && !isDialogueRunning)
         {
             HideSkipButton();
-            // 在对话正常跑完结束后触发离场转场
-            StartCoroutine(TransitionManager.Instance.PlayTransition());
+            StartCoroutine(TransitionManager.Instance.PlayTransition());        
+            wasDialogueRunning = false; 
         }
-
-        wasDialogueRunning = isDialogueRunning;
+        // 状态转为运行中：YarnSpinner内部真正启动时（可能要花几帧启动），才拉起UI
+        else if (!wasDialogueRunning && isDialogueRunning)
+        {
+            wasDialogueRunning = true;
+            ShowSkipButton();
+        }
     }
 
     public void StartDialogue(string yarnScript)
@@ -62,13 +68,12 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator StartDialogueRoutine(string yarnScript)
     {
-        // 保证顺序：1. 先执行完整转场（黑落 -> 停留 -> 变亮）
+        // 保证顺序：先执行转场黑屏
         yield return TransitionManager.Instance.PlayTransition();
         
-        // 当屏幕完全亮起转场结束后，2. 才会启动对话引擎跳出文本！
+        // 向YarnSpinner发送开始指令。不再人为提前去抢状态或显示按钮
+        // 接下来由Update自动完美捕捉起跑的瞬间！
         dialogueRunner.StartDialogue(yarnScript);
-        ShowSkipButton();
-        wasDialogueRunning = true;
     }
 
     public void SetDialogueProperties(int p1, int p2, int p3)

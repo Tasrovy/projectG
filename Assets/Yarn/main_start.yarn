@@ -41,6 +41,7 @@ title: room1_1
 <<set_character_sprite Player peace_1>>
 {$MY_NAME}:又是梦啊。 #line:0ea787b 
 {$MY_NAME}:看看几点了
+-> 看看时间
     <<jump room1_2>>
 ===
 
@@ -80,7 +81,9 @@ title: room1_2
 {$MY_NAME}呜呜呜..... #line:0ea852a 
 <<set_character_sprite Player sad>>
 {$MY_NAME}如果你还在我身边，那该多好...... #line:0a97d71 
-<<jump room1_3>>
+-> 让我看看！
+    是什么好康的呀？
+    <<jump room1_3>>
 ===
 
 title: room1_3

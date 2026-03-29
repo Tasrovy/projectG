@@ -127,7 +127,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8635081094713202853, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
   m_PrefabInstance: {fileID: 1412172844}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1254571546}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
@@ -564,6 +564,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5006862756405279438, guid: 20a91b63a7bc379468993a5ae96e7ee6, type: 3}
+      propertyPath: defaultName
+      value: Odara
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006862756405279438, guid: 20a91b63a7bc379468993a5ae96e7ee6, type: 3}
       propertyPath: variableStorage
       value: 
       objectReference: {fileID: 309729931}
@@ -588,6 +592,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20a91b63a7bc379468993a5ae96e7ee6, type: 3}
+--- !u!1 &1254571546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7262066351540048079, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+  m_PrefabInstance: {fileID: 1412172844}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1333266007
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +835,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1254571546}
+    - target: {fileID: 5601664230953040250, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018543767898244680, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1850
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018543767898244680, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -660
+      objectReference: {fileID: 0}
     - target: {fileID: 7262066351540048079, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_Name
       value: Dialogue System
@@ -874,6 +899,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -79.99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8020628925184811235, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8020628925673895293, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -898,6 +931,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8309902628685535410, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: startNode
+      value: room1_1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -911,7 +948,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8060940546425592418, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
   m_PrefabInstance: {fileID: 1412172844}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1254571546}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 446e1f498946c5a4b884de2a49309e8e, type: 3}
