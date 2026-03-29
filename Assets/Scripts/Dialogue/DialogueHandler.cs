@@ -13,6 +13,8 @@ public class DialogueHandler : MonoBehaviour
 
     private CharacterHighlightManager characterHighlightManager;
     private bool wasDialogueRunning;
+    private bool willSwitchScene;
+    private SceneType nextSceneType;
 
     void Awake()
     {
@@ -47,8 +49,8 @@ public class DialogueHandler : MonoBehaviour
         if (wasDialogueRunning && !isDialogueRunning)
         {
             HideSkipButton();
-            StartCoroutine(TransitionManager.Instance.PlayTransition());        
-            wasDialogueRunning = false; 
+            wasDialogueRunning = false;
+            StartCoroutine(EndDialogueRoutine());
         }
         // 状态转为运行中：YarnSpinner内部真正启动时（可能要花几帧启动），才拉起UI
         else if (!wasDialogueRunning && isDialogueRunning)
@@ -74,6 +76,54 @@ public class DialogueHandler : MonoBehaviour
         // 向YarnSpinner发送开始指令。不再人为提前去抢状态或显示按钮
         // 接下来由Update自动完美捕捉起跑的瞬间！
         dialogueRunner.StartDialogue(yarnScript);
+    }
+
+    /// <summary>
+    /// 提供给UnityEvent调用的函数，传入SceneType（由枚举名转换）
+    /// 并保存起来用于对话结束后的场景切换
+    /// </summary>
+    public void SetNextSceneType(string sceneTypeName)
+    {
+        if (System.Enum.TryParse(sceneTypeName, true, out SceneType parsedScene))
+        {
+            nextSceneType = parsedScene;
+            willSwitchScene = true;
+        }
+        else
+        {
+            Debug.LogWarning($"[DialogueHandler] Cannot parse SceneType from string: {sceneTypeName}");
+        }
+    }
+
+    /// <summary>
+    /// 提供给代码或支持Enum的UnityEvent使用
+    /// </summary>
+    public void SetNextSceneByEnum(SceneType sceneType)
+    {
+        nextSceneType = sceneType;
+        willSwitchScene = true;
+    }
+
+    private IEnumerator EndDialogueRoutine()
+    {
+        // 先播放离场转场动画
+        yield return TransitionManager.Instance.PlayTransition();
+
+        // 黑屏/转场彻底结束后，检查是否有存储的待切场景
+        if (willSwitchScene)
+        {
+            willSwitchScene = false;   // 状态复位
+            
+            // 调用存在的 UISceneManager 切场景接口
+            if (UISceneManager.Instance != null)
+            {
+                UISceneManager.Instance.SwitchToScene(nextSceneType);
+            }
+            else
+            {
+                Debug.LogError("UISceneManager.Instance is null, cannot switch scene.");
+            }
+        }
     }
 
     public void SetDialogueProperties(int p1, int p2, int p3)
@@ -135,7 +185,7 @@ public class DialogueHandler : MonoBehaviour
         wasDialogueRunning = false;
 
         // 如果玩家因为跳过而人工强停对话结束，那么同样触发离场的转场
-        StartCoroutine(TransitionManager.Instance.PlayTransition());
+        StartCoroutine(EndDialogueRoutine());
     }
 
     private void ShowSkipButton()

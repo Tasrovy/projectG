@@ -274,6 +274,12 @@ public class AudioManager : MonoBehaviour
         AudioClip clip = request.asset as AudioClip;
         if (clip != null)
         {
+            if (bgmSource.clip == clip && bgmSource.isPlaying)
+            {
+                // 如果当前正在播放的BGM就是目标BGM，则不做任何操作
+                yield break;
+            }
+
             if (randomPitch)
                 bgmSource.pitch = GetRandomPitch();
             else
