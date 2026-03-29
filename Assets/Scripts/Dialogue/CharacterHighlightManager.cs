@@ -126,14 +126,22 @@ public class CharacterHighlightManager : DialoguePresenterBase
         if (playerObj != null)
         {
             var sr = playerObj.GetComponent<SpriteRenderer>();
-            if (sr != null) sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
+            if (sr != null) 
+            {
+                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
+                sr.sprite = null; // 清空立绘
+            }
             playerObj.SetActive(false);
         }
 
         if (characterObj != null)
         {
             var sr = characterObj.GetComponent<SpriteRenderer>();
-            if (sr != null) sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
+            if (sr != null) 
+            {
+                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
+                sr.sprite = null; // 清空立绘
+            }
             characterObj.SetActive(false);
         }
 

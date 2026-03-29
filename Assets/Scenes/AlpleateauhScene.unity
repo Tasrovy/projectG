@@ -1571,6 +1571,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardShop
       objectReference: {fileID: 0}
+    - target: {fileID: 5451335089492388709, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

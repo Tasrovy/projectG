@@ -188,6 +188,30 @@ public class CharacterControl : MonoBehaviour
             }
         }
     }
+
+    [YarnCommand("clear_character_person")]
+    public void ClearCharacterPerson(string objectName)
+    {
+        if (objectName != "Player" && objectName != "Character")
+        {
+            Debug.LogWarning($"[CharacterControl] 参数 objectName 必须是 'Player' 或 'Character'，当前为: {objectName}");
+            return;
+        }
+
+        GameObject targetObj = GameObject.Find(objectName);
+        if (targetObj != null)
+        {
+            SpriteRenderer sr = targetObj.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sprite = null;
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[CharacterControl] 清除立绘失败：场景中不存在名为 '{objectName}' 的物体！");
+        }
+    }
     #endregion
 
     #region 淡入淡出
@@ -354,6 +378,19 @@ public class CharacterControl : MonoBehaviour
                 // FormatAudioPath 把 level1_theme 转换成 level1/theme
                 AudioManager.Instance.PlayBGM(FormatAudioPath(audioParam));
             }
+        }
+        else
+        {
+            Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
+        }
+    }
+
+    [YarnCommand("stop_bgm")]
+    public void StopBGMCommand()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopBGM();
         }
         else
         {
