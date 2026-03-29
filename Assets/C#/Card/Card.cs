@@ -10,7 +10,8 @@ public class EffectCommand
     public object[] parameters;
 }
 
-public class Card
+[System.Serializable]
+public class CardData
 {
     public int id;
     public int nature1;
@@ -24,7 +25,30 @@ public class Card
     public string description;
     public string buff;
     public string trigger;
-    public List<EffectCommand> actualEffects = new List<EffectCommand>();
+    public string nextTurn;
+}
+
+public class Card
+{
+    public int id;
+    public int nature1;
+    public int nature2;
+    public int nature3;
+    public string name;
+    public int sale;
+    public string made;
+    public string broken;
+    public string added;
+    public string buff;
+    public string trigger;
+    public string description;
+    public string nextTurn;
+    private List<EffectCommand> madeEffects = new List<EffectCommand>();
+    private List<EffectCommand> brokenEffects = new List<EffectCommand>();
+    private List<EffectCommand> addedEffects = new List<EffectCommand>();
+    private List<EffectCommand> buffEffects = new List<EffectCommand>();
+    private List<EffectCommand> triggerEffects = new List<EffectCommand>();
+    private List<EffectCommand> nextTurnEffects = new List<EffectCommand>();
 
     public void InitCard(CardData cardData)
     {
@@ -34,11 +58,14 @@ public class Card
         nature3 = cardData.nature3;
         name = cardData.name;
         description = cardData.description;
-        buff = cardData.buff;
         sale = cardData.sale;
+        made = cardData.made;
+        broken = cardData.broken;
+        added = cardData.added;
+        buff = cardData.buff;
         trigger = cardData.trigger;
-        actualEffects.Clear();
-        ParseEffectString();
+        nextTurn = cardData.nextTurn;
+        ParseAllEffects();
     }
     
     public void InitCard(Card cardData)
@@ -49,64 +76,79 @@ public class Card
         nature3 = cardData.nature3;
         name = cardData.name;
         description = cardData.description;
+        sale = cardData.sale;        
+        made = cardData.made;
+        broken = cardData.broken;
+        added = cardData.added;
         buff = cardData.buff;
-        sale = cardData.sale;
         trigger = cardData.trigger;
-        actualEffects.Clear();
-        ParseEffectString();
+        nextTurn = cardData.nextTurn;
+        ParseAllEffects();
     }
     
-    private void ParseEffectString()
+    // 解析所有效果字段
+    private void ParseAllEffects()
     {
-        actualEffects.Clear();
-        if (string.IsNullOrEmpty(trigger)) return;
+        ParseStringToCommands(made, madeEffects);
+        ParseStringToCommands(broken, brokenEffects);
+        ParseStringToCommands(added, addedEffects);
+        ParseStringToCommands(buff, buffEffects);
+        ParseStringToCommands(trigger, triggerEffects);
+        ParseStringToCommands(nextTurn,nextTurnEffects);
+    }
 
-        // 1. 支持多条指令，用分号 ';' 分隔。例如 "Add(1,2); Heal(10)"
-        string[] commands = trigger.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+    // 通用解析核心逻辑
+    private void ParseStringToCommands(string effectSource, List<EffectCommand> targetList)
+    {
+        targetList.Clear();
+        if (string.IsNullOrEmpty(effectSource)) return;
+
+        string[] commands = effectSource.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string cmd in commands)
         {
             string trimmedCmd = cmd.Trim();
-            
-            // 2. 找到左括号和右括号的位置
             int leftBracket = trimmedCmd.IndexOf('(');
             int rightBracket = trimmedCmd.LastIndexOf(')');
 
             if (leftBracket > 0 && rightBracket > leftBracket)
             {
-                // 提取方法名: "Add"
                 string methodName = trimmedCmd.Substring(0, leftBracket).Trim();
-                
-                // 提取参数部分: "1, 2"
                 string argsContent = trimmedCmd.Substring(leftBracket + 1, rightBracket - leftBracket - 1);
                 
-                // 分割参数
                 string[] rawArgs = string.IsNullOrWhiteSpace(argsContent) 
                     ? new string[0] 
                     : argsContent.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                // 3. 构建并存储指令
                 EffectCommand command = new EffectCommand();
                 command.methodName = methodName;
                 command.parameters = CardEffect.Instance.ConvertParameters(methodName, rawArgs);
 
-                actualEffects.Add(command);
+                // --- 核心修改：确保 beMade 和 beBroken 始终在第一位 ---
+                if (methodName == "beMade" || methodName == "beBroken")
+                {
+                    // 插入到列表的第 0 个位置
+                    targetList.Insert(0, command);
+                }
+                else
+                {
+                    // 普通指令，按顺序添加到末尾
+                    targetList.Add(command);
+                }
             }
             else
             {
-                Debug.LogWarning($"[Card] 效果格式错误: {trimmedCmd}。应为 Method(arg1, arg2)");
+                Debug.LogWarning($"[Card] 格式解析错误: {trimmedCmd}");
             }
         }
     }
 
-    public void Effect()
+    private void ExecuteEffectList(List<EffectCommand> effectList)
     {
-        CardEffect.Instance.SetCallerCard(this);
-        foreach (var effect in actualEffects)
-        {
-            // 3. 交给单例去执行
-            CardEffect.Instance.Execute(effect.methodName, effect.parameters);
-        }
+        if (effectList == null || effectList.Count == 0) return;
+
+        // 将效果链交给CardEffect统一执行，支持异步阻塞
+        CardEffect.Instance.ExecuteEffectList(this, effectList);
     }
     
     private int GetCardType(int id)
@@ -225,4 +267,17 @@ public class Card
 
         if (nature3 < safeNum) nature3 = safeNum;
     }
+    
+    public void OnMade() => ExecuteEffectList(madeEffects);
+    public void OnBroken() => ExecuteEffectList(brokenEffects);
+    public void OnAdded() => ExecuteEffectList(addedEffects);
+    public void OnBuffUpdate() => ExecuteEffectList(buffEffects);
+
+    public void OnTrigger()
+    {
+        ExecuteEffectList(triggerEffects);
+        DayManager.Instance.GetNextDayEvent().AddListener(OnNextTurn);
+    }
+
+    public void OnNextTurn() => ExecuteEffectList(nextTurnEffects);
 }

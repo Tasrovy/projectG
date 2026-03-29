@@ -11,7 +11,7 @@ public enum EventManageEnum
 	
     #region 玉皆透澈声明的事件
     cardUsed,          // 卡牌使用事件
-    ACardDragging, 
+    ACardDragging,
     ACardOutDragging,
 
     drawPileOpen,
@@ -22,6 +22,10 @@ public enum EventManageEnum
 
     getSelectedCard,
 
+    #endregion
+
+    #region 卡牌管理器事件
+    deckOrHandChanged,  // 牌堆或手牌发生变化
     #endregion
 
 
