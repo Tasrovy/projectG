@@ -15,6 +15,10 @@ public class CardSum : MonoBehaviour
     public bool dragingCard=false;
 
     public bool cardPileActive=false;
+
+    public bool selectCarding=false;
+
+    public GameObject selectedObj = null;
     void Awake()
     {
         if (_instance != null && _instance != this)
