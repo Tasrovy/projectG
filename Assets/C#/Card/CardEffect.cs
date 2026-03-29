@@ -17,6 +17,9 @@ public class CardEffect : Singleton<CardEffect>
     private int currentEffectIndex;
     private bool waitingForAsync = false;
 
+    // 防止监听器重复添加的跟踪集合
+    private static HashSet<string> registeredChangePropertyListeners = new HashSet<string>();
+
 
     protected override void Awake()
     {
@@ -135,7 +138,16 @@ public class CardEffect : Singleton<CardEffect>
         }
 
         // 执行效果
-        Execute(effect.methodName, effect.parameters);
+        try
+        {
+            Execute(effect.methodName, effect.parameters);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[CardEffect] 执行效果 {effect.methodName} 时出错: {ex.InnerException?.Message ?? ex.Message}");
+            // 重置异步等待标志，防止死锁
+            waitingForAsync = false;
+        }
 
         // 如果不是异步效果，立即执行下一个
         if (!waitingForAsync)
@@ -199,12 +211,31 @@ public class CardEffect : Singleton<CardEffect>
 
     public void changeProperty(float ratio)
     {
-        DayManager.Instance.GetNextDayEvent().AddListener( ()=>
+        if (CallerCard == null)
+        {
+            Debug.LogError("[CardEffect] changeProperty: CallerCard is null");
+            return;
+        }
+
+        // 生成唯一标识符，防止同一个卡牌重复添加相同ratio的监听器
+        string listenerKey = $"{CallerCard.id}_{ratio}";
+
+        if (registeredChangePropertyListeners.Contains(listenerKey))
+        {
+            Debug.LogWarning($"[CardEffect] changeProperty: 监听器已注册，跳过。卡牌: {CallerCard.name} (ID:{CallerCard.id}), ratio: {ratio}");
+            return;
+        }
+
+        // 注册监听器
+        registeredChangePropertyListeners.Add(listenerKey);
+        DayManager.Instance.GetNextDayEvent().AddListener(() =>
         {
             DataManager.Instance.SetNature1Effect(ratio - 1);
             DataManager.Instance.SetNature2Effect(ratio - 1);
             DataManager.Instance.SetNature3Effect(ratio - 1);
         });
+
+        Debug.Log($"[CardEffect] changeProperty: 已为卡牌 {CallerCard.name} (ID:{CallerCard.id}) 注册ratio={ratio}的监听器");
     }
 
     public void beAdded(int num, int times)
@@ -238,7 +269,23 @@ public class CardEffect : Singleton<CardEffect>
 
     public void addAddNum(int num)
     {
-        CallerCard.added += num;
+        if (CallerCard == null)
+        {
+            Debug.LogError($"[CardEffect] addAddNum({num}): CallerCard为null");
+            return;
+        }
+
+        // 尝试修改added字段的数值
+        bool success = CallerCard.TryModifyAddedValue(num);
+
+        if (!success)
+        {
+            Debug.LogWarning($"[CardEffect] addAddNum({num}): 无法修改added字段。CallerCard: {CallerCard.name}, added值: '{CallerCard.added}'");
+        }
+        else
+        {
+            Debug.Log($"[CardEffect] addAddNum({num}): 成功修改added字段");
+        }
     }
 
     public void changeHandGift()
@@ -290,6 +337,9 @@ public class CardEffect : Singleton<CardEffect>
                 card.Add(2, addNum);
                 card.Add(3, addNum);
             }
+
+            // 通知UI更新，因为牌堆中的卡牌属性已改变
+            CardManager.Instance.NotifyDeckOrHandChanged();
         }
     }
 
@@ -300,6 +350,14 @@ public class CardEffect : Singleton<CardEffect>
         copyCard.InitCard(CallerCard);  // 复制当前卡牌数据
         copyCard.OnAdded();             // 触发added效果
         CardManager.Instance.AddCardInHand(copyCard);  // 加入手牌
+    }
+
+    public void addCardNatureToDataManager()
+    {
+        if (CallerCard == null) return;
+        DataManager.Instance.Add(1, CallerCard.nature1);
+        DataManager.Instance.Add(2, CallerCard.nature2);
+        DataManager.Instance.Add(3, CallerCard.nature3);
     }
     // --- 核心执行逻辑 ---
 
