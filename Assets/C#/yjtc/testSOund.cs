@@ -13,13 +13,20 @@ public class testSOund : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-//#elif UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space))
+
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            
-            //AudioManager.Instance.PlaySingle("clickSim");
-            AudioManager.Instance.PlaySound("clickSim", false);
+            EventManage.SendEvent(EventManageEnum.selectCardBegin, null);
         }
+
+#endif
+
+
+
+
+
 
     }
 }
