@@ -28,6 +28,21 @@ public class CardManager : Singleton<CardManager>
     // 保底计数器：Key为类型(ID第一位1,2,3)
     private Dictionary<int, int> pityCounters = new Dictionary<int, int>() { { 1, 0 }, { 2, 0 }, { 3, 0 } };
 
+    public void SetProbRarity1(float rarity)
+    {
+        probRarity1 = rarity;
+    }
+
+    public void SetProbRarity2(float rarity)
+    {
+        probRarity2 = rarity;
+    }
+
+    public void SetProbRarity3(float rarity)
+    {
+        probRarity3 = rarity;
+    }
+    
     protected override void Awake()
     {
         base.Awake();
