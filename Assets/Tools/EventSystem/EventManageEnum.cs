@@ -25,7 +25,7 @@ public enum EventManageEnum
     #endregion
 
     #region 卡牌管理器事件
-    deckOrHandChanged,  // 牌堆或手牌发生变化
+    // 牌堆或手牌发生变化（已改为直接调用DUEL刷新UI）
     #endregion
 
 
