@@ -33,8 +33,8 @@ public class CardManager : Singleton<CardManager>
         base.Awake();
         LoadAllCards();
         ImplementCardSet();
-        Debug.Log($"准备抽取{5}张牌");
-        DrawCard(5);
+        //Debug.Log($"准备抽取{5}张牌");
+        //DrawCard(5);
     }
 
     private void Start()

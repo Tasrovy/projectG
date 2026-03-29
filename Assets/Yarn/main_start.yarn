@@ -16,16 +16,17 @@ B:把它们做成花环戴在你头上，唔...... #line:0d9e904
 B:（开心表情）想想那个画面，一定非常可爱吧。 #line:0120b97 
 （B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
 <<set_character_sprite player saying>>
-{$MY_NAME}B，注意安-- #line:0f1a741 
+{$MY_NAME}:B，注意安-- #line:0f1a741 
+<<stop_bgm>>
 （树枝折断了） #line:0d7301f 
 <<set_character_sprite player peace2>>
-{$MY_NAME}（惊恐表情）！！！ #line:0c4c660 
+<<play_bgm lake_sadStrong>>
+{$MY_NAME}:（惊恐表情）！！！ #line:0c4c660 
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
-<<stop_bgm>>
 <<set_background blackGround>>
 <<clear_character_person player>>
 <<clear_character_person B>>
-<<play_bgm, lake_sadStrong>>
+
 (..........) #line:07a7a58 
 (..........) #line:007dd97 
 <<jump room1_1>>
