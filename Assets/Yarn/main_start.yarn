@@ -4,82 +4,118 @@ title: main_start
 <<declare $MY_NAME= string("a")>>
 <<play_bgm "lake_happy2">>
 <<play_whitenoise "bgWater_springwater1">>
-（鲜花簇拥着我们，溪水潺潺。）
+（鲜花簇拥着我们，溪水潺潺。） #line:09f9855 
 <<set_character_sprite "Player" "peace_1">>
 <<set_character_sprite "B" "peace_1">>
 B:花开得真好。 #line:0b2cd4e 
-（岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。）
+（岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。） #line:006d230 
 <<set_character_sprite "Player" "happy">>
 <<set_character_sprite "B" "saying">>
-B:把它们做成花环戴在你头上，唔......
-<<set_character_sprite B happy>>
-B:（开心表情）想想那个画面，一定非常可爱吧。 
-（B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。）
-<<set_character_sprite player saying>>
-{$MY_NAME}:B，注意安-- 
+B:把它们做成花环戴在你头上，唔...... #line:0d9e904 
+<<set_character_sprite "B" "happy">>
+B:（开心表情）想想那个画面，一定非常可爱吧。 #line:0120b97 
+（B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
+<<set_character_sprite "Player" "saying">>
+{$MY_NAME}:B，注意安-- #line:0f1a741 
 <<stop_bgm>>
-（树枝折断了）
-<<set_character_sprite player peace2>>
+（树枝折断了） #line:0d7301f 
+<<set_character_sprite "Player" "peace2">>
+{$MY_NAME}:（惊恐表情）！！！ #line:0c4c660 
 <<play_bgm lake_sadStrong>>
-{$MY_NAME}:（惊恐表情）！！！
-（她连人带花一起落下那呜咽的溪水里。）
-<<set_background blackGround>>
-<<clear_character_person player>>
-<<clear_character_person B>>
+（她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
+<<set_background "blackGround">>
+<<clear_character_person "Player">>
+<<clear_character_person "B">>
 
-(..........)
-(..........)
+(..........) #line:07a7a58 
+(..........) #line:007dd97 
 <<jump room1_1>>
 ===
 
 title: room1_1
 
 ---
-<<play_bgm, lake_sadnor1>>
-<<play_whitenoise, bg1_bgWhiteNoise1>>
-（熟悉的天花板）
-<<set_character_sprite, player, peace_1>>
-{$MY_NAME}又是梦啊。
-->看看几点了 
-<<jump room1_2>>
+<<play_bgm "lake_sadnor1">>
+<<play_whitenoise "bg1_bgWhiteNoise1">>
+（熟悉的天花板） #line:0e4f723 
+<<set_character_sprite Player peace_1>>
+{$MY_NAME}:又是梦啊。 #line:0ea787b 
+{$MY_NAME}:看看几点了
+    <<jump room1_2>>
 ===
+
 
 title: room1_2
 ---
-<<play_bgm, lake_sadnor1>>
-<<play_whitenoise, bg1_bgWhiteNoise1>>
-<<set_character_sprite, player, peace_2>>
-{$MY_NAME}已经下午四点半了吗......我睡了这么久？ 
-（明明刚才还是夜里两点多......）
-<<stop_bgm,>>
-（时间的流逝好像变得不真实。） 
-（窗帘上投着窗外的树影，在风里来回飘荡，伴着那些若隐若现的阳光。）
-<<play_bgm, lake_sadnor2>>
-（自从B离开以后，一切都好像褪了色。）
-<<set_character_sprite, player, saying>>
-{$MY_NAME}还是起来吃点东西吧。
-<<set_character_sprite, player, peace_1>>
-{$MY_NAME}啊...！
-（我踢到了放在床边地毯上的匣子。）
-<<set_background,占坑匣子cg>>
-<<set_character_sprite, player, peace_2>>
-{$MY_NAME}：......
+<<play_bgm lake_sadnor1>>
+<<play_whitenoise bg1_bgWhiteNoise1>>
+<<set_character_sprite Player peace_2>>
+{$MY_NAME}已经下午四点半了吗......我睡了这么久？ #line:00812c6 
+（明明刚才还是夜里两点多......） #line:0d21b28 
+<<stop_bgm>>
+（时间的流逝好像变得不真实。） #line:0e3d4da 
+（窗帘上投着窗外的树影，在风里来回飘荡，伴着那些若隐若现的阳光。） #line:065546b 
+<<play_bgm lake_sadnor2>>
+（自从B离开以后，一切都好像褪了色。） #line:0616adb 
+<<set_character_sprite Player saying>>
+{$MY_NAME}还是起来吃点东西吧。 #line:059a91f 
+<<set_character_sprite Player peace_1>>
+{$MY_NAME}啊...！ #line:025d534 
+（我踢到了放在床边地毯上的匣子。） #line:0f6d1e6 
+<<set_background 占坑匣子cg>>
+<<set_character_sprite Player peace_2>>
+{$MY_NAME}：...... #line:0e118f1 
 （竟然没有感到痛了。无论是撞伤脚的疼痛，还是她的死亡为我带来的、 如同淅淅沥沥的雨一样绵延的刺痛.......都慢慢消失了。） #line:03805ef 
-<<set_character_sprite, player, peace_1>>
-（一切是好起来了吗？还是更坏了呢？）
-<<set_character_sprite, player, peace_2>>
-{$MY_NAME}.......
-（我尝到苦涩的味道。）
-<<stop_bgm,>>
-<<set_character_sprite, player,sad>>
-（原来我在哭啊。）
-<<play_bgm, lake_sadStrong>>
-{$MY_NAME}：我想你了。
-<<set_character_sprite, player,saying>>
-{$MY_NAME}呜呜呜.....
-<<set_character_sprite, player,sad>>
-{$MY_NAME}如果你还在我身边，那该多好......
+<<set_character_sprite Player peace_1>>
+（一切是好起来了吗？还是更坏了呢？） #line:0d46603 
+<<set_character_sprite Player peace_2>>
+{$MY_NAME}....... #line:0559576 
+（我尝到苦涩的味道。） #line:0d806f2 
+<<stop_bgm>>
+<<set_character_sprite Player sad>>
+（原来我在哭啊。） #line:0ccd8cf 
+<<play_bgm lake_sadStrong>>
+{$MY_NAME}：我想你了。 #line:0f2f8cd 
+<<set_character_sprite Player saying>>
+{$MY_NAME}呜呜呜..... #line:0ea852a 
+<<set_character_sprite Player sad>>
+{$MY_NAME}如果你还在我身边，那该多好...... #line:0a97d71 
+<<jump room1_3>>
+===
 
+title: room1_3
+---
+<<set_background box占坑>>
+<<play_bgm littleSad_黄昏分岔口(1)>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_sprite player sad>>
+（透过被泪水模糊的眼睛，我好像看到--）
+<<set_character_sprite C peace_1>>
+??? : 你好啊，人类。
+<<set_character_sprite C saying>>
+？？？ : 有没有意犹未尽的感觉？这就是你的积分了！
+{$MY_NAME}:（与其说会在意得到的积分……不如说更在意面前……）
+<<set_character_sprite Player saying>>
+{$MY_NAME}:……你好像突然就出现了，小姑娘。
+<<set_character_sprite C peace_2>>
+C: {$MY_NAME} 女士，我不叫小姑娘，我叫C。
+<<set_character_sprite Player peace_1>>
+{$MY_NAME}:（疑惑表情）你知道我的名字？
+<<set_character_sprite C peace_1>>
+C: {$MY_NAME}女士，你的名字就写在你的对话框上面啊。
+<<set_character_sprite Player peace_2>>
+{$MY_NAME}:？
+<<set_character_sprite C saying>>
+C :（疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
+<<set_character_sprite Player saying>>
+{$MY_NAME}:（摇头）不用了，谢谢。
+{$MY_NAME}:所以，你是从哪里来的？
+<<set_character_sprite C saying>>
+C: 当然是你面前的这副牌咯！本人，大名鼎鼎的C，正是这副牌本身的妖精。而你，智慧而美丽的MY_NAME女士，将会不断地把这副牌的积分献给我——以维持我弱小又可怜的身体在现实世界中显形。
+（不管怎么想……这个说法……）
+{$MY_NAME}:听起来有点像是胡扯呢。
+C : 你怎么喊出来了！呜呜呜，就这么不相信可怜的C吗……
+（我怎么会直接说出来了……但她说的话，真的可以相信吗？）
 ===
 
 

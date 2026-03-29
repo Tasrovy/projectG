@@ -303,7 +303,9 @@ public class AudioManager : MonoBehaviour
                 whiteNoiseSource.pitch = 1.0f;
 
             whiteNoiseSource.clip = clip;
+            whiteNoiseSource.volume = 0.2f;
             whiteNoiseSource.Play();
+            StartCoroutine(FadeInWhiteNoise(1.5f));
         }
         else
         {
@@ -311,6 +313,37 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private IEnumerator FadeInWhiteNoise(float duration)
+    {
+        float time = 0;
+        float startVolume = 0.2f;
+        float targetVolume = 0.4f; // 最终音量，可根据需要调整
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            whiteNoiseSource.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
+            yield return null;
+        }
+        whiteNoiseSource.volume = targetVolume;
+    }
+    public IEnumerator FadeOutAndStopWhiteNoise(float duration)
+    {
+        if (!whiteNoiseSource.isPlaying) yield break;
+
+        float time = 0;
+        float startVolume = whiteNoiseSource.volume;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            whiteNoiseSource.volume = Mathf.Lerp(startVolume, 0f, time / duration);
+            yield return null;
+        }
+
+        whiteNoiseSource.volume = 0f;
+        whiteNoiseSource.Stop();
+    }
     private IEnumerator LoadAndPlaySingle(string filePath, bool randomPitch,bool lowRandom=false)
     {
         filePath = SplitName(filePath);

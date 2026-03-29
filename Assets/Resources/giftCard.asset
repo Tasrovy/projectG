@@ -248,3 +248,133 @@ MonoBehaviour:
     buff: 
     trigger: addNatureFromTo(1,2)
     nextTurn: 
+  - id: 11101
+    nature1: 2
+    nature2: 2
+    nature3: 2
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: addCard(11001,1)
+    nextTurn: 
+  - id: 11102
+    nature1: 3
+    nature2: 1
+    nature3: 3
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: addRandomCard(1,1,1)
+    nextTurn: 
+  - id: 11103
+    nature1: 0
+    nature2: 4
+    nature3: 4
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: addRandomCardIfNot(1,1,1)
+    nextTurn: 
+  - id: 11104
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: addMoney(999)
+    nextTurn: 
+  - id: 11105
+    nature1: 6
+    nature2: 6
+    nature3: 6
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 11106
+    nature1: 7
+    nature2: 7
+    nature3: 7
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 11107
+    nature1: 8
+    nature2: 8
+    nature3: 8
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 11108
+    nature1: 9
+    nature2: 9
+    nature3: 9
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 11109
+    nature1: 10
+    nature2: 10
+    nature3: 10
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 11110
+    nature1: 11
+    nature2: 11
+    nature3: 11
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
