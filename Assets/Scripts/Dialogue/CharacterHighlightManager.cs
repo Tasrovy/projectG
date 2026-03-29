@@ -20,7 +20,6 @@ public class CharacterHighlightManager : DialoguePresenterBase
     public class Character
     {
         public string characterName;
-        public SpriteRenderer spriteRenderer;
         public Color normalColor = new(1f, 1f, 1f, 1f);
         public Color dimColor = new(0.5f, 0.5f, 0.5f, 1f);
         public List<EmotionSprite> emotionSprites;
@@ -33,7 +32,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
     [HideInInspector] public string playerVariableName = "$MY_NAME";
     private int[] dialogueCompleteProperties = new int[4];
 
-    public string defaultName = "Player";
+    public string defaultName = "Odara";
 
     public override async YarnTask RunLineAsync(LocalizedLine line, LineCancellationToken token)
     {
@@ -120,6 +119,13 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
     public override async YarnTask OnDialogueCompleteAsync()
     {
+        // 结束对话时，清空映射表
+        var charControl = GetComponent<CharacterControl>();
+        if (charControl != null)
+        {
+            charControl.objectToCharacterMap.Clear();
+        }
+
         GameObject playerObj = GameObject.Find("Player");
         GameObject characterObj = GameObject.Find("Character");
 

@@ -203,6 +203,43 @@ public class CardShopping : MonoBehaviour
                 Debug.LogWarning($"[CardShopping] 找不到物体 {cardTransform.name} 的直属子物体 'Price'！");
             }
 
+            // 查找直属子物体 rare 并根据稀有度加载图片
+            int rarity = (data.id / 1000) % 10;
+            Transform rareTransform = cardTransform.Find("rare");
+            if (rareTransform != null)
+            {
+                Sprite rareSprite = Resources.Load<Sprite>($"UI/Shop/{rarity}");
+                if (rareSprite != null)
+                {
+                    // 兼容 UI Image 和 SpriteRenderer 两种情况
+                    Image rareImage = rareTransform.GetComponent<Image>();
+                    if (rareImage != null)
+                    {
+                        rareImage.sprite = rareSprite;
+                    }
+                    else
+                    {
+                        SpriteRenderer sr = rareTransform.GetComponent<SpriteRenderer>();
+                        if (sr != null)
+                        {
+                            sr.sprite = rareSprite;
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"[CardShopping] {cardTransform.name}/rare 既没有 Image 也没有 SpriteRenderer 组件！");
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"[CardShopping] 找不到路径 Resources/UI/Shop/{rarity} 下的图片资源！");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"[CardShopping] 找不到物体 {cardTransform.name} 的直属子物体 'rare'！");
+            }
+
             Debug.Log($"[CardShopping] 给物体 {cardTransform.name} 赋予了商品: {data.name} 价格: {data.sale}");
         }
         else

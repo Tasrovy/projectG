@@ -32,32 +32,34 @@ public class CharacterControl : MonoBehaviour
         return false;
     }
 
-    // 辅助方法：统一获取固定名称的 GameObject 上的 SpriteRenderer
-    private SpriteRenderer GetTargetRenderer(string characterName, CharacterHighlightManager manager)
+    // 新增：保存当前物体上挂载的角色名称字典
+    public Dictionary<string, string> objectToCharacterMap = new Dictionary<string, string>();
+
+    // 辅助方法：根据输入的人物名字找它被挂载在了哪一个物体上
+    private SpriteRenderer GetTargetRendererByCharacterMap(string characterName)
     {
-        string targetObjectName = IsPlayerName(characterName, manager) ? "Player" : "Character";
-        GameObject targetObj = GameObject.Find(targetObjectName);
-        if (targetObj != null)
+        // 遍历记录表，看看传入的故事角色名当前分配在了哪个物体（"Player" 还是 "Character"）
+        foreach (var kvp in objectToCharacterMap)
         {
-            return targetObj.GetComponent<SpriteRenderer>();
+            if (string.Equals(kvp.Value, characterName, System.StringComparison.Ordinal))
+            {
+                GameObject targetObj = GameObject.Find(kvp.Key);
+                if (targetObj != null)
+                {
+                    return targetObj.GetComponent<SpriteRenderer>();
+                }
+            }
         }
         return null;
     }
 
-    #region 立绘抖动
-    [YarnCommand("set_character_shake")]
-    public static void SetCharacterShake_Yarn(string characterName, string shakeType)
-    {
-        var control = Object.FindAnyObjectByType<CharacterControl>();
-        if (control != null) control.SetCharacterShake(characterName, shakeType);
-    }
 
     public void SetCharacterShake(string characterName, string shakeType)
     {
         var manager = GetComponent<CharacterHighlightManager>();
         if (manager != null)
         {
-            SpriteRenderer targetRenderer = GetTargetRenderer(characterName, manager);
+            SpriteRenderer targetRenderer = GetTargetRendererByCharacterMap(characterName);
             if (targetRenderer != null)
             {
                 StartCoroutine(ShakeRoutine(targetRenderer.transform, shakeDuration, shakeMagnitude, shakeType));
@@ -72,7 +74,6 @@ public class CharacterControl : MonoBehaviour
             Debug.LogWarning("[CharacterControl] 未在父物体找到 CharacterHighlightManager 组件！");
         }
     }
-    #endregion
 
     #region 差分切换
     [YarnCommand("set_character_sprite")]
@@ -95,7 +96,7 @@ public class CharacterControl : MonoBehaviour
             var ch = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
             if (ch != null)
             {
-                SpriteRenderer targetRenderer = GetTargetRenderer(characterName, manager);
+                SpriteRenderer targetRenderer = GetTargetRendererByCharacterMap(characterName);
                 if (targetRenderer != null)
                 {
                     if (ch.emotionSprites != null)
@@ -113,7 +114,7 @@ public class CharacterControl : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"[CharacterControl] 找不到名为'{ (IsPlayerName(characterName, manager) ? "Player" : "Character") }'的对象，或未设SpriteRenderer！");
+                    Debug.LogWarning($"[CharacterControl] 角色 '{characterName}' 当前未挂载在任何立绘物体上！");
                 }
             }
             else
@@ -150,24 +151,15 @@ public class CharacterControl : MonoBehaviour
             var targetConfig = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
             if (targetConfig != null)
             {
+                // 将该角色名映射记录到这个游戏对象上
+                objectToCharacterMap[objectName] = characterName;
+
                 GameObject targetObj = GameObject.Find(objectName);
                 if (targetObj != null)
                 {
                     SpriteRenderer sr = targetObj.GetComponent<SpriteRenderer>();
                     if (sr != null)
                     {
-                        // 1. 将该配置绑定到对应的 SpriteRenderer
-                        targetConfig.spriteRenderer = sr;
-                        
-                        // 清理原先可能占用该 SpriteRenderer 的其它角色配置
-                        foreach (var otherConfig in manager.characters)
-                        {
-                            if (otherConfig != targetConfig && otherConfig.spriteRenderer == sr)
-                            {
-                                otherConfig.spriteRenderer = null;
-                            }
-                        }
-
                         // 2. 找到对应 emotion 的差分图
                         Sprite newSprite = null;
                         if (targetConfig.emotionSprites != null)
@@ -220,6 +212,12 @@ public class CharacterControl : MonoBehaviour
         {
             Debug.LogWarning($"[CharacterControl] 参数 objectName 必须是 'Player' 或 'Character'，当前为: {objectName}");
             return;
+        }
+
+        // 清除映射
+        if (objectToCharacterMap.ContainsKey(objectName))
+        {
+            objectToCharacterMap.Remove(objectName);
         }
 
         GameObject targetObj = GameObject.Find(objectName);
