@@ -4,15 +4,20 @@ title: main_start
 <<declare $MY_NAME= string("a")>>
 <<play_bgm "lake_happy2">>
 <<play_whitenoise "bgWater_springwater1">>
+
+<<set_character_person "Player" {$MY_NAME} "peace_1">>
+<<set_character_person "Character" "B" "peace_2">>
 （鲜花簇拥着我们，溪水潺潺。） #line:09f9855 
 <<set_character_sprite "Player" "peace_1">>
 <<set_character_sprite "B" "peace_1">>
 B:花开得真好。 #line:0b2cd4e 
 （岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。） #line:006d230 
+<<set_character_shake {$MY_NAME} "up_down">>
 <<set_character_sprite "Player" "happy">>
 <<set_character_sprite "B" "saying">>
 B:把它们做成花环戴在你头上，唔...... #line:0d9e904 
 <<set_character_sprite "B" "happy">>
+<<set_character_shake "B" "left_right">>
 B:（开心表情）想想那个画面，一定非常可爱吧。 #line:0120b97 
 （B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
 <<set_character_sprite "Player" "saying">>

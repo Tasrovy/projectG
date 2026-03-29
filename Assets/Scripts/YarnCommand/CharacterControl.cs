@@ -10,7 +10,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField]
     [Header("抖动时长")] private float shakeDuration = 0.5f;
     [SerializeField] 
-    [Header("抖动幅度")] private float shakeMagnitude = 0.1f;
+    [Header("抖动幅度")] private float shakeMagnitude = 40.0f;
 
     // 辅助方法：判断名字是否为玩家
     private bool IsPlayerName(string characterName, CharacterHighlightManager manager)
@@ -53,6 +53,13 @@ public class CharacterControl : MonoBehaviour
         return null;
     }
 
+    #region 立绘抖动
+    [YarnCommand("set_character_shake")]
+    public static void SetCharacterShakeStatic(string characterName, string shakeType)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) control.SetCharacterShake(characterName, shakeType);
+    }
 
     public void SetCharacterShake(string characterName, string shakeType)
     {
@@ -74,6 +81,7 @@ public class CharacterControl : MonoBehaviour
             Debug.LogWarning("[CharacterControl] 未在父物体找到 CharacterHighlightManager 组件！");
         }
     }
+    #endregion
 
     #region 差分切换
     [YarnCommand("set_character_sprite")]
@@ -198,7 +206,9 @@ public class CharacterControl : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region 清除立绘
     [YarnCommand("clear_character_person")]
     public static void ClearCharacterPersonStatic(string objectName)
     {
@@ -356,25 +366,27 @@ public class CharacterControl : MonoBehaviour
     {
         Vector3 originalPos = targetTransform.localPosition;
         float elapsed = 0.0f;
+        float speed = 35f; // 控制抖动的平滑频率
 
         while (elapsed < duration)
         {
             float x = 0f;
             float y = 0f;
 
+            // 使用 Sin 曲线代替完全随机，让抖动不那么“刺眼/激烈”
             if (shakeType == "up_down")
             {
-                y = Random.Range(-1f, 1f) * magnitude;
+                y = Mathf.Sin(elapsed * speed) * magnitude;
             }
             else if (shakeType == "left_right")
             {
-                x = Random.Range(-1f, 1f) * magnitude;
+                x = Mathf.Sin(elapsed * speed) * magnitude;
             }
             else
             {
                 // 如果传入其他的，默认全方向抖动
-                x = Random.Range(-1f, 1f) * magnitude;
-                y = Random.Range(-1f, 1f) * magnitude;
+                x = Mathf.Sin(elapsed * speed) * magnitude;
+                y = Mathf.Cos(elapsed * speed * 1.2f) * magnitude;
             }
 
             targetTransform.localPosition = new Vector3(originalPos.x + x, originalPos.y + y, originalPos.z);
