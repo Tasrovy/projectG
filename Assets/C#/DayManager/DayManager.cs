@@ -18,12 +18,14 @@ public class DayManager : Singleton<DayManager>
             Debug.Log($"成功加载了 {daySO.dayDatas.Count} 天的数据");
         }
         NextDay();
+        DUEL.Instance.OnEndDUEL.AddListener(NextDay);
     }
     
     public void NextDay()
     {
         OnDayEnd();
         dayNumber++;
+        Debug.Log($"[DayManager] dayNumber: {dayNumber}");
         CardManager.Instance.SetProbRarity1(daySO.dayDatas[dayNumber].probRarity1);
         CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
         CardManager.Instance.SetProbRarity3(daySO.dayDatas[dayNumber].probRarity3);

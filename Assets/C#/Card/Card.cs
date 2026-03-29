@@ -45,9 +45,18 @@ public class Card
     public string trigger;
     public string description;
     public string nextTurn;
+
+    // --- 被动生命周期效果列表 (仅当字段为字符串函数时，在 OnMade/OnBroken/OnAdded 中触发) ---
     private List<EffectCommand> madeEffects = new List<EffectCommand>();
     private List<EffectCommand> brokenEffects = new List<EffectCommand>();
     private List<EffectCommand> addedEffects = new List<EffectCommand>();
+    
+    // --- 主动打出条件效果列表 (仅当字段为纯数字时，在 OnTrigger 中作为前置条件触发) ---
+    private List<EffectCommand> triggerMadeEffects = new List<EffectCommand>();
+    private List<EffectCommand> triggerBrokenEffects = new List<EffectCommand>();
+    private List<EffectCommand> triggerAddedEffects = new List<EffectCommand>();
+
+    // --- 其他常规效果列表 ---
     private List<EffectCommand> buffEffects = new List<EffectCommand>();
     private List<EffectCommand> triggerEffects = new List<EffectCommand>();
     private List<EffectCommand> nextTurnEffects = new List<EffectCommand>();
@@ -91,67 +100,61 @@ public class Card
     // 解析所有效果字段
     private void ParseAllEffects()
     {
-        ParseFieldWithIntSupport(made, madeEffects, "made");
-        ParseFieldWithIntSupport(broken, brokenEffects, "broken");
-        ParseFieldWithIntSupport(added, addedEffects, "added");
+        // 将数字逻辑和字符串逻辑分流到不同的列表中
+        ParseFieldWithIntSupport(made, triggerMadeEffects, madeEffects, "made");
+        ParseFieldWithIntSupport(broken, triggerBrokenEffects, brokenEffects, "broken");
+        ParseFieldWithIntSupport(added, triggerAddedEffects, addedEffects, "added");
+        
         ParseStringToCommands(buff, buffEffects);
         ParseStringToCommands(trigger, triggerEffects);
         ParseStringToCommands(nextTurn, nextTurnEffects);
     }
 
-    // 解析支持int类型的字段（made、broken、added）
-    private void ParseFieldWithIntSupport(string fieldValue, List<EffectCommand> targetList, string fieldName)
+    /// <summary>
+    /// 解析核心分流逻辑：
+    /// 如果是纯数字 -> 解析成内部指令，放入 triggerList，由 OnTrigger 执行
+    /// 如果是字符串 -> 解析成常规效果，放入 lifecycleList，由 OnBroken/OnMade 等被动执行
+    /// </summary>
+    private void ParseFieldWithIntSupport(string fieldValue, List<EffectCommand> triggerList, List<EffectCommand> lifecycleList, string fieldName)
     {
-        targetList.Clear();
+        triggerList.Clear();
+        lifecycleList.Clear();
+        
         if (string.IsNullOrEmpty(fieldValue)) return;
 
-        // 检查是否为纯数字（int类型）且不包含括号（确保不是函数调用）
+        // 检查是否为纯数字（且不包含括号，确保不是函数调用）
         if (!fieldValue.Contains("(") && !fieldValue.Contains(")") && int.TryParse(fieldValue.Trim(), out int intValue))
         {
-            // 如果参数为0，不创建效果命令（直接跳过）
-            if (intValue == 0)
-            {
-                Debug.Log($"[Card] 字段 '{fieldName}' 值为0，跳过创建效果命令");
-                return;
-            }
+            if (intValue == 0) return;
 
-            // int类型：根据字段名生成对应的效果命令
-            // 使用特殊命令名，避免在OnBroken/OnMade/OnAdded中循环调用
             EffectCommand command = new EffectCommand();
-
             switch (fieldName.ToLower())
             {
                 case "made":
                     command.methodName = "_beMadeDirect";
                     command.parameters = new object[] { intValue };
-                    // beMade需要放在第一位
-                    targetList.Insert(0, command);
                     break;
-
                 case "broken":
                     command.methodName = "_beBrokenDirect";
                     command.parameters = new object[] { intValue };
-                    // beBroken需要放在第一位
-                    targetList.Insert(0, command);
                     break;
-
                 case "added":
                     command.methodName = "_beAddedDirect";
                     command.parameters = new object[] { intValue, 1 };
-                    targetList.Add(command);
                     break;
-
                 default:
                     Debug.LogWarning($"[Card] 未知的int类型字段: {fieldName}");
-                    break;
+                    return;
             }
-
-            Debug.Log($"[Card] 字段 '{fieldName}' 解析为int类型: {intValue}, 生成效果: {command.methodName}");
+            
+            triggerList.Add(command);
+            Debug.Log($"[Card] 字段 '{fieldName}' 解析为前置条件 (数字:{intValue})，将在 OnTrigger 触发");
         }
         else
         {
-            // string类型：使用原有的解析逻辑
-            ParseStringToCommands(fieldValue, targetList);
+            // 字符串类型：使用原有的解析逻辑，作为被动效果
+            ParseStringToCommands(fieldValue, lifecycleList);
+            Debug.Log($"[Card] 字段 '{fieldName}' 解析为被动效果 (字符串:'{fieldValue}')，将在 On{char.ToUpper(fieldName[0]) + fieldName.Substring(1)} 触发");
         }
     }
 
@@ -188,19 +191,16 @@ public class Card
                 catch (Exception ex)
                 {
                     Debug.LogError($"[Card] 参数转换失败: 方法 '{methodName}', 参数 '{argsContent}'. 错误: {ex.Message}");
-                    // 跳过这个无效的命令
                     continue;
                 }
 
-                // --- 核心修改：确保 beMade、_beMadeDirect、beBroken、_beBrokenDirect 始终在第一位 ---
+                // 确保打断机制相关的核心方法始终排在前面
                 if (methodName == "beMade" || methodName == "_beMadeDirect" || methodName == "beBroken" || methodName == "_beBrokenDirect")
                 {
-                    // 插入到列表的第 0 个位置
                     targetList.Insert(0, command);
                 }
                 else
                 {
-                    // 普通指令，按顺序添加到末尾
                     targetList.Add(command);
                 }
             }
@@ -214,8 +214,6 @@ public class Card
     private void ExecuteEffectList(List<EffectCommand> effectList)
     {
         if (effectList == null || effectList.Count == 0) return;
-
-        // 将效果链交给CardEffect统一执行，支持异步阻塞
         CardEffect.Instance.ExecuteEffectList(this, effectList);
     }
     
@@ -229,15 +227,10 @@ public class Card
     {
         switch (id)
         {
-            case 1 :AddNature1(num);
-                break;
-            case 2 :AddNature2(num);
-                break;
-            case 3 :AddNature3(num);
-                break;
-            default:
-                Debug.LogError($"unknown id :{id}");
-                break;
+            case 1 :AddNature1(num); break;
+            case 2 :AddNature2(num); break;
+            case 3 :AddNature3(num); break;
+            default: Debug.LogError($"unknown id :{id}"); break;
         }
     }
 
@@ -245,15 +238,10 @@ public class Card
     {
         switch (id)
         {
-            case 1 :AddNature1To(num);
-                break;
-            case 2 :AddNature2To(num);
-                break;
-            case 3 :AddNature3To(num);
-                break;
-            default:
-                Debug.LogError($"unknown id :{id}");
-                break;
+            case 1 :AddNature1To(num); break;
+            case 2 :AddNature2To(num); break;
+            case 3 :AddNature3To(num); break;
+            default: Debug.LogError($"unknown id :{id}"); break;
         }
     }
 
@@ -267,16 +255,13 @@ public class Card
         }
         return 0;
     }
-// --- 核心加法逻辑 (AddNature) ---
 
+    // --- 加法逻辑 ---
     private void AddNature1(int num)
     {
-        if (nature1 == 0) return; // 原数值为0不改变
+        if (nature1 == 0) return; 
         int target = nature1 + num;
-        
-        // 如果原值小于0，结果限制在 [负无穷, 0]
         if (nature1 < 0) nature1 = target > 0 ? 0 : target;
-        // 如果原值大于0，结果限制在 [0, 正无穷]
         else if (nature1 > 0) nature1 = target < 0 ? 0 : target;
     }
 
@@ -284,7 +269,6 @@ public class Card
     {
         if (nature2 == 0) return;
         int target = nature2 + num;
-
         if (nature2 < 0) nature2 = target > 0 ? 0 : target;
         else if (nature2 > 0) nature2 = target < 0 ? 0 : target;
     }
@@ -293,166 +277,104 @@ public class Card
     {
         if (nature3 == 0) return;
         int target = nature3 + num;
-
         if (nature3 < 0) nature3 = target > 0 ? 0 : target;
         else if (nature3 > 0) nature3 = target < 0 ? 0 : target;
     }
 
-    // --- 目标赋值逻辑 (AddNatureTo) ---
-    // 规则：仅当目标值比当前值大时赋值，但受 0 边界限制
-
+    // --- 目标赋值逻辑 ---
     private void AddNature1To(int num)
     {
-        if (nature1 == 0) return; // 原数值为0不改变
-        
-        // 先处理 0 边界限制：不能跨越正负
+        if (nature1 == 0) return; 
         int safeNum = num;
         if (nature1 < 0 && num > 0) safeNum = 0;
         else if (nature1 > 0 && num < 0) safeNum = 0;
-
-        // 执行原有的 "仅当目标值更大时更新" 逻辑
         if (nature1 < safeNum) nature1 = safeNum;
     }
 
     private void AddNature2To(int num)
     {
         if (nature2 == 0) return;
-        
         int safeNum = num;
         if (nature2 < 0 && num > 0) safeNum = 0;
         else if (nature2 > 0 && num < 0) safeNum = 0;
-
         if (nature2 < safeNum) nature2 = safeNum; 
     }
 
     private void AddNature3To(int num)
     {
         if (nature3 == 0) return;
-        
         int safeNum = num;
         if (nature3 < 0 && num > 0) safeNum = 0;
         else if (nature3 > 0 && num < 0) safeNum = 0;
-
         if (nature3 < safeNum) nature3 = safeNum;
     }
     
+    // ==========================================
+    // 生命周期回调被动触发：只有当字段为字符串时，才会触发这里的效果
+    // ==========================================
     public void OnMade() => ExecuteEffectList(madeEffects);
     public void OnBroken() => ExecuteEffectList(brokenEffects);
     public void OnAdded() => ExecuteEffectList(addedEffects);
     public void OnBuffUpdate() => ExecuteEffectList(buffEffects);
 
+    // ==========================================
+    // 主动打出触发：专门执行前置条件（纯数字配置）和Trigger常规配置
+    // ==========================================
     public void OnTrigger()
     {
         Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 开始执行效果");
 
-        // 辅助函数：执行效果链并检查条件失败
+        // 辅助函数：执行效果链并检查条件是否失败
         bool ExecuteEffectsAndCheckCondition(List<EffectCommand> effects, string effectType)
         {
-            if (effects == null || effects.Count == 0) return false; // 没有效果链，继续执行后续
+            if (effects == null || effects.Count == 0) return false; 
 
-            Debug.Log($"[Card] OnTrigger: 执行{effectType}，数量: {effects.Count}");
-            for (int i = 0; i < effects.Count; i++)
-            {
-                var effect = effects[i];
-                string paramStr = effect.parameters != null ? string.Join(", ", effect.parameters) : "无参数";
-                Debug.Log($"[Card] OnTrigger:  {effectType}效果{i+1}: {effect.methodName}({paramStr})");
-            }
-
-            // 提交效果链到执行队列
+            Debug.Log($"[Card] OnTrigger: 正在核验前置条件 [{effectType}]");
             ExecuteEffectList(effects);
 
-            // 检查是否条件失败
             if (CardEffect.Instance != null && CardEffect.Instance.IsConditionFailed(this.id))
             {
-                Debug.Log($"[Card] OnTrigger: {effectType}执行导致条件失败，停止执行后续效果");
-                return true; // 条件失败
+                Debug.Log($"[Card] OnTrigger: {effectType} 前置条件失败(或玩家取消)，停止打出该卡牌");
+                return true; 
             }
-
-            return false; // 没有条件失败
+            return false; 
         }
 
-        // 1. 执行madeEffects（如果有）
-        if (madeEffects != null && madeEffects.Count > 0)
-        {
-            if (ExecuteEffectsAndCheckCondition(madeEffects, "made"))
-            {
-                // 条件失败，提前返回，不执行后续效果也不添加监听器
-                Debug.Log($"[Card] OnTrigger: beMade条件失败，整个OnTrigger提前终止");
-                return;
-            }
-        }
+        // 1. 验证 made 前置条件 (仅数字配置会进入此处)
+        if (ExecuteEffectsAndCheckCondition(triggerMadeEffects, "Made(数字配置)")) return;
 
-        // 2. 执行brokenEffects（如果有）
-        if (brokenEffects != null && brokenEffects.Count > 0)
-        {
-            if (ExecuteEffectsAndCheckCondition(brokenEffects, "broken"))
-            {
-                // 条件失败，提前返回，不执行后续效果也不添加监听器
-                Debug.Log($"[Card] OnTrigger: beBroken条件失败，整个OnTrigger提前终止");
-                return;
-            }
-        }
+        // 2. 验证 broken 前置条件 (仅数字配置会进入此处)
+        if (ExecuteEffectsAndCheckCondition(triggerBrokenEffects, "Broken(数字配置)")) return;
 
-        // 3. 执行addedEffects（如果有）
-        if (addedEffects != null && addedEffects.Count > 0)
-        {
-            if (ExecuteEffectsAndCheckCondition(addedEffects, "added"))
-            {
-                // 条件失败，提前返回，不执行后续效果也不添加监听器
-                Debug.Log($"[Card] OnTrigger: beAdded条件失败，整个OnTrigger提前终止");
-                return;
-            }
-        }
+        // 3. 验证 added 前置条件 (仅数字配置会进入此处)
+        if (ExecuteEffectsAndCheckCondition(triggerAddedEffects, "Added(数字配置)")) return;
 
-        // 4. 执行triggerEffects（如果有）
+        // 4. 前置条件通过，开始执行真正的 Trigger 效果
         if (triggerEffects != null && triggerEffects.Count > 0)
         {
-            Debug.Log($"[Card] OnTrigger: 执行triggerEffects，数量: {triggerEffects.Count}");
-            for (int i = 0; i < triggerEffects.Count; i++)
-            {
-                var effect = triggerEffects[i];
-                string paramStr = effect.parameters != null ? string.Join(", ", effect.parameters) : "无参数";
-                Debug.Log($"[Card] OnTrigger:  trigger效果{i+1}: {effect.methodName}({paramStr})");
-            }
             ExecuteEffectList(triggerEffects);
         }
-        else
-        {
-            Debug.Log($"[Card] OnTrigger: triggerEffects为空或数量为0");
-        }
 
-        // 5. 基本效果：将卡牌的三种属性添加到DataManager（在triggerEffects之后执行，以便使用可能被修改的属性值）
+        // 5. 将卡牌的三种属性添加到DataManager
         if (CardEffect.Instance != null)
         {
             CardEffect.Instance.SetCallerCard(this);
             CardEffect.Instance.Execute("addCardNatureToDataManager", new object[0]);
         }
 
-        // 6. 检查卡牌是否条件失败（如beMade/beBroken条件不满足）
-        // 注意：条件失败的检查在addCardNatureToDataManager中已经处理，但添加监听器需要单独检查
-        if (CardEffect.Instance != null && CardEffect.Instance.IsConditionFailed(this.id))
+        // 6. 添加OnNextTurn监听器
+        if (CardEffect.Instance != null && !CardEffect.Instance.IsConditionFailed(this.id))
         {
-            Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 条件失败，不添加OnNextTurn监听器");
-            // 条件失败标记不清除，留给InDeckState处理
-            // CardEffect.Instance.ClearConditionFailed(this.id);
-            return;
+            DayManager.Instance.GetNextDayEvent().AddListener(OnNextTurn);
         }
-
-        // 7. 添加OnNextTurn监听器
-        DayManager.Instance.GetNextDayEvent().AddListener(OnNextTurn);
     }
 
     public void OnNextTurn() => ExecuteEffectList(nextTurnEffects);
 
-    /// <summary>
-    /// 获取解析后的描述文本，将{变量名}替换为实际值
-    /// </summary>
     public string GetParsedDescription()
     {
-        if (string.IsNullOrEmpty(description))
-            return string.Empty;
+        if (string.IsNullOrEmpty(description)) return string.Empty;
 
-        // 使用正则表达式替换所有{变量名}模式
         return Regex.Replace(description, @"\{([^}]+)\}", match =>
         {
             if (match.Success && match.Groups.Count > 1)
@@ -460,83 +382,49 @@ public class Card
                 string fieldName = match.Groups[1].Value;
                 return GetFieldValue(fieldName);
             }
-            return match.Value; // 如果匹配失败，返回原始文本
+            return match.Value;
         });
     }
 
-    /// <summary>
-    /// 根据字段名获取对应的值
-    /// </summary>
     private string GetFieldValue(string fieldName)
     {
         switch (fieldName.ToLower())
         {
-            case "id":
-                return id.ToString();
-            case "nature1":
-                return nature1.ToString();
-            case "nature2":
-                return nature2.ToString();
-            case "nature3":
-                return nature3.ToString();
-            case "name":
-                return name ?? string.Empty;
-            case "sale":
-                return sale.ToString();
-            case "made":
-                return made ?? string.Empty;
-            case "broken":
-                return broken ?? string.Empty;
-            case "added":
-                return added ?? string.Empty;
-            case "buff":
-                return buff ?? string.Empty;
-            case "trigger":
-                return trigger ?? string.Empty;
-            case "nextturn":
-                return nextTurn ?? string.Empty;
-            case "description":
-                return description ?? string.Empty;
-            default:
-                // 如果字段名未知，返回原始占位符（或者空字符串）
-                Debug.LogWarning($"[Card] 未知的描述变量: {{{fieldName}}}");
-                return string.Empty;
+            case "id": return id.ToString();
+            case "nature1": return nature1.ToString();
+            case "nature2": return nature2.ToString();
+            case "nature3": return nature3.ToString();
+            case "name": return name ?? string.Empty;
+            case "sale": return sale.ToString();
+            case "made": return made ?? string.Empty;
+            case "broken": return broken ?? string.Empty;
+            case "added": return added ?? string.Empty;
+            case "buff": return buff ?? string.Empty;
+            case "trigger": return trigger ?? string.Empty;
+            case "nextturn": return nextTurn ?? string.Empty;
+            case "description": return description ?? string.Empty;
+            default: return string.Empty;
         }
     }
 
-    /// <summary>
-    /// 尝试修改added字段的数值（仅当added为int类型时有效）
-    /// </summary>
-    /// <param name="delta">要增加/减少的数值</param>
-    /// <returns>是否成功修改</returns>
     public bool TryModifyAddedValue(int delta)
     {
-        if (string.IsNullOrEmpty(added))
-        {
-            Debug.LogWarning($"[Card] TryModifyAddedValue: added字段为空，无法修改");
-            return false;
-        }
+        if (string.IsNullOrEmpty(added)) return false;
 
-        // 检查是否为int类型（纯数字且不包含括号）
+        // 检查是否为纯数字类型
         if (!added.Contains("(") && !added.Contains(")") && int.TryParse(added.Trim(), out int currentValue))
         {
-            // 计算新值
             int newValue = currentValue + delta;
-
-            // 更新added字段
             added = newValue.ToString();
 
-            // 重新解析added效果
-            ParseFieldWithIntSupport(added, addedEffects, "added");
+            // 重新解析 added 字段，更新 triggerAddedEffects 列表
+            ParseFieldWithIntSupport(added, triggerAddedEffects, addedEffects, "added");
 
-            Debug.Log($"[Card] TryModifyAddedValue: 成功修改added字段 {currentValue} → {newValue} (delta: {delta})");
+            Debug.Log($"[Card] 成功修改 added 字段数值: {currentValue} → {newValue}");
             return true;
         }
-        else
-        {
-            // added字段为string类型，无法直接修改数值
-            Debug.LogWarning($"[Card] TryModifyAddedValue: added字段为string类型，无法直接修改数值。当前值: '{added}'");
-            return false;
-        }
+        
+        Debug.LogWarning($"[Card] added 字段为字符串类型，无法作为纯数字修改。当前值: '{added}'");
+        return false;
     }
 }
