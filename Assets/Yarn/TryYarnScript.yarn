@@ -100,3 +100,16 @@ You cross the bridge and continue your journey.
 
 // Continue your story here!
 ===
+
+title : start
+---
+<<play_bgm lake_happy2>>
+<<play_whitenoise bgWater_springwater1>>
+（鲜花簇拥着我们，溪水潺潺。）
+B:花开得真好。
+（岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。）
+
+
+
+===
+
