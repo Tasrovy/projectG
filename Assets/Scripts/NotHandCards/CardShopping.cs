@@ -70,13 +70,86 @@ public class CardShopping : MonoBehaviour
             Debug.LogWarning($"[CardShopping] 牌库数据不足6张！当前数量: {pool.Count}");
         }
 
-        for (int i = 0; i < 6; i++)
+        // 决定6个卡位的类型要求，保证三种类型至少各出现一次
+        List<int> requiredTypes = new List<int> { 1, 2, 3, 0, 0, 0 }; 
+        // 0代表任意类型
+        
+        // 打乱类型要求
+        for (int i = 0; i < requiredTypes.Count; i++)
         {
-            if (pool.Count > 0)
+            int temp = requiredTypes[i];
+            int randomIndex = Random.Range(i, requiredTypes.Count);
+            requiredTypes[i] = requiredTypes[randomIndex];
+            requiredTypes[randomIndex] = temp;
+        }
+
+        for (int i = 0; i < 6 && pool.Count > 0; i++)
+        {
+            CardData selectedData = PopRandomWeighted(pool, requiredTypes[i]);
+            if (selectedData != null)
             {
-                AssignCardTo(sellCards[i], PopRandom(pool));
+                AssignCardTo(sellCards[i], selectedData);
             }
         }
+    }
+
+    private CardData PopRandomWeighted(List<CardData> pool, int requiredType)
+    {
+        // 1. 筛选符合类型要求的卡牌
+        List<CardData> validCards = new List<CardData>();
+        foreach (var card in pool)
+        {
+            int cardType = card.id / 10000;
+            if (requiredType == 0 || cardType == requiredType)
+            {
+                validCards.Add(card);
+            }
+        }
+
+        // 如果没有符合类型的卡牌（比如某类型卡牌已经被抽完），则降级为不限制类型
+        if (validCards.Count == 0 && requiredType != 0)
+        {
+            validCards.AddRange(pool);
+        }
+
+        if (validCards.Count == 0) return null;
+
+        // 2. 根据稀有度计算权重
+        // 稀有度：(id / 1000) % 10，假设1为普通, 2为稀有, 3为史诗
+        // 权重可以自己调整，这里假设 1: 60, 2: 30, 3: 10
+        int totalWeight = 0;
+        List<int> weights = new List<int>();
+
+        foreach (var card in validCards)
+        {
+            int rarity = (card.id / 1000) % 10;
+            int weight = 10; // 默认权重
+            if (rarity == 1) weight = 60;
+            else if (rarity == 2) weight = 30;
+            else if (rarity == 3) weight = 10;
+            
+            weights.Add(weight);
+            totalWeight += weight;
+        }
+
+        // 3. 随机抽取
+        int randomValue = Random.Range(0, totalWeight);
+        int currentWeight = 0;
+        int selectedIndex = 0;
+
+        for (int i = 0; i < validCards.Count; i++)
+        {
+            currentWeight += weights[i];
+            if (randomValue < currentWeight)
+            {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        CardData selectedData = validCards[selectedIndex];
+        pool.Remove(selectedData);
+        return selectedData;
     }
 
     private void AssignCardTo(Transform cardTransform, CardData data)
@@ -115,14 +188,6 @@ public class CardShopping : MonoBehaviour
         {
             Debug.LogError($"[CardShopping] 物体 {cardTransform.name} 身上没找到 CardObject 脚本！");
         }
-    }
-
-    private CardData PopRandom(List<CardData> pool)
-    {
-        int index = Random.Range(0, pool.Count);
-        CardData data = pool[index];
-        pool.RemoveAt(index);
-        return data;
     }
 
     /// <summary>
