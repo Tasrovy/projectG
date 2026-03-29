@@ -16,6 +16,15 @@ public class InHandState : stateBase, ICardState
 
     public void EnterState()
     {
+        RepairList2();
+        List<GameObject> handList = CardSum.Instance.HandCardList;
+        if (handList.Contains(this.gameObject))
+        {
+            Debug.LogWarning($"卡片 {this.name} 已存在于手牌中，跳过添加");
+            return;
+        }
+
+
         CardSum.Instance.HandCardList.Add(this.gameObject);
         handID = CardSum.Instance.HandCardList.Count;
         
@@ -45,9 +54,59 @@ public class InHandState : stateBase, ICardState
 
     }
 
-
-    void outHandList()
+    // 修复列表：移除所有 null 条目 + 去重（保留第一个）
+    public void RepairList()
     {
+        // 1. 移除所有 null
+        int removedNull = CardSum.Instance.HandCardList.RemoveAll(item => item == null);
+        List<GameObject> handList= CardSum.Instance.HandCardList;
+
+        // 2. 去重（保留第一次出现的位置）
+        var uniqueList = new List<GameObject>();
+        foreach (var card in handList)
+        {
+            if (!uniqueList.Contains(card))
+                uniqueList.Add(card);
+        }
+
+        int removedDuplicate = handList.Count - uniqueList.Count;
+        handList = uniqueList;
+
+        if (removedNull > 0 || removedDuplicate > 0)
+        {
+            Debug.Log($"修复列表：移除 null ({removedNull})，移除重复 ({removedDuplicate})，当前数量：{handList.Count}");
+        }
+    }
+    public void RepairList2()
+    {
+        List<GameObject> handList = CardSum.Instance.HandCardList;
+
+        // 1. 移除 null
+        int removedNull = handList.RemoveAll(item => item == null);
+
+        // 2. 原地去重（从后往前删除重复项）
+        int removedDuplicate = 0;
+        for (int i = 0; i < handList.Count; i++)
+        {
+            GameObject current = handList[i];
+            // 从后往前查找并删除重复
+            for (int j = handList.Count - 1; j > i; j--)
+            {
+                if (handList[j] == current)
+                {
+                    handList.RemoveAt(j);
+                    removedDuplicate++;
+                }
+            }
+        }
+
+        if (removedNull > 0 || removedDuplicate > 0)
+        {
+            Debug.Log($"修复列表：移除 null ({removedNull})，移除重复 ({removedDuplicate})，当前数量：{handList.Count}");
+        }
+    }
+        void outHandList()
+        {
         // 获取当前手牌列表
         List<GameObject> handList = CardSum.Instance.HandCardList;
 
