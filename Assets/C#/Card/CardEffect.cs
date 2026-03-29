@@ -23,6 +23,11 @@ public class CardEffect : Singleton<CardEffect>
     // 记录条件失败的卡牌ID（当beMade/beBroken条件不满足时）
     private static HashSet<int> conditionFailedCardIds = new HashSet<int>();
 
+    // 等待BeginAction触发的标志
+    private bool waitingForBeginAction = false;
+    // BeginAction监听器引用
+    private UnityEngine.Events.UnityAction beginActionListener = null;
+
 
     protected override void Awake()
     {
@@ -79,6 +84,17 @@ public class CardEffect : Singleton<CardEffect>
         {
             Debug.Log($"[CardEffect] StartExecutingNextChain: 效果链队列为空，停止执行");
             isExecutingChain = false;
+            // 清理任何可能存在的BeginAction订阅
+            if (waitingForBeginAction)
+            {
+                waitingForBeginAction = false;
+                if (beginActionListener != null && ShengZhiAndJianZhiHelper.Instance != null)
+                {
+                    ShengZhiAndJianZhiHelper.Instance.BeginAction.RemoveListener(beginActionListener);
+                    beginActionListener = null;
+                }
+                Debug.Log($"[CardEffect] StartExecutingNextChain: 清理残留的BeginAction订阅");
+            }
             return;
         }
 
@@ -88,6 +104,17 @@ public class CardEffect : Singleton<CardEffect>
         currentEffectIndex = 0;
         isExecutingChain = true;
         waitingForAsync = false;
+        // 重置BeginAction等待标志
+        if (waitingForBeginAction)
+        {
+            waitingForBeginAction = false;
+            if (beginActionListener != null && ShengZhiAndJianZhiHelper.Instance != null)
+            {
+                ShengZhiAndJianZhiHelper.Instance.BeginAction.RemoveListener(beginActionListener);
+                beginActionListener = null;
+            }
+            Debug.Log($"[CardEffect] StartExecutingNextChain: 重置BeginAction等待标志并清理订阅");
+        }
 
         Debug.Log($"[CardEffect] StartExecutingNextChain: 开始执行卡牌 {card?.name ?? "null"} (ID:{card?.id ?? -1}) 的效果链，效果数量:{effects.Count}，队列剩余:{effectChainQueue.Count}");
         // 开始执行第一个效果
@@ -133,10 +160,10 @@ public class CardEffect : Singleton<CardEffect>
     {
         Debug.Log($"[CardEffect] ExecuteSingleEffect: 开始执行单个效果，方法:{effect.methodName}");
         // 检查礼品卡条件（beMade/beBroken特有）
-        if (effect.methodName == "beMade")
+        if (effect.methodName == "beMade" || effect.methodName == "_beMadeDirect")
         {
             int giftCardNum = CardManager.Instance.GetGiftCardNum();
-            Debug.Log($"[CardEffect] ExecuteSingleEffect: beMade检查礼品卡数量，当前数量: {giftCardNum}");
+            Debug.Log($"[CardEffect] ExecuteSingleEffect: {effect.methodName}检查礼品卡数量，当前数量: {giftCardNum}");
             // beMade 强制要求 GiftCardNum > 0
             if (giftCardNum <= 0)
             {
@@ -153,20 +180,22 @@ public class CardEffect : Singleton<CardEffect>
 
             // 设置异步等待标志
             waitingForAsync = true;
+            // 订阅BeginAction事件，阻塞执行直到用户选择完成
+            SubscribeToBeginAction();
         }
-        else if (effect.methodName == "beBroken")
+        else if (effect.methodName == "beBroken" || effect.methodName == "_beBrokenDirect")
         {
             int threshold = 0;
             if (effect.parameters != null && effect.parameters.Length > 0)
                 threshold = Convert.ToInt32(effect.parameters[0]);
 
             int giftCardNum = CardManager.Instance.GetGiftCardNum();
-            Debug.Log($"[CardEffect] ExecuteSingleEffect: beBroken检查礼品卡数量，当前数量: {giftCardNum}，阈值: {threshold}，条件: {giftCardNum} > {threshold}");
+            Debug.Log($"[CardEffect] ExecuteSingleEffect: {effect.methodName}检查礼品卡数量，当前数量: {giftCardNum}，阈值: {threshold}，条件: {giftCardNum} >= {threshold}");
 
-            // beBroken 要求其 大于 参数
-            if (giftCardNum <= threshold)
+            // beBroken 要求其 大于等于 参数（当数量相等时也可以正常触发）
+            if (giftCardNum < threshold)
             {
-                Debug.Log($"{currentChainCard.name} 消耗失败：当前礼品卡数量 {giftCardNum} 不足设定值 {threshold}，停止执行当前效果链");
+                Debug.Log($"{currentChainCard.name} 消耗失败：当前礼品卡数量 {giftCardNum} 小于设定值 {threshold}，停止执行当前效果链");
                 // 记录条件失败的卡牌ID
                 if (currentChainCard != null)
                 {
@@ -179,6 +208,8 @@ public class CardEffect : Singleton<CardEffect>
 
             // 设置异步等待标志
             waitingForAsync = true;
+            // 订阅BeginAction事件，阻塞执行直到用户选择完成
+            SubscribeToBeginAction();
         }
 
         // 执行效果
@@ -191,6 +222,17 @@ public class CardEffect : Singleton<CardEffect>
             Debug.LogError($"[CardEffect] 执行效果 {effect.methodName} 时出错: {ex.InnerException?.Message ?? ex.Message}");
             // 重置异步等待标志，防止死锁
             waitingForAsync = false;
+            // 如果正在等待BeginAction，清理订阅
+            if (waitingForBeginAction)
+            {
+                waitingForBeginAction = false;
+                if (beginActionListener != null && ShengZhiAndJianZhiHelper.Instance != null)
+                {
+                    ShengZhiAndJianZhiHelper.Instance.BeginAction.RemoveListener(beginActionListener);
+                    beginActionListener = null;
+                }
+                Debug.Log($"[CardEffect] ExecuteSingleEffect: 发生异常，已清理BeginAction订阅");
+            }
         }
 
         // 如果不是异步效果，立即执行下一个
@@ -209,6 +251,15 @@ public class CardEffect : Singleton<CardEffect>
     /// </summary>
     private void OnSelectCardEnd(object obj)
     {
+        Debug.Log($"[CardEffect] OnSelectCardEnd: 收到selectCardEnd事件，waitingForBeginAction={waitingForBeginAction}，waitingForAsync={waitingForAsync}");
+
+        // 如果正在等待BeginAction，则忽略selectCardEnd事件
+        if (waitingForBeginAction)
+        {
+            Debug.Log($"[CardEffect] OnSelectCardEnd: 正在等待BeginAction，忽略selectCardEnd事件");
+            return;
+        }
+
         if (waitingForAsync)
         {
             Debug.Log($"[CardEffect] OnSelectCardEnd: 用户选择卡牌完成，异步操作结束");
@@ -222,14 +273,68 @@ public class CardEffect : Singleton<CardEffect>
         }
     }
 
-    public void addNature(int id, int num)
+    /// <summary>
+    /// 订阅BeginAction事件
+    /// </summary>
+    private void SubscribeToBeginAction()
+    {
+        Debug.Log($"[CardEffect] SubscribeToBeginAction: 开始订阅，waitingForBeginAction={waitingForBeginAction}，beginActionListener={beginActionListener != null}");
+
+        if (ShengZhiAndJianZhiHelper.Instance == null)
+        {
+            Debug.LogError("[CardEffect] SubscribeToBeginAction: ShengZhiAndJianZhiHelper.Instance为null");
+            return;
+        }
+
+        // 如果已有监听器，先移除
+        if (beginActionListener != null)
+        {
+            Debug.Log($"[CardEffect] SubscribeToBeginAction: 移除旧的监听器");
+            ShengZhiAndJianZhiHelper.Instance.BeginAction.RemoveListener(beginActionListener);
+        }
+
+        beginActionListener = OnBeginActionTriggered;
+        ShengZhiAndJianZhiHelper.Instance.BeginAction.AddListener(beginActionListener);
+        waitingForBeginAction = true;
+        waitingForAsync = true; // 为了向后兼容
+        Debug.Log($"[CardEffect] SubscribeToBeginAction: 已订阅BeginAction事件，ShengZhiAndJianZhiHelper.Instance.BeginAction监听器数量: 需要手动检查");
+    }
+
+    /// <summary>
+    /// BeginAction触发时的回调
+    /// </summary>
+    private void OnBeginActionTriggered()
+    {
+        Debug.Log($"[CardEffect] OnBeginActionTriggered: BeginAction触发，waitingForBeginAction={waitingForBeginAction}");
+
+        if (waitingForBeginAction)
+        {
+            Debug.Log("[CardEffect] OnBeginActionTriggered: BeginAction已触发，恢复效果链执行");
+            waitingForBeginAction = false;
+            waitingForAsync = false; // 清除异步等待标志
+            // 移除监听器
+            if (beginActionListener != null && ShengZhiAndJianZhiHelper.Instance != null)
+            {
+                ShengZhiAndJianZhiHelper.Instance.BeginAction.RemoveListener(beginActionListener);
+                beginActionListener = null;
+            }
+            // 继续执行下一个效果
+            ExecuteNextEffect();
+        }
+        else
+        {
+            Debug.Log($"[CardEffect] OnBeginActionTriggered: 收到BeginAction但waitingForBeginAction=false");
+        }
+    }
+
+    public void addNature(int num, int id)
     {
         Debug.Log($"[CardEffect] addNature: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 增加属性 {id} 值 {num}");
         CallerCard.Add(id, num);
         Debug.Log($"[CardEffect] addNature: 执行完成，当前属性{id}值为 {CallerCard?.GetNatureById(id) ?? -1}");
     }
 
-    public void addNatureTo(int id, int num)
+    public void addNatureTo(int num, int id)
     {
         Debug.Log($"[CardEffect] addNatureTo: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 设置属性 {id} 目标值 {num}，当前值 {CallerCard?.GetNatureById(id) ?? -1}");
         CallerCard.AddTo(id, num);
@@ -333,6 +438,14 @@ public class CardEffect : Singleton<CardEffect>
     public void beMade(int num)
     {
         Debug.Log($"[CardEffect] beMade: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 开始制作，数量:{num}");
+
+        // 如果num为0，直接返回
+        if (num == 0)
+        {
+            Debug.Log($"[CardEffect] beMade: num为0，直接返回");
+            return;
+        }
+
         ShengZhiAndJianZhiHelper.Instance.SetNum(num);
         ShengZhiAndJianZhiHelper.Instance.ShengZhi();
         Debug.Log($"[CardEffect] beMade: 制作指令已发送，等待用户选择卡牌");
@@ -341,6 +454,14 @@ public class CardEffect : Singleton<CardEffect>
     public void beBroken(int num)
     {
         Debug.Log($"[CardEffect] beBroken: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 开始消耗，阈值:{num}");
+
+        // 如果num为0，直接返回
+        if (num == 0)
+        {
+            Debug.Log($"[CardEffect] beBroken: num为0，直接返回");
+            return;
+        }
+
         ShengZhiAndJianZhiHelper.Instance.SetNum(num);
         ShengZhiAndJianZhiHelper.Instance.JianZhi();
         Debug.Log($"[CardEffect] beBroken: 消耗指令已发送，等待用户选择卡牌");
@@ -606,5 +727,110 @@ public class CardEffect : Singleton<CardEffect>
         {
             Debug.Log($"[CardEffect] ClearConditionFailed: 清除卡牌ID {cardId} 的条件失败标记");
         }
+    }
+
+    // --- int类型字段的直接执行方法（避免循环调用） ---
+
+    /// <summary>
+    /// int类型made字段的直接执行方法（卡牌打出时触发）
+    /// </summary>
+    public void _beMadeDirect(int num)
+    {
+        Debug.Log($"[CardEffect] _beMadeDirect: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 直接执行增殖，数量:{num}");
+
+        // 检查CallerCard是否有效
+        if (CallerCard == null)
+        {
+            Debug.LogError($"[CardEffect] _beMadeDirect: CallerCard为null，无法执行增殖");
+            return;
+        }
+
+        // 如果num为0，直接返回
+        if (num == 0)
+        {
+            Debug.Log($"[CardEffect] _beMadeDirect: num为0，直接返回");
+            return;
+        }
+
+        // 检查ShengZhiAndJianZhiHelper实例是否存在
+        if (ShengZhiAndJianZhiHelper.Instance == null)
+        {
+            Debug.LogError($"[CardEffect] _beMadeDirect: ShengZhiAndJianZhiHelper.Instance 为null，无法执行增殖");
+            return;
+        }
+
+        Debug.Log($"[CardEffect] _beMadeDirect: 设置增殖数量为 {num}");
+        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
+
+        Debug.Log($"[CardEffect] _beMadeDirect: 调用ShengZhi()方法，这将触发CallIt()发送selectCardBegin事件");
+        ShengZhiAndJianZhiHelper.Instance.ShengZhi();
+        Debug.Log($"[CardEffect] _beMadeDirect: 直接增殖指令已发送，等待用户选择卡牌");
+    }
+
+    /// <summary>
+    /// int类型broken字段的直接执行方法（卡牌打出时触发）
+    /// </summary>
+    public void _beBrokenDirect(int num)
+    {
+        Debug.Log($"[CardEffect] _beBrokenDirect: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 直接执行消耗，数量:{num}");
+
+        // 检查CallerCard是否有效
+        if (CallerCard == null)
+        {
+            Debug.LogError($"[CardEffect] _beBrokenDirect: CallerCard为null，无法执行消耗");
+            return;
+        }
+
+        // 如果num为0，直接返回
+        if (num == 0)
+        {
+            Debug.Log($"[CardEffect] _beBrokenDirect: num为0，直接返回");
+            return;
+        }
+
+        // 检查ShengZhiAndJianZhiHelper实例是否存在
+        if (ShengZhiAndJianZhiHelper.Instance == null)
+        {
+            Debug.LogError($"[CardEffect] _beBrokenDirect: ShengZhiAndJianZhiHelper.Instance 为null，无法执行消耗");
+            return;
+        }
+
+        Debug.Log($"[CardEffect] _beBrokenDirect: 设置消耗数量为 {num}");
+        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
+
+        Debug.Log($"[CardEffect] _beBrokenDirect: 调用JianZhi()方法，这将触发CallIt()发送selectCardBegin事件");
+        ShengZhiAndJianZhiHelper.Instance.JianZhi();
+        Debug.Log($"[CardEffect] _beBrokenDirect: 直接消耗指令已发送，等待用户选择卡牌");
+    }
+
+    /// <summary>
+    /// int类型added字段的直接执行方法（卡牌打出时触发）
+    /// </summary>
+    public void _beAddedDirect(int num, int times = 1)
+    {
+        Debug.Log($"[CardEffect] _beAddedDirect: 卡牌 {CallerCard?.name ?? "null"} (ID:{CallerCard?.id ?? -1}) 直接执行生长，数量:{num}, 次数:{times}");
+
+        // 检查CallerCard是否有效
+        if (CallerCard == null)
+        {
+            Debug.LogError($"[CardEffect] _beAddedDirect: CallerCard为null，无法执行生长");
+            return;
+        }
+
+        // 如果num为0，直接返回（虽然解析阶段应该已经跳过，但这里作为安全措施）
+        if (num == 0)
+        {
+            Debug.Log($"[CardEffect] _beAddedDirect: num为0，直接返回");
+            return;
+        }
+
+        // 直接执行生长逻辑，不通过beAdded->OnAdded循环
+        for (int i = 0; i < times; i++)
+        {
+            CallerCard.Add(3, num); // 默认添加到属性3
+            Debug.Log($"[CardEffect] _beAddedDirect: 第{i+1}次生长，增加属性3值 {num}，当前值: {CallerCard?.GetNatureById(3) ?? -1}");
+        }
+
+        Debug.Log($"[CardEffect] _beAddedDirect: 直接生长执行完成");
     }
 }
