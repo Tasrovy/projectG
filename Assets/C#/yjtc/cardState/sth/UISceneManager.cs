@@ -11,6 +11,7 @@ public class UISceneManager : MonoBehaviour
     [SerializeField] private GameObject shopRoot;      // 商店场景
     [SerializeField] private GameObject cardFightRoot; // 卡牌战斗场景
     [SerializeField] private GameObject endRoot;       // 结束场景
+    [SerializeField] private GameObject afterclassRoot;// 放学三选一场景    
 
     [Header("常驻显示节点 (一直显示)")]
     [SerializeField] private GameObject[] alwaysShowRoots; // 常驻显示的GameObjects
@@ -62,7 +63,32 @@ public class UISceneManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 切换到指定的场景
+    /// 专门为了给 UnityEvent（面板上）使用而增加的 string 类型重载！
+    /// 因为 UnityEvent 不支持直接选 Enum 类型。可以在面板里填入 "Talk" 或者 "Shop"
+    /// </summary>
+    public void SwitchToScene(string sceneTypeName)
+    {
+        if (System.Enum.TryParse(sceneTypeName, true, out SceneType parsedScene))
+        {
+            SwitchToScene(parsedScene);
+        }
+        else
+        {
+            Debug.LogWarning($"[UISceneManager] 面板输入的场景名 {sceneTypeName} 解析失败！请检查拼写。");
+        }
+    }
+
+    /// <summary>
+    /// 专门为了给 UnityEvent（面板上）使用而增加的 int 类型重载！
+    /// 直接传入枚举对应的数字进行切换（比如 0=Begin, 1=Talk）
+    /// </summary>
+    public void SwitchToScene(int sceneIndex)
+    {
+        SwitchToScene((SceneType)sceneIndex);
+    }
+
+    /// <summary>
+    /// 切换到指定的场景 (原本的 Enum 版本，供纯代码调用)
     /// </summary>
     public void SwitchToScene(SceneType sceneType)
     {
@@ -90,6 +116,9 @@ public class UISceneManager : MonoBehaviour
             case SceneType.End:
                 if (endRoot != null) endRoot.SetActive(true);
                 break;
+            case SceneType.AfterClass:
+                if (afterclassRoot != null) afterclassRoot.SetActive(true);
+                break;
         }
     }
 
@@ -104,6 +133,7 @@ public class UISceneManager : MonoBehaviour
         if (shopRoot != null) shopRoot.SetActive(false);
         if (cardFightRoot != null) cardFightRoot.SetActive(false);
         if (endRoot != null) endRoot.SetActive(false);
+        if (afterclassRoot != null) afterclassRoot.SetActive(false);
     }
 }
 
@@ -117,5 +147,7 @@ public enum SceneType
     Select,
     Shop,
     CardFight,
+    AfterClass,
+    Work,
     End
 }
