@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class DUEL : Singleton<DUEL>
 {
@@ -9,6 +10,7 @@ public class DUEL : Singleton<DUEL>
     public UnityEvent OnBeginDUEL = new UnityEvent();
     public UnityEvent OnEndDUEL = new UnityEvent();
     public List<GameObject> activeObjects = new List<GameObject>();
+    public Button endButton;
 
     protected override void Awake()
     {
@@ -16,10 +18,13 @@ public class DUEL : Singleton<DUEL>
         Debug.Log("创建决斗单例");
         OnBeginDUEL.AddListener(InitCardObject);
         OnEndDUEL.AddListener(DestroyCardObject);
+        endButton.onClick.AddListener(End);
+        endButton.gameObject.SetActive(false);
     }
     
     public void Begin()
     {
+        endButton.gameObject.SetActive(true);
         Debug.Log("准备开始决斗");
         OnBeginDUEL?.Invoke();
     }
@@ -27,6 +32,10 @@ public class DUEL : Singleton<DUEL>
     public void End()
     {
         OnEndDUEL?.Invoke();
+        Debug.Log("结束决斗");
+        endButton.gameObject.SetActive(false);
+        //测试用
+        Begin();
     }
 
     public void InitCardObject()
@@ -80,7 +89,7 @@ public class DUEL : Singleton<DUEL>
                 CardObject cardObj = go.GetComponent<CardObject>();
                 if (cardObj != null)
                 {
-                    cardObj.card = card;
+                    cardObj.SetCard(card);
                 }
                 newActiveObjects.Add(go);
                 Debug.Log($"[DUEL] 创建新卡牌物体: {card.name} (ID:{card.id})");

@@ -3,122 +3,116 @@ using UnityEngine.Events;
 
 public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
 {
-    public int num;
-    public UnityEvent BeginAction = new UnityEvent();
-    private bool isWaitingForSelection = false;
-    private UnityAction shengZhiListener = null;
-    private UnityAction jianZhiListener = null;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        // 监听selectCardEnd事件，当用户选择卡牌后触发BeginAction
-        EventManage.AddEvent(EventManageEnum.selectCardEnd, OnSelectCardEnd);
-    }
-
-    protected override void OnDestroy()
-    {
-        EventManage.RemoveEvent(EventManageEnum.selectCardEnd, OnSelectCardEnd);
-        base.OnDestroy();
-    }
-
-    private void OnSelectCardEnd(object obj)
-    {
-        Debug.Log($"[ShengZhiAndJianZhiHelper] OnSelectCardEnd: 收到selectCardEnd事件，isWaitingForSelection={isWaitingForSelection}，BeginAction={(BeginAction != null ? "非空" : "null")}");
-
-        if (isWaitingForSelection && BeginAction != null)
-        {
-            Debug.Log("[ShengZhiAndJianZhiHelper] OnSelectCardEnd: 用户选择卡牌完成，触发BeginAction");
-            BeginAction.Invoke();
-            isWaitingForSelection = false;
-
-            // 清除监听器引用
-            shengZhiListener = null;
-            jianZhiListener = null;
-        }
-        else
-        {
-            Debug.Log($"[ShengZhiAndJianZhiHelper] OnSelectCardEnd: 条件不满足，不触发BeginAction。isWaitingForSelection={isWaitingForSelection}，BeginAction={(BeginAction != null ? "非空" : "null")}");
-        }
-    }
+    private int _targetNum; 
 
     public void SetNum(int num)
     {
-        this.num = num;
-    }
-
-    public void CallIt()
-    {
-        Debug.Log("[ShengZhiAndJianZhiHelper] CallIt: 发送selectCardBegin事件，进入卡牌选择状态");
-        EventManage.SendEvent(EventManageEnum.selectCardBegin, null);
+        _targetNum = num;
     }
 
     public void ShengZhi()
     {
-        Debug.Log("[ShengZhiAndJianZhiHelper] ShengZhi: 开始增殖流程");
-        isWaitingForSelection = true;
+        CardSelector.Instance.StartSelection(
+            onConfirm: (selectedCard) => 
+            {
+                Card templateSnapshot = new Card();
+                templateSnapshot.InitCard(selectedCard);
+                int copyNum = _targetNum; 
 
-        // 移除旧的增殖监听器（如果存在）
-        if (shengZhiListener != null)
-        {
-            BeginAction.RemoveListener(shengZhiListener);
-            shengZhiListener = null;
-        }
-
-        // 创建并添加新的增殖监听器
-        shengZhiListener = () =>
-        {
-            Card s = CardSum.Instance.selectedObj.GetComponent<Card>();
-            ShengZhi(s);
-        };
-        BeginAction.AddListener(shengZhiListener);
-
-        Debug.Log("[ShengZhiAndJianZhiHelper] ShengZhi: 增殖监听器已设置，isWaitingForSelection=true，准备发送selectCardBegin事件");
-        CallIt();
-        Debug.Log("[ShengZhiAndJianZhiHelper] ShengZhi: selectCardBegin事件已发送，等待用户选择卡牌");
+                DayManager.Instance.GetNextDayEvent().AddListener(() => 
+                {
+                    for (int i = 0; i < copyNum; i++)
+                    {
+                        Card newCard = new Card();
+                        newCard.InitCard(templateSnapshot); 
+                        newCard.OnAdded(); 
+                        CardManager.Instance.AddCardInHand(newCard); 
+                    }
+                });
+                
+                // 告诉特效管理器：操作成功完成，继续下一个特效
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            },
+            onCancel: () => 
+            {
+                RestoreCallerCard(); 
+                // 告诉特效管理器：操作取消，中断特效链
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            }
+        );
     }
 
     public void JianZhi()
     {
-        Debug.Log("[ShengZhiAndJianZhiHelper] JianZhi: 开始消耗流程");
-        isWaitingForSelection = true;
-
-        // 移除旧的消耗监听器（如果存在）
-        if (jianZhiListener != null)
-        {
-            BeginAction.RemoveListener(jianZhiListener);
-            jianZhiListener = null;
-        }
-
-        // 创建并添加新的消耗监听器
-        jianZhiListener = () =>
-        {
-            Card s = CardSum.Instance.selectedObj.GetComponent<Card>();
-            JianZhi(s);
-            num--;
-            if(num>0) JianZhi();
-        };
-        BeginAction.AddListener(jianZhiListener);
-
-        Debug.Log("[ShengZhiAndJianZhiHelper] JianZhi: 消耗监听器已设置，isWaitingForSelection=true，准备发送selectCardBegin事件");
-        CallIt();
-        Debug.Log("[ShengZhiAndJianZhiHelper] JianZhi: selectCardBegin事件已发送，等待用户选择卡牌");
+        CardSelector.Instance.StartSelection(
+            onConfirm: (selectedCard) => 
+            {
+                selectedCard.OnBroken();
+                CardManager.Instance.BreakCard(selectedCard);
+                
+                // 告诉特效管理器：操作成功完成
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            },
+            onCancel: () => 
+            {
+                RestoreCallerCard(); 
+                // 告诉特效管理器：操作取消
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            }
+        );
     }
 
-    public void ShengZhi(Card c)
+    /// <summary>
+    /// 【新增】：开始生长（增加属性）流程。支持连续多次选牌。
+    /// </summary>
+    public void ShengZhang(int amount, int timesLeft)
     {
-        for (int i = 0; i < num; i++)
-        {
-            Card t = new Card();
-            t.InitCard(c);
-            t.OnAdded();
-            CardManager.Instance.AddCardInHand(t);
-        }
+        Debug.Log($"[Helper] 发起生长选牌，每次增加: {amount}，剩余次数: {timesLeft}");
+
+        CardSelector.Instance.StartSelection(
+            onConfirm: (selectedCard) => 
+            {
+                // 1. 给选中的卡牌增加属性
+                selectedCard.Add(1, amount);
+                selectedCard.Add(2, amount);
+                selectedCard.Add(3, amount);
+                
+                Debug.Log($"[Helper] 成功将 {selectedCard.name} 的属性增加了 {amount}。");
+                
+                // 通知UI刷新手牌数据展示
+                CardManager.Instance.NotifyDeckOrHandChanged();
+
+                // 2. 检查是否还需要继续选牌
+                int remaining = timesLeft - 1;
+                if (remaining > 0)
+                {
+                    Debug.Log($"[Helper] 还有 {remaining} 次机会，再次唤起选牌UI...");
+                    ShengZhang(amount, remaining); // 递归调用，再次开启UI
+                }
+                else
+                {
+                    // 次数全部用尽，正式通知特效管理器继续往下走
+                    Debug.Log($"[Helper] 生长次数全部用完，结束本次技能。");
+                    if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+                }
+            },
+            onCancel: () => 
+            {
+                Debug.Log("[Helper] 生长被取消，准备退回打出的卡牌。");
+                RestoreCallerCard(); 
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            }
+        );
     }
 
-    public void JianZhi(Card c)
+    private void RestoreCallerCard()
     {
-        c.OnBroken();
-        CardManager.Instance.BreakCard(c);
+        Card caller = CardEffect.Instance.CallerCard;
+        if (caller != null)
+        {
+            Card restoredCard = new Card();
+            restoredCard.InitCard(caller); 
+            CardManager.Instance.AddCardInHand(restoredCard);
+        }
     }
 }
