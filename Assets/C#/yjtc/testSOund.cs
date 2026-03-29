@@ -14,14 +14,19 @@ public class testSOund : MonoBehaviour
     void Update()
     {
 
+#if UNITY_EDITOR
 
-
-  
         if (Input.GetKeyDown(KeyCode.S))
         {
             EventManage.SendEvent(EventManageEnum.selectCardBegin, null);
         }
- 
+
+#endif
+
+
+
+
+
 
     }
 }
