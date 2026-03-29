@@ -76,7 +76,7 @@ public class DeckViewer : MonoBehaviour
             Debug.LogWarning("抽牌堆中没有卡牌，无法打开查看。");
             return;
         }
-        print(111);
+        
         // 清除之前显示的卡牌
         ClearDisplayedCards();
 
