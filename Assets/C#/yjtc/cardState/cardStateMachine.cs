@@ -49,7 +49,7 @@ public class cardStateMachine : MonoBehaviour
     private void InitializeFunc()
     {
         if(mainCan == null)
-            mainCan = GameObject.Find("cardUISum").transform;
+            mainCan = GameObject.Find("cardFa").transform;
         transform.SetParent(mainCan);
 
         DraggingState draggingState = this.GetComponent<DraggingState>();
