@@ -34,6 +34,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
     public string defaultName = "Odara";
 
+    [Header("UI Background (对话时显示，结束时隐藏)")]
+    public GameObject dialogueBackground;
+
     public override async YarnTask RunLineAsync(LocalizedLine line, LineCancellationToken token)
     {
         string speakerName = line.CharacterName;
@@ -105,6 +108,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
     public override async YarnTask OnDialogueStartedAsync()
     {
+        // 对话开始时，显示背景
+        if (dialogueBackground != null) dialogueBackground.SetActive(true);
+
         // 对话开始时，仅显示名为 "Player" 和 "Character" 的立绘物体
         GameObject playerObj = GameObject.Find("Player");
         GameObject characterObj = GameObject.Find("Character");
@@ -119,6 +125,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
     public override async YarnTask OnDialogueCompleteAsync()
     {
+        // 结束对话时，隐藏背景
+        if (dialogueBackground != null) dialogueBackground.SetActive(false);
+
         // 结束对话时，清空映射表
         var charControl = GetComponent<CharacterControl>();
         if (charControl != null)
