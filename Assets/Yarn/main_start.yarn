@@ -1,0 +1,84 @@
+﻿
+title: main_start
+---
+<<declare $playNAME = string("a")>>
+<<play_bgm, "lake_happy2">>
+<<play_whitenoise, "bgWater_springwater1">>
+（鲜花簇拥着我们，溪水潺潺。）
+<<set_character_sprite, "Player", "peace_1">>
+<<set_character_sprite, "B", "peace_1">>
+B:花开得真好。
+（岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。）
+<<set_character_sprite, "Player", "happy">>
+<<set_character_sprite, "B", "saying">>
+B:把它们做成花环戴在你头上，唔......
+<<set_character_sprite, B, happy>>
+B:（开心表情）想想那个画面，一定非常可爱吧。
+（B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。）
+<<set_character_sprite, player, saying>>
+{$playNAME}:B，注意安--
+（树枝折断了）
+<<set_character_sprite, player,peace2>>
+{$playNAME}：（惊恐表情）！！！
+（她连人带花一起落下那呜咽的溪水里。）
+<<stop_bgm,>>
+<<set_background, blackGround>>
+<<clear_character_person player>>
+<<clear_character_person B>>
+<<play_bgm, lake_sadStrong>>
+(..........)
+(..........)
+<<jump room1_1>>
+===
+
+title: room1_1
+
+---
+<<play_bgm, lake_sadnor1>>
+<<play_whitenoise, bg1_bgWhiteNoise1>>
+（熟悉的天花板）
+<<set_character_sprite, player, peace_1>>
+{$playNAME}:又是梦啊。
+->看看几点了
+<<jump room1_2>>
+===
+
+title: room1_2
+---
+<<play_bgm, lake_sadnor1>>
+<<play_whitenoise, bg1_bgWhiteNoise1>>
+<<set_character_sprite, player, peace_2>>
+{$playNAME}:已经下午四点半了吗......我睡了这么久？
+（明明刚才还是夜里两点多......）
+<<stop_bgm,>>
+（时间的流逝好像变得不真实。）
+（窗帘上投着窗外的树影，在风里来回飘荡，伴着那些若隐若现的阳光。）
+<<play_bgm, lake_sadnor2>>
+（自从B离开以后，一切都好像褪了色。）
+<<set_character_sprite, player, saying>>
+{$playNAME}:还是起来吃点东西吧。
+<<set_character_sprite, player, peace_1>>
+{$playNAME}:啊...！
+（我踢到了放在床边地毯上的匣子。）
+<<set_background,占坑神秘cg>>
+<<set_character_sprite, player, peace_2>>
+{$playNAME}:：......
+（竟然没有感到痛了。无论是撞伤脚的疼痛，还是她的死亡为我带来的、 如同淅淅沥沥的雨一样绵延的刺痛.......都慢慢消失了。）
+<<set_character_sprite, player, peace_1>>
+（一切是好起来了吗？还是更坏了呢？）
+<<set_character_sprite, player, peace_2>>
+{$playNAME}:.......
+（我尝到苦涩的味道。）
+<<stop_bgm,>>
+<<set_character_sprite, player,sad>>
+（原来我在哭啊。）
+<<play_bgm, lake_sadStrong>>
+{$playNAME}:：我想你了。
+<<set_character_sprite, player,saying>>
+{$playNAME}:呜呜呜.....
+<<set_character_sprite, player,sad>>
+{$playNAME}:如果你还在我身边，那该多好......
+
+===
+
+

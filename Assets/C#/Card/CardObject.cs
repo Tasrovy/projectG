@@ -41,7 +41,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void Effect()
     {
-        card.Effect();
+        card.OnTrigger();
     }
     public int GetID()=>card.id;
     public int GetNature1()=>card.nature1;

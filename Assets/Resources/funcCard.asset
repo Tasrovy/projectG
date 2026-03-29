@@ -25,6 +25,7 @@ MonoBehaviour:
     description: "\u751F\u679D{make}\uFF0C\u4E5F\u5C31\u662F\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
     buff: 
     trigger: 
+    nextTurn: 
   - id: 21002
     nature1: 0
     nature2: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
     description: "\u751F\u957F{add}"
     buff: 
     trigger: 
+    nextTurn: 
   - id: 21003
     nature1: 0
     nature2: 0
@@ -49,6 +51,7 @@ MonoBehaviour:
     description: "\u526A\u679D{break}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269"
     buff: 
     trigger: 
+    nextTurn: addRandomCard(1,1,2)
   - id: 21004
     nature1: 0
     nature2: 0
@@ -61,6 +64,7 @@ MonoBehaviour:
     description: "\u526A\u679D{break}\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
     buff: 
     trigger: addNatureAtSum(30,2)
+    nextTurn: 
   - id: 21005
     nature1: 50
     nature2: 0
@@ -73,6 +77,7 @@ MonoBehaviour:
     description: "\u526A\u679D{break}\uFF0C\u89D2\u8272\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: addNatureAtSum(50,1)
+    nextTurn: 
   - id: 21006
     nature1: 0
     nature2: 0
@@ -85,6 +90,7 @@ MonoBehaviour:
     description: "\u751F\u957F\uFF0C\u5C06\u5361\u4E2D\u6570\u503C\u4E0D\u8DB312\u7684\u90E8\u5206\u52A0\u6210\u523012"
     buff: 
     trigger: beAddedTo(12)
+    nextTurn: 
   - id: 22001
     nature1: 0
     nature2: 0
@@ -97,6 +103,7 @@ MonoBehaviour:
     description: "\u751F\u679D{make}\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
     buff: 
     trigger: 
+    nextTurn: 
   - id: 22002
     nature1: 0
     nature2: 0
@@ -109,6 +116,7 @@ MonoBehaviour:
     description: "\u751F\u679D{make}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u666E\u901A\u793C\u7269"
     buff: 
     trigger: 
+    nextTurn: addRandomCard(1,1,1)
   - id: 22003
     nature1: 100
     nature2: 0
@@ -121,6 +129,7 @@ MonoBehaviour:
     description: "\u526A\u679D{break}\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: addNatureAtSum(100,1);addNatureAtSum(100,3)
+    nextTurn: 
   - id: 22004
     nature1: 0
     nature2: 0
@@ -133,6 +142,7 @@ MonoBehaviour:
     description: "\u82E5\u5361\u7EC4\u4E2D\u6709\u4E09\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F40\uFF0C\u5426\u5219\u751F\u957F5"
     buff: 
     trigger: addWithSame(3,40,5)
+    nextTurn: 
   - id: 22005
     nature1: 0
     nature2: 0
@@ -145,6 +155,7 @@ MonoBehaviour:
     description: "\u82E5\u624B\u4E2D\u6CA1\u6709\u793C\u7269\u724C\uFF0C\u5219\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269\u5361"
     buff: 
     trigger: addRandomCardIfNot(1,1,2)
+    nextTurn: 
   - id: 22006
     nature1: 0
     nature2: 0
@@ -157,6 +168,7 @@ MonoBehaviour:
     description: "\u751F\u957F{add}\uFF0C\u6B64\u724C\u751F\u957F\u7684\u6570\u503C\u63D0\u53474"
     buff: 
     trigger: addAddNum(4)
+    nextTurn: 
   - id: 22007
     nature1: 0
     nature2: 0
@@ -169,6 +181,7 @@ MonoBehaviour:
     description: "\u526A\u679D{break}\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
     buff: 
     trigger: addNatureAtSumIf(40,1)
+    nextTurn: 
   - id: 22008
     nature1: 0
     nature2: 0
@@ -181,6 +194,7 @@ MonoBehaviour:
     description: "\u5C06\u624B\u724C\u4E2D\u7684\u6240\u6709\u793C\u7269\u90FD\u53D8\u6210\u540C\u4E00\u4E2A\u968F\u673A\u793C\u7269"
     buff: 
     trigger: changeHandGift()
+    nextTurn: 
   - id: 23001
     nature1: 0
     nature2: 0
@@ -193,3 +207,4 @@ MonoBehaviour:
     description: "\u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
     buff: 
     trigger: addWIthSameTogether(6,80)
+    nextTurn: 

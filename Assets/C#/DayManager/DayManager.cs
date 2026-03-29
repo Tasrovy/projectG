@@ -27,7 +27,8 @@ public class DayManager : Singleton<DayManager>
 
     public UnityEvent GetNextDayEvent()
     {
-        return dayEvents[dayNumber++];
+        if(!dayEvents.ContainsKey(dayNumber+1)) dayEvents[dayNumber+1] = new UnityEvent();
+        return dayEvents[dayNumber+1];
     }
     
     public void AddDayEvent(int day, UnityAction func)

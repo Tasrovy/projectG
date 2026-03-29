@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 
 public class CardEffect : Singleton<CardEffect>
 {
@@ -8,9 +9,154 @@ public class CardEffect : Singleton<CardEffect>
 
     public Card CallerCard;
 
-    public bool needShengZhi;
-    public int shengZhiNum;
-    
+    // 效果链执行队列
+    private Queue<(Card card, List<EffectCommand> effects)> effectChainQueue = new Queue<(Card, List<EffectCommand>)>();
+    private bool isExecutingChain = false;
+    private Card currentChainCard;
+    private List<EffectCommand> currentChainEffects;
+    private int currentEffectIndex;
+    private bool waitingForAsync = false;
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        // 监听选择卡牌结束事件，表示异步操作完成
+        EventManage.AddEvent(EventManageEnum.selectCardEnd, OnSelectCardEnd);
+    }
+
+    protected override void OnDestroy()
+    {
+        // 移除事件监听
+        EventManage.RemoveEvent(EventManageEnum.selectCardEnd, OnSelectCardEnd);
+        base.OnDestroy();
+    }
+
+    /// <summary>
+    /// 执行效果链（外部调用入口）
+    /// </summary>
+    public void ExecuteEffectList(Card card, List<EffectCommand> effects)
+    {
+        if (effects == null || effects.Count == 0) return;
+
+        effectChainQueue.Enqueue((card, effects));
+
+        if (!isExecutingChain)
+        {
+            StartExecutingNextChain();
+        }
+    }
+
+    /// <summary>
+    /// 开始执行下一个效果链
+    /// </summary>
+    private void StartExecutingNextChain()
+    {
+        if (effectChainQueue.Count == 0)
+        {
+            isExecutingChain = false;
+            return;
+        }
+
+        var (card, effects) = effectChainQueue.Dequeue();
+        currentChainCard = card;
+        currentChainEffects = effects;
+        currentEffectIndex = 0;
+        isExecutingChain = true;
+        waitingForAsync = false;
+
+        // 开始执行第一个效果
+        ExecuteNextEffect();
+    }
+
+    /// <summary>
+    /// 执行下一个效果
+    /// </summary>
+    private void ExecuteNextEffect()
+    {
+        // 如果正在等待异步操作，则暂停执行
+        if (waitingForAsync) return;
+
+        // 检查是否所有效果都已执行完毕
+        if (currentEffectIndex >= currentChainEffects.Count)
+        {
+            // 当前链执行完毕，开始下一个链
+            StartExecutingNextChain();
+            return;
+        }
+
+        var effect = currentChainEffects[currentEffectIndex];
+        currentEffectIndex++;
+
+        // 设置当前调用者卡牌
+        SetCallerCard(currentChainCard);
+
+        // 执行单个效果
+        ExecuteSingleEffect(effect);
+    }
+
+    /// <summary>
+    /// 执行单个效果，处理阻塞逻辑
+    /// </summary>
+    private void ExecuteSingleEffect(EffectCommand effect)
+    {
+        // 检查礼品卡条件（beMade/beBroken特有）
+        if (effect.methodName == "beMade")
+        {
+            // beMade 强制要求 GiftCardNum > 0
+            if (CardManager.Instance.GetGiftCardNum() <= 0)
+            {
+                Debug.Log($"{currentChainCard.name} 制作失败：礼品卡不足");
+                // 跳过当前效果，继续执行下一个
+                ExecuteNextEffect();
+                return;
+            }
+
+            // 设置异步等待标志
+            waitingForAsync = true;
+        }
+        else if (effect.methodName == "beBroken")
+        {
+            int threshold = 0;
+            if (effect.parameters != null && effect.parameters.Length > 0)
+                threshold = Convert.ToInt32(effect.parameters[0]);
+
+            // beBroken 要求其 大于 参数
+            if (CardManager.Instance.GetGiftCardNum() <= threshold)
+            {
+                Debug.Log($"{currentChainCard.name} 消耗失败：当前礼品卡数量 {CardManager.Instance.GetGiftCardNum()} 不足设定值 {threshold}");
+                // 跳过当前效果，继续执行下一个
+                ExecuteNextEffect();
+                return;
+            }
+
+            // 设置异步等待标志
+            waitingForAsync = true;
+        }
+
+        // 执行效果
+        Execute(effect.methodName, effect.parameters);
+
+        // 如果不是异步效果，立即执行下一个
+        if (!waitingForAsync)
+        {
+            ExecuteNextEffect();
+        }
+    }
+
+    /// <summary>
+    /// 选择卡牌结束事件回调
+    /// </summary>
+    private void OnSelectCardEnd(object obj)
+    {
+        if (waitingForAsync)
+        {
+            // 异步操作完成，继续执行下一个效果
+            waitingForAsync = false;
+            ExecuteNextEffect();
+        }
+    }
+
     public void addNature(int id, int num)
     {
         CallerCard.Add(id, num);
@@ -80,8 +226,14 @@ public class CardEffect : Singleton<CardEffect>
 
     public void beMade(int num)
     {
-        shengZhiNum = num;
-        needShengZhi = true;
+        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
+        ShengZhiAndJianZhiHelper.Instance.ShengZhi();
+    }
+
+    public void beBroken(int num)
+    {
+        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
+        ShengZhiAndJianZhiHelper.Instance.JianZhi();
     }
 
     public void addAddNum(int num)
@@ -103,6 +255,51 @@ public class CardEffect : Singleton<CardEffect>
     public void addNatureByOther(int type1, int type2)
     {
         DataManager.Instance.Add(type2, DataManager.Instance.GetNatureById(type1)/2);
+    }
+
+    public void addWithSame(int sameNum, int trueNum, int falseNum)
+    {
+        // 获取当前卡牌在牌堆中的数量
+        int sameCount = CardManager.Instance.GetCardCountInDeck(CallerCard.id);
+
+        if (sameCount >= sameNum)
+        {
+            // 条件满足：生长trueNum
+            beAdded(trueNum, 1);
+        }
+        else
+        {
+            // 条件不满足：生长falseNum
+            beAdded(falseNum, 1);
+        }
+    }
+
+    public void addWithSameTogether(int sameNum, int addNum)
+    {
+        // 获取牌堆中所有相同ID的卡牌
+        List<Card> sameCards = CardManager.Instance.GetCardsInDeckById(CallerCard.id);
+
+        // 检查数量是否满足条件
+        if (sameCards.Count >= sameNum)
+        {
+            // 对这些相同的礼物都执行生长
+            foreach (Card card in sameCards)
+            {
+                // 生长操作：对每张卡增加三种属性值
+                card.Add(1, addNum);
+                card.Add(2, addNum);
+                card.Add(3, addNum);
+            }
+        }
+    }
+
+    public void noConsumed()
+    {
+        // 生成一张和这张牌数据一致的牌加入手牌
+        Card copyCard = new Card();
+        copyCard.InitCard(CallerCard);  // 复制当前卡牌数据
+        copyCard.OnAdded();             // 触发added效果
+        CardManager.Instance.AddCardInHand(copyCard);  // 加入手牌
     }
     // --- 核心执行逻辑 ---
 
