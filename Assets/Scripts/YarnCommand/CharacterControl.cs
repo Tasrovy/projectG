@@ -46,6 +46,12 @@ public class CharacterControl : MonoBehaviour
 
     #region 立绘抖动
     [YarnCommand("set_character_shake")]
+    public static void SetCharacterShake_Yarn(string characterName, string shakeType)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) control.SetCharacterShake(characterName, shakeType);
+    }
+
     public void SetCharacterShake(string characterName, string shakeType)
     {
         var manager = GetComponent<CharacterHighlightManager>();
@@ -70,6 +76,12 @@ public class CharacterControl : MonoBehaviour
 
     #region 差分切换
     [YarnCommand("set_character_sprite")]
+    public static void SetCharacterSpriteStatic(string characterName, string emotion)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) control.SetCharacterSprite(characterName, emotion);
+    }
+
     public void SetCharacterSprite(string characterName, string emotion)
     {
         ChangeCharacterSprite(characterName, emotion);
@@ -118,6 +130,12 @@ public class CharacterControl : MonoBehaviour
 
     #region 立绘切换
     [YarnCommand("set_character_person")]
+    public static void SetCharacterPersonStatic(string objectName, string characterName, string emotion)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) control.SetCharacterPerson(objectName, characterName, emotion);
+    }
+
     public void SetCharacterPerson(string objectName, string characterName, string emotion)
     {
         if (objectName != "Player" && objectName != "Character")
@@ -190,6 +208,12 @@ public class CharacterControl : MonoBehaviour
     }
 
     [YarnCommand("clear_character_person")]
+    public static void ClearCharacterPersonStatic(string objectName)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) control.ClearCharacterPerson(objectName);
+    }
+
     public void ClearCharacterPerson(string objectName)
     {
         if (objectName != "Player" && objectName != "Character")
@@ -280,6 +304,18 @@ public class CharacterControl : MonoBehaviour
 
     #region 场景切换
     [YarnCommand("set_background")]
+    public static IEnumerator SetBackgroundStatic(string backgroundName)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) 
+        {
+            return control.SetBackground(backgroundName);
+        }
+        return DummyCoroutine();
+    }
+
+    private static IEnumerator DummyCoroutine() { yield break; }
+
     public IEnumerator SetBackground(string backgroundName)
     {
         if (string.IsNullOrWhiteSpace(backgroundName))
@@ -357,14 +393,14 @@ public class CharacterControl : MonoBehaviour
     /// 独立封装的路径处理功能：将下划线风格的文件参数变更为资源文件夹路径
     /// 格式示例：folderA_folderB_filename -> folderA/folderB/filename
     /// </summary>
-    private string FormatAudioPath(string rawParam)
+    private static string FormatAudioPath(string rawParam)
     {
         if (string.IsNullOrWhiteSpace(rawParam)) return string.Empty;
         return rawParam.Replace("_", "/");
     }
 
     [YarnCommand("play_bgm")]
-    public void PlayBGMCommand(string audioParam)
+    public static void PlayBGMCommand(string audioParam)
     {
         if (AudioManager.Instance != null)
         {
@@ -386,7 +422,7 @@ public class CharacterControl : MonoBehaviour
     }
 
     [YarnCommand("stop_bgm")]
-    public void StopBGMCommand()
+    public static void StopBGMCommand()
     {
         if (AudioManager.Instance != null)
         {
@@ -399,7 +435,7 @@ public class CharacterControl : MonoBehaviour
     }
 
     [YarnCommand("play_whitenoise")]
-    public void PlayWhiteNoiseCommand(string audioParam)
+    public static void PlayWhiteNoiseCommand(string audioParam)
     {
         if (AudioManager.Instance != null)
         {

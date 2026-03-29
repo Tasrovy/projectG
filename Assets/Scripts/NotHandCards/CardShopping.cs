@@ -17,6 +17,8 @@ public class CardShopping : MonoBehaviour
     [Range(0, 100)][SerializeField][Header("稀有")]
     private int CardChance_3 = 10;
 
+    private CardObject selectedCard;
+
     private void Awake()
     {
         // 1. 动态创建并设置最底层的半透明黑幕
@@ -58,6 +60,17 @@ public class CardShopping : MonoBehaviour
 
     private void OnEnable()
     {
+        selectedCard = null;
+        
+        // 确保所有商品卡牌位每次打开都处于激活可见状态，因为有的可能上次被买走隐藏了
+        for (int i = 0; i < sellCards.Length; i++)
+        {
+            if (sellCards[i] != null) 
+            {
+                sellCards[i].gameObject.SetActive(true);
+            }
+        }
+
         LoadRandomCards();
     }
 
@@ -212,6 +225,7 @@ public class CardShopping : MonoBehaviour
     /// </summary>
     private void ClearCardsData()
     {
+        selectedCard = null;
         for (int i = 0; i < sellCards.Length; i++)
         {
             if (sellCards[i] != null)
@@ -221,4 +235,46 @@ public class CardShopping : MonoBehaviour
             }
         }
     }
+
+    #region 按钮与事件功能
+    /// <summary>
+    /// 被 CardObject 点击时调用，记录当前玩家选中的商店卡牌
+    /// </summary>
+    public void SelectCard(CardObject cardObj)
+    {
+        selectedCard = cardObj;
+        Debug.Log($"[CardShopping] 当前选中了商店卡牌: {(cardObj != null && cardObj.card != null ? cardObj.card.name : "null")}");
+    }
+
+    /// <summary>
+    /// 确认功能（供 UnityEvent 调用）
+    /// 点击后：最近选中的卡牌消失，并加入手牌
+    /// </summary>
+    public void ConfirmPurchase()
+    {
+        if (selectedCard != null && selectedCard.card != null)
+        {
+            if (CardManager.Instance != null && CardManager.Instance.cardInHand != null)
+            {
+                // 将选中的卡牌实体数据加入手牌库
+                CardManager.Instance.cardInHand.Add(selectedCard.card);
+                Debug.Log($"[CardShopping] 购买确认！卡牌 {selectedCard.card.name} 获取并纳入手中。");
+                
+                // 隐藏买走的卡牌
+                selectedCard.gameObject.SetActive(false);
+                
+                // 购买成功后清空当前选中项，必须重选才能再次购买
+                selectedCard = null;
+            }
+            else
+            {
+                Debug.LogError("[CardShopping] 找不到 CardManager 或 cardInHand 列表被置空！");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[CardShopping] 尚未选中任何卡牌或卡牌数据为空！");
+        }
+    }
+    #endregion
 }
