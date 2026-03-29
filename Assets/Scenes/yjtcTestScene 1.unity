@@ -442,7 +442,6 @@ GameObject:
   - component: {fileID: 542249188}
   - component: {fileID: 542249190}
   - component: {fileID: 542249191}
-  - component: {fileID: 542249192}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -521,28 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayNumber: 1
---- !u!114 &542249192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542249187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 413bb97b6517c744eae0bb5d7eec6096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardDatas: []
-  cardSet: []
-  cardInHand: []
-  probRarity1: 0.7
-  probRarity2: 0.2
-  probRarity3: 0.1
-  cardExcelPaths:
-  - giftCard.xlsx
-  - funcCard.xlsx
-  - eventCard.xlsx
+  daySO: {fileID: 0}
 --- !u!1 &1083252779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1696,7 +1674,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8380082528656882894}
   m_HandleRect: {fileID: 1495227606192066370}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
