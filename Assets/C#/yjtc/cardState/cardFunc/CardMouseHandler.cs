@@ -56,6 +56,43 @@ public class CardMouseHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         if(cardStateMachine.CurrentState==CardState.InHand|| cardStateMachine.CurrentState == CardState.Dragging)
         {
+
+            if(CardSum.Instance.selectCarding)
+            {
+                if(Input.GetMouseButtonDown(0))
+                {
+                    if (IsMouseInsideUsingCorners() && !CardSum.Instance.dragingCard)
+                    {
+                        cardStateMachine.ChangeState(CardState.Dragging);
+                        following = true;
+                        CardSum.Instance.dragingCard = true;
+                    }
+                }
+
+                if(Input.GetMouseButtonUp(0) && following)
+                {
+                    if (cardJudge.Instance.IsMouseInsideUsingCorners())
+                    {
+                        print($"´«µÝ×Ô¼º{this.name}");
+                        cardStateMachine.ChangeState(cardStateMachine.preStayState);
+                        following = false;
+                        CardSum.Instance.dragingCard = false;
+                        EventManage.SendEvent(EventManageEnum.selectCardEnd, null);
+
+                        EventManage.SendEvent(EventManageEnum.getSelectedCard, this.gameObject);
+                        CardSum.Instance.selectedObj = this.gameObject;
+                        return;
+                    }
+
+                    cardStateMachine.ChangeState(cardStateMachine.preStayState);
+                    following = false;
+                    CardSum.Instance.dragingCard = false;
+                }
+                    
+                return;
+            }
+
+
             if (Input.GetMouseButtonDown(0))
             {
                 if (IsMouseInsideUsingCorners() && !CardSum.Instance.dragingCard)
@@ -70,8 +107,9 @@ public class CardMouseHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             {
                 if(cardJudge.Instance.IsMouseInsideUsingCorners())
                 {
-                    cardStateMachine.ChangeState(CardState.InUsing);
                     CardSum.Instance.dragingCard = false;
+                    cardStateMachine.ChangeState(CardState.InUsing);
+                    
                     return;
                 }
                 
