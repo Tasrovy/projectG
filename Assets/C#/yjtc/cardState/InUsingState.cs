@@ -13,6 +13,11 @@ public class InUsingState : stateBase,ICardState
     {
         EventManage.SendEvent(EventManageEnum.cardUsed, "ռ�ӣ��������ſ�������");
         this.gameObject.GetComponent<CardObject>().Effect();
+        if (true)
+        {
+
+        }
+        
         print($"����{this.name}��ʹ���ˣ�����ʹ��״̬");
         cardStateMachine.ChangeState(CardState.InDeck);
     }
