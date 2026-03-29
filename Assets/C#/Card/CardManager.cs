@@ -256,7 +256,7 @@ public class CardManager : Singleton<CardManager>
     {
         if (num <= 0) return;
 
-        // 1. 先获取该 ID 对应的基础数据，以防需要生成新卡
+        // 1. 先获取该 ID 对应的基础数据
         CardData targetData = GetCardDataById(cardID);
         if (targetData == null)
         {
@@ -267,27 +267,12 @@ public class CardManager : Singleton<CardManager>
         // 2. 循环执行 num 次添加操作
         for (int i = 0; i < num; i++)
         {
-            // 在牌堆中查找是否有该 ID 的卡牌 (获取第一个匹配的索引)
-            int indexInSet = cardSet.FindIndex(c => c.id == cardID);
+            // 直接生成新卡，不经过牌堆检索
+            Card newCard = new Card();
+            newCard.InitCard(targetData); // 使用基础数据初始化
+            cardInHand.Add(newCard); // 直接加入手牌
 
-            if (indexInSet >= 0)
-            {
-                // 情况 A：牌堆中存在该卡牌
-                Card existCard = cardSet[indexInSet];
-                cardSet.RemoveAt(indexInSet); // 从牌堆中移除
-                cardInHand.Add(existCard); // 加入手牌
-
-                Debug.Log($"[AddCard] 从牌堆中检出并添加: {existCard.name} (ID:{cardID}) 到手牌。");
-            }
-            else
-            {
-                // 情况 B：牌堆中不存在或数量已不足，直接印制（生成）新卡
-                Card newCard = new Card();
-                newCard.InitCard(targetData); // 使用基础数据初始化
-                cardInHand.Add(newCard); // 直接加入手牌 (注意：这里不进牌堆)
-
-                Debug.Log($"[AddCard] 牌堆数量不足，已印制新卡: {targetData.name} (ID:{cardID}) 并加入手牌。");
-            }
+            Debug.Log($"[AddCard] 直接生成新卡: {targetData.name} (ID:{cardID}) 并加入手牌。");
         }
 
         NotifyDeckOrHandChanged();

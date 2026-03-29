@@ -108,27 +108,35 @@ public class Card
         // 检查是否为纯数字（int类型）且不包含括号（确保不是函数调用）
         if (!fieldValue.Contains("(") && !fieldValue.Contains(")") && int.TryParse(fieldValue.Trim(), out int intValue))
         {
+            // 如果参数为0，不创建效果命令（直接跳过）
+            if (intValue == 0)
+            {
+                Debug.Log($"[Card] 字段 '{fieldName}' 值为0，跳过创建效果命令");
+                return;
+            }
+
             // int类型：根据字段名生成对应的效果命令
+            // 使用特殊命令名，避免在OnBroken/OnMade/OnAdded中循环调用
             EffectCommand command = new EffectCommand();
 
             switch (fieldName.ToLower())
             {
                 case "made":
-                    command.methodName = "beMade";
+                    command.methodName = "_beMadeDirect";
                     command.parameters = new object[] { intValue };
                     // beMade需要放在第一位
                     targetList.Insert(0, command);
                     break;
 
                 case "broken":
-                    command.methodName = "beBroken";
+                    command.methodName = "_beBrokenDirect";
                     command.parameters = new object[] { intValue };
                     // beBroken需要放在第一位
                     targetList.Insert(0, command);
                     break;
 
                 case "added":
-                    command.methodName = "beAdded";
+                    command.methodName = "_beAddedDirect";
                     command.parameters = new object[] { intValue, 1 };
                     targetList.Add(command);
                     break;
@@ -184,8 +192,8 @@ public class Card
                     continue;
                 }
 
-                // --- 核心修改：确保 beMade 和 beBroken 始终在第一位 ---
-                if (methodName == "beMade" || methodName == "beBroken")
+                // --- 核心修改：确保 beMade、_beMadeDirect、beBroken、_beBrokenDirect 始终在第一位 ---
+                if (methodName == "beMade" || methodName == "_beMadeDirect" || methodName == "beBroken" || methodName == "_beBrokenDirect")
                 {
                     // 插入到列表的第 0 个位置
                     targetList.Insert(0, command);
@@ -335,25 +343,102 @@ public class Card
 
     public void OnTrigger()
     {
-        ExecuteEffectList(triggerEffects);
+        Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 开始执行效果");
 
-        // 基本效果：将卡牌的三种属性添加到DataManager（在triggerEffects之后执行，以便使用可能被修改的属性值）
+        // 辅助函数：执行效果链并检查条件失败
+        bool ExecuteEffectsAndCheckCondition(List<EffectCommand> effects, string effectType)
+        {
+            if (effects == null || effects.Count == 0) return false; // 没有效果链，继续执行后续
+
+            Debug.Log($"[Card] OnTrigger: 执行{effectType}，数量: {effects.Count}");
+            for (int i = 0; i < effects.Count; i++)
+            {
+                var effect = effects[i];
+                string paramStr = effect.parameters != null ? string.Join(", ", effect.parameters) : "无参数";
+                Debug.Log($"[Card] OnTrigger:  {effectType}效果{i+1}: {effect.methodName}({paramStr})");
+            }
+
+            // 提交效果链到执行队列
+            ExecuteEffectList(effects);
+
+            // 检查是否条件失败
+            if (CardEffect.Instance != null && CardEffect.Instance.IsConditionFailed(this.id))
+            {
+                Debug.Log($"[Card] OnTrigger: {effectType}执行导致条件失败，停止执行后续效果");
+                return true; // 条件失败
+            }
+
+            return false; // 没有条件失败
+        }
+
+        // 1. 执行madeEffects（如果有）
+        if (madeEffects != null && madeEffects.Count > 0)
+        {
+            if (ExecuteEffectsAndCheckCondition(madeEffects, "made"))
+            {
+                // 条件失败，提前返回，不执行后续效果也不添加监听器
+                Debug.Log($"[Card] OnTrigger: beMade条件失败，整个OnTrigger提前终止");
+                return;
+            }
+        }
+
+        // 2. 执行brokenEffects（如果有）
+        if (brokenEffects != null && brokenEffects.Count > 0)
+        {
+            if (ExecuteEffectsAndCheckCondition(brokenEffects, "broken"))
+            {
+                // 条件失败，提前返回，不执行后续效果也不添加监听器
+                Debug.Log($"[Card] OnTrigger: beBroken条件失败，整个OnTrigger提前终止");
+                return;
+            }
+        }
+
+        // 3. 执行addedEffects（如果有）
+        if (addedEffects != null && addedEffects.Count > 0)
+        {
+            if (ExecuteEffectsAndCheckCondition(addedEffects, "added"))
+            {
+                // 条件失败，提前返回，不执行后续效果也不添加监听器
+                Debug.Log($"[Card] OnTrigger: beAdded条件失败，整个OnTrigger提前终止");
+                return;
+            }
+        }
+
+        // 4. 执行triggerEffects（如果有）
+        if (triggerEffects != null && triggerEffects.Count > 0)
+        {
+            Debug.Log($"[Card] OnTrigger: 执行triggerEffects，数量: {triggerEffects.Count}");
+            for (int i = 0; i < triggerEffects.Count; i++)
+            {
+                var effect = triggerEffects[i];
+                string paramStr = effect.parameters != null ? string.Join(", ", effect.parameters) : "无参数";
+                Debug.Log($"[Card] OnTrigger:  trigger效果{i+1}: {effect.methodName}({paramStr})");
+            }
+            ExecuteEffectList(triggerEffects);
+        }
+        else
+        {
+            Debug.Log($"[Card] OnTrigger: triggerEffects为空或数量为0");
+        }
+
+        // 5. 基本效果：将卡牌的三种属性添加到DataManager（在triggerEffects之后执行，以便使用可能被修改的属性值）
         if (CardEffect.Instance != null)
         {
             CardEffect.Instance.SetCallerCard(this);
             CardEffect.Instance.Execute("addCardNatureToDataManager", new object[0]);
         }
 
-        // 检查卡牌是否条件失败（如beMade/beBroken条件不满足）
+        // 6. 检查卡牌是否条件失败（如beMade/beBroken条件不满足）
         // 注意：条件失败的检查在addCardNatureToDataManager中已经处理，但添加监听器需要单独检查
         if (CardEffect.Instance != null && CardEffect.Instance.IsConditionFailed(this.id))
         {
             Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 条件失败，不添加OnNextTurn监听器");
-            // 清除条件失败标记，避免影响后续使用
-            CardEffect.Instance.ClearConditionFailed(this.id);
+            // 条件失败标记不清除，留给InDeckState处理
+            // CardEffect.Instance.ClearConditionFailed(this.id);
             return;
         }
 
+        // 7. 添加OnNextTurn监听器
         DayManager.Instance.GetNextDayEvent().AddListener(OnNextTurn);
     }
 
