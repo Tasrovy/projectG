@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class testSOund : MonoBehaviour
 {
+
+    public int cardId;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +20,10 @@ public class testSOund : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            EventManage.SendEvent(EventManageEnum.selectCardBegin, null);
+            
+            //GetCardDataById
+            //GetFieldValue
+            CardManager.Instance.AddCard(cardId,1);
         }
 
 #endif

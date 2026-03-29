@@ -442,6 +442,7 @@ GameObject:
   - component: {fileID: 542249188}
   - component: {fileID: 542249190}
   - component: {fileID: 542249191}
+  - component: {fileID: 542249192}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -462,6 +463,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDatas: []
+  cardSet: []
+  cardInHand: []
   probRarity1: 0.7
   probRarity2: 0.2
   probRarity3: 0.1
@@ -518,6 +521,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayNumber: 1
+--- !u!114 &542249192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542249187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413bb97b6517c744eae0bb5d7eec6096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardDatas: []
+  cardSet: []
+  cardInHand: []
+  probRarity1: 0.7
+  probRarity2: 0.2
+  probRarity3: 0.1
+  cardExcelPaths:
+  - giftCard.xlsx
+  - funcCard.xlsx
+  - eventCard.xlsx
+--- !u!1 &1083252779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1083252781}
+  - component: {fileID: 1083252780}
+  m_Layer: 0
+  m_Name: testForAddCard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1083252780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083252779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1265c0d1492334ea3297264e737ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardId: 11001
+--- !u!4 &1083252781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083252779}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 312.22998, y: 363.28793, z: -4.350229}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1893449177 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3338714666515019628, guid: ba66547061a761644ba660a5087f788a, type: 3}
@@ -2191,3 +2261,4 @@ SceneRoots:
   - {fileID: 272370445}
   - {fileID: 480504755}
   - {fileID: 542249189}
+  - {fileID: 1083252781}

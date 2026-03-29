@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 [System.Serializable]
 public class EffectCommand
@@ -28,6 +29,7 @@ public class CardData
     public string nextTurn;
 }
 
+[System.Serializable]
 public class Card
 {
     public int id;
@@ -89,12 +91,60 @@ public class Card
     // 解析所有效果字段
     private void ParseAllEffects()
     {
-        ParseStringToCommands(made, madeEffects);
-        ParseStringToCommands(broken, brokenEffects);
-        ParseStringToCommands(added, addedEffects);
+        ParseFieldWithIntSupport(made, madeEffects, "made");
+        ParseFieldWithIntSupport(broken, brokenEffects, "broken");
+        ParseFieldWithIntSupport(added, addedEffects, "added");
         ParseStringToCommands(buff, buffEffects);
         ParseStringToCommands(trigger, triggerEffects);
-        ParseStringToCommands(nextTurn,nextTurnEffects);
+        ParseStringToCommands(nextTurn, nextTurnEffects);
+    }
+
+    // 解析支持int类型的字段（made、broken、added）
+    private void ParseFieldWithIntSupport(string fieldValue, List<EffectCommand> targetList, string fieldName)
+    {
+        targetList.Clear();
+        if (string.IsNullOrEmpty(fieldValue)) return;
+
+        // 检查是否为纯数字（int类型）且不包含括号（确保不是函数调用）
+        if (!fieldValue.Contains("(") && !fieldValue.Contains(")") && int.TryParse(fieldValue.Trim(), out int intValue))
+        {
+            // int类型：根据字段名生成对应的效果命令
+            EffectCommand command = new EffectCommand();
+
+            switch (fieldName.ToLower())
+            {
+                case "made":
+                    command.methodName = "beMade";
+                    command.parameters = new object[] { intValue };
+                    // beMade需要放在第一位
+                    targetList.Insert(0, command);
+                    break;
+
+                case "broken":
+                    command.methodName = "beBroken";
+                    command.parameters = new object[] { intValue };
+                    // beBroken需要放在第一位
+                    targetList.Insert(0, command);
+                    break;
+
+                case "added":
+                    command.methodName = "beAdded";
+                    command.parameters = new object[] { intValue, 1 };
+                    targetList.Add(command);
+                    break;
+
+                default:
+                    Debug.LogWarning($"[Card] 未知的int类型字段: {fieldName}");
+                    break;
+            }
+
+            Debug.Log($"[Card] 字段 '{fieldName}' 解析为int类型: {intValue}, 生成效果: {command.methodName}");
+        }
+        else
+        {
+            // string类型：使用原有的解析逻辑
+            ParseStringToCommands(fieldValue, targetList);
+        }
     }
 
     // 通用解析核心逻辑
@@ -122,7 +172,17 @@ public class Card
 
                 EffectCommand command = new EffectCommand();
                 command.methodName = methodName;
-                command.parameters = CardEffect.Instance.ConvertParameters(methodName, rawArgs);
+
+                try
+                {
+                    command.parameters = CardEffect.Instance.ConvertParameters(methodName, rawArgs);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[Card] 参数转换失败: 方法 '{methodName}', 参数 '{argsContent}'. 错误: {ex.Message}");
+                    // 跳过这个无效的命令
+                    continue;
+                }
 
                 // --- 核心修改：确保 beMade 和 beBroken 始终在第一位 ---
                 if (methodName == "beMade" || methodName == "beBroken")
@@ -276,8 +336,122 @@ public class Card
     public void OnTrigger()
     {
         ExecuteEffectList(triggerEffects);
+
+        // 基本效果：将卡牌的三种属性添加到DataManager（在triggerEffects之后执行，以便使用可能被修改的属性值）
+        if (CardEffect.Instance != null)
+        {
+            CardEffect.Instance.SetCallerCard(this);
+            CardEffect.Instance.Execute("addCardNatureToDataManager", new object[0]);
+        }
+
+        // 检查卡牌是否条件失败（如beMade/beBroken条件不满足）
+        // 注意：条件失败的检查在addCardNatureToDataManager中已经处理，但添加监听器需要单独检查
+        if (CardEffect.Instance != null && CardEffect.Instance.IsConditionFailed(this.id))
+        {
+            Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 条件失败，不添加OnNextTurn监听器");
+            // 清除条件失败标记，避免影响后续使用
+            CardEffect.Instance.ClearConditionFailed(this.id);
+            return;
+        }
+
         DayManager.Instance.GetNextDayEvent().AddListener(OnNextTurn);
     }
 
     public void OnNextTurn() => ExecuteEffectList(nextTurnEffects);
+
+    /// <summary>
+    /// 获取解析后的描述文本，将{变量名}替换为实际值
+    /// </summary>
+    public string GetParsedDescription()
+    {
+        if (string.IsNullOrEmpty(description))
+            return string.Empty;
+
+        // 使用正则表达式替换所有{变量名}模式
+        return Regex.Replace(description, @"\{([^}]+)\}", match =>
+        {
+            if (match.Success && match.Groups.Count > 1)
+            {
+                string fieldName = match.Groups[1].Value;
+                return GetFieldValue(fieldName);
+            }
+            return match.Value; // 如果匹配失败，返回原始文本
+        });
+    }
+
+    /// <summary>
+    /// 根据字段名获取对应的值
+    /// </summary>
+    private string GetFieldValue(string fieldName)
+    {
+        switch (fieldName.ToLower())
+        {
+            case "id":
+                return id.ToString();
+            case "nature1":
+                return nature1.ToString();
+            case "nature2":
+                return nature2.ToString();
+            case "nature3":
+                return nature3.ToString();
+            case "name":
+                return name ?? string.Empty;
+            case "sale":
+                return sale.ToString();
+            case "made":
+                return made ?? string.Empty;
+            case "broken":
+                return broken ?? string.Empty;
+            case "added":
+                return added ?? string.Empty;
+            case "buff":
+                return buff ?? string.Empty;
+            case "trigger":
+                return trigger ?? string.Empty;
+            case "nextturn":
+                return nextTurn ?? string.Empty;
+            case "description":
+                return description ?? string.Empty;
+            default:
+                // 如果字段名未知，返回原始占位符（或者空字符串）
+                Debug.LogWarning($"[Card] 未知的描述变量: {{{fieldName}}}");
+                return string.Empty;
+        }
+    }
+
+    /// <summary>
+    /// 尝试修改added字段的数值（仅当added为int类型时有效）
+    /// </summary>
+    /// <param name="delta">要增加/减少的数值</param>
+    /// <returns>是否成功修改</returns>
+    public bool TryModifyAddedValue(int delta)
+    {
+        if (string.IsNullOrEmpty(added))
+        {
+            Debug.LogWarning($"[Card] TryModifyAddedValue: added字段为空，无法修改");
+            return false;
+        }
+
+        // 检查是否为int类型（纯数字且不包含括号）
+        if (!added.Contains("(") && !added.Contains(")") && int.TryParse(added.Trim(), out int currentValue))
+        {
+            // 计算新值
+            int newValue = currentValue + delta;
+
+            // 更新added字段
+            added = newValue.ToString();
+
+            // 重新解析added效果
+            ParseFieldWithIntSupport(added, addedEffects, "added");
+
+            Debug.Log($"[Card] TryModifyAddedValue: 成功修改added字段 {currentValue} → {newValue} (delta: {delta})");
+            return true;
+        }
+        else
+        {
+            // added字段为string类型，无法直接修改数值
+            Debug.LogWarning($"[Card] TryModifyAddedValue: added字段为string类型，无法直接修改数值。当前值: '{added}'");
+            return false;
+        }
+    }
 }

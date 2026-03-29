@@ -28,13 +28,28 @@ public class CardManager : Singleton<CardManager>
     // 保底计数器：Key为类型(ID第一位1,2,3)
     private Dictionary<int, int> pityCounters = new Dictionary<int, int>() { { 1, 0 }, { 2, 0 }, { 3, 0 } };
 
+    public void SetProbRarity1(float rarity)
+    {
+        probRarity1 = rarity;
+    }
+
+    public void SetProbRarity2(float rarity)
+    {
+        probRarity2 = rarity;
+    }
+
+    public void SetProbRarity3(float rarity)
+    {
+        probRarity3 = rarity;
+    }
+    
     protected override void Awake()
     {
         base.Awake();
         LoadAllCards();
         ImplementCardSet();
-        Debug.Log($"准备抽取{5}张牌");
-        DrawCard(5);
+        //Debug.Log($"准备抽取{5}张牌");
+        //DrawCard(5);
     }
 
     private void Start()
@@ -88,6 +103,11 @@ public class CardManager : Singleton<CardManager>
 
             // 3. 从牌堆中筛选候选牌
             int targetIndex = SelectBestCardIndex(forcedType, rolledRarity);
+            if (targetIndex < 0 || targetIndex >= cardSet.Count)
+            {
+                Debug.LogWarning($"[DrawCard] 无效的卡牌索引: {targetIndex}, 牌堆数量: {cardSet.Count}");
+                break;
+            }
 
             // 4. 执行抽取
             Card drawnCard = cardSet[targetIndex];
@@ -121,9 +141,16 @@ public class CardManager : Singleton<CardManager>
     /// </summary>
     private int SelectBestCardIndex(int forcedType, int targetRarity)
     {
+        // 安全检查：牌堆为空时直接返回-1
+        if (cardSet.Count == 0)
+        {
+            Debug.LogWarning("[SelectBestCardIndex] 牌堆为空，无法选择卡牌索引");
+            return -1;
+        }
+
         // 首先筛选出符合保底类型的牌（如果没触发保底，则看全量牌堆）
-        List<Card> candidates = (forcedType != -1) 
-            ? cardSet.Where(c => GetCardType(c.id) == forcedType).ToList() 
+        List<Card> candidates = (forcedType != -1)
+            ? cardSet.Where(c => GetCardType(c.id) == forcedType).ToList()
             : cardSet;
 
         if (candidates.Count == 0)
@@ -456,8 +483,12 @@ public class CardManager : Singleton<CardManager>
     /// <summary>
     /// 通知牌堆或手牌发生变化
     /// </summary>
-    private void NotifyDeckOrHandChanged()
+    public void NotifyDeckOrHandChanged()
     {
-        EventManage.SendEvent(EventManageEnum.deckOrHandChanged, null);
+        // 直接调用DUEL刷新UI，使用yjtc模块原有功能
+        if (DUEL.Instance != null)
+        {
+            DUEL.Instance.InitCardObject();
+        }
     }
 }
