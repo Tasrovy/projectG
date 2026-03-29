@@ -22,7 +22,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
         public string characterName;
         public SpriteRenderer spriteRenderer;
         public Color normalColor = new(1f, 1f, 1f, 1f);
-        public Color dimColor = new(0.6f, 0.6f, 0.6f, 1f);
+        public Color dimColor = new(0.5f, 0.5f, 0.5f, 1f);
         public List<EmotionSprite> emotionSprites;
     }
 
@@ -30,7 +30,8 @@ public class CharacterHighlightManager : DialoguePresenterBase
     public List<Character> characters;
     private string currentSpeaker;
     [SerializeField]
-    private string playerVariableName = "$my_name";
+    [HideInInspector] public string playerVariableName = "$MY_NAME";
+    private int[] dialogueCompleteProperties = new int[4];
 
     public string defaultName = "Player";
 
@@ -46,43 +47,156 @@ public class CharacterHighlightManager : DialoguePresenterBase
                 speakerName = playerName;
             }
         }
-        if (!string.IsNullOrEmpty(speakerName) && speakerName != currentSpeaker)
+        // --- 新增：解析当前对话行的标签 (Metadata) 并播放音效 ---
+        if (line.Metadata != null)
+        {
+            var charControl = GetComponent<CharacterControl>();
+            if (charControl != null)
+            {
+                foreach (var tag in line.Metadata)
+                {
+                    charControl.PlayAudioFromTag(tag);
+                }
+            }
+        }
+        // 当说话者改变时更新高亮状态，即使说话者为空（旁白）也需要更新，让所有人都变暗
+        if (speakerName != currentSpeaker)
         {
             HightlightSpeaker(speakerName);
-            currentSpeaker = speakerName;
+            currentSpeaker = string.IsNullOrEmpty(speakerName) ? "" : speakerName;
         }
         await YarnTask.CompletedTask;
     }
 
+    private bool IsPlayerName(string speaker)
+    {
+        if (string.Equals(speaker, defaultName, System.StringComparison.OrdinalIgnoreCase)) return true;
+
+        var storage = FindAnyObjectByType<InMemoryVariableStorage>();
+        if (storage != null && storage.TryGetValue(playerVariableName, out string pName) && !string.IsNullOrEmpty(pName))
+        {
+            if (string.Equals(speaker, pName, System.StringComparison.OrdinalIgnoreCase)) return true;
+        }
+        
+        return false;
+    }
+
     private void HightlightSpeaker(string speaker)
     {
-        foreach (var ch in characters)
+        // 尝试获取特定的游戏对象
+        GameObject playerObj = GameObject.Find("Player");
+        GameObject characterObj = GameObject.Find("Character");
+
+        SpriteRenderer playerSr = playerObj != null ? playerObj.GetComponent<SpriteRenderer>() : null;
+        SpriteRenderer characterSr = characterObj != null ? characterObj.GetComponent<SpriteRenderer>() : null;
+
+        bool isPlayerSpeaking = !string.IsNullOrEmpty(speaker) && IsPlayerName(speaker);
+        bool isCharacterSpeaking = !string.IsNullOrEmpty(speaker) && !isPlayerSpeaking;
+
+        // 如果没有说话人 (如旁白)，则全部变暗。否则对应的人设为白，另一个人变暗。
+        if (playerSr != null)
         {
-            if (ch.spriteRenderer == null) continue;
-            if (string.Equals(ch.characterName, speaker, System.StringComparison.Ordinal))
-            {
-                ch.spriteRenderer.color = ch.normalColor;
-            }
-            else
-            {
-                ch.spriteRenderer.color = ch.dimColor;
-            }
+            playerSr.color = isPlayerSpeaking ? new Color(1f, 1f, 1f, 1f) : new Color(0.5f, 0.5f, 0.5f, 1f);
+        }
+        if (characterSr != null)
+        {
+            characterSr.color = isCharacterSpeaking ? new Color(1f, 1f, 1f, 1f) : new Color(0.5f, 0.5f, 0.5f, 1f);
         }
     }
 
     public override async YarnTask OnDialogueStartedAsync()
     {
+        // 对话开始时，仅显示名为 "Player" 和 "Character" 的立绘物体
+        GameObject playerObj = GameObject.Find("Player");
+        GameObject characterObj = GameObject.Find("Character");
+
+        if (playerObj != null) playerObj.SetActive(true);
+        if (characterObj != null) characterObj.SetActive(true);
+
+        // 关键点：每次对话开始前，先把所有人变暗。这样能够解决刚开始没进发言时两人全亮的问题
+        HightlightSpeaker(""); 
         await YarnTask.CompletedTask;
     }
 
     public override async YarnTask OnDialogueCompleteAsync()
     {
-        foreach (var ch in characters)
+        GameObject playerObj = GameObject.Find("Player");
+        GameObject characterObj = GameObject.Find("Character");
+
+        if (playerObj != null)
         {
-            if (ch.spriteRenderer != null)
-                ch.spriteRenderer.color = ch.dimColor;
+            var sr = playerObj.GetComponent<SpriteRenderer>();
+            if (sr != null) 
+            {
+                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
+                sr.sprite = null; // 清空立绘
+            }
+            playerObj.SetActive(false);
         }
+
+        if (characterObj != null)
+        {
+            var sr = characterObj.GetComponent<SpriteRenderer>();
+            if (sr != null) 
+            {
+                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
+                sr.sprite = null; // 清空立绘
+            }
+            characterObj.SetActive(false);
+        }
+
+        ApplyDialogueCompleteProperties();
+
         currentSpeaker = "";
+
+        // 在转场之前，关闭对应的背景音乐和白噪音
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopBGM();
+            AudioManager.Instance.StopWhiteNoise();
+        }
+
+        // 在所有内部逻辑和属性加成都处理完毕后，推入下一天
+        if (DayManager.Instance != null)
+        {
+            DayManager.Instance.NextDay();
+        }
+        else
+        {
+            Debug.LogWarning("DayManager instance not found. NextDay() was not called.");
+        }
+
         await YarnTask.CompletedTask;
+    }
+
+    public void SetDialogueCompleteProperties(int p1, int p2, int p3)
+    {
+        dialogueCompleteProperties[0] = p1;
+        dialogueCompleteProperties[1] = p2;
+        dialogueCompleteProperties[2] = p3;
+    }
+
+    public void SetDialogueCompleteMoney(int money)
+    {
+        dialogueCompleteProperties[3] = money;
+    }
+
+    private void ApplyDialogueCompleteProperties()
+    {
+        if (DataManager.Instance == null)
+        {
+            Debug.LogError("DataManager instance is null, cannot apply dialogue complete properties.");
+            return;
+        }
+
+        DataManager.Instance.Add(1, dialogueCompleteProperties[0]);
+        DataManager.Instance.Add(2, dialogueCompleteProperties[1]);
+        DataManager.Instance.Add(3, dialogueCompleteProperties[2]);
+        DataManager.Instance.Add(4, dialogueCompleteProperties[3]);
+
+        for (int i = 0; i < 4; i++)
+        {
+            dialogueCompleteProperties[i] = 0;
+        }
     }
 }

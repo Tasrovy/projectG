@@ -1,8 +1,8 @@
-﻿title: TryYarnScript
+title: TryYarnScript
 ---
 <<declare $trust = 0>>
 <<declare $knows_secret = false>>
-<<declare $MY_NAME = string("aaa")>>
+<<declare $MY_NAME = "Player">>
 
 You encounter a mysterious traveler at the crossroads.
 
@@ -14,7 +14,7 @@ Traveler: Greetings, wanderer. These roads can be dangerous alone.
     Traveler: Indeed it is. Perhaps we could travel together a while?
     <<jump TravelTogether>>
 -> Eye them suspiciously
-    You: I can handle myself just fine.
+    {$MY_NAME}: I can handle myself just fine.
     Traveler: I'm sure you can. But even the strongest benefit from allies.
     <<jump Suspicious>>
 -> Ignore them and walk past
@@ -54,11 +54,11 @@ Traveler: Here—take this. It shows a path around the bandits at the bridge.
 
 -> Accept the map
     <<set $knows_secret to true>>
-    You: Thank you. I... misjudged you.
+    {$MY_NAME}: Thank you. I... misjudged you.
     Traveler: Safe travels.
     <<jump SecretPath>>
 -> Refuse
-    You: I don't need help.
+    {$MY_NAME}: I don't need help.
     <<jump Bridge>>
 ===
 title: Alone
