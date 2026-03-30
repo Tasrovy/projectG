@@ -6,20 +6,20 @@ title: main_start
 <<play_whitenoise "bgWater_springwater1">>
 
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person character B peace_2>>
+<<set_character_person Character "伊兰莉特" peace_2>>
 （鲜花簇拥着我们，溪水潺潺。） #line:09f9855 
 <<set_character_sprite "{$MY_NAME}" "peace_1">>
-<<set_character_sprite "B" "peace_1">>
+<<set_character_sprite "伊兰莉特" "peace_1">>
 伊兰莉特:花开得真好。 #line:0b2cd4e 
 （岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。） #line:006d230 
 <<set_character_sprite "{$MY_NAME}" "happy">>
-<<set_character_sprite "B" "saying">>
+<<set_character_sprite "伊兰莉特" "saying">>
 伊兰莉特:把它们做成花环戴在你头上，唔...... #line:0d9e904 
-<<set_character_sprite "B" "happy">>
+<<set_character_sprite "伊兰莉特" "happy">>
 伊兰莉特:（开心表情）想想那个画面，一定非常可爱吧。 #line:0120b97 
 （B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
 <<set_character_sprite "{$MY_NAME}" "saying">>
-{$MY_NAME}:B，注意安-- #line:0f1a741 
+{$MY_NAME}:伊兰莉特，注意安-- #line:0f1a741 
 <<stop_bgm>>
 （树枝折断了） #line:0d7301f 
 <<set_character_sprite "{$MY_NAME}" "peace2">>
@@ -28,7 +28,7 @@ title: main_start
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
 <<set_background "blackGround">>
 <<clear_character_person "{$MY_NAME}">>
-<<clear_character_person "B">>
+<<clear_character_person "伊兰莉特">>
 
 (..........) #line:07a7a58 
 (..........) #line:007dd97 
@@ -50,7 +50,7 @@ title: room1_1
 （明明刚才还是夜里两点多......） #line:0d21b28 
 （时间的流逝好像变得不真实。） #line:0e3d4da 
 （窗帘上投着窗外的树影，在风里来回飘荡，伴着那些若隐若现的阳光。） #line:065546b 
-（自从B离开以后，一切都好像褪了色。） #line:0616adb 
+（自从伊兰莉特离开以后，一切都好像褪了色。） #line:0616adb 
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:还是起来吃点东西吧。 #line:059a91f 
 <<set_character_sprite {$MY_NAME} peace_1>>

@@ -64,11 +64,16 @@ public class DialogueHandler : MonoBehaviour
             int currentDay = DayManager.Instance.GetDayNumber();
             if (currentDay > 0 && currentDay != lastCheckedDay) // 防止默认0天时无意义判定
             {
-                lastCheckedDay = currentDay;
-                var config = dayDialoguesConfig.Find(c => c.dayNumber == currentDay);
-                if (config != null && !string.IsNullOrEmpty(config.yarnNode))
+                // 【锁】：必须要在 talk 能检测到时才能试图开始天数事件检测，否则等待（不更新 lastCheckedDay）
+                GameObject talkObj = GameObject.Find("talk");
+                if (talkObj != null && talkObj.activeInHierarchy)
                 {
-                    StartDialogue(config.yarnNode);
+                    lastCheckedDay = currentDay;
+                    var config = dayDialoguesConfig.Find(c => c.dayNumber == currentDay);
+                    if (config != null && !string.IsNullOrEmpty(config.yarnNode))
+                    {
+                        StartDialogue(config.yarnNode);
+                    }
                 }
             }
         }
@@ -92,7 +97,7 @@ public class DialogueHandler : MonoBehaviour
 
     public void StartDialogue(string yarnScript)
     {
-        // 您把打印这句话放在最前面，这里是绝对能完整回溯出到底是谁点击/触发的：
+        // 完整回溯出到底是谁点击/触发的：
         Debug.Log($"[DialogueHandler] 系统正在请求启动节点: {yarnScript}。调用者堆栈为：\n" + System.Environment.StackTrace);
 
         if (dialogueRunner != null)
@@ -115,6 +120,14 @@ public class DialogueHandler : MonoBehaviour
         // 保证顺序：先执行转场黑屏
         yield return TransitionManager.Instance.PlayTransition();
         
+        // 【强制阻塞】：等到场景内名叫 "talk" 的物体被激活后，才允许Yarn开始执行指令和加载物体
+        GameObject talkObj = null;
+        while (talkObj == null || !talkObj.activeInHierarchy)
+        {
+            talkObj = GameObject.Find("talk");
+            yield return null;
+        }
+
         // 向YarnSpinner发送开始指令。不再人为提前去抢状态或显示按钮
         // 接下来由Update自动完美捕捉起跑的瞬间！
         dialogueRunner.StartDialogue(yarnScript);

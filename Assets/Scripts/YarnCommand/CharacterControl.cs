@@ -39,6 +39,21 @@ public class CharacterControl : MonoBehaviour
     // 新增：保存当前物体上挂载的角色名称字典
     public Dictionary<string, string> objectToCharacterMap = new Dictionary<string, string>();
 
+    // 辅助方法：从指定的 talk 节点下获取对应名字的子物体，而不是全局寻找
+    private GameObject GetCharacterObjectUnderTalk(string objName)
+    {
+        GameObject talkObj = GameObject.Find("talk");
+        if (talkObj != null && talkObj.activeInHierarchy)
+        {
+            Transform child = talkObj.transform.Find(objName);
+            if (child != null)
+            {
+                return child.gameObject;
+            }
+        }
+        return null; // talk不活跃或找不到时返回null
+    }
+
     // 辅助方法：根据输入的人物名字找它被挂载在了哪一个物体上
     private SpriteRenderer GetTargetRendererByCharacterMap(string characterName)
     {
@@ -47,7 +62,7 @@ public class CharacterControl : MonoBehaviour
         {
             if (string.Equals(kvp.Value, characterName, System.StringComparison.Ordinal))
             {
-                GameObject targetObj = GameObject.Find(kvp.Key);
+                GameObject targetObj = GetCharacterObjectUnderTalk(kvp.Key);
                 if (targetObj != null)
                 {
                     return targetObj.GetComponent<SpriteRenderer>();
@@ -184,7 +199,7 @@ public class CharacterControl : MonoBehaviour
                 // 将该角色名映射记录到这个游戏对象上
                 objectToCharacterMap[objectName] = characterName;
 
-                GameObject targetObj = GameObject.Find(objectName);
+                GameObject targetObj = GetCharacterObjectUnderTalk(objectName);
                 if (targetObj != null)
                 {
                     SpriteRenderer sr = targetObj.GetComponent<SpriteRenderer>();
@@ -252,7 +267,7 @@ public class CharacterControl : MonoBehaviour
             objectToCharacterMap.Remove(objectName);
         }
 
-        GameObject targetObj = GameObject.Find(objectName);
+        GameObject targetObj = GetCharacterObjectUnderTalk(objectName);
         if (targetObj != null)
         {
             SpriteRenderer sr = targetObj.GetComponent<SpriteRenderer>();

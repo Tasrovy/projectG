@@ -153,11 +153,26 @@ public class CharacterHighlightManager : DialoguePresenterBase
         return false;
     }
 
+    // 辅助方法：保证只在名叫 "talk" 的物体下寻找 Player 和 Character
+    private GameObject GetCharacterObjectUnderTalk(string objName)
+    {
+        GameObject talkObj = GameObject.Find("talk");
+        if (talkObj != null && talkObj.activeInHierarchy)
+        {
+            Transform child = talkObj.transform.Find(objName);
+            if (child != null)
+            {
+                return child.gameObject;
+            }
+        }
+        return null; 
+    }
+
     private void HightlightSpeaker(string speaker)
     {
-        // 尝试获取特定的游戏对象
-        GameObject playerObj = GameObject.Find("Player");
-        GameObject characterObj = GameObject.Find("Character");
+        // 尝试获取特定的游戏对象 (限定在talk子节点下)
+        GameObject playerObj = GetCharacterObjectUnderTalk("Player");
+        GameObject characterObj = GetCharacterObjectUnderTalk("Character");
 
         SpriteRenderer playerSr = playerObj != null ? playerObj.GetComponent<SpriteRenderer>() : null;
         SpriteRenderer characterSr = characterObj != null ? characterObj.GetComponent<SpriteRenderer>() : null;
@@ -181,9 +196,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
         // 对话开始时，显示背景
         if (dialogueBackground != null) dialogueBackground.SetActive(true);
 
-        // 对话开始时，仅显示名为 "Player" 和 "Character" 的立绘物体
-        GameObject playerObj = GameObject.Find("Player");
-        GameObject characterObj = GameObject.Find("Character");
+        // 对话开始时，仅显示名为 "Player" 和 "Character" 的立绘物体 (限定在talk下)
+        GameObject playerObj = GetCharacterObjectUnderTalk("Player");
+        GameObject characterObj = GetCharacterObjectUnderTalk("Character");
 
         if (playerObj != null) playerObj.SetActive(true);
         if (characterObj != null) characterObj.SetActive(true);
@@ -205,8 +220,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
             charControl.objectToCharacterMap.Clear();
         }
 
-        GameObject playerObj = GameObject.Find("Player");
-        GameObject characterObj = GameObject.Find("Character");
+        // 限定在 talk 下寻找并重置状态
+        GameObject playerObj = GetCharacterObjectUnderTalk("Player");
+        GameObject characterObj = GetCharacterObjectUnderTalk("Character");
 
         if (playerObj != null)
         {
