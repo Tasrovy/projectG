@@ -21,6 +21,8 @@ public class CardEffect : Singleton<CardEffect>
     // 记录条件失败的卡牌ID
     private static HashSet<int> conditionFailedCardIds = new HashSet<int>();
 
+    protected override bool IsPersistent => true;
+    
     protected override void Awake()
     {
         base.Awake();

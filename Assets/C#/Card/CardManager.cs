@@ -14,6 +14,8 @@ public class CardManager : Singleton<CardManager>
     public List<CardData> cardDatas = new List<CardData>();
     public List<Card> cardSet = new List<Card>();
     public List<Card> cardInHand = new List<Card>();
+    
+    protected override bool IsPersistent => true;
 
     [Header("动态稀有度概率 (和需为 1.0)")]
     [Range(0, 1)] public float probRarity1 = 0.7f; // 稀有度 1 的概率
@@ -21,7 +23,7 @@ public class CardManager : Singleton<CardManager>
     [Range(0, 1)] public float probRarity3 = 0.1f; // 稀有度 3 的概率
 
     [Header("Excel配置")]
-    public List<string> cardExcelPaths = new List<string> { "Cards.xlsx" };
+    public List<string> cardExcelPaths = new List<string> { "giftCard.xlsx" ,"funcCard.xlsx","eventCard.xlsx"};
 
     private Random rng = new Random();
 
