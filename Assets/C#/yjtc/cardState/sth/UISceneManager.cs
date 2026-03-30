@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class UISceneManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class UISceneManager : MonoBehaviour
     [SerializeField] private GameObject cardFightRoot; // 卡牌战斗场景
     [SerializeField] private GameObject endRoot;       // 结束场景
     [SerializeField] private GameObject afterclassRoot;// 放学三选一场景    
+    [SerializeField] private GameObject workRoot;      // 打工场景
 
     [Header("常驻显示节点 (一直显示)")]
     [SerializeField] private GameObject[] alwaysShowRoots; // 常驻显示的GameObjects
@@ -34,8 +36,7 @@ public class UISceneManager : MonoBehaviour
 
     private void Start()
     {
-        EnsureAlwaysShowActive();       // 确保常驻节点处于激活状态
-        SwitchToScene(SceneType.Begin); // 默认切换到初始场景
+        SwitchToScene(SceneType.Begin); // 默认切换到初始场景，内部会自动处理常驻节点的显隐
     }
 
     private void Update()
@@ -48,18 +49,6 @@ public class UISceneManager : MonoBehaviour
         }
 
 #endif
-    }
-
-    /// <summary>
-    /// 开启所有常驻显示的节点
-    /// </summary>
-    private void EnsureAlwaysShowActive()
-    {
-        if (alwaysShowRoots == null) return;
-        foreach(var root in alwaysShowRoots)
-        {
-            if (root != null) root.SetActive(true);
-        }
     }
 
     /// <summary>
@@ -95,6 +84,16 @@ public class UISceneManager : MonoBehaviour
         // 隐藏所有的互斥场景节点
         DeactivateAllMutexRoots();
 
+        // 动态处理“常驻显示节点”：只要不是Begin场景，就全部开启。如果是Begin，就全部隐藏。
+        bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin);
+        if (alwaysShowRoots != null)
+        {
+            foreach(var root in alwaysShowRoots)
+            {
+                if (root != null) root.SetActive(shouldShowAlwaysRoots);
+            }
+        }
+
         // 开启目标场景
         switch (sceneType)
         {
@@ -119,6 +118,9 @@ public class UISceneManager : MonoBehaviour
             case SceneType.AfterClass:
                 if (afterclassRoot != null) afterclassRoot.SetActive(true);
                 break;
+            case SceneType.Work:
+                if (workRoot != null) workRoot.SetActive(true);
+                break;
         }
     }
 
@@ -134,6 +136,7 @@ public class UISceneManager : MonoBehaviour
         if (cardFightRoot != null) cardFightRoot.SetActive(false);
         if (endRoot != null) endRoot.SetActive(false);
         if (afterclassRoot != null) afterclassRoot.SetActive(false);
+        if (workRoot != null) workRoot.SetActive(false);
     }
 }
 
