@@ -37,14 +37,74 @@ public class CharacterHighlightManager : DialoguePresenterBase
     [Header("UI Background (对话时显示，结束时隐藏)")]
     public GameObject dialogueBackground;
 
+    private InMemoryVariableStorage variableStorage;
+
+    private bool wasStorageReady = false;
+
+    private void Start()
+    {
+        variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
+    }
+
+    private void Update()
+    {
+        // 确保 YarnSpinner 准备完毕后再抓取数据，避免报 SmartVariableEvaluator 错误
+        if (!wasStorageReady && variableStorage != null)
+        {
+            var runner = FindAnyObjectByType<DialogueRunner>();
+            // 只有当存在runner并且它的VariableStorage字段被正式初始化后才开始同步
+            if (runner != null && runner.VariableStorage != null)
+            {
+                wasStorageReady = true;
+            }
+        }
+
+        if (wasStorageReady)
+        {
+            SyncPlayerName();
+        }
+    }
+
+    // 将 Yarn 变量里的名字实时同步给 characters 列表的第0项（玩家）
+    private void SyncPlayerName()
+    {
+        if (characters != null && characters.Count > 0)
+        {
+            if (variableStorage == null) 
+                variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
+
+            if (variableStorage != null)
+            {
+                try
+                {
+                    if (variableStorage.TryGetValue(playerVariableName, out string pName) && !string.IsNullOrEmpty(pName))
+                    {
+                        characters[0].characterName = pName;
+                    }
+                    else
+                    {
+                        characters[0].characterName = defaultName;
+                    }
+                }
+                catch (System.InvalidOperationException)
+                {
+                    // 捕捉抛错，如果尚未准备好就不予更改，等待下一帧重试
+                    characters[0].characterName = defaultName;
+                }
+            }
+        }
+    }
+
     public override async YarnTask RunLineAsync(LocalizedLine line, LineCancellationToken token)
     {
+        SyncPlayerName(); // 开始执行对话前再确保一遍名字是最新同步的
+
         string speakerName = line.CharacterName;
 
         if (speakerName == defaultName)     // 如果说话者是默认名字，尝试从变量存储中获取玩家名字
         {
-            var storage = FindAnyObjectByType<InMemoryVariableStorage>();
-            if (storage != null && storage.TryGetValue(playerVariableName, out string playerName))
+            if (variableStorage == null) variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
+            if (variableStorage != null && variableStorage.TryGetValue(playerVariableName, out string playerName))
             {
                 speakerName = playerName;
             }
@@ -74,10 +134,20 @@ public class CharacterHighlightManager : DialoguePresenterBase
     {
         if (string.Equals(speaker, defaultName, System.StringComparison.OrdinalIgnoreCase)) return true;
 
-        var storage = FindAnyObjectByType<InMemoryVariableStorage>();
-        if (storage != null && storage.TryGetValue(playerVariableName, out string pName) && !string.IsNullOrEmpty(pName))
+        if (variableStorage == null) variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
+        if (variableStorage != null)
         {
-            if (string.Equals(speaker, pName, System.StringComparison.OrdinalIgnoreCase)) return true;
+            try
+            {
+                if (variableStorage.TryGetValue(playerVariableName, out string pName) && !string.IsNullOrEmpty(pName))
+                {
+                    if (string.Equals(speaker, pName, System.StringComparison.OrdinalIgnoreCase)) return true;
+                }
+            }
+            catch (System.InvalidOperationException)
+            {
+                // 静默捕捉，Yarn未完全初始化时不打断执行
+            }
         }
         
         return false;

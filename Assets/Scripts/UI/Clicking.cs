@@ -90,22 +90,14 @@ public class Clicking : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// 设置对话完成后的金钱掉落（参数：min,max用英文逗号分隔）
-    /// 例如填：10,50
+    /// 设置对话完成后的金钱奖励（参数：直接输入一个数字）
+    /// 例如填：50
     /// </summary>
-    public void Call_SetDialogueMoney(string valuesSplitByComma)
+    public void Call_SetDialogueMoney(int money)
     {
-        string[] parts = valuesSplitByComma.Split(',');
-        if (parts.Length >= 2)
-        {
-            int min = int.Parse(parts[0].Trim());
-            int max = int.Parse(parts[1].Trim());
-            if (DialogueHandler.Instance != null)
-                DialogueHandler.Instance.SetDialogueMoney(min, max);
-        }
+        if (DialogueHandler.Instance != null)
+            DialogueHandler.Instance.SetDialogueMoney(money);
         else
-        {
-            Debug.LogWarning("[Clicking] 金钱范围格式错误！应为两位数用英文逗号隔开，类似: 10,50");
-        }
+            Debug.LogWarning("[Clicking] 场景中未找到 DialogueHandler.Instance！");
     }
 }

@@ -17,11 +17,15 @@ public class CharacterControl : MonoBehaviour
     {
         if (manager == null) return false;
         
-        // 判断是否为默认名("Player")
+        // 允许直接用 "Player" 代指玩家
+        if (string.Equals(characterName, "Player", System.StringComparison.OrdinalIgnoreCase)) 
+            return true;
+
+        // 判断是否为默认名("Odara"等)
         if (string.Equals(characterName, manager.defaultName, System.StringComparison.OrdinalIgnoreCase)) 
             return true;
         
-        // 判断是否为玩家游戏内自定义名
+        // 判断是否为玩家游戏内自定义名(比如 "a")
         var storage = FindAnyObjectByType<InMemoryVariableStorage>();
         if (storage != null && storage.TryGetValue(manager.playerVariableName, out string pName))
         {
@@ -101,7 +105,16 @@ public class CharacterControl : MonoBehaviour
         var manager = GetComponentInParent<CharacterHighlightManager>();
         if (manager != null)
         {
-            var ch = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
+            CharacterHighlightManager.Character ch = null;
+            if (IsPlayerName(characterName, manager) && manager.characters != null && manager.characters.Count > 0)
+            {
+                ch = manager.characters[0];
+            }
+            else
+            {
+                ch = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.OrdinalIgnoreCase));
+            }
+
             if (ch != null)
             {
                 SpriteRenderer targetRenderer = GetTargetRendererByCharacterMap(characterName);
@@ -156,7 +169,16 @@ public class CharacterControl : MonoBehaviour
         var manager = GetComponent<CharacterHighlightManager>();
         if (manager != null)
         {
-            var targetConfig = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.Ordinal));
+            CharacterHighlightManager.Character targetConfig = null;
+            if (IsPlayerName(characterName, manager) && manager.characters != null && manager.characters.Count > 0)
+            {
+                targetConfig = manager.characters[0];
+            }
+            else
+            {
+                targetConfig = manager.characters.Find(c => string.Equals(c.characterName, characterName, System.StringComparison.OrdinalIgnoreCase));
+            }
+
             if (targetConfig != null)
             {
                 // 将该角色名映射记录到这个游戏对象上

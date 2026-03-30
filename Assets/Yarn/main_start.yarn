@@ -8,23 +8,23 @@ title: main_start
 <<set_character_person "Player" {$MY_NAME} "peace_1">>
 <<set_character_person "Character" "B" "peace_2">>
 （鲜花簇拥着我们，溪水潺潺。） #line:09f9855 
-<<set_character_sprite "Player" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 <<set_character_sprite "B" "peace_1">>
 B:花开得真好。 #line:0b2cd4e 
 （岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。） #line:006d230 
 <<set_character_shake {$MY_NAME} "up_down">>
-<<set_character_sprite "Player" "happy">>
+<<set_character_sprite {$MY_NAME} "happy">>
 <<set_character_sprite "B" "saying">>
 B:把它们做成花环戴在你头上，唔...... #line:0d9e904 
 <<set_character_sprite "B" "happy">>
 <<set_character_shake "B" "left_right">>
 B:（开心表情）想想那个画面，一定非常可爱吧。 #line:0120b97 
 （B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
-<<set_character_sprite "Player" "saying">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}:B，注意安-- #line:0f1a741 
 <<stop_bgm>>
 （树枝折断了） #line:0d7301f 
-<<set_character_sprite "Player" "peace2">>
+<<set_character_sprite {$MY_NAME} "peace2">>
 {$MY_NAME}:（惊恐表情）！！！ #line:0c4c660 
 <<play_bgm lake_sadStrong>>
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 

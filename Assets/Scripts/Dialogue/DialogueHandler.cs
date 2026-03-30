@@ -7,14 +7,29 @@ using Yarn.Unity;
 
 public class DialogueHandler : MonoBehaviour
 {
+    [System.Serializable]
+    public class DayDialogueConfig
+    {
+        public int dayNumber;
+        public string yarnNode;
+    }
+
     public static DialogueHandler Instance { get; private set; }
     [SerializeField] private DialogueRunner dialogueRunner;
     [SerializeField] private Button skipDialogueButton;
+
+    [Header("按天数自动触发的对话配置")]
+    [SerializeField] private List<DayDialogueConfig> dayDialoguesConfig = new List<DayDialogueConfig>();
 
     private CharacterHighlightManager characterHighlightManager;
     private bool wasDialogueRunning;
     private bool willSwitchScene;
     private SceneType nextSceneType;
+
+    // 对话队列管理
+    private Queue<string> pendingDialogues = new Queue<string>();
+    private bool isHandlingDialogueSequence = false;
+    private int lastCheckedDay = -1;
 
     void Awake()
     {
@@ -43,6 +58,21 @@ public class DialogueHandler : MonoBehaviour
             return;
         }
 
+        // 检测天数是否发生变化，并自动加入队列
+        if (DayManager.Instance != null)
+        {
+            int currentDay = DayManager.Instance.GetDayNumber();
+            if (currentDay > 0 && currentDay != lastCheckedDay) // 防止默认0天时无意义判定
+            {
+                lastCheckedDay = currentDay;
+                var config = dayDialoguesConfig.Find(c => c.dayNumber == currentDay);
+                if (config != null && !string.IsNullOrEmpty(config.yarnNode))
+                {
+                    StartDialogue(config.yarnNode);
+                }
+            }
+        }
+
         bool isDialogueRunning = dialogueRunner.IsDialogueRunning;
         
         // 状态转为结束：当YarnSpinner内部真正结束时执行离场
@@ -64,7 +94,16 @@ public class DialogueHandler : MonoBehaviour
     {
         if (dialogueRunner != null)
         {
-            StartCoroutine(StartDialogueRoutine(yarnScript));
+            // 如果当前有对话正在运行，或者正在处理入场/离场中，或者队列里已经有积压任务
+            if (dialogueRunner.IsDialogueRunning || wasDialogueRunning || isHandlingDialogueSequence || pendingDialogues.Count > 0)
+            {
+                pendingDialogues.Enqueue(yarnScript);
+            }
+            else
+            {
+                isHandlingDialogueSequence = true;
+                StartCoroutine(StartDialogueRoutine(yarnScript));
+            }
         }
     }
 
@@ -109,6 +148,15 @@ public class DialogueHandler : MonoBehaviour
         // 先播放离场转场动画
         yield return TransitionManager.Instance.PlayTransition();
 
+        // 黑屏后第一步：检查是否有排队等候的对话
+        if (pendingDialogues.Count > 0)
+        {
+            string nextScript = pendingDialogues.Dequeue();
+            // 直接开启下一个对话（不需要切场景或重置序列状态）
+            dialogueRunner.StartDialogue(nextScript);
+            yield break;
+        }
+
         // 黑屏/转场彻底结束后，检查是否有存储的待切场景
         if (willSwitchScene)
         {
@@ -124,6 +172,9 @@ public class DialogueHandler : MonoBehaviour
                 Debug.LogError("UISceneManager.Instance is null, cannot switch scene.");
             }
         }
+
+        // 所有流程结束，释放锁
+        isHandlingDialogueSequence = false;
     }
 
     public void SetDialogueProperties(int p1, int p2, int p3)
@@ -143,7 +194,7 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
-    public void SetDialogueMoney(int minMoney, int maxMoney)
+    public void SetDialogueMoney(int money)
     {
         if (characterHighlightManager == null)
         {
@@ -152,9 +203,7 @@ public class DialogueHandler : MonoBehaviour
 
         if (characterHighlightManager != null)
         {
-            // Unity中整型Random.Range是左闭右开，因此加1以确保能取到maxMoney
-            int randomMoney = Random.Range(minMoney, maxMoney + 1);
-            characterHighlightManager.SetDialogueCompleteMoney(randomMoney);
+            characterHighlightManager.SetDialogueCompleteMoney(money);
         }
         else
         {
