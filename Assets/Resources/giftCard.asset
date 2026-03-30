@@ -17,7 +17,7 @@ MonoBehaviour:
     nature1: 8
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u516B\u4E07\u971C\u53F6"
     sale: 10
     made: 
     broken: 
@@ -30,7 +30,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 12
     nature3: 0
-    name: 
+    name: "\u67F3\u836B\u4E0D\u7720"
     sale: 10
     made: 
     broken: 
@@ -43,7 +43,7 @@ MonoBehaviour:
     nature1: 2
     nature2: 2
     nature3: 0
-    name: 
+    name: "\u6839\u72B6\u830E"
     sale: 10
     made: 
     broken: 
@@ -95,7 +95,7 @@ MonoBehaviour:
     nature1: 2
     nature2: 2
     nature3: 2
-    name: 
+    name: "\u65B0\u82BD\u4EE4"
     sale: 20
     made: 
     broken: 
@@ -108,7 +108,7 @@ MonoBehaviour:
     nature1: 4
     nature2: 6
     nature3: 0
-    name: 
+    name: "\u53F6\u7F18\u5FAE\u5149"
     sale: 20
     made: 
     broken: 
@@ -121,7 +121,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 20
     nature3: 0
-    name: 
+    name: "\u4E0D\u8001\u5E74\u8F6E"
     sale: 20
     made: 
     broken: 
@@ -134,7 +134,7 @@ MonoBehaviour:
     nature1: 30
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u65E0\u5FC3\u4E4B\u67F3"
     sale: 20
     made: 
     broken: 
@@ -147,7 +147,7 @@ MonoBehaviour:
     nature1: 8
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u4E0D\u7720\u7CBE\u7075"
     sale: 20
     made: 
     broken: noConsumed()
@@ -160,7 +160,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 16
     nature3: 0
-    name: 
+    name: "\u6C38\u751F\u5C71\u6768"
     sale: 20
     made: addCard(12006,1)
     broken: 
@@ -173,7 +173,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 14
     nature3: 0
-    name: 
+    name: "\u67F3\u6210\u836B"
     sale: 20
     made: 
     broken: 
@@ -186,7 +186,7 @@ MonoBehaviour:
     nature1: 12
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u6625\u6E56\u5012\u5F71"
     sale: 20
     made: 
     broken: 
@@ -199,7 +199,7 @@ MonoBehaviour:
     nature1: 40
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u67AF\u8363\u4EE4"
     sale: 20
     made: 
     broken: 
@@ -212,7 +212,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 10
     nature3: 0
-    name: 
+    name: "\u6668\u9732\u53F6"
     sale: 20
     made: 
     broken: addNatureAtSum(10,3)
@@ -225,7 +225,7 @@ MonoBehaviour:
     nature1: 2
     nature2: 2
     nature3: 0
-    name: 
+    name: "\u6B63\u5348\u67F3"
     sale: 20
     made: 
     broken: 
@@ -239,7 +239,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u65E0\u5FC3\u4E4B\u5F71"
     sale: 100
     made: 
     broken: 
@@ -247,134 +247,4 @@ MonoBehaviour:
     description: "\u8BA9\u89D2\u8272\u7684\u5C5E\u6027\u4E00\u7684\u6570\u503C\u7B49\u4E8E\u89D2\u8272\u7684\u5C5E\u6027\u4E8C"
     buff: 
     trigger: addNatureFromTo(1,2)
-    nextTurn: 
-  - id: 11101
-    nature1: 2
-    nature2: 2
-    nature3: 2
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: addCard(11001,1)
-    nextTurn: 
-  - id: 11102
-    nature1: 3
-    nature2: 1
-    nature3: 3
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: addRandomCard(1,1,1)
-    nextTurn: 
-  - id: 11103
-    nature1: 0
-    nature2: 4
-    nature3: 4
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: addRandomCardIfNot(1,1,1)
-    nextTurn: 
-  - id: 11104
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: addMoney(999)
-    nextTurn: 
-  - id: 11105
-    nature1: 6
-    nature2: 6
-    nature3: 6
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: 
-    nextTurn: 
-  - id: 11106
-    nature1: 7
-    nature2: 7
-    nature3: 7
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: 
-    nextTurn: 
-  - id: 11107
-    nature1: 8
-    nature2: 8
-    nature3: 8
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: 
-    nextTurn: 
-  - id: 11108
-    nature1: 9
-    nature2: 9
-    nature3: 9
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: 
-    nextTurn: 
-  - id: 11109
-    nature1: 10
-    nature2: 10
-    nature3: 10
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: 
-    nextTurn: 
-  - id: 11110
-    nature1: 11
-    nature2: 11
-    nature3: 11
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
-    buff: 
-    trigger: 
     nextTurn: 

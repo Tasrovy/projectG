@@ -189,6 +189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff6f84a08805e104eb9a3e3a92987d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardChance_1: 60
+  CardChance_2: 30
+  CardChance_3: 10
 --- !u!1 &7314362515151173346
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,10 +409,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 132780274660445156}
     m_Modifications:
+    - target: {fileID: 2934317740507029743, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934317740507029743, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 110
+      objectReference: {fileID: 0}
     - target: {fileID: 4322681682772895101, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
       propertyPath: m_Name
       value: sellCard_1
       objectReference: {fileID: 0}
+    - target: {fileID: 8729586150210577545, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2127906941, guid: f47eabea96d6ff14a9f0e2b02ea66877, type: 3}
     - target: {fileID: 8777629316407244561, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -493,8 +508,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4322681682772895101, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2421635798852980761}
   m_SourcePrefab: {fileID: 100100000, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
+--- !u!1 &4186908495200861859 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4322681682772895101, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}
+  m_PrefabInstance: {fileID: 137257539846216670}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2421635798852980761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4186908495200861859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642a80e4349196f46b36638436ca1b17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseImage: {fileID: 0}
+  commonSprite: {fileID: 0}
+  ShengZhi: {fileID: 0}
+  JianZhi: {fileID: 0}
+  ShengZhang: {fileID: 0}
+  name: {fileID: 0}
+  description: {fileID: 0}
 --- !u!224 &8662608299763772623 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8777629316407244561, guid: ee117e854c0443e4ea7eab6ca1a8f5e2, type: 3}

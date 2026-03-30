@@ -12,13 +12,24 @@ public class CardUIObject : MonoBehaviour
     public Sprite ShengZhang;  // 生长卡图
     public Text name;
     public Text description;
+    bool beSet=false;
 
     void Start()
     {
+        if(baseImage==null)
+        {
+            baseImage= this.GetComponentInChildren<Image>();
+
+        }
         // 初始默认显示生纸
         if (baseImage.sprite == null)
         {
             baseImage.sprite = commonSprite;
+        }
+
+        if(!beSet)
+        {
+            SetCard(this.GetComponent<CardObject>()?.card);
         }
     }
 
@@ -55,5 +66,6 @@ public class CardUIObject : MonoBehaviour
             // 否则用默认的生纸卡图
             baseImage.sprite = ShengZhi;
         }
+        beSet= true;
     }
 }
