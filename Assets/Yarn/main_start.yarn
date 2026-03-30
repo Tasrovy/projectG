@@ -318,7 +318,7 @@ title: special1_4
 ---
 <<set_background box占坑>>
 <<play_bgm lake_happy1>>
-<<play_whitenoise bg1_bgWhiteNoise2>>
+<<play_whitenoise bg1_bgWhiteNoise1>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character C peace_1>>
 （我赢了最难的一局。在紧张和喜悦中，手微微颤抖着。）
