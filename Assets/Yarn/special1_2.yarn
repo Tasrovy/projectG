@@ -1,0 +1,26 @@
+﻿title : special1_2
+---
+<<set_background box占坑>>
+<<play_bgm littleSad_黄昏分岔口(1)>>
+<<play_whitenoise bg1_bgWhiteNoise3>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character C peace_1>>
+（不知道打了多少局。窗外的月光变成了晨光，晨光又变成了正午的烈日。）
+（C打着哈欠，我的眼睛也开始酸胀。）
+<<set_character_sprite C peace_1>>
+蒂娜:不错不错，打得漂亮！
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:……你倒是精神很好。
+<<set_character_sprite C happy>>
+蒂娜:因为我是精灵嘛！精灵是不需要休息的喔~
+（她狡黠地眨了眨眼睛，双手自信地抱在胸前。）
+（那笑起来的样子，说话时歪头的习惯，甚至抱怨时皱鼻子的表情……）
+（我在想什么呢？我摇摇头。）
+<<set_character_sprite C peace_2>>
+蒂娜:怎么啦？
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:没什么。
+（只是有点儿像而已……一点儿。）
+（这个世界上相似的人太多了。）
+
+===

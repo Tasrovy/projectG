@@ -100,4 +100,16 @@ public class Clicking : MonoBehaviour, IPointerClickHandler
         else
             Debug.LogWarning("[Clicking] 场景中未找到 DialogueHandler.Instance！");
     }
+
+    /// <summary>
+    /// 设置该次对话结束后，是否推进到下一天
+    /// 如果需要在该物体的事件中触发“完成对话后切到下一天”，就可以填 true
+    /// </summary>
+    public void Call_SetAdvanceDayAfterDialogue(bool advance)
+    {
+        if (DialogueHandler.Instance != null)
+            DialogueHandler.Instance.SetAdvanceDayAfterDialogue(advance);
+        else
+            Debug.LogWarning("[Clicking] 场景中未找到 DialogueHandler.Instance！");
+    }
 }

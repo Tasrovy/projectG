@@ -1544,6 +1544,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[3].characterName
+      value: "\u690D\u7269\u5B66\u5BB6"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639362683754660290, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
+      propertyPath: characters.Array.data[3].emotionSprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3213edbc5ca70f449eaa9aad3752415, type: 3}
     - target: {fileID: 2958262985454349539, guid: bf5109fe0967ed44782cf04870eb93d2, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0

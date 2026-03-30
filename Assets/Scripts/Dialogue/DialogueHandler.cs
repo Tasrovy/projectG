@@ -227,6 +227,23 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 提供给外部（如 UnityEvent 或其他脚本）调用，用于控制本次对话结束后是否自动进入下一天。
+    /// 勾选/传 true 代表对话结束后会执行 DayManager.Instance.NextDay()。
+    /// </summary>
+    public void SetAdvanceDayAfterDialogue(bool advance)
+    {
+        if (characterHighlightManager == null)
+        {
+            characterHighlightManager = GetComponent<CharacterHighlightManager>();
+        }
+        
+        if (characterHighlightManager != null)
+        {
+            characterHighlightManager.SetAdvanceDayAfterDialogue(advance);
+        }
+    }
+
     private async void HandleSkipDialogueClicked()
     {
         if (dialogueRunner == null || !dialogueRunner.IsDialogueRunning)

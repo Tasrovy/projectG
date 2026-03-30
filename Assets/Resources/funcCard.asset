@@ -17,12 +17,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u840C\u53D1\u65B0\u82BD"
+    name: 
     sale: 20
     made: 1
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}\uFF0C\u4E5F\u5C31\u662F\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
+    description: "\u751F\u679D{make}\uFF0C\u4E5F\u5C31\u662F\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
     buff: 
     trigger: 
     nextTurn: 
@@ -30,12 +30,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u6728\u7EB9\u6E10\u6DF1"
+    name: 
     sale: 20
     made: 0
     broken: 0
     added: 4
-    description: "\u751F\u957F{added}"
+    description: "\u751F\u957F{add}"
     buff: 
     trigger: 
     nextTurn: 
@@ -43,12 +43,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u53BB\u829C\u5B58\u83C1"
+    name: 
     sale: 20
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269"
+    description: "\u526A\u679D{break}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269"
     buff: 
     trigger: 
     nextTurn: addRandomCard(1,1,2)
@@ -56,12 +56,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u971C\u6253\u6B8B\u53F6"
+    name: 
     sale: 20
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
+    description: "\u526A\u679D{break}\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
     buff: 
     trigger: addNatureAtSum(30,2)
     nextTurn: 
@@ -69,12 +69,12 @@ MonoBehaviour:
     nature1: 50
     nature2: 0
     nature3: 0
-    name: "\u5208\u9664\u4FA7\u8513"
+    name: 
     sale: 20
     made: 0
     broken: 2
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u89D2\u8272\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
+    description: "\u526A\u679D{break}\uFF0C\u89D2\u8272\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: addNatureAtSum(50,1)
     nextTurn: 
@@ -82,7 +82,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u62D4\u8282\u6709\u58F0"
+    name: 
     sale: 20
     made: 0
     broken: 0
@@ -95,12 +95,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u62BD\u679D\u6563\u53F6"
+    name: 
     sale: 40
     made: 3
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
+    description: "\u751F\u679D{make}\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
     buff: 
     trigger: 
     nextTurn: 
@@ -108,12 +108,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u8282\u5916\u751F\u679D"
+    name: 
     sale: 40
     made: 1
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u666E\u901A\u793C\u7269"
+    description: "\u751F\u679D{make}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u666E\u901A\u793C\u7269"
     buff: 
     trigger: 
     nextTurn: addRandomCard(1,1,1)
@@ -121,7 +121,7 @@ MonoBehaviour:
     nature1: 100
     nature2: 0
     nature3: 100
-    name: "\u526A\u9664\u67AF\u679D"
+    name: "\u5927\u7834\u574F"
     sale: 40
     made: 0
     broken: 5
@@ -134,7 +134,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u84B8\u817E\u4E0D\u606F"
+    name: 
     sale: 40
     made: 0
     broken: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u679D\u5934\u5410\u7EFF"
+    name: "\u51ED\u7A7A"
     sale: 40
     made: 0
     broken: 0
@@ -160,12 +160,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u9876\u68A2\u4E89\u9AD8"
+    name: 
     sale: 40
     made: 0
     broken: 0
     added: 4
-    description: "\u751F\u957F{added}\uFF0C\u6B64\u724C\u751F\u957F\u7684\u6570\u503C\u63D0\u53474"
+    description: "\u751F\u957F{add}\uFF0C\u6B64\u724C\u751F\u957F\u7684\u6570\u503C\u63D0\u53474"
     buff: 
     trigger: addAddNum(4)
     nextTurn: 
@@ -173,12 +173,12 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u4FEE\u679D\u6574\u5F62"
+    name: 
     sale: 40
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
+    description: "\u526A\u679D{break}\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
     buff: 
     trigger: addNatureAtSumIf(40,1)
     nextTurn: 
@@ -186,7 +186,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u4E1B\u751F\u4E4B\u6001"
+    name: 
     sale: 40
     made: 0
     broken: 0
@@ -199,7 +199,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u6668\u9732\u6DA6\u6CFD"
+    name: 
     sale: 100
     made: 0
     broken: 0
@@ -207,4 +207,121 @@ MonoBehaviour:
     description: "\u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
     buff: 
     trigger: addWIthSameTogether(6,80)
+    nextTurn: 
+  - id: 22201
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: beAdded(4,1)
+    nextTurn: 
+  - id: 22202
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: beAddedTo(4,1)
+    nextTurn: 
+  - id: 22203
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: addRandomCardIfNot(1,1,2)
+    nextTurn: 
+  - id: 22204
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 22205
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 22206
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 22207
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 22208
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
+    nextTurn: 
+  - id: 22209
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    buff: 
+    trigger: 
     nextTurn: 

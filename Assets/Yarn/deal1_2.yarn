@@ -1,0 +1,27 @@
+﻿title: deal1_2
+---
+<<set_background box占坑>>
+<<play_bgm daily_日常微风>>
+<<play_whitenoise bgAir_atmosphereNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character D peace_1>>
+植物学家:又见面了。想必你已经明白了植物的生长原理。
+<<set_character_sprite {$MY_NAME} peace_1>>
+{$MY_NAME}:我在思考你上次说过的话。
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:其他生命也能像植物一样，死而复生吗？
+<<set_character_sprite D saying>>
+植物学家:我必须得纠正一下，许多植物会通过创造分身的方式传承它们的生命，而非死而复生。根茎找到阳光，便能长成一株新苗；枝条插入土里，也可萌发新芽。
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:如果我说的“其他生命”是一种诞生自植物的精灵……
+<<set_character_sprite D peace_2>>
+植物学家:假设你说的是这种生命真实存在，那么它的传承方式的确可能如此。
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:如果一棵树的枝条在土里重新长成新的树芽，它还算得上是原来的那棵树吗？
+<<set_character_sprite D saying>>
+植物学家:这对你来说很重要吗？
+（植物学家掏出笔记本，快速地检查和记录着什么。）
+<<set_character_sprite D peace_2>>
+植物学家:失陪了，热爱知识的小友。我又要去给它们施肥了。
+
+===

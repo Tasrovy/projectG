@@ -41,6 +41,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
     private bool wasStorageReady = false;
 
+    // 新增：控制对话结束后是否进入下一天的标志
+    private bool shouldAdvanceDayAfterDialogue = false;
+
     private void Start()
     {
         variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
@@ -257,17 +260,31 @@ public class CharacterHighlightManager : DialoguePresenterBase
             AudioManager.Instance.StopWhiteNoise();
         }
 
-        // 在所有内部逻辑和属性加成都处理完毕后，推入下一天
-        if (DayManager.Instance != null)
+        // 根据标志位决定是否推入下一天
+        if (shouldAdvanceDayAfterDialogue)
         {
-            DayManager.Instance.NextDay();
-        }
-        else
-        {
-            Debug.LogWarning("DayManager instance not found. NextDay() was not called.");
+            if (DayManager.Instance != null)
+            {
+                DayManager.Instance.NextDay();
+            }
+            else
+            {
+                Debug.LogWarning("DayManager instance not found. NextDay() was not called.");
+            }
+            
+            // 触发完之后立刻复位，避免影响下一次其他的对话
+            shouldAdvanceDayAfterDialogue = false; 
         }
 
         await YarnTask.CompletedTask;
+    }
+
+    /// <summary>
+    /// 提供给外部（如 UnityEvent 或其他脚本）调用，用于控制本次对话结束后是否自动进入下一天
+    /// </summary>
+    public void SetAdvanceDayAfterDialogue(bool advance)
+    {
+        shouldAdvanceDayAfterDialogue = advance;
     }
 
     public void SetDialogueCompleteProperties(int p1, int p2, int p3)
