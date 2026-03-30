@@ -8,7 +8,7 @@ public class DayManager : Singleton<DayManager>
     public Dictionary<int,UnityEvent> dayEvents = new Dictionary<int, UnityEvent>();
     public int dayNumber = 0;
     public DayDataSO daySO;
-
+    protected override bool IsPersistent => true;
     protected override void Awake()
     {
         base.Awake();

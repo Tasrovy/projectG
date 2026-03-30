@@ -12,6 +12,7 @@ using UnityEditor;
 
 public class ExcelLoader : Singleton<ExcelLoader>
 {
+    protected override bool IsPersistent => true;
     /// <summary>
     /// 读取数据：编辑器下同步Excel与SO，发布后直接读SO
     /// </summary>
