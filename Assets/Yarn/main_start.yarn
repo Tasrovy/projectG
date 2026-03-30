@@ -1,35 +1,33 @@
-﻿
+
 title: main_start
 ---
-<<declare $MY_NAME= string("a")>>
+<<declare $MY_NAME= string("林奈")>>
 <<play_bgm "lake_happy2">>
 <<play_whitenoise "bgWater_springwater1">>
 
-<<set_character_person "Player" {$MY_NAME} "peace_1">>
-<<set_character_person "Character" "B" "peace_2">>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person character B peace_2>>
 （鲜花簇拥着我们，溪水潺潺。） #line:09f9855 
-<<set_character_sprite {$MY_NAME} "peace_1">>
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
 <<set_character_sprite "B" "peace_1">>
-B:花开得真好。 #line:0b2cd4e 
+伊兰莉特:花开得真好。 #line:0b2cd4e 
 （岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。） #line:006d230 
-<<set_character_shake {$MY_NAME} "up_down">>
-<<set_character_sprite {$MY_NAME} "happy">>
+<<set_character_sprite "{$MY_NAME}" "happy">>
 <<set_character_sprite "B" "saying">>
-B:把它们做成花环戴在你头上，唔...... #line:0d9e904 
+伊兰莉特:把它们做成花环戴在你头上，唔...... #line:0d9e904 
 <<set_character_sprite "B" "happy">>
-<<set_character_shake "B" "left_right">>
-B:（开心表情）想想那个画面，一定非常可爱吧。 #line:0120b97 
+伊兰莉特:（开心表情）想想那个画面，一定非常可爱吧。 #line:0120b97 
 （B边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
-<<set_character_sprite {$MY_NAME} "saying">>
+<<set_character_sprite "{$MY_NAME}" "saying">>
 {$MY_NAME}:B，注意安-- #line:0f1a741 
 <<stop_bgm>>
 （树枝折断了） #line:0d7301f 
-<<set_character_sprite {$MY_NAME} "peace2">>
+<<set_character_sprite "{$MY_NAME}" "peace2">>
 {$MY_NAME}:（惊恐表情）！！！ #line:0c4c660 
 <<play_bgm lake_sadStrong>>
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
 <<set_background "blackGround">>
-<<clear_character_person "Player">>
+<<clear_character_person "{$MY_NAME}">>
 <<clear_character_person "B">>
 
 (..........) #line:07a7a58 
@@ -42,53 +40,40 @@ title: room1_1
 ---
 <<play_bgm "lake_sadnor1">>
 <<play_whitenoise "bg1_bgWhiteNoise1">>
+<<set_character_person Player {$MY_NAME} peace_1>>
 （熟悉的天花板） #line:0e4f723 
-<<set_character_sprite Player peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:又是梦啊。 #line:0ea787b 
-{$MY_NAME}:看看几点了
--> 看看时间
-    <<jump room1_2>>
-===
-
-
-title: room1_2
----
-<<play_bgm lake_sadnor1>>
-<<play_whitenoise bg1_bgWhiteNoise1>>
-<<set_character_sprite Player peace_2>>
-{$MY_NAME}已经下午四点半了吗......我睡了这么久？ #line:00812c6 
+->看看几点了
+<<set_character_person Player {$MY_NAME} saying>>
+{$MY_NAME}:已经下午四点半了吗......我睡了这么久？ #line:00812c6 
 （明明刚才还是夜里两点多......） #line:0d21b28 
-<<stop_bgm>>
 （时间的流逝好像变得不真实。） #line:0e3d4da 
 （窗帘上投着窗外的树影，在风里来回飘荡，伴着那些若隐若现的阳光。） #line:065546b 
-<<play_bgm lake_sadnor2>>
 （自从B离开以后，一切都好像褪了色。） #line:0616adb 
-<<set_character_sprite Player saying>>
-{$MY_NAME}还是起来吃点东西吧。 #line:059a91f 
-<<set_character_sprite Player peace_1>>
-{$MY_NAME}啊...！ #line:025d534 
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:还是起来吃点东西吧。 #line:059a91f 
+<<set_character_sprite {$MY_NAME} peace_1>>
+{$MY_NAME}:啊...！ #line:025d534 
 （我踢到了放在床边地毯上的匣子。） #line:0f6d1e6 
 <<set_background 占坑匣子cg>>
-<<set_character_sprite Player peace_2>>
-{$MY_NAME}：...... #line:0e118f1 
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:......像《爱丽丝漫游仙境》里一样的小纸条呢。
+{$MY_NAME}:...... #line:0e118f1 
 （竟然没有感到痛了。无论是撞伤脚的疼痛，还是她的死亡为我带来的、 如同淅淅沥沥的雨一样绵延的刺痛.......都慢慢消失了。） #line:03805ef 
-<<set_character_sprite Player peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 （一切是好起来了吗？还是更坏了呢？） #line:0d46603 
-<<set_character_sprite Player peace_2>>
-{$MY_NAME}....... #line:0559576 
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:....... #line:0559576 
 （我尝到苦涩的味道。） #line:0d806f2 
-<<stop_bgm>>
-<<set_character_sprite Player sad>>
+<<set_character_sprite {$MY_NAME} sad>>
 （原来我在哭啊。） #line:0ccd8cf 
-<<play_bgm lake_sadStrong>>
 {$MY_NAME}：我想你了。 #line:0f2f8cd 
-<<set_character_sprite Player saying>>
-{$MY_NAME}呜呜呜..... #line:0ea852a 
-<<set_character_sprite Player sad>>
-{$MY_NAME}如果你还在我身边，那该多好...... #line:0a97d71 
--> 让我看看！
-    是什么好康的呀？
-    <<jump room1_3>>
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:呜呜呜..... #line:0ea852a 
+<<set_character_sprite {$MY_NAME} sad>>
+{$MY_NAME}:如果你还在我身边，那该多好...... #line:0a97d71 
+<<jump room1_3>>
 ===
 
 title: room1_3
@@ -96,34 +81,281 @@ title: room1_3
 <<set_background box占坑>>
 <<play_bgm littleSad_黄昏分岔口(1)>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_sprite player sad>>
+<<set_character_person Playerr {$MY_NAME} peace_1>>
+<<set_character_sprite {$MY_NAME} sad>>
 （透过被泪水模糊的眼睛，我好像看到--）
+<<set_character_person Character C peace_1>>
 <<set_character_sprite C peace_1>>
-??? : 你好啊，人类。
+？？？ : 你好啊，人类。
 <<set_character_sprite C saying>>
 ？？？ : 有没有意犹未尽的感觉？这就是你的积分了！
 {$MY_NAME}:（与其说会在意得到的积分……不如说更在意面前……）
-<<set_character_sprite Player saying>>
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:……你好像突然就出现了，小姑娘。
 <<set_character_sprite C peace_2>>
-C: {$MY_NAME} 女士，我不叫小姑娘，我叫C。
-<<set_character_sprite Player peace_1>>
+蒂娜: {$MY_NAME} 女士，我不叫小姑娘，我叫蒂娜。
+<<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:（疑惑表情）你知道我的名字？
 <<set_character_sprite C peace_1>>
-C: {$MY_NAME}女士，你的名字就写在你的对话框上面啊。
-<<set_character_sprite Player peace_2>>
+蒂娜: {$MY_NAME}女士，你的名字就写在你的对话框上面啊。
+<<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:？
 <<set_character_sprite C saying>>
-C :（疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
-<<set_character_sprite Player saying>>
+蒂娜 :（疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:（摇头）不用了，谢谢。
 {$MY_NAME}:所以，你是从哪里来的？
 <<set_character_sprite C saying>>
-C: 当然是你面前的这副牌咯！本人，大名鼎鼎的C，正是这副牌本身的妖精。而你，智慧而美丽的MY_NAME女士，将会不断地把这副牌的积分献给我——以维持我弱小又可怜的身体在现实世界中显形。
+蒂娜: 当然是你面前的这副牌咯！本人，大名鼎鼎的C，正是这副牌本身的妖精。而你，智慧而美丽的{$MY_NAME}女士，将会不断地把这副牌的积分献给我——以维持我弱小又可怜的身体在现实世界中显形。
 （不管怎么想……这个说法……）
+<<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:听起来有点像是胡扯呢。
-C : 你怎么喊出来了！呜呜呜，就这么不相信可怜的C吗……
+蒂娜 : 你怎么喊出来了！呜呜呜，就这么不相信可怜的蒂娜吗……
 （我怎么会直接说出来了……但她说的话，真的可以相信吗？）
+{$MY_NAME}:（我手上还捏着那张从匣子上取下的纸条。）
+<<set_character_sprite {$MY_NAME} peace_1>>
+（……打开这个盒子，是B希望我去做的事吧。）
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:那我相信你。
+<<set_character_sprite C happy>>
+<<set_character_shake C left_right>>
+蒂娜 :太！好！啦！
+（C原地转了个圈，裙摆险些撞到那些未收拾的书堆和杂物，坐回了匣子上。
+蒂娜 :我会一直在这里等你哦！
+
+->寻找卡牌说明书 
+    <<jump card1_1>>
+->还是把盖子盖上，放回抽屉里吧
+蒂娜: 喂喂，这位女士，你可别把我关回去呀！
+<<jump room1_4>>
 ===
 
+title: room1_4
+---
 
+{$MY_NAME}:
+->寻找卡牌说明书 
+     <<jump card1_1>>
+->还是把盖子盖上，放回抽屉里吧
+蒂娜:哎呀，你怎么还想选这一项呐？
+<<jump room1_4>>
+
+===
+
+title: card1_1
+---
+
+蒂娜:这样选就对啦！
+
+===
+
+title : deal1_1
+---
+<<set_background box占坑>>
+<<play_bgm daily_日常微风>>
+<<play_whitenoise bgAir_atmosphereNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character D peace_1>>
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:我想知道，是否有一种可能，会有一种精灵，或者某种神奇的生物，从匣子里突然长出来？
+<<set_character_sprite {$MY_NAME} peace_1>>
+（我回想着从匣子里“大变活人”的画面，忐忑地希望这位温文尔雅的先生不要把我当成一个胡言乱语的疯子。）
+<<set_character_sprite {$MY_NAME} peace_1>>
+植物学家:唔……很遗憾，没有听说过那种事。
+<<set_character_sprite {$MY_NAME} sad>>
+{$MY_NAME}:【叹气表情】那我再去问问其他人吧。
+<<set_character_sprite D saying>>
+植物学家:不过，我有一个关于植物的小知识想送给你。
+<<set_character_sprite D peace_2>>
+植物学家:有些树是不会死的。在植物界，存在一类可以被称为“潜在永生”的生命。它们并非传统意义上的不死，而是拥有强大的无性克隆与自我更新能力，能不断重置自己的生命，从而理论上避免因衰老而死亡。
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:好像有些太深奥了。
+<<set_character_sprite D saying>>
+植物学家:那么，请听我我举个例子。在美国犹他州，一片占地超过43公顷的山杨林，看上去是数万棵独立的树，但遗传学证实它们共享同一套根系，是一个克隆群体。
+植物学家:它的地下根状茎不断萌发新芽，形成新树干。当地上部分树木因火灾、病害或衰老死亡时，地下庞大的根系网络依然存活，并继续派出新的“分身”。这个单一的生命体已存活了至少八万年。
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:听起来真是生生不息啊。
+<<set_character_sprite D peace_1>>
+植物学家:就像东方的一句老话，“无心插柳柳成荫”。
+
+===
+
+title: deal1_2
+---
+<<set_background box占坑>>
+<<play_bgm daily_日常微风>>
+<<play_whitenoise bgAir_atmosphereNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character D peace_1>>
+植物学家:又见面了。想必你已经明白了植物的生长原理。
+<<set_character_sprite {$MY_NAME} peace_1>>
+{$MY_NAME}:我在思考你上次说过的话。
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:其他生命也能像植物一样，死而复生吗？
+<<set_character_sprite D saying>>
+植物学家:我必须得纠正一下，许多植物会通过创造分身的方式传承它们的生命，而非死而复生。根茎找到阳光，便能长成一株新苗；枝条插入土里，也可萌发新芽。
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:如果我说的“其他生命”是一种诞生自植物的精灵……
+<<set_character_sprite D peace_2>>
+植物学家:假设你说的是这种生命真实存在，那么它的传承方式的确可能如此。
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:如果一棵树的枝条在土里重新长成新的树芽，它还算得上是原来的那棵树吗？
+<<set_character_sprite D saying>>
+植物学家:这对你来说很重要吗？
+（植物学家掏出笔记本，快速地检查和记录着什么。）
+<<set_character_sprite D peace_2>>
+植物学家:失陪了，热爱知识的小友。我又要去给它们施肥了。
+
+===
+
+title: special1_1
+---
+<<set_background box占坑>>
+<<play_bgm daily_日常微风(1)>>
+<<play_whitenoise bgAir_atmosphereNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character C peace_1>>
+（深夜的房间，月光透过窗帘的缝隙，洒下淡色的银光。）
+<<set_character_sprite C happy>>
+蒂娜:所以，你到底要不要继续一起玩嘛！
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:我不是来了吗？
+<<set_character_sprite C happy>>
+<<set_character_shake C up_down>>
+蒂娜:【开心表情】一起玩，一起做打牌高手！
+（似乎是在哪里听到过的奇怪台词。）
+<<set_character_sprite C saying>>
+蒂娜:当然啦！我的存在可就指着这个了！你也不想看到一个可爱的精灵就这样消失吧？
+（她凑近我，眨巴着眼睛。就像花和树倒映在春天的湖水里一样，泛起涟漪。）
+（我移开了视线。）
+<<set_character_sprite {$MY_NAME} peace_1>>
+{$MY_NAME}:……知道了。
+<<set_character_sprite C happy>>
+蒂娜:好耶！那我们开始吧！
+
+===
+
+title: special1_2
+---
+<<set_background box占坑>>
+<<play_bgm littleSad_黄昏分岔口(1)>>
+<<play_whitenoise bg1_bgWhiteNoise3>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character C peace_1>>
+（不知道打了多少局。窗外的月光变成了晨光，晨光又变成了正午的烈日。）
+（C打着哈欠，我的眼睛也开始酸胀。）
+<<set_character_sprite C peace_1>>
+蒂娜:不错不错，打得漂亮！
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:……你倒是精神很好。
+<<set_character_sprite C happy>>
+蒂娜:因为我是精灵嘛！精灵是不需要休息的喔~
+（她狡黠地眨了眨眼睛，双手自信地抱在胸前。）
+（那笑起来的样子，说话时歪头的习惯，甚至抱怨时皱鼻子的表情……）
+（我在想什么呢？我摇摇头。）
+<<set_character_sprite C peace_2>>
+蒂娜:怎么啦？
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:没什么。
+（只是有点儿像而已……一点儿。）
+（这个世界上相似的人太多了。）
+
+===
+
+title: special1_3
+---
+<<set_background box占坑>>
+<<play_bgm lake_happy2>>
+<<play_whitenoise bg1_bgWhiteNoise3>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character C peace_1>>
+
+（连续几天的牌局。我已经习惯了C的存在。）
+（空气中带着毛茸茸的暖意。和她共处时的快乐如此真实。）
+<<set_character_sprite C peace_2>>
+蒂娜:喂，你今天打牌的反应好慢哦。
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:……有点累了。
+<<set_character_sprite C saying>>
+蒂娜:（凑近）累了也要加油哇！不然我会——
+（她的话说到一半，突然停住了。）
+（因为我闭上了眼睛。）
+<<set_character_sprite C saying>>
+<<set_character_shake C left_right>>
+蒂娜:……喂？
+蒂娜:睡着了吗？
+（沉默。）
+<<set_character_sprite C angry>>
+蒂娜:真是的……
+（她坐在我旁边，小声嘟囔着。）
+（我能感觉到她的目光，落在我的脸上。）
+<<set_character_sprite C saying>>
+蒂娜:你知道吗？你睡觉的时候，眉毛总是皱着的。
+（她伸出手，轻轻戳了戳我的眉心。）
+<<set_character_sprite C saying>>
+<<set_character_shake C up_down>>
+蒂娜:明明醒着的时候装得那么平静……你到底在想什么呢？
+（我没有回答。或者说，我打心底里无法回答这个问题。）
+蒂娜:算了，反正你也不会告诉我。
+（她收回手，抱着膝盖坐在旁边。）
+<<set_character_sprite C peace_1>>
+蒂娜:我啊……有时候会觉得，我好像认识你很久了。
+蒂娜:但这是不可能的，对吧？
+（她的声音越来越轻。）
+<<set_character_sprite C saying>>
+蒂娜:：毕竟我才出现几天而已……
+（她沉默了。）
+蒂娜:我在说什么啊，你反正也听不见。
+（她打了个哈欠。精灵也会有些疲惫吗？）
+<<set_character_sprite C peace_2>>
+蒂娜:……我也睡一会儿好了。
+（轻而暖的呼吸声传来，她的头靠在了我的肩膀上。）
+
+===
+
+title: special1_4
+
+---
+<<set_background box占坑>>
+<<play_bgm lake_happy1>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character C peace_1>>
+（我赢了最难的一局。在紧张和喜悦中，手微微颤抖着。）
+<<set_character_sprite C happy>>
+<<set_character_shake C up_down>>
+蒂娜:哇！你居然赢了！这局的积分够我用好多天了！
+（没有一刻比现在赢得的胜利更开心，也没有一刻比现在更让我感到担忧。）
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:……差点就输了。
+（C像是备好了一份巨大的勇气，猛然凑上前来。）
+（她的手握住了我的。原来她的手也有温度，有血液在血管里流淌，有心脏在她的胸膛跳动。）
+<<set_character_sprite C peace_2>>
+蒂娜:你的手在抖诶。是不是因为我？
+<<set_character_sprite {$MY_NAME} peace_1>>
+{$MY_NAME}:【疑惑表情】……什么？
+<<set_character_sprite C saying>>
+蒂娜:如果，我是说如果--我消失了，你会怎么样？
+（她问得很随意，好像在问今天天气怎么样。）
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:……
+<<set_character_sprite C peace_2>>
+蒂娜:你会伤心吗？
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:……会。
+<<set_character_sprite C peace_1>>
+蒂娜:真的？
+{$MY_NAME}:……真的。
+（我们沉默了一会儿。她的手把我的骨节握得很紧。）
+<<set_character_sprite C happy>>
+<<set_character_shake C left_right>>
+蒂娜:那我尽量不消失好了。
+蒂娜:约定好了哦！
+<<set_character_sprite {$MY_NAME} happy>>
+{$MY_NAME}:约定好了哦。
+（这就是故事重新开始的那一天。）
+（未完待续）
+
+
+
+===

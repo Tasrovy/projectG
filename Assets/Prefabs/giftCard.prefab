@@ -297,6 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseImage: {fileID: 5844175687352891510}
+  commonSprite: {fileID: 2127906941, guid: f47eabea96d6ff14a9f0e2b02ea66877, type: 3}
   ShengZhi: {fileID: -1906565844, guid: 23f17b6a583307b4aa12714d3b9eb453, type: 3}
   JianZhi: {fileID: 858556806, guid: 57f5c81e5a9feba4fa8cd0884d6d674d, type: 3}
   ShengZhang: {fileID: 562336008, guid: 68b2abecce6c8f94b8c7ce15075303cc, type: 3}
