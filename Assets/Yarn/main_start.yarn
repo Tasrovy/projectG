@@ -22,13 +22,13 @@ title: main_start
 {$MY_NAME}:伊兰莉特，注意安-- #line:0f1a741 
 <<stop_bgm>>
 （树枝折断了） #line:0d7301f 
-<<set_character_sprite "{$MY_NAME}" "peace2">>
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
 {$MY_NAME}:（惊恐表情）！！！ #line:0c4c660 
 <<play_bgm lake_sadStrong>>
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
 <<set_background "blackGround">>
-<<clear_character_person "{$MY_NAME}">>
-<<clear_character_person "伊兰莉特">>
+<<clear_character_person "Player">>
+<<clear_character_person "Character">>
 
 (..........) #line:07a7a58 
 (..........) #line:007dd97 
@@ -84,28 +84,28 @@ title: room1_3
 <<set_character_person Playerr {$MY_NAME} peace_1>>
 <<set_character_sprite {$MY_NAME} sad>>
 （透过被泪水模糊的眼睛，我好像看到--）
-<<set_character_person Character C peace_1>>
-<<set_character_sprite C peace_1>>
+<<set_character_person Character "蒂娜" peace_1>>
+<<set_character_sprite "蒂娜" peace_1>>
 ？？？ : 你好啊，人类。
-<<set_character_sprite C saying>>
+<<set_character_sprite "蒂娜" saying>>
 ？？？ : 有没有意犹未尽的感觉？这就是你的积分了！
 {$MY_NAME}:（与其说会在意得到的积分……不如说更在意面前……）
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:……你好像突然就出现了，小姑娘。
-<<set_character_sprite C peace_2>>
+<<set_character_sprite "蒂娜" peace_2>>
 蒂娜: {$MY_NAME} 女士，我不叫小姑娘，我叫蒂娜。
 <<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:（疑惑表情）你知道我的名字？
-<<set_character_sprite C peace_1>>
+<<set_character_sprite "蒂娜" peace_1>>
 蒂娜: {$MY_NAME}女士，你的名字就写在你的对话框上面啊。
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:？
-<<set_character_sprite C saying>>
+<<set_character_sprite "蒂娜" saying>>
 蒂娜 :（疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:（摇头）不用了，谢谢。
 {$MY_NAME}:所以，你是从哪里来的？
-<<set_character_sprite C saying>>
+<<set_character_sprite "蒂娜" saying>>
 蒂娜: 当然是你面前的这副牌咯！本人，大名鼎鼎的C，正是这副牌本身的妖精。而你，智慧而美丽的{$MY_NAME}女士，将会不断地把这副牌的积分献给我——以维持我弱小又可怜的身体在现实世界中显形。
 （不管怎么想……这个说法……）
 <<set_character_sprite {$MY_NAME} peace_2>>
@@ -117,8 +117,8 @@ title: room1_3
 （……打开这个盒子，是B希望我去做的事吧。）
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:那我相信你。
-<<set_character_sprite C happy>>
-<<set_character_shake C left_right>>
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" left_right>>
 蒂娜 :太！好！啦！
 （C原地转了个圈，裙摆险些撞到那些未收拾的书堆和杂物，坐回了匣子上。
 蒂娜 :我会一直在这里等你哦！

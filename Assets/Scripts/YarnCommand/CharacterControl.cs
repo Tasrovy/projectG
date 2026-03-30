@@ -390,7 +390,7 @@ public class CharacterControl : MonoBehaviour
             Sprite newBackground = Resources.Load<Sprite>($"Background/art/{backgroundName}");
             if (newBackground == null)
             {
-                Debug.LogError($"[CharacterControl] Background sprite not found at Resources/Background/{backgroundName}.");
+                Debug.LogWarning($"[CharacterControl] Background sprite not found at Resources/Background/{backgroundName}.");
                 return;
             }
 
