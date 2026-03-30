@@ -161,8 +161,14 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator EndDialogueRoutine()
     {
-        // 先播放离场转场动画
-        yield return TransitionManager.Instance.PlayTransition();
+        // 先播放离场转场动画，并在屏幕完全黑掉的瞬间去清除立绘和背景
+        yield return TransitionManager.Instance.PlayTransition(() => 
+        {
+            if (characterHighlightManager != null)
+            {
+                characterHighlightManager.ClearVisualsOnTransitionMidpoint();
+            }
+        });
 
         // 黑屏后第一步：检查是否有排队等候的对话
         if (pendingDialogues.Count > 0)

@@ -373,21 +373,21 @@ public class CharacterControl : MonoBehaviour
         yield return TransitionManager.Instance.PlayTransition(() => 
         {
             // 在屏幕完全黑掉的回调瞬间，进行切图操作：
-            var backgroundObject = GameObject.Find("Background");
+            var backgroundObject = GetCharacterObjectUnderTalk("talkBG");
             if (backgroundObject == null)
             {
-                Debug.LogError("[CharacterControl] UI Image named 'Background' was not found in scene.");
+                Debug.LogError("[CharacterControl] UI Image named 'talkBG' was not found under 'talk' object.");
                 return;
             }
 
             Image backgroundImage = backgroundObject.GetComponent<Image>();
             if (backgroundImage == null)
             {
-                Debug.LogError("[CharacterControl] 'Background' object does not have an Image component.");
+                Debug.LogError("[CharacterControl] 'talkBG' object does not have an Image component.");
                 return;
             }
 
-            Sprite newBackground = Resources.Load<Sprite>($"Background/art/{backgroundName}");
+            Sprite newBackground = Resources.Load<Sprite>($"Background/{backgroundName}");
             if (newBackground == null)
             {
                 Debug.LogWarning($"[CharacterControl] Background sprite not found at Resources/Background/{backgroundName}.");

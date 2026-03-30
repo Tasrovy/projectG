@@ -42,6 +42,7 @@ title: room1_1
 <<play_bgm "lake_sadnor1">>
 <<play_whitenoise "bg1_bgWhiteNoise1">>
 <<set_character_person Player {$MY_NAME} peace_1>>
+<<set_background "黑夜素材">>
 （熟悉的天花板） #line:0e4f723 
 <<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:又是梦啊。 #line:0ea787b 

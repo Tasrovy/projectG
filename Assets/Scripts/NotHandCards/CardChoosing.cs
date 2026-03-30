@@ -26,7 +26,7 @@ public class CardChoosing : MonoBehaviour
         
         Image img = blackOverlay.AddComponent<Image>();
         img.color = new Color(0f, 0f, 0f, 0.7f); // 半透明黑幕
-        img.raycastTarget = true; // 拦截并吸收底层UI的所有点击事件
+        img.raycastTarget = true; // 取消射线拦截，防止遮挡按钮的点击事件
         
         RectTransform rect = blackOverlay.GetComponent<RectTransform>();
         // 强制设置超大尺寸居中，以防当前挂载物体锚点为0导致无法覆盖全屏
@@ -187,6 +187,7 @@ public class CardChoosing : MonoBehaviour
     /// </summary>
     public void Confirm()
     {
+        Debug.Log("[CardChoosing] Confirm 按钮被点击，正在处理选中结果...");
         if (selectedCard != null && selectedCard.card != null)
         {
             if (CardManager.Instance != null && CardManager.Instance.cardInHand != null)
@@ -212,6 +213,7 @@ public class CardChoosing : MonoBehaviour
     /// </summary>
     public void Skip()
     {
+        Debug.Log("[CardChoosing] Skip 按钮被点击，玩家选择跳过选卡。");
         Debug.Log("[CardChoosing] 玩家跳过了此次选卡。");
         ClearCardsData();
         if (UISceneManager.Instance != null)

@@ -213,42 +213,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
     public override async YarnTask OnDialogueCompleteAsync()
     {
-        // 结束对话时，隐藏背景
-        if (dialogueBackground != null) dialogueBackground.SetActive(false);
-
-        // 结束对话时，清空映射表
-        var charControl = GetComponent<CharacterControl>();
-        if (charControl != null)
-        {
-            charControl.objectToCharacterMap.Clear();
-        }
-
-        // 限定在 talk 下寻找并重置状态
-        GameObject playerObj = GetCharacterObjectUnderTalk("Player");
-        GameObject characterObj = GetCharacterObjectUnderTalk("Character");
-
-        if (playerObj != null)
-        {
-            var sr = playerObj.GetComponent<SpriteRenderer>();
-            if (sr != null) 
-            {
-                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
-                sr.sprite = null; // 清空立绘
-            }
-            playerObj.SetActive(false);
-        }
-
-        if (characterObj != null)
-        {
-            var sr = characterObj.GetComponent<SpriteRenderer>();
-            if (sr != null) 
-            {
-                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f); // 强制灰色
-                sr.sprite = null; // 清空立绘
-            }
-            characterObj.SetActive(false);
-        }
-
+        // 核心属性结算和环境清理保持，视觉清理移交到转场黑屏进行
         ApplyDialogueCompleteProperties();
 
         currentSpeaker = "";
@@ -277,6 +242,48 @@ public class CharacterHighlightManager : DialoguePresenterBase
         }
 
         await YarnTask.CompletedTask;
+    }
+
+    /// <summary>
+    /// 当离开对话的转场动画到达最黑的中间点时，由 DialogueHandler 呼叫。用来神不知鬼不觉地清理画面
+    /// </summary>
+    public void ClearVisualsOnTransitionMidpoint()
+    {
+        // 隐藏背景
+        if (dialogueBackground != null) dialogueBackground.SetActive(false);
+
+        // 清空映射表
+        var charControl = GetComponent<CharacterControl>();
+        if (charControl != null)
+        {
+            charControl.objectToCharacterMap.Clear();
+        }
+
+        // 隐藏立绘并重置颜色
+        GameObject playerObj = GetCharacterObjectUnderTalk("Player");
+        GameObject characterObj = GetCharacterObjectUnderTalk("Character");
+
+        if (playerObj != null)
+        {
+            var sr = playerObj.GetComponent<SpriteRenderer>();
+            if (sr != null) 
+            {
+                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                sr.sprite = null;
+            }
+            playerObj.SetActive(false);
+        }
+
+        if (characterObj != null)
+        {
+            var sr = characterObj.GetComponent<SpriteRenderer>();
+            if (sr != null) 
+            {
+                sr.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                sr.sprite = null;
+            }
+            characterObj.SetActive(false);
+        }
     }
 
     /// <summary>
