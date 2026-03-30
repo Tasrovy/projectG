@@ -92,6 +92,9 @@ public class DialogueHandler : MonoBehaviour
 
     public void StartDialogue(string yarnScript)
     {
+        // 您把打印这句话放在最前面，这里是绝对能完整回溯出到底是谁点击/触发的：
+        Debug.Log($"[DialogueHandler] 系统正在请求启动节点: {yarnScript}。调用者堆栈为：\n" + System.Environment.StackTrace);
+
         if (dialogueRunner != null)
         {
             // 如果当前有对话正在运行，或者正在处理入场/离场中，或者队列里已经有积压任务

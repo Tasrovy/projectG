@@ -25,7 +25,7 @@ public class DayManager : Singleton<DayManager>
     {
         OnDayEnd();
         dayNumber++;
-        Debug.Log($"[DayManager] dayNumber: {dayNumber}");
+        Debug.Log($"========== [DayManager 检测器] 天数改变，当前是第 {dayNumber} 天 ==========");
         CardManager.Instance.SetProbRarity1(daySO.dayDatas[dayNumber].probRarity1);
         CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
         CardManager.Instance.SetProbRarity3(daySO.dayDatas[dayNumber].probRarity3);
