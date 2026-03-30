@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CardUIObject : MonoBehaviour
 {
     public Image baseImage;
+    public Sprite commonSprite;
     public Sprite ShengZhi;    // 默认/生纸卡图
     public Sprite JianZhi;     // 剪纸卡图
     public Sprite ShengZhang;  // 生长卡图
@@ -17,7 +18,7 @@ public class CardUIObject : MonoBehaviour
         // 初始默认显示生纸
         if (baseImage.sprite == null)
         {
-            baseImage.sprite = ShengZhi;
+            baseImage.sprite = commonSprite;
         }
     }
 
@@ -35,7 +36,11 @@ public class CardUIObject : MonoBehaviour
         int.TryParse(card.broken, out brokenValue);
         int.TryParse(card.added, out addedValue);
 
-        if (brokenValue > 0)
+        if (card.id.ToString()[0] == '1')
+        {
+            baseImage.sprite = commonSprite;
+        }
+        else if (brokenValue > 0)
         {
             // 如果 broken 大于 0，用剪纸卡图
             baseImage.sprite = JianZhi;
