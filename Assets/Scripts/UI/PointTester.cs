@@ -7,6 +7,9 @@ public class PointTester : MonoBehaviour
     [Header("触发的事件 (可在此绑定Confirm/Skip)")]
     public UnityEvent onClickAction;
 
+    [Header("点击成功后是否立即隐藏自身")]
+    public bool hideOnClick = false;
+
     private RectTransform rectTransform;
     private Canvas parentCanvas;
     
@@ -42,7 +45,20 @@ public class PointTester : MonoBehaviour
             {
                 Debug.Log($"[PointTester] 成功点击到【{gameObject.name}】的四个角框定区域内！");
                 onClickAction?.Invoke(); // 触发UnityEvent
+
+                if (hideOnClick)
+                {
+                    gameObject.SetActive(false); // 隐藏自己
+                }
             }
         }
+    }
+
+    /// <summary>
+    /// 提供一个公开方法，供外部或其他 UnityEvent 手动调用来隐藏自己
+    /// </summary>
+    public void HideSelf()
+    {
+        gameObject.SetActive(false);
     }
 }
