@@ -4,7 +4,7 @@
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bgAir_atmosphereNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person Character D peace_1>>
+<<set_character_person Character "植物学家" peace_1>>
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:我想知道，是否有一种可能，会有一种精灵，或者某种神奇的生物，从匣子里突然长出来？
 <<set_character_sprite {$MY_NAME} peace_1>>
@@ -13,18 +13,18 @@
 植物学家:唔……很遗憾，没有听说过那种事。
 <<set_character_sprite {$MY_NAME} sad>>
 {$MY_NAME}:【叹气表情】那我再去问问其他人吧。
-<<set_character_sprite D saying>>
+<<set_character_sprite "植物学家" saying>>
 植物学家:不过，我有一个关于植物的小知识想送给你。
-<<set_character_sprite D peace_2>>
+<<set_character_sprite "植物学家" peace_2>>
 植物学家:有些树是不会死的。在植物界，存在一类可以被称为“潜在永生”的生命。它们并非传统意义上的不死，而是拥有强大的无性克隆与自我更新能力，能不断重置自己的生命，从而理论上避免因衰老而死亡。
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:好像有些太深奥了。
-<<set_character_sprite D saying>>
+<<set_character_sprite "植物学家" saying>>
 植物学家:那么，请听我我举个例子。在美国犹他州，一片占地超过43公顷的山杨林，看上去是数万棵独立的树，但遗传学证实它们共享同一套根系，是一个克隆群体。
 植物学家:它的地下根状茎不断萌发新芽，形成新树干。当地上部分树木因火灾、病害或衰老死亡时，地下庞大的根系网络依然存活，并继续派出新的“分身”。这个单一的生命体已存活了至少八万年。
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:听起来真是生生不息啊。
-<<set_character_sprite D peace_1>>
+<<set_character_sprite "植物学家" peace_1>>
 植物学家:就像东方的一句老话，“无心插柳柳成荫”。
 
 ===

@@ -5,23 +5,23 @@
 <<play_bgm daily_日常微风(1)>>
 <<play_whitenoise bgAir_atmosphereNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person Character C peace_1>>
+<<set_character_person Character "蒂娜" peace_1>>
 （深夜的房间，月光透过窗帘的缝隙，洒下淡色的银光。）
-<<set_character_sprite C happy>>
+<<set_character_sprite "蒂娜" happy>>
 蒂娜:所以，你到底要不要继续一起玩嘛！
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:我不是来了吗？
-<<set_character_sprite C happy>>
-<<set_character_shake C up_down>>
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
 蒂娜:【开心表情】一起玩，一起做打牌高手！
 （似乎是在哪里听到过的奇怪台词。）
-<<set_character_sprite C saying>>
+<<set_character_sprite "蒂娜" saying>>
 蒂娜:当然啦！我的存在可就指着这个了！你也不想看到一个可爱的精灵就这样消失吧？
 （她凑近我，眨巴着眼睛。就像花和树倒映在春天的湖水里一样，泛起涟漪。）
 （我移开了视线。）
 <<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:……知道了。
-<<set_character_sprite C happy>>
+<<set_character_sprite "蒂娜" happy>>
 蒂娜:好耶！那我们开始吧！
 
 ===

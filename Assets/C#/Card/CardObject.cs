@@ -8,6 +8,7 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
     private Vector3 _originalScale;
     private CardSelectObject _selectObject;
     private CardChoosing _choosingManager;
+    private CardShopping _shoppingManager;
     private CardUIObject _uiObject;
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
         // 缓存组件，避免每次点击或设置时产生性能消耗
         _selectObject = GetComponent<CardSelectObject>();
         _choosingManager = GetComponentInParent<CardChoosing>(); 
+        _shoppingManager = GetComponentInParent<CardShopping>();
         _uiObject = GetComponent<CardUIObject>();
     }
 
@@ -40,10 +42,18 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // 直接使用缓存的管理器，无需每次 GetComponentInParent
+        // 如果卡牌数据为空，或者身上有未激活的状态，可以根据需要拦截（目前直接响应）
+
+        // 如果在 CardChoosing 界面中
         if (_choosingManager != null)
         {
             _choosingManager.SelectCard(this);
+        }
+
+        // 如果在 CardShopping 界面中
+        if (_shoppingManager != null)
+        {
+            _shoppingManager.SelectCard(this);
         }
     }
 
