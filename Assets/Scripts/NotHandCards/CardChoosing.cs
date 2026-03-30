@@ -194,12 +194,17 @@ public class CardChoosing : MonoBehaviour
                 CardManager.Instance.cardInHand.Add(selectedCard.card);
                 Debug.Log($"[CardChoosing] 已确认！卡牌 {selectedCard.card.name} 纳入手中。");
             }
-            ClosePage();
+            ClearCardsData();
+            if (UISceneManager.Instance != null)
+            {
+                UISceneManager.Instance.SwitchToScene(SceneType.AfterClass);
+            }
         }
         else
         {
             Debug.LogWarning("[CardChoosing] 暂未点击选中任何卡牌！");
         }
+        Debug.Log("[CardChoosing] Confirm 按钮被点击，正在处理选中结果...");
     }
 
     /// <summary>
@@ -208,7 +213,11 @@ public class CardChoosing : MonoBehaviour
     public void Skip()
     {
         Debug.Log("[CardChoosing] 玩家跳过了此次选卡。");
-        ClosePage();
+        ClearCardsData();
+        if (UISceneManager.Instance != null)
+        {
+            UISceneManager.Instance.SwitchToScene(SceneType.AfterClass);
+        }
     }
 
     /// <summary>

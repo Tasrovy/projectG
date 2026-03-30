@@ -4,6 +4,7 @@ title: main_start
 <<declare $MY_NAME= string("林奈")>>
 <<play_bgm "lake_happy2">>
 <<play_whitenoise "bgWater_springwater1">>
+<<set_background "背景">>
 
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
