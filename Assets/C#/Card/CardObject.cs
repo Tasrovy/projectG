@@ -1,18 +1,14 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class CardObject : MonoBehaviour, IPointerClickHandler
 {
-    [Header("视觉设置")]
-    [SerializeField] private float hoverScale = 1.05f; // 悬浮放大倍数
-
-    // 自动属性：外部可以直接读取 card，但只能通过内部的 SetCard 修改
     public Card card;
 
     private Vector3 _originalScale;
     private CardSelectObject _selectObject;
     private CardChoosing _choosingManager;
-
+    private CardUIObject _uiObject;
     private void Awake()
     {
         _originalScale = transform.localScale;
@@ -20,6 +16,7 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // 缓存组件，避免每次点击或设置时产生性能消耗
         _selectObject = GetComponent<CardSelectObject>();
         _choosingManager = GetComponentInParent<CardChoosing>(); 
+        _uiObject = GetComponent<CardUIObject>();
     }
 
     /// <summary>
@@ -34,13 +31,12 @@ public class CardObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             _selectObject.RefreshCardData();
         }
+
+        if (_uiObject != null)
+        {
+            _uiObject.SetCard(card);
+        }
     }
-
-    // --- 鼠标交互事件 ---
-
-    public void OnPointerEnter(PointerEventData eventData) => transform.localScale = _originalScale * hoverScale;
-
-    public void OnPointerExit(PointerEventData eventData) => transform.localScale = _originalScale;
 
     public void OnPointerClick(PointerEventData eventData)
     {
