@@ -5,35 +5,35 @@
 <<play_bgm lake_happy1>>
 <<play_whitenoise bg1_bgWhiteNoise1>>
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person Character C peace_1>>
+<<set_character_person Character "蒂娜" peace_1>>
 （我赢了最难的一局。在紧张和喜悦中，手微微颤抖着。）
-<<set_character_sprite C happy>>
-<<set_character_shake C up_down>>
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
 蒂娜:哇！你居然赢了！这局的积分够我用好多天了！
 （没有一刻比现在赢得的胜利更开心，也没有一刻比现在更让我感到担忧。）
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:……差点就输了。
 （C像是备好了一份巨大的勇气，猛然凑上前来。）
 （她的手握住了我的。原来她的手也有温度，有血液在血管里流淌，有心脏在她的胸膛跳动。）
-<<set_character_sprite C peace_2>>
+<<set_character_sprite "蒂娜" peace_2>>
 蒂娜:你的手在抖诶。是不是因为我？
 <<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:【疑惑表情】……什么？
-<<set_character_sprite C saying>>
+<<set_character_sprite "蒂娜" saying>>
 蒂娜:如果，我是说如果--我消失了，你会怎么样？
 （她问得很随意，好像在问今天天气怎么样。）
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:……
-<<set_character_sprite C peace_2>>
+<<set_character_sprite "蒂娜" peace_2>>
 蒂娜:你会伤心吗？
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:……会。
-<<set_character_sprite C peace_1>>
+<<set_character_sprite "蒂娜" peace_1>>
 蒂娜:真的？
 {$MY_NAME}:……真的。
 （我们沉默了一会儿。她的手把我的骨节握得很紧。）
-<<set_character_sprite C happy>>
-<<set_character_shake C left_right>>
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" left_right>>
 蒂娜:那我尽量不消失好了。
 蒂娜:约定好了哦！
 <<set_character_sprite {$MY_NAME} happy>>
