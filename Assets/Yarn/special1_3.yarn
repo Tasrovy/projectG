@@ -1,0 +1,50 @@
+﻿title : special1_3
+---
+<<set_background box占坑>>
+<<play_bgm lake_happy2>>
+<<play_whitenoise bg1_bgWhiteNoise3>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character C peace_1>>
+
+（连续几天的牌局。我已经习惯了C的存在。）
+（空气中带着毛茸茸的暖意。和她共处时的快乐如此真实。）
+<<set_character_sprite C peace_2>>
+蒂娜:喂，你今天打牌的反应好慢哦。
+<<set_character_sprite {$MY_NAME} peace_2>>
+{$MY_NAME}:……有点累了。
+<<set_character_sprite C saying>>
+蒂娜:（凑近）累了也要加油哇！不然我会——
+（她的话说到一半，突然停住了。）
+（因为我闭上了眼睛。）
+<<set_character_sprite C saying>>
+<<set_character_shake C left_right>>
+蒂娜:……喂？
+蒂娜:睡着了吗？
+（沉默。）
+<<set_character_sprite C angry>>
+蒂娜:真是的……
+（她坐在我旁边，小声嘟囔着。）
+（我能感觉到她的目光，落在我的脸上。）
+<<set_character_sprite C saying>>
+蒂娜:你知道吗？你睡觉的时候，眉毛总是皱着的。
+（她伸出手，轻轻戳了戳我的眉心。）
+<<set_character_sprite C saying>>
+<<set_character_shake C up_down>>
+蒂娜:明明醒着的时候装得那么平静……你到底在想什么呢？
+（我没有回答。或者说，我打心底里无法回答这个问题。）
+蒂娜:算了，反正你也不会告诉我。
+（她收回手，抱着膝盖坐在旁边。）
+<<set_character_sprite C peace_1>>
+蒂娜:我啊……有时候会觉得，我好像认识你很久了。
+蒂娜:但这是不可能的，对吧？
+（她的声音越来越轻。）
+<<set_character_sprite C saying>>
+蒂娜:：毕竟我才出现几天而已……
+（她沉默了。）
+蒂娜:我在说什么啊，你反正也听不见。
+（她打了个哈欠。精灵也会有些疲惫吗？）
+<<set_character_sprite C peace_2>>
+蒂娜:……我也睡一会儿好了。
+（轻而暖的呼吸声传来，她的头靠在了我的肩膀上。）
+
+===

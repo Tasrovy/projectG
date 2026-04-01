@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                GameObject go = new GameObject("AudioManager");
+                GameObject go = new("AudioManager");
                 _instance = go.AddComponent<AudioManager>();
                 DontDestroyOnLoad(go);
             }
@@ -21,12 +21,12 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    #region ¶ÔÏó³ØÀà
+    #region å¯¹è±¡æ± 
     [System.Serializable]
     public class AudioSourcePool
     {
-        private Queue<AudioSource> availableSources = new Queue<AudioSource>();
-        private List<AudioSource> allSources = new List<AudioSource>();
+        private Queue<AudioSource> availableSources = new();
+        private List<AudioSource> allSources = new();
         private Transform poolParent;
 
         public AudioSourcePool(Transform parent, int initialSize = 5)
@@ -38,7 +38,7 @@ public class AudioManager : MonoBehaviour
         }
 
         /// <summary>
-        /// ³õÊ¼»¯¶ÔÏó³Ø
+        /// åˆå§‹åŒ–å¯¹è±¡æ± 
         /// </summary>
         private void InitializePool(int size)
         {
@@ -49,15 +49,15 @@ public class AudioManager : MonoBehaviour
         }
 
         /// <summary>
-        /// ´´½¨ĞÂµÄAudioSource
+        /// åˆ›å»ºæ–°çš„AudioSource
         /// </summary>
         private AudioSource CreateNewAudioSource()
         {
-            GameObject go = new GameObject("AudioSource_Pooled");
+            GameObject go = new("AudioSource_Pooled");
             go.transform.SetParent(poolParent);
             AudioSource source = go.AddComponent<AudioSource>();
             source.playOnAwake = false;
-            source.spatialBlend = 0f; // 2DÒôĞ§
+            source.spatialBlend = 0f; // 2DéŸ³æ•ˆ
 
             availableSources.Enqueue(source);
             allSources.Add(source);
@@ -66,15 +66,15 @@ public class AudioManager : MonoBehaviour
         }
 
         /// <summary>
-        /// ´Ó¶ÔÏó³Ø»ñÈ¡AudioSource
+        /// ä»å¯¹è±¡æ± è·å–AudioSource
         /// </summary>
         public AudioSource Get()
         {
             if (availableSources.Count == 0)
             {
-                // ³ØÖĞÃ»ÓĞ¿ÉÓÃ¶ÔÏó£¬´´½¨ĞÂµÄ
+                // å¦‚æœæ²¡æœ‰å¯ç”¨å¯¹è±¡ï¼Œåˆ›å»ºæ–°çš„
                 CreateNewAudioSource();
-                //Debug.LogWarning("AudioSource³ØÒÑÓÃ¾¡£¬´´½¨ĞÂµÄAudioSource");
+                //Debug.LogWarning("AudioSourceæ± å·²è€—å°½ï¼Œåˆ›å»ºæ–°çš„AudioSource");
             }
 
             AudioSource source = availableSources.Dequeue();
@@ -83,7 +83,7 @@ public class AudioManager : MonoBehaviour
         }
 
         /// <summary>
-        /// ½«AudioSource·µ»Øµ½¶ÔÏó³Ø
+        /// å°†AudioSourceè¿”å›åˆ°å¯¹è±¡æ± 
         /// </summary>
         public void Return(AudioSource source)
         {
@@ -100,7 +100,7 @@ public class AudioManager : MonoBehaviour
         }
 
         /// <summary>
-        /// ÇåÀí¶ÔÏó³Ø
+        /// æ¸…ç†å¯¹è±¡æ± 
         /// </summary>
         public void Clear()
         {
@@ -115,18 +115,19 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    [Header("ÒôÆµÔ´ÉèÖÃ")]
+    [Header("éŸ³é¢‘æºå±æ€§")]
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource singleSource;
+    [SerializeField] private AudioSource whiteNoiseSource;
     private AudioSourcePool soundEffectPool;
 
-    [Header("Òôµ÷Ëæ»úÉèÖÃ")]
+    [Header("éŸ³é«˜é…ç½®")]
     [SerializeField] private float minPitch = 0.8f;
     [SerializeField] private float maxPitch = 1.2f;
     float lowMinPitch = 0.45f;
     float lowMaxPitch = 0.6f;
 
-    private System.Random rand = new System.Random();
+    private System.Random rand = new();
 
     private void Awake()
     {
@@ -143,14 +144,14 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ³õÊ¼»¯ÒôÆµ¹ÜÀíÆ÷
+    /// åˆå§‹åŒ–éŸ³é¢‘ç®¡ç†å™¨
     /// </summary>
     private void InitializeAudioManager()
     {
-        // ³õÊ¼»¯BGMºÍSingleÒôÔ´
+        // åˆå§‹åŒ–BGMå’ŒSingleéŸ³é¢‘æº
         if (bgmSource == null)
         {
-            GameObject bgmGo = new GameObject("BGM_Source");
+            GameObject bgmGo = new("BGM_Source");
             bgmGo.transform.SetParent(transform);
             bgmSource = bgmGo.AddComponent<AudioSource>();
             bgmSource.loop = true;
@@ -159,20 +160,29 @@ public class AudioManager : MonoBehaviour
 
         if (singleSource == null)
         {
-            GameObject singleGo = new GameObject("Single_Source");
+            GameObject singleGo = new("Single_Source");
             singleGo.transform.SetParent(transform);
             singleSource = singleGo.AddComponent<AudioSource>();
             singleSource.loop = false;
             singleSource.spatialBlend = 0f;
         }
 
-        // ³õÊ¼»¯ÒôĞ§¶ÔÏó³Ø
+        if (whiteNoiseSource == null)
+        {
+            GameObject whiteNoiseGo = new("WhiteNoise_Source");
+            whiteNoiseGo.transform.SetParent(transform);
+            whiteNoiseSource = whiteNoiseGo.AddComponent<AudioSource>();
+            whiteNoiseSource.loop = true;
+            whiteNoiseSource.spatialBlend = 0f;
+        }
+
+        // åˆå§‹åŒ–éŸ³æ•ˆå¯¹è±¡æ± 
         soundEffectPool = new AudioSourcePool(transform, 10);
     }
 
-    #region ¹«¹²·½·¨
+    #region æ’­æ”¾æ§åˆ¶
     /// <summary>
-    /// ÉèÖÃÒôµ÷Ëæ»ú·¶Î§
+    /// è®¾ç½®éŸ³é«˜éšæœºèŒƒå›´
     /// </summary>
     public void SetPitchRange(float min, float max)
     {
@@ -186,40 +196,40 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ²¥·ÅBGM
+    /// æ’­æ”¾BGM
     /// </summary>
-    public void PlayBGM(string name, bool randomPitch = false)
+    public void PlayBGM(string path, bool randomPitch = false)
     {
-        StartCoroutine(LoadAndPlayBGM(name, randomPitch));
+        StartCoroutine(LoadAndPlayBGM(path, randomPitch));
     }
 
     /// <summary>
-    /// ¸²¸ÇĞÔ²¥·Åµ¥¸öÒôĞ§
+    /// æ’­æ”¾å•æ¬¡éŸ³æ•ˆ
     /// </summary>
-    public void PlaySingle(string name, bool randomPitch = false)
+    public void PlaySingle(string path, bool randomPitch = false)
     {
-        StartCoroutine(LoadAndPlaySingle(name, randomPitch));
+        StartCoroutine(LoadAndPlaySingle(path, randomPitch));
     }
-    public void PlaySingleLow(string name, bool randomPitch = false)
+    public void PlaySingleLow(string path, bool randomPitch = false)
     {
-        StartCoroutine(LoadAndPlaySingle(name, true,true));
+        StartCoroutine(LoadAndPlaySingle(path, true,true));
     }
 
     /// <summary>
-    /// ²¥·ÅÒôĞ§£¨Ê¹ÓÃ¶ÔÏó³Ø£¬¿ÉÖØµş²¥·Å£©
+    /// æ’­æ”¾éŸ³æ•ˆï¼ˆä½¿ç”¨å¯¹è±¡æ± ï¼Œæ”¯æŒé‡å ï¼‰
     /// </summary>
-    public void PlaySound(string name, bool randomPitch = true)
+    public void PlaySound(string path, bool randomPitch = true)
     {
-        StartCoroutine(LoadAndPlaySound(name, true));
+        StartCoroutine(LoadAndPlaySound(path, true));
     }
 
-    public void PlaySoundLow(string name, bool randomPitch = true)
+    public void PlaySoundLow(string path, bool randomPitch = true)
     {
-        StartCoroutine(LoadAndPlaySound(name, randomPitch,true));
+        StartCoroutine(LoadAndPlaySound(path, randomPitch,true));
     }
 
     /// <summary>
-    /// Í£Ö¹BGM
+    /// åœæ­¢BGM
     /// </summary>
     public void StopBGM()
     {
@@ -228,25 +238,48 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Í£Ö¹µ¥¸öÒôĞ§
+    /// åœæ­¢å•æ¬¡éŸ³æ•ˆ
     /// </summary>
     public void StopSingle()
     {
         if (singleSource != null && singleSource.isPlaying)
             singleSource.Stop();
     }
+
+    /// <summary>
+    /// æ’­æ”¾ç™½å™ªéŸ³
+    /// </summary>
+    public void PlayWhiteNoise(string path, bool randomPitch = false)
+    {
+        StartCoroutine(LoadAndPlayWhiteNoise(path, randomPitch));
+    }
+
+    /// <summary>
+    /// åœæ­¢ç™½å™ªéŸ³
+    /// </summary>
+    public void StopWhiteNoise()
+    {
+        if (whiteNoiseSource != null && whiteNoiseSource.isPlaying)
+            whiteNoiseSource.Stop();
+    }
     #endregion
 
-    #region Ğ­³Ì·½·¨
-    private IEnumerator LoadAndPlayBGM(string fileName, bool randomPitch)
+    #region åç¨‹æ–¹æ³•
+    private IEnumerator LoadAndPlayBGM(string filePath, bool randomPitch)
     {
-        fileName = SplitName(fileName);
-        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/bgm/{filePath}");
         yield return request;
 
         AudioClip clip = request.asset as AudioClip;
         if (clip != null)
         {
+            if (bgmSource.clip == clip && bgmSource.isPlaying)
+            {
+                // å¦‚æœå½“å‰æ­£åœ¨æ’­æ”¾çš„BGMå°±æ˜¯ç›®æ ‡BGMï¼Œåˆ™ä¸åšä»»ä½•æ“ä½œ
+                yield break;
+            }
+
             if (randomPitch)
                 bgmSource.pitch = GetRandomPitch();
             else
@@ -257,14 +290,70 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"BGM¼ÓÔØÊ§°Ü: Sound/{fileName}");
+            Debug.LogError($"BGMåŠ è½½å¤±è´¥: Sound/bgm/{filePath}");
         }
     }
 
-    private IEnumerator LoadAndPlaySingle(string fileName, bool randomPitch,bool lowRandom=false)
+    private IEnumerator LoadAndPlayWhiteNoise(string filePath, bool randomPitch)
     {
-        fileName = SplitName(fileName);
-        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/Whitenoise/{filePath}");
+        yield return request;
+
+        AudioClip clip = request.asset as AudioClip;
+        if (clip != null)
+        {
+            if (randomPitch)
+                whiteNoiseSource.pitch = GetRandomPitch();
+            else
+                whiteNoiseSource.pitch = 1.0f;
+
+            whiteNoiseSource.clip = clip;
+            whiteNoiseSource.volume = 0.2f;
+            whiteNoiseSource.Play();
+            StartCoroutine(FadeInWhiteNoise(1.5f));
+        }
+        else
+        {
+            Debug.LogError($"ç™½å™ªéŸ³åŠ è½½å¤±è´¥: Sound/Whitenoise/{filePath}");
+        }
+    }
+
+    private IEnumerator FadeInWhiteNoise(float duration)
+    {
+        float time = 0;
+        float startVolume = 0.2f;
+        float targetVolume = 0.4f; // æœ€ç»ˆéŸ³é‡ï¼Œå¯æ ¹æ®éœ€è¦è°ƒæ•´
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            whiteNoiseSource.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
+            yield return null;
+        }
+        whiteNoiseSource.volume = targetVolume;
+    }
+    public IEnumerator FadeOutAndStopWhiteNoise(float duration)
+    {
+        if (!whiteNoiseSource.isPlaying) yield break;
+
+        float time = 0;
+        float startVolume = whiteNoiseSource.volume;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            whiteNoiseSource.volume = Mathf.Lerp(startVolume, 0f, time / duration);
+            yield return null;
+        }
+
+        whiteNoiseSource.volume = 0f;
+        whiteNoiseSource.Stop();
+    }
+    private IEnumerator LoadAndPlaySingle(string filePath, bool randomPitch,bool lowRandom=false)
+    {
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/{filePath}");
         yield return request;
 
         AudioClip clip = request.asset as AudioClip;
@@ -282,20 +371,20 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"ÒôĞ§¼ÓÔØÊ§°Ü: Sound/{fileName}");
+            Debug.LogError($"éŸ³æ•ˆåŠ è½½å¤±è´¥: Sound/{filePath}");
         }
     }
 
-    private IEnumerator LoadAndPlaySound(string fileName, bool randomPitch,bool lowRandom=false)
+    private IEnumerator LoadAndPlaySound(string filePath, bool randomPitch,bool lowRandom=false)
     {
-        fileName = SplitName(fileName);
-        ResourceRequest request = Resources.LoadAsync<AudioClip>("Sound/" + fileName);
+        filePath = SplitName(filePath);
+        ResourceRequest request = Resources.LoadAsync<AudioClip>($"Sound/{filePath}");
         yield return request;
 
         AudioClip clip = request.asset as AudioClip;
         if (clip != null)
         {
-            // ´Ó¶ÔÏó³Ø»ñÈ¡AudioSource
+            // ä»å¯¹è±¡æ± è·å–AudioSource
             AudioSource poolSource = soundEffectPool.Get();
 
             if (randomPitch)
@@ -308,21 +397,21 @@ public class AudioManager : MonoBehaviour
 
             poolSource.PlayOneShot(clip);
 
-            // ²¥·ÅÍê³Éºó·µ»Øµ½¶ÔÏó³Ø
+            // æ’­æ”¾å®Œæˆåè¿”å›åˆ°å¯¹è±¡æ± 
             StartCoroutine(ReturnToPoolAfterPlay(poolSource, clip.length));
         }
         else
         {
-            Debug.LogError($"ÒôĞ§¼ÓÔØÊ§°Ü: Sound/{fileName}");
+            Debug.LogError($"éŸ³æ•ˆåŠ è½½å¤±è´¥: Sound/{filePath}");
         }
     }
 
     /// <summary>
-    /// ²¥·ÅÍê³Éºó½«AudioSource·µ»Øµ½¶ÔÏó³Ø
+    /// æ’­æ”¾å®Œæˆåå°†AudioSourceè¿”å›åˆ°å¯¹è±¡æ± 
     /// </summary>
     private IEnumerator ReturnToPoolAfterPlay(AudioSource source, float duration)
     {
-        yield return new WaitForSeconds(duration + 0.1f); // ¶îÍâµÈ´ı0.1ÃëÈ·±£²¥·ÅÍê³É
+        yield return new WaitForSeconds(duration + 0.1f); // é¢å¤–ç­‰å¾…0.1ç§’ç¡®ä¿æ’­æ”¾å®Œæˆ
 
         if (source != null && !source.isPlaying)
         {
@@ -331,7 +420,7 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    #region ¹¤¾ß·½·¨
+    #region è¾…åŠ©æ–¹æ³•
     private string SplitName(string name)
     {
         string[] strs = name.Split(',');
@@ -349,12 +438,11 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// ÇåÀí¶ÔÏó³Ø£¨ÔÚ³¡¾°ÇĞ»»»òÓÎÏ·½áÊøÊ±µ÷ÓÃ£©
+    /// æ¸…ç†å¯¹è±¡æ± ï¼ˆåœ¨åœºæ™¯åˆ‡æ¢æˆ–æ¸¸æˆç»“æŸæ—¶è°ƒç”¨ï¼‰
     /// </summary>
     public void ClearPool()
     {
-        if (soundEffectPool != null)
-            soundEffectPool.Clear();
+        soundEffectPool?.Clear();
     }
 
     private void OnDestroy()

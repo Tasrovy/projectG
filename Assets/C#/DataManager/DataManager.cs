@@ -6,7 +6,7 @@ public class DataManager : Singleton<DataManager>
     public int nature2;
     public int nature3;
     public int MoneyNum;
-
+    protected override bool IsPersistent => true;
     public float currNature1Effect;
     public float currNature2Effect;
     public float currNature3Effect;

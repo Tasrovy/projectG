@@ -17,7 +17,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 30
-    name: "\u4E00\u8D77\u6253\u4E52\u4E53\u7403\u5427"
+    name: "\u98CE\u8FC7\u758F\u7AF9"
     sale: 60
     made: 
     broken: 
@@ -25,23 +25,25 @@ MonoBehaviour:
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9"
     buff: 
     trigger: addNatureAtSum(30,3)
+    nextTurn: 
   - id: 32002
     nature1: 0
     nature2: 0
     nature3: 20
-    name: "\u722C\u722C\u5C71"
+    name: "\u6625\u98CE\u53C8\u751F"
     sale: 60
     made: 
     broken: 
     added: 
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
     buff: 
-    trigger: addNatureAtSum(20,3)
+    trigger: addNatureAtSum(30,3)
+    nextTurn: changeProperty(1.5)
   - id: 3203
     nature1: 0
     nature2: 0
     nature3: 20
-    name: 
+    name: "\u4EAD\u4EAD\u5982\u76D6"
     sale: 60
     made: 
     broken: 
@@ -49,11 +51,12 @@ MonoBehaviour:
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
     buff: 
     trigger: 
+    nextTurn: addRandomCard(2,1,1)
   - id: 33001
     nature1: 0
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u4E00\u53F6\u77E5\u79CB"
     sale: 120
     made: 
     broken: 
@@ -61,3 +64,4 @@ MonoBehaviour:
     description: "\u89D2\u8272\u83B7\u5F97\u5C5E\u6027\u4E09\uFF08\u89D2\u8272\u5C5E\u6027\u4E00/2\uFF09\u70B9"
     buff: 
     trigger: addNatureByOther(3,1)
+    nextTurn: 

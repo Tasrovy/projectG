@@ -8,29 +8,14 @@ using ExcelDataReader;
 using System.Linq; // 引入 Linq 方便查询
 using Random = System.Random;
 
-[System.Serializable]
-public class CardData
-{
-    public int id;
-    public int nature1;
-    public int nature2;
-    public int nature3;
-    public string name;
-    public int sale;
-    public string made;
-    public string broken;
-    public string added;
-    public string description;
-    public string buff;
-    public string trigger;
-}
-
 // --- 卡牌管理器 ---
 public class CardManager : Singleton<CardManager>
 {
     public List<CardData> cardDatas = new List<CardData>();
     public List<Card> cardSet = new List<Card>();
     public List<Card> cardInHand = new List<Card>();
+    
+    protected override bool IsPersistent => true;
 
     [Header("动态稀有度概率 (和需为 1.0)")]
     [Range(0, 1)] public float probRarity1 = 0.7f; // 稀有度 1 的概率
@@ -38,20 +23,35 @@ public class CardManager : Singleton<CardManager>
     [Range(0, 1)] public float probRarity3 = 0.1f; // 稀有度 3 的概率
 
     [Header("Excel配置")]
-    public List<string> cardExcelPaths = new List<string> { "Cards.xlsx" };
+    public List<string> cardExcelPaths = new List<string> { "giftCard.xlsx" ,"funcCard.xlsx","eventCard.xlsx"};
 
     private Random rng = new Random();
 
     // 保底计数器：Key为类型(ID第一位1,2,3)
     private Dictionary<int, int> pityCounters = new Dictionary<int, int>() { { 1, 0 }, { 2, 0 }, { 3, 0 } };
 
+    public void SetProbRarity1(float rarity)
+    {
+        probRarity1 = rarity;
+    }
+
+    public void SetProbRarity2(float rarity)
+    {
+        probRarity2 = rarity;
+    }
+
+    public void SetProbRarity3(float rarity)
+    {
+        probRarity3 = rarity;
+    }
+    
     protected override void Awake()
     {
         base.Awake();
         LoadAllCards();
         ImplementCardSet();
-        Debug.Log($"准备抽取{5}张牌");
-        DrawCard(5);
+        //Debug.Log($"准备抽取{5}张牌");
+        //DrawCard(5);
     }
 
     private void Start()
@@ -66,6 +66,8 @@ public class CardManager : Singleton<CardManager>
         {
             GenCard(data);
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     // 获取 ID 第一位：类型
@@ -103,6 +105,11 @@ public class CardManager : Singleton<CardManager>
 
             // 3. 从牌堆中筛选候选牌
             int targetIndex = SelectBestCardIndex(forcedType, rolledRarity);
+            if (targetIndex < 0 || targetIndex >= cardSet.Count)
+            {
+                Debug.LogWarning($"[DrawCard] 无效的卡牌索引: {targetIndex}, 牌堆数量: {cardSet.Count}");
+                break;
+            }
 
             // 4. 执行抽取
             Card drawnCard = cardSet[targetIndex];
@@ -114,6 +121,8 @@ public class CardManager : Singleton<CardManager>
 
             Debug.Log($"[抽牌] 抽到:{drawnCard.name} | ID:{drawnCard.id} | 类型:{GetCardType(drawnCard.id)} | 稀有度:{GetCardRarity(drawnCard.id)}");
         }
+
+        NotifyDeckOrHandChanged();
     }
 
     /// <summary>
@@ -134,9 +143,16 @@ public class CardManager : Singleton<CardManager>
     /// </summary>
     private int SelectBestCardIndex(int forcedType, int targetRarity)
     {
+        // 安全检查：牌堆为空时直接返回-1
+        if (cardSet.Count == 0)
+        {
+            Debug.LogWarning("[SelectBestCardIndex] 牌堆为空，无法选择卡牌索引");
+            return -1;
+        }
+
         // 首先筛选出符合保底类型的牌（如果没触发保底，则看全量牌堆）
-        List<Card> candidates = (forcedType != -1) 
-            ? cardSet.Where(c => GetCardType(c.id) == forcedType).ToList() 
+        List<Card> candidates = (forcedType != -1)
+            ? cardSet.Where(c => GetCardType(c.id) == forcedType).ToList()
             : cardSet;
 
         if (candidates.Count == 0)
@@ -164,6 +180,14 @@ public class CardManager : Singleton<CardManager>
         return cardSet.IndexOf(finalChoice);
     }
 
+    public void BreakCard(Card card)
+    {
+        //card.
+        if(!cardInHand.Contains(card)) return;
+        cardInHand.Remove(card);
+        NotifyDeckOrHandChanged();
+    }
+    
     private void UpdatePityCounters(int drawnType)
     {
         int[] monitored = { 1, 2, 3 };
@@ -191,6 +215,8 @@ public class CardManager : Singleton<CardManager>
             cardSet[k] = cardSet[n];
             cardSet[n] = value;
         }
+
+        NotifyDeckOrHandChanged();
     }
 
     public void LoadAllCards()
@@ -232,7 +258,7 @@ public class CardManager : Singleton<CardManager>
     {
         if (num <= 0) return;
 
-        // 1. 先获取该 ID 对应的基础数据，以防需要生成新卡
+        // 1. 先获取该 ID 对应的基础数据
         CardData targetData = GetCardDataById(cardID);
         if (targetData == null)
         {
@@ -243,28 +269,15 @@ public class CardManager : Singleton<CardManager>
         // 2. 循环执行 num 次添加操作
         for (int i = 0; i < num; i++)
         {
-            // 在牌堆中查找是否有该 ID 的卡牌 (获取第一个匹配的索引)
-            int indexInSet = cardSet.FindIndex(c => c.id == cardID);
+            // 直接生成新卡，不经过牌堆检索
+            Card newCard = new Card();
+            newCard.InitCard(targetData); // 使用基础数据初始化
+            cardInHand.Add(newCard); // 直接加入手牌
 
-            if (indexInSet >= 0)
-            {
-                // 情况 A：牌堆中存在该卡牌
-                Card existCard = cardSet[indexInSet];
-                cardSet.RemoveAt(indexInSet); // 从牌堆中移除
-                cardInHand.Add(existCard); // 加入手牌
-
-                Debug.Log($"[AddCard] 从牌堆中检出并添加: {existCard.name} (ID:{cardID}) 到手牌。");
-            }
-            else
-            {
-                // 情况 B：牌堆中不存在或数量已不足，直接印制（生成）新卡
-                Card newCard = new Card();
-                newCard.InitCard(targetData); // 使用基础数据初始化
-                cardInHand.Add(newCard); // 直接加入手牌 (注意：这里不进牌堆)
-
-                Debug.Log($"[AddCard] 牌堆数量不足，已印制新卡: {targetData.name} (ID:{cardID}) 并加入手牌。");
-            }
+            Debug.Log($"[AddCard] 直接生成新卡: {targetData.name} (ID:{cardID}) 并加入手牌。");
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     /// <summary>
@@ -326,6 +339,8 @@ public class CardManager : Singleton<CardManager>
                 Debug.Log($"[AddRandomCard] 牌堆条件卡不足，随机生成新卡: {selectedData.name} (ID:{selectedData.id}) 加入手牌。");
             }
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     /// <summary>
@@ -399,10 +414,68 @@ public class CardManager : Singleton<CardManager>
                 Debug.Log("[ChangeHandGift] 牌堆中无 ID 为 1 的牌，已直接生成一张加入手牌。");
             }
         }
+
+        NotifyDeckOrHandChanged();
     }
     
     public void AddCardInHand(Card card)
     {
         cardInHand.Add(card);
+        NotifyDeckOrHandChanged();
+    }
+
+    public int GetGiftCardNum()
+    {
+        int num = 0;
+        foreach (Card card in cardInHand)
+        {
+            if (GetCardType(card.id) == 1)
+                num++;
+        }
+        return num;
+    }
+
+    /// <summary>
+    /// 获取牌堆中指定卡牌ID的数量
+    /// </summary>
+    /// <param name="cardId">卡牌ID</param>
+    /// <returns>牌堆中该卡牌的数量</returns>
+    public int GetCardCountInDeck(int cardId)
+    {
+        int count = 0;
+        foreach (Card card in cardSet)
+        {
+            if (card.id == cardId)
+                count++;
+        }
+        return count;
+    }
+
+    /// <summary>
+    /// 获取牌堆中指定卡牌ID的所有卡牌列表
+    /// </summary>
+    /// <param name="cardId">卡牌ID</param>
+    /// <returns>牌堆中该卡牌的所有实例列表</returns>
+    public List<Card> GetCardsInDeckById(int cardId)
+    {
+        List<Card> result = new List<Card>();
+        foreach (Card card in cardSet)
+        {
+            if (card.id == cardId)
+                result.Add(card);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 通知牌堆或手牌发生变化
+    /// </summary>
+    public void NotifyDeckOrHandChanged()
+    {
+        // 直接调用DUEL刷新UI，使用yjtc模块原有功能
+        if (DUEL.Instance != null)
+        {
+            DUEL.Instance.InitCardObject();
+        }
     }
 }
