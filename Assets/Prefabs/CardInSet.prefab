@@ -203,9 +203,9 @@ GameObject:
   - component: {fileID: 8777629316407244561}
   - component: {fileID: 3399713212686537330}
   - component: {fileID: 1471186193367000606}
-  - component: {fileID: 4105541712940763118}
+  - component: {fileID: 424440497266335026}
   m_Layer: 5
-  m_Name: giftCard
+  m_Name: CardInSet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -265,7 +265,7 @@ MonoBehaviour:
     trigger: 
     description: 
     nextTurn: 
---- !u!114 &4105541712940763118
+--- !u!114 &424440497266335026
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -274,24 +274,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4322681682772895101}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 642a80e4349196f46b36638436ca1b17, type: 3}
+  m_Script: {fileID: 11500000, guid: ff79c4ea7c4a3804dab3b3ac7093f9e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   baseImage: {fileID: 5231690871979963547}
   nameText: {fileID: 7703323483342826625}
   descriptionText: {fileID: 5090995709800849666}
-  visualContainer: {fileID: 3508984033269590672}
   commonSprite: {fileID: 2127906941, guid: f47eabea96d6ff14a9f0e2b02ea66877, type: 3}
   ShengZhi: {fileID: -1906565844, guid: 23f17b6a583307b4aa12714d3b9eb453, type: 3}
   JianZhi: {fileID: 858556806, guid: 57f5c81e5a9feba4fa8cd0884d6d674d, type: 3}
   ShengZhang: {fileID: 562336008, guid: 68b2abecce6c8f94b8c7ce15075303cc, type: 3}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0, g: 1, b: 0, a: 1}
-  disabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  selectOffset: 50
-  hoverOffset: 20
-  hoverScale: 1.1
-  moveSpeed: 10
 --- !u!1 &4987363396496264968
 GameObject:
   m_ObjectHideFlags: 0
