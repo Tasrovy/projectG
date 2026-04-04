@@ -4,140 +4,123 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// 卡牌选择管理器 - 负责UI交互、确认/取消的拦截、并执行回调
+/// 卡牌UI选择器 - 仅负责卡牌的点击变现、按钮显示，以及广播玩家的操作
 /// </summary>
 public class CardSelector : Singleton<CardSelector>
 {
     [Header("UI引用")]
-    [SerializeField] private Button submitButton;      // 提交按钮
-    [SerializeField] private Button cancelButton;      // 取消按钮
+    [SerializeField] private Button submitButton;
+    [SerializeField] private Text submitButtonText;
+    [SerializeField] private Button cancelButton;
 
-    private List<CardSelectObject> _allSelectObjects = new List<CardSelectObject>();
-    
-    // 当前状态
-    private bool _isSelecting = false;
-    private CardSelectObject _selectedCardObject = null; // 当前选中的物体
+    [Header("区域设置")]
+    [SerializeField] private Transform handZone; 
 
-    // 存储确认和取消时要执行的逻辑
-    private Action<Card> _onConfirmAction;
-    private Action _onCancelAction;
+    // --- 对外广播的纯净事件 ---
+    public event Action<Card> OnSubmitEvent; // 玩家点击了提交按钮并传出卡牌
+    public event Action OnCancelEvent;       // 玩家点击了取消按钮
+
+    private List<CardUIObject> _allSelectObjects = new List<CardUIObject>();
+    private CardUIObject _selectedCardObject = null;
 
     protected override void Awake()
     {
         base.Awake();
         
-        // 绑定按钮事件
-        submitButton.onClick.AddListener(OnSubmitClicked);
-        cancelButton.onClick.AddListener(OnCancelClicked);
+        if (submitButton != null) submitButton.onClick.AddListener(OnSubmitClicked);
+        if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
         
-        // 初始隐藏UI
-        EndSelectionUI();
+        if (submitButton != null && submitButtonText == null)
+            submitButtonText = submitButton.GetComponentInChildren<Text>();
+
+        DeselectCurrent();
     }
 
-    public void AddAllSelectObjects(CardSelectObject selectObject) => _allSelectObjects.Add(selectObject);
-    public void RemoveAllSelectObjects(CardSelectObject selectObject) => _allSelectObjects.Remove(selectObject);
+    /// <summary>
+    /// 供外部(解析器)动态修改按钮文字 (如："打出", "提交")
+    /// </summary>
+    public void SetSubmitButtonText(string text)
+    {
+        if (submitButtonText != null) submitButtonText.text = text;
+    }
 
     /// <summary>
-    /// 当玩家点击了某张牌时，CardSelectObject 会调用此方法
+    /// 统一设置所有卡牌是否可以被点击 (供解析器控制阶段)
     /// </summary>
-    public void SetSelectObject(CardSelectObject selectObject)
+    public void SetAllCardsInteractable(bool interactable)
     {
-        if (!_isSelecting) return;
-
-        // 如果传进来的是 null（玩家再次点击了已选中的牌，想取消选中）
-        if (selectObject == null)
+        foreach (var obj in _allSelectObjects)
         {
-            _selectedCardObject = null;
-            submitButton.interactable = false; // 没选牌时不能点确认
+            if (obj != null) obj.SetActiveMode(interactable);
+        }
+    }
+
+    public void AddAllSelectObjects(CardUIObject uiObject)
+    {
+        if (!_allSelectObjects.Contains(uiObject))
+        {
+            _allSelectObjects.Add(uiObject);
+            if (handZone != null && uiObject.transform.parent != handZone)
+                uiObject.transform.SetParent(handZone, false); 
+            
+            // 默认加入手牌即激活UI点击能力
+            uiObject.SetActiveMode(true); 
+        }
+    }
+
+    public void RemoveAllSelectObjects(CardUIObject uiObject)
+    {
+        if (_allSelectObjects.Contains(uiObject))
+            _allSelectObjects.Remove(uiObject);
+    }
+
+    /// <summary>
+    /// 卡牌被点击时触发
+    /// </summary>
+    public void SetSelectObject(CardUIObject uiObject)
+    {
+        if (uiObject == null)
+        {
+            DeselectCurrent();
             return;
         }
 
-        // --- 单选逻辑：如果之前选了别的牌，强制取消之前那张的选中状态 ---
-        if (_selectedCardObject != null && _selectedCardObject != selectObject)
-        {
+        if (_selectedCardObject != null && _selectedCardObject != uiObject)
             _selectedCardObject.ForceDeselect();
-        }
 
-        _selectedCardObject = selectObject;
-        submitButton.interactable = true; // 选了牌，可以点确认了
-    }
-
-    /// <summary>
-    /// 开始进入选择模式（由外部Helper调用）
-    /// </summary>
-    public void StartSelection(Action<Card> onConfirm, Action onCancel)
-    {
-        _isSelecting = true;
-        _onConfirmAction = onConfirm;
-        _onCancelAction = onCancel;
-        _selectedCardObject = null;
-
-        // 1. 显示按钮
-        submitButton.gameObject.SetActive(true);
-        cancelButton.gameObject.SetActive(true);
-        submitButton.interactable = false; // 必须选了一张牌才能按
-
-        // 2. 激活场上所有卡牌进入“选择模式”
-        foreach (var obj in _allSelectObjects)
-        {
-            if (obj != null) obj.SetActiveMode(true);
-        }
+        _selectedCardObject = uiObject;
         
-        Debug.Log("[CardSelector] 开始选牌，等待玩家确认...");
+        // 显示按钮
+        if (submitButton != null) { submitButton.gameObject.SetActive(true); submitButton.interactable = true; }
+        if (cancelButton != null) cancelButton.gameObject.SetActive(true);
     }
 
-    /// <summary>
-    /// 点击确认按钮
-    /// </summary>
     private void OnSubmitClicked()
     {
         if (_selectedCardObject == null) return;
-        
         Card selectedCard = _selectedCardObject.Card;
-        Debug.Log($"[CardSelector] 玩家确认选择了卡牌: {selectedCard.name}");
 
-        EndSelectionUI();
-
-        // 将控制权完全交还给 Helper
-        _onConfirmAction?.Invoke(selectedCard);
+        DeselectCurrent(); 
+        
+        // 直接把卡牌扔出去，自己不处理任何业务逻辑
+        OnSubmitEvent?.Invoke(selectedCard);
     }
 
-    /// <summary>
-    /// 点击取消按钮
-    /// </summary>
     private void OnCancelClicked()
     {
-        Debug.Log("[CardSelector] 玩家取消了选牌，卡牌保持原状。");
-        
-        EndSelectionUI();
-        
-        // 将控制权完全交还给 Helper
-        _onCancelAction?.Invoke();
+        DeselectCurrent();
+        OnCancelEvent?.Invoke();
     }
 
-    /// <summary>
-    /// 关闭UI，清理状态
-    /// </summary>
-    private void EndSelectionUI()
+    public void DeselectCurrent()
     {
-        _isSelecting = false;
-        _selectedCardObject = null;
-
-        submitButton.gameObject.SetActive(false);
-        cancelButton.gameObject.SetActive(false);
-
-        // 关闭场上所有卡牌的选择模式
-        foreach (var obj in _allSelectObjects)
+        if (_selectedCardObject != null)
         {
-            if (obj != null) obj.SetActiveMode(false);
+            _selectedCardObject.ForceDeselect();
+            _selectedCardObject = null;
         }
-    }
 
-    private void NotifyEffectManagerToContinue()
-    {
-        if (CardEffect.Instance != null)
-        {
-            CardEffect.Instance.OnSelectCardEnd(null);
-        }
+        if (submitButton != null) submitButton.gameObject.SetActive(false);
+        if (cancelButton != null) cancelButton.gameObject.SetActive(false);
     }
 }
