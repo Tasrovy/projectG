@@ -24,6 +24,10 @@ public class testSOund : MonoBehaviour
 
 
         }
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            
+        }
 
     }
 }
