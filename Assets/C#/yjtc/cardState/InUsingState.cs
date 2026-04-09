@@ -30,7 +30,7 @@ public class InUsingState : stateBase,ICardState
             Debug.Log($"[InUsingState] 类型为1的卡牌 {card.name} (ID:{card.id}) 打出，直接删除不进入牌堆");
 
             // 1. 执行卡牌效果
-            cardObject.Effect();
+            //cardObject.Effect();
 
             // 2. 从CardManager手牌中移除卡牌数据
             if (CardManager.Instance != null)
@@ -97,7 +97,7 @@ public class InUsingState : stateBase,ICardState
         }
 
         // 正常流程：执行效果并进入牌堆
-        this.gameObject.GetComponent<CardObject>().Effect();
+        //this.gameObject.GetComponent<CardObject>().Effect();
         if (true)
         {
 

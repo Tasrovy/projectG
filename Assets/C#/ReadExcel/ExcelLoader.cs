@@ -220,6 +220,103 @@ public class ExcelLoader : Singleton<ExcelLoader>
     }
 #endif
 
+    /// <summary>
+    /// 读取初始手牌ID数据：编辑器下同步，发布后读SO
+    /// Excel建议列名：id, num（num可选，默认1）
+    /// </summary>
+    public InitialHandSO ReadInitialHandExcel(string excelPath)
+    {
+        string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
+
+#if UNITY_EDITOR
+        return SyncInitialHandExcelToSO(excelPath, fileNameNoExt);
+#else
+        return Resources.Load<InitialHandSO>(fileNameNoExt);
+#endif
+    }
+
+#if UNITY_EDITOR
+    private InitialHandSO SyncInitialHandExcelToSO(string excelPath, string soName)
+    {
+        string fullPath = Path.GetFullPath(excelPath);
+        if (!File.Exists(fullPath))
+        {
+            Debug.LogError("找不到InitialHand Excel文件: " + fullPath);
+            return null;
+        }
+
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+        InitialHandSO db = ScriptableObject.CreateInstance<InitialHandSO>();
+
+        using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        {
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            {
+                var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                {
+                    ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true }
+                });
+
+                DataTable table = result.Tables[0];
+                foreach (DataRow row in table.Rows)
+                {
+                    if (!table.Columns.Contains("id")) continue;
+                    if (row["id"] == DBNull.Value || string.IsNullOrWhiteSpace(row["id"].ToString())) continue;
+
+                    InitialHandEntry entry = new InitialHandEntry();
+
+                    try
+                    {
+                        entry.id = (int)float.Parse(row["id"].ToString().Trim());
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"[ExcelLoader] InitialHand id 解析失败: '{row["id"]}', 错误: {ex.Message}");
+                        continue;
+                    }
+
+                    if (table.Columns.Contains("num") && row["num"] != DBNull.Value && !string.IsNullOrWhiteSpace(row["num"].ToString()))
+                    {
+                        try
+                        {
+                            entry.num = (int)float.Parse(row["num"].ToString().Trim());
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"[ExcelLoader] InitialHand num 解析失败: '{row["num"]}', 错误: {ex.Message}");
+                            entry.num = 1;
+                        }
+                    }
+
+                    if (entry.num <= 0) entry.num = 1;
+                    db.entries.Add(entry);
+                }
+            }
+        }
+
+        string resDir = Application.dataPath + "/Resources";
+        if (!Directory.Exists(resDir)) Directory.CreateDirectory(resDir);
+
+        string assetPath = $"Assets/Resources/{soName}.asset";
+        InitialHandSO existingAsset = AssetDatabase.LoadAssetAtPath<InitialHandSO>(assetPath);
+
+        if (existingAsset == null)
+        {
+            AssetDatabase.CreateAsset(db, assetPath);
+        }
+        else
+        {
+            EditorUtility.CopySerialized(db, existingAsset);
+            db = existingAsset;
+        }
+
+        AssetDatabase.SaveAssets();
+        Debug.Log($"<color=cyan>[ExcelLoader]</color> InitialHand同步成功: {assetPath}");
+        return db;
+    }
+#endif
+
     // 依然支持你习惯的 ReadText 逻辑
     public static string ReadText(CardDatabaseSO db, string fieldName, int index)
     {

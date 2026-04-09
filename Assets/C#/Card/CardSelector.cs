@@ -99,6 +99,7 @@ public class CardSelector : Singleton<CardSelector>
     {
         if (_selectedCardObject == null) return;
         Card selectedCard = _selectedCardObject.Card;
+        Debug.Log($"[CardSelector][Submit] frame={Time.frameCount}, time={Time.time:F3}, selectedRef={(selectedCard != null ? selectedCard.GetHashCode() : 0)}, id={selectedCard?.id}, name={selectedCard?.name}");
 
         DeselectCurrent(); 
         

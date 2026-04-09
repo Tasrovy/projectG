@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -129,5 +130,17 @@ public class DUEL : Singleton<DUEL>
         activeObjects.Clear();
         
         Debug.Log("对决结束：所有卡牌物体已清理。");
+    }
+
+    public void UpdateCardData()
+    {
+        for (int i = 0; i < activeObjects.Count; i++)
+        {
+            CardObject obj  = activeObjects[i].GetComponent<CardObject>();
+            if (obj != null)
+            {
+                obj.SetCard(obj.card);
+            }
+        }
     }
 }

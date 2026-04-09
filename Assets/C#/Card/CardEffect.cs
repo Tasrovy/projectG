@@ -18,8 +18,8 @@ public class CardEffect : Singleton<CardEffect>
     // 防止监听器重复添加的跟踪集合
     private static HashSet<string> registeredChangePropertyListeners = new HashSet<string>();
 
-    // 记录条件失败的卡牌ID
-    private static HashSet<int> conditionFailedCardIds = new HashSet<int>();
+    // 按卡牌实例记录条件失败状态，避免同 ID 卡互相污染
+    private static HashSet<Card> conditionFailedCards = new HashSet<Card>();
 
     protected override bool IsPersistent => true;
     
@@ -73,6 +73,13 @@ public class CardEffect : Singleton<CardEffect>
         // 如果正在等待玩家选牌，则暂停执行
         if (waitingForAsync) return;
 
+        // 如果当前卡牌已被标记为条件失败，则终止当前效果链
+        if (currentChainCard != null && IsConditionFailed(currentChainCard))
+        {
+            StartExecutingNextChain();
+            return;
+        }
+
         // 检查是否所有效果都已执行完毕
         if (currentEffectIndex >= currentChainEffects.Count)
         {
@@ -104,7 +111,7 @@ public class CardEffect : Singleton<CardEffect>
             if (giftCardNum <= 0)
             {
                 Debug.Log($"{currentChainCard.name} 技能发动失败：手牌中没有合法的目标牌可供选择！");
-                if (currentChainCard != null) MarkConditionFailed(currentChainCard.id);
+                if (currentChainCard != null) MarkConditionFailed(currentChainCard);
                 StartExecutingNextChain();
                 return;
             }
@@ -121,7 +128,7 @@ public class CardEffect : Singleton<CardEffect>
             if (giftCardNum < threshold)
             {
                 Debug.Log($"{currentChainCard.name} 消耗失败：礼品卡不足，停止执行当前效果链");
-                if (currentChainCard != null) MarkConditionFailed(currentChainCard.id);
+                if (currentChainCard != null) MarkConditionFailed(currentChainCard);
                 StartExecutingNextChain();
                 return;
             }
@@ -261,7 +268,7 @@ public class CardEffect : Singleton<CardEffect>
 
     public void addCardNatureToDataManager()
     {
-        if (CallerCard == null || IsConditionFailed(CallerCard.id)) return;
+        if (CallerCard == null || IsConditionFailed(CallerCard)) return;
         DataManager.Instance.Add(1, CallerCard.nature1);
         DataManager.Instance.Add(2, CallerCard.nature2);
         DataManager.Instance.Add(3, CallerCard.nature3);
@@ -300,9 +307,16 @@ public class CardEffect : Singleton<CardEffect>
     }
 
     public void SetCallerCard(Card card) => CallerCard = card;
-    public bool IsConditionFailed(int cardId) => conditionFailedCardIds.Contains(cardId);
-    public void MarkConditionFailed(int cardId) => conditionFailedCardIds.Add(cardId);
-    public void ClearConditionFailed(int cardId) => conditionFailedCardIds.Remove(cardId);
+    public bool IsConditionFailed(Card card) => card != null && conditionFailedCards.Contains(card);
+    public void MarkConditionFailed(Card card)
+    {
+        if (card != null) conditionFailedCards.Add(card);
+    }
+
+    public void ClearConditionFailed(Card card)
+    {
+        if (card != null) conditionFailedCards.Remove(card);
+    }
 
     // --- int类型字段直接执行 ---
 
@@ -325,5 +339,13 @@ public class CardEffect : Singleton<CardEffect>
         if (CallerCard == null || num == 0 || times == 0) return;
         // 唤起 UI，开启连续选牌模式
         ShengZhiAndJianZhiHelper.Instance.ShengZhang(num, times);
+    }
+
+    public void _onTriggerFinalize()
+    {
+        if (CallerCard == null || IsConditionFailed(CallerCard)) return;
+
+        addCardNatureToDataManager();
+        DayManager.Instance.GetNextDayEvent().AddListener(CallerCard.OnNextTurn);
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
 {
     private int _targetNum; 
+    
 
     public void SetNum(int num)
     {
@@ -43,14 +44,33 @@ public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
 
     public void JianZhi()
     {
-        // 【修改点】：调用 CardActionResolver
+        int target = _targetNum;
+        if (target <= 0)
+        {
+            if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            return;
+        }
+
+        JianZhi(target);
+    }
+
+    private void JianZhi(int timesLeft)
+    {
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) => 
             {
                 selectedCard.OnBroken();
                 CardManager.Instance.BreakCard(selectedCard);
-                
-                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+
+                int remaining = timesLeft - 1;
+                if (remaining > 0)
+                {
+                    JianZhi(remaining);
+                }
+                else
+                {
+                    if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+                }
             },
             onCancel: () => 
             {
@@ -75,6 +95,7 @@ public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
                 CardManager.Instance.NotifyDeckOrHandChanged();
 
                 int remaining = timesLeft - 1;
+                DUEL.Instance.UpdateCardData();
                 if (remaining > 0)
                 {
                     Debug.Log($"[Helper] 还有 {remaining} 次机会，再次唤起选牌UI...");
@@ -98,7 +119,14 @@ public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
 
     private void RestoreCallerCard()
     {
-        Card caller = CardEffect.Instance.CallerCard;
+        CardEffect effect = CardEffect.Instance;
+        Card caller = effect != null ? effect.CallerCard : null;
+
+        if (effect != null && caller != null)
+        {
+            effect.MarkConditionFailed(caller);
+        }
+
         if (caller != null)
         {
             Card restoredCard = new Card();

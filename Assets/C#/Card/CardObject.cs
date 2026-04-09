@@ -67,7 +67,11 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
 
     // --- 快捷获取卡牌数据（保持不变，增加 null 检查） ---
     
-    public void Effect() => card?.OnTrigger();
+    public void Effect()
+    {
+        Debug.Log($"[CardObject][Effect] frame={Time.frameCount}, time={Time.time:F3}, cardRef={(card != null ? card.GetHashCode() : 0)}, id={card?.id}, name={card?.name}");
+        card?.OnTrigger();
+    }
 
     public int GetID() => card?.id ?? 0;
     public string GetName() => card?.name ?? "未知";

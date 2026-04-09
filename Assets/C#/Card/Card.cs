@@ -32,6 +32,8 @@ public class CardData
 [System.Serializable]
 public class Card
 {
+    private static int s_triggerInvokeSerial = 0;
+
     public int id;
     public int nature1;
     public int nature2;
@@ -322,51 +324,62 @@ public class Card
     // ==========================================
     public void OnTrigger()
     {
-        Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 开始执行效果");
+        int serial = ++s_triggerInvokeSerial;
+        int cardRef = GetHashCode();
+        Debug.Log($"[Card][OnTrigger][Enter] serial={serial}, frame={Time.frameCount}, time={Time.time:F3}, cardRef={cardRef}, id={id}, name={name}");
+        Debug.Log($"[Card][OnTrigger][Effects] serial={serial}, made={triggerMadeEffects?.Count ?? 0}, broken={triggerBrokenEffects?.Count ?? 0}, added={triggerAddedEffects?.Count ?? 0}, trigger={triggerEffects?.Count ?? 0}");
+        Debug.Log($"[Card][OnTrigger][Stack] serial={serial}\n{StackTraceUtility.ExtractStackTrace()}");
 
-        // 辅助函数：执行效果链并检查条件是否失败
-        bool ExecuteEffectsAndCheckCondition(List<EffectCommand> effects, string effectType)
-        {
-            if (effects == null || effects.Count == 0) return false; 
-
-            Debug.Log($"[Card] OnTrigger: 正在核验前置条件 [{effectType}]");
-            ExecuteEffectList(effects);
-
-            if (CardEffect.Instance != null && CardEffect.Instance.IsConditionFailed(this.id))
-            {
-                Debug.Log($"[Card] OnTrigger: {effectType} 前置条件失败(或玩家取消)，停止打出该卡牌");
-                return true; 
-            }
-            return false; 
-        }
-
-        // 1. 验证 made 前置条件 (仅数字配置会进入此处)
-        if (ExecuteEffectsAndCheckCondition(triggerMadeEffects, "Made(数字配置)")) return;
-
-        // 2. 验证 broken 前置条件 (仅数字配置会进入此处)
-        if (ExecuteEffectsAndCheckCondition(triggerBrokenEffects, "Broken(数字配置)")) return;
-
-        // 3. 验证 added 前置条件 (仅数字配置会进入此处)
-        if (ExecuteEffectsAndCheckCondition(triggerAddedEffects, "Added(数字配置)")) return;
-
-        // 4. 前置条件通过，开始执行真正的 Trigger 效果
-        if (triggerEffects != null && triggerEffects.Count > 0)
-        {
-            ExecuteEffectList(triggerEffects);
-        }
-
-        // 5. 将卡牌的三种属性添加到DataManager
         if (CardEffect.Instance != null)
         {
-            CardEffect.Instance.SetCallerCard(this);
-            CardEffect.Instance.Execute("addCardNatureToDataManager", new object[0]);
+            CardEffect.Instance.ClearConditionFailed(this);
+        }
+        Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 开始执行效果");
+
+        // 将前置条件与 Trigger 合并为单条效果链，保证异步选牌结束后才继续后续逻辑
+        List<EffectCommand> triggerExecutionPlan = new List<EffectCommand>();
+
+        if (triggerMadeEffects != null && triggerMadeEffects.Count > 0)
+        {
+            Debug.Log("[Card] OnTrigger: 加入前置条件 [Made(数字配置)]");
+            triggerExecutionPlan.AddRange(triggerMadeEffects);
         }
 
-        // 6. 添加OnNextTurn监听器
-        if (CardEffect.Instance != null && !CardEffect.Instance.IsConditionFailed(this.id))
+        if (triggerBrokenEffects != null && triggerBrokenEffects.Count > 0)
         {
-            DayManager.Instance.GetNextDayEvent().AddListener(OnNextTurn);
+            Debug.Log("[Card] OnTrigger: 加入前置条件 [Broken(数字配置)]");
+            triggerExecutionPlan.AddRange(triggerBrokenEffects);
         }
+
+        if (triggerAddedEffects != null && triggerAddedEffects.Count > 0)
+        {
+            Debug.Log("[Card] OnTrigger: 加入前置条件 [Added(数字配置)]");
+            triggerExecutionPlan.AddRange(triggerAddedEffects);
+        }
+
+        if (triggerEffects != null && triggerEffects.Count > 0)
+        {
+            triggerExecutionPlan.AddRange(triggerEffects);
+        }
+
+        // 链尾统一结算：加属性 + 追加下回合监听（仅在未失败时生效）
+        triggerExecutionPlan.Add(new EffectCommand
+        {
+            methodName = "_onTriggerFinalize",
+            parameters = new object[0]
+        });
+
+        Debug.Log($"[Card][OnTrigger][Plan] serial={serial}, total={triggerExecutionPlan.Count}");
+        for (int i = 0; i < triggerExecutionPlan.Count; i++)
+        {
+            var cmd = triggerExecutionPlan[i];
+            string paramText = (cmd.parameters == null || cmd.parameters.Length == 0)
+                ? "[]"
+                : $"[{string.Join(", ", cmd.parameters)}]";
+            Debug.Log($"[Card][OnTrigger][PlanItem] serial={serial}, index={i}, method={cmd.methodName}, params={paramText}");
+        }
+
+        ExecuteEffectList(triggerExecutionPlan);
     }
 
     public void OnNextTurn() => ExecuteEffectList(nextTurnEffects);

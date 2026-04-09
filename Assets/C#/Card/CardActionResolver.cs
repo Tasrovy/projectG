@@ -78,6 +78,8 @@ public class CardActionResolver : Singleton<CardActionResolver>
     /// </summary>
     private void HandleSubmit(Card selectedCard)
     {
+        Debug.Log($"[Resolver][HandleSubmit] frame={Time.frameCount}, time={Time.time:F3}, mode={currentMode}, selectedRef={(selectedCard != null ? selectedCard.GetHashCode() : 0)}, id={selectedCard?.id}, name={selectedCard?.name}");
+
         if (currentMode == CardPlayMode.NormalPlay)
         {
             Debug.Log($"[Resolver] 💥 玩家正常打出了卡牌: {selectedCard?.name}");
