@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -31,6 +32,14 @@ public class DialogueHandler : MonoBehaviour
     private bool isHandlingDialogueSequence = false;
     private int lastCheckedDay = -1;
 
+        void Start()
+    {
+        Yarn.Unity.InMemoryVariableStorage storage = FindAnyObjectByType<Yarn.Unity.InMemoryVariableStorage>();
+        if (storage != null && PlayerPrefs.HasKey("PLAYER_CUSTOM_NAME"))
+        {
+            storage.SetValue("$MY_NAME", PlayerPrefs.GetString("PLAYER_CUSTOM_NAME"));
+        }
+    }
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -115,6 +124,83 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// StartDialogue 的变体：用于触发 deal 系列对话
+    /// 自动根据天数 i 和进度 j 查找合适的 deal{i}_{j} 节点。
+    /// i 表示最早可触发的天数，j每触发一次推进。i越小越优先。 
+    /// </summary>
+    public void StartDialogue_deal()
+    {
+        if (DayManager.Instance == null || dialogueRunner == null) return;
+        
+        int currentDay = DayManager.Instance.GetDayNumber();
+        
+        // 遍历所有的系列 i，i最高不应该超过当前天数，因为i代表这个系列触发的最早天数
+        for (int i = 1; i <= currentDay; i++)
+        {
+            // 从 PlayerPrefs 拿到该系列当前的进度 j，默认为 1
+            int j = PlayerPrefs.GetInt($"DealProgress_{i}", 1);
+            string yarnNode = $"deal{i}_{j}";
+            
+            // 使用 Yarn Spinner 提供的 NodeExists 完美替代“从文件夹枚举读取”，
+            // 只要你写了这层对话且编译没报错，就会返回 true。
+            if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
+            {
+                Debug.Log($"[DialogueHandler] 发现并触发优先级最高的 deal 对话: {yarnNode} (系列 {i}，进度 {j})");
+                
+                // 将该系列的进度推进 1
+                PlayerPrefs.SetInt($"DealProgress_{i}", j + 1);
+                PlayerPrefs.Save();
+                
+                StartDialogue(yarnNode);
+                return; // 触发后立即返回，保证较小i的优先，且单次只触发一段
+            }
+        }
+        
+        Debug.Log($"[DialogueHandler] 商店或交互触发失败，当前没有任何满足条件的 deal 系列对话。");
+    }
+
+    /// <summary>
+    /// StartDialogue 的变体：用于触发 special 系列对话
+    /// 每段 special 对话每三天可推进一次，i更小的系列优先。
+    /// </summary>
+    public void StartDialogue_special()
+    {
+        if (DayManager.Instance == null || dialogueRunner == null) return;
+        
+        int currentDay = DayManager.Instance.GetDayNumber();
+        
+        // 遍历 special 系列的 i。设定一个安全上限 20（或100），找不到节点就不找了
+        for (int i = 1; i <= 20; i++)
+        {
+            int j = PlayerPrefs.GetInt($"SpecialProgress_{i}", 1);
+            string yarnNode = $"special{i}_{j}";
+            
+            // 如果存在第 i 系列的第 j 段对话
+            if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
+            {
+                // special序列的判断条件：每三天触发一个（进度 j 对应第 j*3 天或以后才能触发）
+                if (currentDay >= j * 3)
+                {
+                    Debug.Log($"[DialogueHandler] 发现可触发的 special 对话: {yarnNode} (系列 {i}，进度 {j}，当前天数 {currentDay} >= {j*3})");
+                    
+                    PlayerPrefs.SetInt($"SpecialProgress_{i}", j + 1);
+                    PlayerPrefs.Save();
+                    
+                    StartDialogue(yarnNode);
+                    return; // 触发后立即返回
+                }
+            }
+            else if (j == 1)
+            {
+                // 如果这个系列的第 1 篇都没写，意味着往后更大的 i 也没写了（特殊对话顺序按i编写），可以直接结束以节省开销
+                break;
+            }
+        }
+        
+        Debug.Log($"[DialogueHandler] 特殊事件触发失败，当前没有满足天数(j*3)或进度的 special 对话。");
+    }
+
     private IEnumerator StartDialogueRoutine(string yarnScript)
     {
         // 保证顺序：先执行转场黑屏
@@ -127,7 +213,16 @@ public class DialogueHandler : MonoBehaviour
             talkObj = GameObject.Find("talk");
             yield return null;
         }
-
+        // =================强制劫持与数据同步点=================
+        // 不论这是第几个场景的 VariableStorage，我们都在它开启对话前强行修正！
+        if (PlayerPrefs.HasKey("PLAYER_CUSTOM_NAME"))
+        {
+            string savedName = PlayerPrefs.GetString("PLAYER_CUSTOM_NAME");
+            if (dialogueRunner != null && dialogueRunner.VariableStorage != null)
+            {
+                dialogueRunner.VariableStorage.SetValue("$MY_NAME", savedName);
+            }
+        }
         // 向YarnSpinner发送开始指令。不再人为提前去抢状态或显示按钮
         // 接下来由Update自动完美捕捉起跑的瞬间！
         dialogueRunner.StartDialogue(yarnScript);

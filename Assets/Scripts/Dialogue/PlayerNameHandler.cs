@@ -31,7 +31,13 @@ public class PlayerNameHandler : MonoBehaviour
 
         if (variableStorage != null)
         {
-            variableStorage.SetValue("$MY_NAME", playerName); 
+            variableStorage.SetValue("$MY_NAME", playerName);
+        PlayerPrefs.SetString("PLAYER_CUSTOM_NAME", playerName);
+        PlayerPrefs.Save(); 
+            Debug.Log($"Player name set to: {playerName}");
+            Debug.Log(variableStorage.TryGetValue("$MY_NAME", out string retrievedName) 
+                ? $"Retrieved name from storage: {retrievedName}" 
+                : "Failed to retrieve name from storage.");
         }
 
         gameObject.SetActive(false);

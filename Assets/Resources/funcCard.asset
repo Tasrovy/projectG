@@ -13,6 +13,19 @@ MonoBehaviour:
   m_Name: funcCard
   m_EditorClassIdentifier: 
   allCards:
+  - id: 21601
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: "\u521D\u59CB\u529F\u80FD\u724C"
+    sale: 0
+    made: 1
+    broken: 0
+    added: 0
+    description: "\u751F\u679D{made}"
+    buff: 
+    trigger: 
+    nextTurn: 
   - id: 21001
     nature1: 0
     nature2: 0

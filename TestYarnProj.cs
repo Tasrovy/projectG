@@ -1,0 +1,1 @@
+using UnityEngine; using Yarn.Unity; using System.Linq; public class TestYarnProj : MonoBehaviour { public DialogueRunner runner; void Start() { bool b = runner.yarnProject.NodeNames.Contains("test"); } }

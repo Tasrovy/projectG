@@ -14,6 +14,7 @@ public class UISceneManager : MonoBehaviour
     [SerializeField] private GameObject endRoot;       // 结束场景
     [SerializeField] private GameObject afterclassRoot;// 放学三选一场景    
     [SerializeField] private GameObject workRoot;      // 打工场景
+    [SerializeField] private GameObject namingRoot;    // 命名场景
 
     [Header("常驻显示节点 (一直显示)")]
     [SerializeField] private GameObject[] alwaysShowRoots; // 常驻显示的GameObjects
@@ -85,7 +86,7 @@ public class UISceneManager : MonoBehaviour
         DeactivateAllMutexRoots();
 
         // 动态处理“常驻显示节点”：只要不是Begin场景，就全部开启。如果是Begin，就全部隐藏。
-        bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin);
+        bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin && sceneType != SceneType.Naming && sceneType != SceneType.Talk);
         if (alwaysShowRoots != null)
         {
             foreach(var root in alwaysShowRoots)
@@ -121,6 +122,9 @@ public class UISceneManager : MonoBehaviour
             case SceneType.Work:
                 if (workRoot != null) workRoot.SetActive(true);
                 break;
+            case SceneType.Naming:
+                if (namingRoot != null) namingRoot.SetActive(true);
+                break;
         }
     }
 
@@ -137,6 +141,7 @@ public class UISceneManager : MonoBehaviour
         if (endRoot != null) endRoot.SetActive(false);
         if (afterclassRoot != null) afterclassRoot.SetActive(false);
         if (workRoot != null) workRoot.SetActive(false);
+        if (namingRoot != null) namingRoot.SetActive(false);
     }
 }
 
@@ -152,5 +157,6 @@ public enum SceneType
     CardFight,
     AfterClass,
     Work,
+    Naming,
     End
 }

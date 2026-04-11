@@ -104,14 +104,29 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
         string speakerName = line.CharacterName;
 
-        if (speakerName == defaultName)     // 如果说话者是默认名字，尝试从变量存储中获取玩家名字
+        if (variableStorage == null) variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
+        if (variableStorage != null && variableStorage.TryGetValue(playerVariableName, out string playerName) && !string.IsNullOrEmpty(playerName))
         {
-            if (variableStorage == null) variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
-            if (variableStorage != null && variableStorage.TryGetValue(playerVariableName, out string playerName))
+            // 如果在 Yarn 中出现的名字是原本预设的名字、或者由于 Yarn 的 bug 没有正确替换的占位符，强制截获它。
+            if (speakerName == defaultName || speakerName == "林奈" || speakerName == "Player" || speakerName == "{$MY_NAME}")
             {
                 speakerName = playerName;
             }
         }
+        
+        // --- 强制接管修正名字UI的显示！ ---
+        // 防止 Yarn 原生的 LinePresenter 会呈现未替换、被重置、或者是写死的林奈默认名
+        var linePresenter = FindAnyObjectByType<Yarn.Unity.LinePresenter>();
+        if (linePresenter != null)
+        {
+            // characterNameText 的公开字段
+            if (linePresenter.characterNameText != null)
+            {
+                linePresenter.characterNameText.text = speakerName;
+            }
+        }
+        // ---------------------------------
+
         // --- 新增：解析当前对话行的标签 (Metadata) 并播放音效 ---
         if (line.Metadata != null)
         {
