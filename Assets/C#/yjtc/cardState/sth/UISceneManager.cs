@@ -69,15 +69,6 @@ public class UISceneManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 专门为了给 UnityEvent（面板上）使用而增加的 int 类型重载！
-    /// 直接传入枚举对应的数字进行切换（比如 0=Begin, 1=Talk）
-    /// </summary>
-    public void SwitchToScene(int sceneIndex)
-    {
-        SwitchToScene((SceneType)sceneIndex);
-    }
-
-    /// <summary>
     /// 切换到指定的场景 (原本的 Enum 版本，供纯代码调用)
     /// </summary>
     public void SwitchToScene(SceneType sceneType)

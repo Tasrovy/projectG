@@ -42,7 +42,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
     private bool wasStorageReady = false;
 
     // 新增：控制对话结束后是否进入下一天的标志
-    private bool shouldAdvanceDayAfterDialogue = false;
+    [HideInInspector] public bool shouldAdvanceDayAfterDialogue = false;
 
     private void Start()
     {
@@ -240,22 +240,8 @@ public class CharacterHighlightManager : DialoguePresenterBase
             AudioManager.Instance.StopWhiteNoise();
         }
 
-        // 根据标志位决定是否推入下一天
-        if (shouldAdvanceDayAfterDialogue)
-        {
-            if (DayManager.Instance != null)
-            {
-                DayManager.Instance.NextDay();
-            }
-            else
-            {
-                Debug.LogWarning("DayManager instance not found. NextDay() was not called.");
-            }
-            
-            // 触发完之后立刻复位，避免影响下一次其他的对话
-            shouldAdvanceDayAfterDialogue = false; 
-        }
-
+        // 注意：已经将过天的逻辑（shouldAdvanceDayAfterDialogue判定）移交到了 DialogueHandler 内统一拦截！
+        
         await YarnTask.CompletedTask;
     }
 

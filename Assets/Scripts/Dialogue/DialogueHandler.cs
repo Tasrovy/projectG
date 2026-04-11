@@ -161,12 +161,58 @@ public class DialogueHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// StartDialogue 的变体：用于触发 special 系列对话
-    /// 每段 special 对话每三天可推进一次，i更小的系列优先。
+    /// 【安全一键连招】：强烈推荐过天结算专用！
+    /// 尝试播放 deal，无论有没有可用的 deal，随后都会无缝拉起 special 检测并进入第二天！
+    /// 提供给 Inspector 里的 Button OnClick 直接调用，参数填第二天早晨的场景名(匹配 SceneType 枚举)。
     /// </summary>
-    public void StartDialogue_special()
+    public void TriggerEndDayWithDeal(string sceneTypeName)
     {
-        if (DayManager.Instance == null || dialogueRunner == null) return;
+        // 先设好一定会过天以及目的场景
+        SetAdvanceDayAfterDialogue(true);
+        SetNextSceneType(sceneTypeName);
+
+        if (DayManager.Instance == null || dialogueRunner == null) 
+        {
+            StartCoroutine(EndDialogueRoutine());
+            return;
+        }
+
+        int currentDay = DayManager.Instance.GetDayNumber();
+        bool foundDeal = false;
+
+        for (int i = 1; i <= currentDay; i++)
+        {
+            int j = PlayerPrefs.GetInt($"DealProgress_{i}", 1);
+            string yarnNode = $"deal{i}_{j}";
+            
+            if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
+            {
+                Debug.Log($"[DialogueHandler] 打工结束拦截并启动 deal 对话: {yarnNode}");
+                PlayerPrefs.SetInt($"DealProgress_{i}", j + 1);
+                PlayerPrefs.Save();
+                
+                // 【有deal时】：立刻播放！播完后Update函数会自动拉起EndDialogueRoutine去找special并过天。
+                StartDialogue(yarnNode);
+                foundDeal = true;
+                break;
+            }
+        }
+        
+        if (!foundDeal)
+        {
+            // 【没deal时】：直接拉起黑屏，跑去检测今晚有没有special，都没有就安静切去第二天。
+            Debug.Log($"[DialogueHandler] 今晚没有 deal，直接拉起过天与 special 检测。");
+            StartCoroutine(EndDialogueRoutine());
+        }
+    }
+
+    /// <summary>
+    /// 内部检索函数：获取当前天数下可用的 special 对话节点名。
+    /// 每段 special 对话每三天可推进一步，i更小的系列优先。
+    /// </summary>
+    private string GetAvailableSpecialDialogue()
+    {
+        if (DayManager.Instance == null || dialogueRunner == null) return null;
         
         int currentDay = DayManager.Instance.GetDayNumber();
         
@@ -182,13 +228,12 @@ public class DialogueHandler : MonoBehaviour
                 // special序列的判断条件：每三天触发一个（进度 j 对应第 j*3 天或以后才能触发）
                 if (currentDay >= j * 3)
                 {
-                    Debug.Log($"[DialogueHandler] 发现可触发的 special 对话: {yarnNode} (系列 {i}，进度 {j}，当前天数 {currentDay} >= {j*3})");
+                    Debug.Log($"[DialogueHandler] 睡前优先劫持！发现满足触发条件的 special 对话: {yarnNode} (系列 {i}，进度 {j})");
                     
                     PlayerPrefs.SetInt($"SpecialProgress_{i}", j + 1);
                     PlayerPrefs.Save();
                     
-                    StartDialogue(yarnNode);
-                    return; // 触发后立即返回
+                    return yarnNode; // 将此 Node 返回供黑屏播放队列使用
                 }
             }
             else if (j == 1)
@@ -198,7 +243,7 @@ public class DialogueHandler : MonoBehaviour
             }
         }
         
-        Debug.Log($"[DialogueHandler] 特殊事件触发失败，当前没有满足天数(j*3)或进度的 special 对话。");
+        return null;
     }
 
     private IEnumerator StartDialogueRoutine(string yarnScript)
@@ -256,7 +301,7 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator EndDialogueRoutine()
     {
-        // 先播放离场转场动画，并在屏幕完全黑掉的瞬间去清除立绘和背景
+        // 1. 先播放离场转场动画，并在屏幕完全黑掉的瞬间去清除立绘和背景
         yield return TransitionManager.Instance.PlayTransition(() => 
         {
             if (characterHighlightManager != null)
@@ -265,16 +310,52 @@ public class DialogueHandler : MonoBehaviour
             }
         });
 
-        // 黑屏后第一步：检查是否有排队等候的对话
+        // =================== 修改点：拦截过天与 Special 对话 ===================
+        // 【重要】：在此时趁着转场完全黑屏的时刻，我们才来判定这一天是否要“跨向第二天”！
+        // 如果是过天的流程，必须在结算这一天之前先拽出来晚间的 special 对话进入待办队列！
+        if (characterHighlightManager != null && characterHighlightManager.shouldAdvanceDayAfterDialogue)
+        {
+            string specialNode = GetAvailableSpecialDialogue(); // 去找今天有没有彩蛋对话
+            if (!string.IsNullOrEmpty(specialNode))
+            {
+                // **这就是正巧碰上了有 special 的日子！**
+                // 如果发现 special 节点，我们将它硬塞入待办最前面（或尾部）。
+                pendingDialogues.Enqueue(specialNode);
+                
+                // 【绝不能在这里做 DayManager.NextDay()】
+                // 而是直接略过：让 shouldAdvanceDayAfterDialogue 保持为 true！
+                // 等这段 Special 对话完全结束了，系统会再次发起黑屏转场，再进入到这层判断。
+            }
+            else
+            {
+                // 没有 Special 对话了，那就彻彻底底地进行跨天运算！
+                if (DayManager.Instance != null)
+                {
+                    DayManager.Instance.NextDay();
+                }
+                
+                // 结算安全完毕，复位标志位
+                characterHighlightManager.shouldAdvanceDayAfterDialogue = false; 
+            }
+        }
+        // ====================================================================
+
+        // 2. 黑屏后第一步：检查是否有排队等候的对话
         if (pendingDialogues.Count > 0)
         {
             string nextScript = pendingDialogues.Dequeue();
-            // 直接开启下一个对话（不需要切场景或重置序列状态）
-            dialogueRunner.StartDialogue(nextScript);
+            
+            // 直接开启下一个对话（调用了自身完整带强制黑屏加载的StartDialogue，所以没问题）
+            StartDialogue(nextScript);
+            
+            // 【为什么要停下立刻 yield break？】
+            // 因为如果是去播 special 对话，你绝不可以说“继续正常的向下进行切第二天的场景”，
+            // 不然屏幕就会把你切到明天早晨然后才开始播昨天晚上的 special！
+            // 所以 yield break 叫停后，新对话演完时会产生新一轮的转场并在那时安稳切换场景！
             yield break;
         }
 
-        // 黑屏/转场彻底结束后，检查是否有存储的待切场景
+        // 3. 所有排备流程结束，此时若是需要换场景才会真正切换。
         if (willSwitchScene)
         {
             willSwitchScene = false;   // 状态复位
@@ -292,6 +373,21 @@ public class DialogueHandler : MonoBehaviour
 
         // 所有流程结束，释放锁
         isHandlingDialogueSequence = false;
+    }
+
+    /// <summary>
+    /// 给外部（如直接回家的UI按钮）触发“过天检测”的方法。
+    /// 如果触发了 Special，则进入对话流；如果没有，它会自己拉黑屏并跨天切场景。
+    /// 可以直接给 UnityEvent 传递诸如 "Talk" 或 "DayMenu" 等字符串。
+    /// </summary>
+    public void TriggerEndDayDirectly(string sceneTypeName)
+    {
+        // 勾上过天的标记并排入要切换的后置场景
+        SetAdvanceDayAfterDialogue(true);
+        SetNextSceneType(sceneTypeName);
+        
+        // 然后，人为触发一次清场与过天检测漏斗
+        StartCoroutine(EndDialogueRoutine());
     }
 
     public void SetDialogueProperties(int p1, int p2, int p3)
