@@ -363,7 +363,7 @@ MonoBehaviour:
     added: 
     description: beadd
     buff: 
-    trigger: beAdded(8)
+    trigger: beAdded(1,8)
     nextTurn: 
   - id: 11208
     nature1: 8

@@ -4,28 +4,61 @@ using UnityEngine.UI;
 
 public class DeckViewerUI : Singleton<DeckViewerUI>
 {
-    [Header("UI 引用")]
-    public GameObject viewerPanel;      // 整个查看器面板
-    public Transform contentParent;     // Scroll View 里面的 Content 节点
-    public GameObject displayCardPrefab;// 刚刚做的 DisplayCardPrefab
+    [Header("UI 引用")] public GameObject viewerPanel; // 整个查看器面板
+    public Transform contentParent; // Scroll View 里面的 Content 节点
+    public GameObject displayCardPrefab; // 刚刚做的 DisplayCardPrefab
 
-    [Header("文本更新 (可选)")]
-    public Text titleText;              // 用来显示 "牌堆 (15张)" 等信息
+    [Header("文本更新 (可选)")] public Text titleText; // 用来显示 "牌堆 (15张)" 等信息
 
     protected override void Awake()
     {
         base.Awake();
+
+        // 获取根对象（确保 DUELUIObjectManager 已经初始化了 DUELUI）
+        GameObject root = DUELUIObjectManager.Instance.DUELUI;
+
+        // 1. 初始化 viewerPanel: CardSet -> Window
+        // 注意：结构中 Window 是 CardSet 的子物体
+        Transform windowTrans = root.transform.Find("CardSet/Window");
+        if (windowTrans != null)
+        {
+            viewerPanel = windowTrans.gameObject;
+
+            // 2. 初始化 titleText: Window -> Title
+            Transform titleTrans = windowTrans.Find("Title");
+            if (titleTrans != null) titleText = titleTrans.GetComponent<Text>();
+
+            // 3. 初始化 contentParent: Window -> Scroll View -> Viewport -> Content
+            contentParent = windowTrans.Find("Scroll View/Viewport/Content");
+
+            // 4. 初始化关闭按钮事件: Window -> Close
+            Button closeBtn = windowTrans.Find("Close")?.GetComponent<Button>();
+            if (closeBtn != null)
+            {
+                closeBtn.onClick.AddListener(CloseViewer);
+            }
+        }
+
+        // 5. 初始化 displayCardPrefab (如果是从资源加载)
+        displayCardPrefab = Resources.Load<GameObject>("Prefabs/CardInSet"); // 路径按实际修改
+
+
         // 初始状态隐藏面板
         CloseViewer();
-        Button btn = gameObject.GetComponent<Button>();
-        btn.onClick.AddListener(OnClickDeckPile);
+
+        // 绑定卡组图标点击事件: DUELUI -> CardSet
+        Button btn = DUELUIObjectManager.Instance.GetCardSetGameObject().GetComponent<Button>();
+        if (btn != null)
+        {
+            btn.onClick.AddListener(OnClickDeckPile);
+        }
     }
 
     public void OnClickDeckPile()
     {
         OpenViewer(CardManager.Instance.cardSet, "抽牌堆");
     }
-    
+
     /// <summary>
     /// 打开牌堆查看器并加载卡牌
     /// </summary>
@@ -53,7 +86,7 @@ public class DeckViewerUI : Singleton<DeckViewerUI>
         {
             // 实例化预制体，并将其父节点设为 Content
             GameObject newCardObj = Instantiate(displayCardPrefab, contentParent);
-            
+
             // 获取我们写的展示脚本，注入数据
             CardDisplayUI displayUI = newCardObj.GetComponent<CardDisplayUI>();
             if (displayUI != null)
