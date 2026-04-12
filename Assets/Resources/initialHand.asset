@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entries:
   - id: 11001
-    num: 2
+    num: 1
   - id: 22003
     num: 1
   - id: 11601
-    num: 1
+    num: 3
   - id: 11602
-    num: 1
+    num: 3
   - id: 21601
-    num: 1
+    num: 2
   - id: 11203
     num: 1
   - id: 22202
