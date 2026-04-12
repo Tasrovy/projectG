@@ -283,7 +283,7 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u6D4B\u8BD5\u4F7F\u7528"
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
     trigger: addNature(4,1)
     nextTurn: 
@@ -296,22 +296,22 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: addnaturefromTo
+    description: "\u63D0\u5347\u89D2\u8272\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u89D2\u8272\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9"
     buff: 
-    trigger: addNatureFromTo(1,2)
+    trigger: addNatureTo(1001,2)
     nextTurn: 
   - id: 11203
     nature1: 3
     nature2: 3
     nature3: 3
-    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C03"
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C03\uFF01"
     sale: 0
     made: 
     broken: 
     added: 
-    description: addcard
+    description: addNatureAtSumIf(1,2)
     buff: 
-    trigger: addCard(11001,1)
+    trigger: addNatureAtSumIf(1,2)
     nextTurn: 
   - id: 11204
     nature1: 4

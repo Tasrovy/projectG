@@ -141,7 +141,7 @@ MonoBehaviour:
     added: 0
     description: "\u526A\u679D{broken}\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
     buff: 
-    trigger: addNatureAtSum(100,1);addNatureAtSum(100,3)
+    trigger: 
     nextTurn: 
   - id: 22004
     nature1: 0
@@ -230,7 +230,7 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    description: beAdded(4,1)
     buff: 
     trigger: beAdded(4,1)
     nextTurn: 
@@ -243,35 +243,35 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    description: beAddedTo(4,1)
     buff: 
-    trigger: beAddedTo(4,1)
+    trigger: beAddedTo(88,1)
     nextTurn: 
   - id: 22203
     nature1: 0
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u6D4B\u8BD501@"
     sale: 0
     made: 
     broken: 
     added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    description: drawCard(2)
     buff: 
-    trigger: addRandomCardIfNot(1,1,2)
+    trigger: drawCard(2)
     nextTurn: 
   - id: 22204
     nature1: 0
     nature2: 0
     nature3: 0
-    name: 
+    name: "\u6D4B\u8BD502"
     sale: 0
     made: 
     broken: 
     added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    description: addNatureAtSumIf(1,2)
     buff: 
-    trigger: 
+    trigger: addNatureAtSumIf(1,2)
     nextTurn: 
   - id: 22205
     nature1: 0
@@ -282,9 +282,9 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    description: beBroken(2)
     buff: 
-    trigger: 
+    trigger: beBroken(2)
     nextTurn: 
   - id: 22206
     nature1: 0
@@ -294,10 +294,10 @@ MonoBehaviour:
     sale: 0
     made: 
     broken: 
-    added: 
-    description: "\u6D4B\u8BD5\u7528\u4F8B"
+    added: 4
+    description: "{added}\u6D4B\u8BD5addAddNum(4)"
     buff: 
-    trigger: 
+    trigger: addAddNum(4)
     nextTurn: 
   - id: 22207
     nature1: 0
@@ -310,7 +310,7 @@ MonoBehaviour:
     added: 
     description: "\u6D4B\u8BD5\u7528\u4F8B"
     buff: 
-    trigger: 
+    trigger: addWithSame(3,40,5)
     nextTurn: 
   - id: 22208
     nature1: 0
@@ -323,7 +323,7 @@ MonoBehaviour:
     added: 
     description: "\u6D4B\u8BD5\u7528\u4F8B"
     buff: 
-    trigger: 
+    trigger: addWIthSameTogether(3,40)
     nextTurn: 
   - id: 22209
     nature1: 0
