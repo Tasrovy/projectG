@@ -293,15 +293,38 @@ public class CardShopping : MonoBehaviour
         {
             if (CardManager.Instance != null && CardManager.Instance.cardInHand != null)
             {
+                int price = selectedCard.card.sale;
+
+                // 金钱检测
+                if (DataManager.Instance != null && DataManager.Instance.MoneyNum < price)
+                {
+                    Debug.LogWarning($"[CardShopping] 购买失败！金钱不足。需要: {price}，当前金钱: {DataManager.Instance.MoneyNum}");
+                    return;
+                }
+
+                // 扣除金钱
+                if (DataManager.Instance != null)
+                {
+                    // 扣除对应的卡牌售价(-price)
+                    DataManager.Instance.Add(4, -price);
+                }
+
                 // 将选中的卡牌实体数据加入手牌库
                 CardManager.Instance.cardInHand.Add(selectedCard.card);
-                Debug.Log($"[CardShopping] 购买确认！卡牌 {selectedCard.card.name} 获取并纳入手中。");
+                Debug.Log($"[CardShopping] 购买确认！卡牌 {selectedCard.card.name} 获取并纳入手中，花费: {price}。");
                 
                 // 隐藏买走的卡牌
                 selectedCard.gameObject.SetActive(false);
                 
                 // 购买成功后清空当前选中项，必须重选才能再次购买
                 selectedCard = null;
+
+                // 查找并更新所有带有 UpdateMoney 组件的 UI 文本
+                UpdateMoney[] moneyUpdaters = FindObjectsOfType<UpdateMoney>(true);
+                foreach (var updater in moneyUpdaters)
+                {
+                    updater.UpdateText();
+                }
             }
             else
             {

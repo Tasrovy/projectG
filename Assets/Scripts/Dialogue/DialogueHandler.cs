@@ -8,19 +8,12 @@ using Yarn.Unity;
 
 public class DialogueHandler : MonoBehaviour
 {
-    [System.Serializable]
-    public class DayDialogueConfig
-    {
-        public int dayNumber;
-        public string yarnNode;
-    }
-
     public static DialogueHandler Instance { get; private set; }
     [SerializeField] private DialogueRunner dialogueRunner;
     [SerializeField] private Button skipDialogueButton;
 
-    [Header("按天数自动触发的对话配置")]
-    [SerializeField] private List<DayDialogueConfig> dayDialoguesConfig = new List<DayDialogueConfig>();
+    [Header("每日早晨自动触发的对话配置")]
+    [SerializeField] private string dailyMorningDialogueNode;
 
     private CharacterHighlightManager characterHighlightManager;
     private bool wasDialogueRunning;
@@ -78,10 +71,13 @@ public class DialogueHandler : MonoBehaviour
                 if (talkObj != null && talkObj.activeInHierarchy)
                 {
                     lastCheckedDay = currentDay;
-                    var config = dayDialoguesConfig.Find(c => c.dayNumber == currentDay);
-                    if (config != null && !string.IsNullOrEmpty(config.yarnNode))
+                    if (!string.IsNullOrEmpty(dailyMorningDialogueNode))
                     {
-                        StartDialogue(config.yarnNode);
+                        // 触发早晨固定对话
+                        StartDialogue(dailyMorningDialogueNode);
+                        
+                        // 对话结束后自动转入 Select 场景
+                        SetNextSceneType("Select");
                     }
                 }
             }
@@ -104,6 +100,8 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
+    #region 对话呼出与日常结算
+
     public void StartDialogue(string yarnScript)
     {
         // 完整回溯出到底是谁点击/触发的：
@@ -125,47 +123,11 @@ public class DialogueHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// StartDialogue 的变体：用于触发 deal 系列对话
-    /// 自动根据天数 i 和进度 j 查找合适的 deal{i}_{j} 节点。
-    /// i 表示最早可触发的天数，j每触发一次推进。i越小越优先。 
-    /// </summary>
-    public void StartDialogue_deal()
-    {
-        if (DayManager.Instance == null || dialogueRunner == null) return;
-        
-        int currentDay = DayManager.Instance.GetDayNumber();
-        
-        // 遍历所有的系列 i，i最高不应该超过当前天数，因为i代表这个系列触发的最早天数
-        for (int i = 1; i <= currentDay; i++)
-        {
-            // 从 PlayerPrefs 拿到该系列当前的进度 j，默认为 1
-            int j = PlayerPrefs.GetInt($"DealProgress_{i}", 1);
-            string yarnNode = $"deal{i}_{j}";
-            
-            // 使用 Yarn Spinner 提供的 NodeExists 完美替代“从文件夹枚举读取”，
-            // 只要你写了这层对话且编译没报错，就会返回 true。
-            if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
-            {
-                Debug.Log($"[DialogueHandler] 发现并触发优先级最高的 deal 对话: {yarnNode} (系列 {i}，进度 {j})");
-                
-                // 将该系列的进度推进 1
-                PlayerPrefs.SetInt($"DealProgress_{i}", j + 1);
-                PlayerPrefs.Save();
-                
-                StartDialogue(yarnNode);
-                return; // 触发后立即返回，保证较小i的优先，且单次只触发一段
-            }
-        }
-        
-        Debug.Log($"[DialogueHandler] 商店或交互触发失败，当前没有任何满足条件的 deal 系列对话。");
-    }
-
-    /// <summary>
     /// 【安全一键连招】：强烈推荐过天结算专用！
     /// 尝试播放 deal，无论有没有可用的 deal，随后都会无缝拉起 special 检测并进入第二天！
     /// 提供给 Inspector 里的 Button OnClick 直接调用，参数填第二天早晨的场景名(匹配 SceneType 枚举)。
     /// </summary>
-    public void TriggerEndDayWithDeal(string sceneTypeName)
+    public void TriggerEndDayWithDeal(string sceneTypeName = "Talk")
     {
         // 先设好一定会过天以及目的场景
         SetAdvanceDayAfterDialogue(true);
@@ -205,6 +167,8 @@ public class DialogueHandler : MonoBehaviour
             StartCoroutine(EndDialogueRoutine());
         }
     }
+
+    #endregion
 
     /// <summary>
     /// 内部检索函数：获取当前天数下可用的 special 对话节点名。
@@ -273,6 +237,8 @@ public class DialogueHandler : MonoBehaviour
         dialogueRunner.StartDialogue(yarnScript);
     }
 
+    #region 场景切换相关
+
     /// <summary>
     /// 提供给UnityEvent调用的函数，传入SceneType（由枚举名转换）
     /// 并保存起来用于对话结束后的场景切换
@@ -298,6 +264,8 @@ public class DialogueHandler : MonoBehaviour
         nextSceneType = sceneType;
         willSwitchScene = true;
     }
+
+    #endregion
 
     private IEnumerator EndDialogueRoutine()
     {
@@ -375,12 +343,14 @@ public class DialogueHandler : MonoBehaviour
         isHandlingDialogueSequence = false;
     }
 
+    #region 强制过天与数值属性设置
+
     /// <summary>
     /// 给外部（如直接回家的UI按钮）触发“过天检测”的方法。
     /// 如果触发了 Special，则进入对话流；如果没有，它会自己拉黑屏并跨天切场景。
     /// 可以直接给 UnityEvent 传递诸如 "Talk" 或 "DayMenu" 等字符串。
     /// </summary>
-    public void TriggerEndDayDirectly(string sceneTypeName)
+    public void TriggerEndDayDirectly(string sceneTypeName = "Talk")
     {
         // 勾上过天的标记并排入要切换的后置场景
         SetAdvanceDayAfterDialogue(true);
@@ -440,6 +410,8 @@ public class DialogueHandler : MonoBehaviour
             characterHighlightManager.SetAdvanceDayAfterDialogue(advance);
         }
     }
+
+    #endregion
 
     private async void HandleSkipDialogueClicked()
     {
