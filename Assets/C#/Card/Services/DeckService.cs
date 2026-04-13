@@ -73,4 +73,9 @@ public class DeckService
         }
         return result;
     }
+
+    public void AddCardToSet(Card card)
+    {
+        if(!_cardSet.Contains(card)) _cardSet.Add(card);
+    }
 }

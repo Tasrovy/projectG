@@ -30,6 +30,7 @@ public class HandService
         {
             if (CardIdUtility.GetCardType(card.id) == 1) num++;
         }
+        Debug.Log($"[HandService] {num}");
         return num;
     }
 

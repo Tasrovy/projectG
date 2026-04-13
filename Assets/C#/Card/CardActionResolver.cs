@@ -86,7 +86,12 @@ public class CardActionResolver : Singleton<CardActionResolver>
             
             // --- 正常出牌逻辑 ---
             selectedCard.OnTrigger();
-            CardManager.Instance.BreakCard(selectedCard);
+            if(selectedCard.id.ToString()[0]=='1')CardManager.Instance.BreakCard(selectedCard);
+            else
+            {
+                CardManager.Instance.BreakCard(selectedCard);
+                CardManager.Instance.AddCardToSet(selectedCard);
+            }
             // 1. 从手牌数据中移除
             ///CardManager.Instance.RemoveCardFromHand(selectedCard);
             

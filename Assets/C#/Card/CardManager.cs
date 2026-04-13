@@ -203,4 +203,9 @@ public class CardManager : Singleton<CardManager>
             DUEL.Instance.InitCardObject();
         }
     }
+
+    public void AddCardToSet(Card card)
+    {
+        _deckService.AddCardToSet(card);
+    }
 }
