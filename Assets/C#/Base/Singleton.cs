@@ -8,7 +8,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     /// <summary>
     /// 是否跨场景持久化。子类可以通过 override 返回 true 来保持不被销毁。
-    /// 默认返回 false，即切换场景时自动销毁。
     /// </summary>
     protected virtual bool IsPersistent => false;
 
@@ -16,23 +15,30 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            if (_applicationIsQuitting) return null;
+            // 如果程序正在退出，不再创建新单例（防止留在场景中导致报错）
+            if (_applicationIsQuitting)
+            {
+                return null;
+            }
 
             lock (_lock)
             {
                 if (_instance == null)
                 {
-                    _instance = (T)FindFirstObjectByType(typeof(T));
+                    // 1. 尝试在场景中查找已有的对象
+                    _instance = (T)Object.FindFirstObjectByType(typeof(T));
 
+                    // 2. 如果场景中没有，则动态创建一个
                     if (_instance == null)
                     {
                         GameObject singletonObject = new GameObject();
                         _instance = singletonObject.AddComponent<T>();
                         singletonObject.name = typeof(T).ToString() + " (Singleton)";
-                        
-                        // 如果子类要求持久化，则调用 DontDestroyOnLoad
-                        // 这里通过访问刚刚生成的实例的 IsPersistent 来判断
-                        if ((_instance as Singleton<T>).IsPersistent)
+
+                        // 3. 处理持久化逻辑
+                        // 通过强转访问基类定义的 IsPersistent 属性
+                        var singletonComponent = _instance as Singleton<T>;
+                        if (singletonComponent != null && singletonComponent.IsPersistent)
                         {
                             DontDestroyOnLoad(singletonObject);
                         }
@@ -43,13 +49,15 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 确保手动拖到场景中的对象也能正常工作
+    /// </summary>
     protected virtual void Awake()
     {
         if (_instance == null)
         {
             _instance = this as T;
 
-            // 检查当前子类是否需要持久化
             if (IsPersistent)
             {
                 if (transform.parent != null) transform.SetParent(null);
@@ -58,6 +66,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
         else if (_instance != this)
         {
+            // 如果已经存在实例且不是自己，销毁重复的
             Destroy(gameObject);
         }
     }
@@ -69,6 +78,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
+        // 只有当销毁的是当前记录的实例时才清空引用
         if (_instance == this)
         {
             _instance = null;

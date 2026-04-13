@@ -26,7 +26,9 @@ public class CardSelector : Singleton<CardSelector>
     protected override void Awake()
     {
         base.Awake();
-        
+        submitButton = DUELUIObjectManager.Instance.GetSubmitButton();
+        cancelButton = DUELUIObjectManager.Instance.GetCancelButton();
+        handZone = DUELUIObjectManager.Instance.GetCardZoneTransform();
         if (submitButton != null) submitButton.onClick.AddListener(OnSubmitClicked);
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
         

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class DUEL : Singleton<DUEL>
 {
+    public GameObject DUELUI;
     public GameObject cardPrefab;
     public Transform cardParent;
     public UnityEvent OnBeginDUEL = new UnityEvent();
@@ -17,6 +18,9 @@ public class DUEL : Singleton<DUEL>
     {
         base.Awake();
         Debug.Log("创建决斗单例");
+        DUELUIObjectManager.Instance.HideUI();
+        endButton = DUELUIObjectManager.Instance.GetEndFightButton();
+        cardPrefab = Resources.Load<GameObject>("Prefabs/DisplayCard");
         OnBeginDUEL.AddListener(InitCardObject);
         OnEndDUEL.AddListener(DestroyCardObject);
         endButton.onClick.AddListener(End);
@@ -25,6 +29,7 @@ public class DUEL : Singleton<DUEL>
     
     public void Begin()
     {
+        DUELUIObjectManager.Instance.ShowUI();
         endButton.gameObject.SetActive(true);
         Debug.Log("准备开始决斗");
         OnBeginDUEL?.Invoke();
@@ -32,11 +37,12 @@ public class DUEL : Singleton<DUEL>
 
     public void End()
     {
+        DUELUIObjectManager.Instance.HideUI();
         OnEndDUEL?.Invoke();
         Debug.Log("结束决斗");
         endButton.gameObject.SetActive(false);
         //测试用
-        Begin();
+        //Begin();
     }
 
     public void InitCardObject()

@@ -10,10 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01d539be1c07803418a333d1d6227dc4, type: 3}
-  m_Name: initialHand
+  m_Name: 
   m_EditorClassIdentifier: 
   entries:
   - id: 11001
-    num: 5
+    num: 1
   - id: 22003
+    num: 1
+  - id: 11601
+    num: 3
+  - id: 11602
+    num: 3
+  - id: 21601
+    num: 2
+  - id: 11203
+    num: 1
+  - id: 22202
+    num: 1
+  - id: 22203
+    num: 1
+  - id: 22204
     num: 1

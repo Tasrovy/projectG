@@ -45,7 +45,7 @@ public class CardManager : Singleton<CardManager>
 
     private void Start()
     {
-        DUEL.Instance.Begin();
+        //DUEL.Instance.Begin();
     }
 
     private void InitializeServices()
