@@ -29,9 +29,9 @@ public class InitialHandService
 
         foreach (InitialHandEntry entry in initialHandSO.entries)
         {
-            if (entry == null || entry.id == 0) continue;
+            if (entry == null || entry.id == 0 || entry.num <= 0) continue;
 
-            int count = entry.num <= 0 ? 1 : entry.num;
+            int count = entry.num;
             for (int i = 0; i < count; i++)
             {
                 if (_deckService.TryTakeCardById(entry.id, out Card cardFromDeck))

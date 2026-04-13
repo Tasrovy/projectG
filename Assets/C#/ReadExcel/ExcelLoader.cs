@@ -289,7 +289,6 @@ public class ExcelLoader : Singleton<ExcelLoader>
                         }
                     }
 
-                    if (entry.num <= 0) entry.num = 1;
                     db.entries.Add(entry);
                 }
             }

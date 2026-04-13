@@ -14,20 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entries:
   - id: 11001
-    num: 1
-  - id: 22003
-    num: 1
-  - id: 11601
-    num: 3
-  - id: 11602
-    num: 3
-  - id: 21601
     num: 2
+  - id: 22003
+    num: 0
+  - id: 11601
+    num: 0
+  - id: 11602
+    num: 0
+  - id: 21601
+    num: 0
   - id: 11203
-    num: 1
+    num: 0
   - id: 22202
-    num: 1
+    num: 0
   - id: 22203
-    num: 1
+    num: 0
   - id: 22204
+    num: 0
+  - id: 22008
+    num: 0
+  - id: 18888
+    num: 0
+  - id: 22004
+    num: 0
+  - id: 22001
     num: 1

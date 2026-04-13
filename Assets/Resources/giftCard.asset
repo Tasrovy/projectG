@@ -378,3 +378,16 @@ MonoBehaviour:
     buff: 
     trigger: beAddedTo(20)
     nextTurn: 
+  - id: 18888
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: test
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: 000
+    buff: 
+    trigger: addNatureByOther(1,2)
+    nextTurn: 

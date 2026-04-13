@@ -158,6 +158,7 @@ public class CardManager : Singleton<CardManager>
 
     public void ChangeHandGift()
     {
+        Debug.Log("[CardManager] Begin Change Hand Gift");
         _handService.ChangeHandGift(GetCardDataById);
         NotifyDeckOrHandChanged();
     }
@@ -207,5 +208,26 @@ public class CardManager : Singleton<CardManager>
     public void AddCardToSet(Card card)
     {
         _deckService.AddCardToSet(card);
+    }
+
+    // ===================== 查询函数（转发 DeckService） =====================
+    /// <summary>
+    /// 获取牌堆中相同ID卡牌的最大数量
+    /// </summary>
+    /// <returns>牌堆中出现次数最多的卡牌ID的数量，如果牌堆为空则返回0</returns>
+    public int GetMaxSameIdCardCount()
+    {
+        return _deckService.GetMaxSameIdCardCount();
+    }
+
+    /// <summary>
+    /// 获取牌堆中出现次数最多的卡牌ID及其数量
+    /// </summary>
+    /// <param name="cardId">输出出现次数最多的卡牌ID</param>
+    /// <param name="count">输出该ID的出现次数</param>
+    /// <returns>如果牌堆为空则返回false，否则返回true</returns>
+    public bool TryGetMaxSameIdCard(out int cardId, out int count)
+    {
+        return _deckService.TryGetMaxSameIdCard(out cardId, out count);
     }
 }

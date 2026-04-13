@@ -239,7 +239,7 @@ public class CardEffect : Singleton<CardEffect>
 
     public void addWithSame(int sameNum, int trueNum, int falseNum)
     {
-        int sameCount = CardManager.Instance.GetCardCountInDeck(CallerCard.id);
+        int sameCount = CardManager.Instance.GetMaxSameIdCardCount();
         beAdded(sameCount >= sameNum ? trueNum : falseNum, 1);
     }
 
@@ -256,6 +256,11 @@ public class CardEffect : Singleton<CardEffect>
             }
             CardManager.Instance.NotifyDeckOrHandChanged();
         }
+    }
+
+    public void drawCard(int num)
+    {
+        CardManager.Instance.DrawCard(num);
     }
 
     public void noConsumed()
