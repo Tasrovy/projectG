@@ -1,0 +1,34 @@
+title: normalEnd1_7
+---
+<<set_background roomGround占坑>>
+<<play_bgm littleSad_黄昏分岔口>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character "伊兰莉特" peace_2>>
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite "伊兰莉特" "peace_1">>
+打牌打到半夜。蒂娜打了个哈欠。
+<<set_character_sprite "{$MY_NAME}" peace_2>>
+{$MY_NAME}:精灵不是不用休息吗？
+<<set_character_sprite "伊兰莉特" saying>>
+蒂娜 :哪怕是活了八千年的虚拟主播也是需要休息的哦
+我笑了一下。感觉已经很久没有这样开心了。
+蒂娜 :明天见~~林奈#sfx_Character_主角2_好啊
+{$MY_NAME}:明天见。
+我关灯，躺下来。房间暗了，但那个匣子在黑暗里好像微微发着光。
+我闭上眼睛。
+明天还会见到她。
+
+（进入了梦乡）
+<<set_background roomGround占坑>>
+今天天气很好。
+我把窗帘拉开，阳光照进来。房间亮得有点刺眼。
+<<set_character_sprite "伊兰莉特" saying>>
+蒂娜 :外面的树好大
+<<set_character_sprite "{$MY_NAME}" saying>>
+{$MY_NAME}:是呢，感觉好闪耀
+<<set_character_sprite "伊兰莉特" happy>>
+蒂娜 :太阳暖暖的很舒服呢٩(^‿^)۶
+阳光照在她身上，也照在我身上。
+
+===
