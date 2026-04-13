@@ -8,7 +8,7 @@
 <<set_character_person Character "蒂娜" peace_1>>
 （深夜的房间，月光透过窗帘的缝隙，洒下淡色的银光。）
 <<set_character_sprite "蒂娜" happy>>
-蒂娜:所以，你到底要不要继续一起玩嘛！
+蒂娜:所以，你到底要不要继续一起玩嘛！#sfx_Character_主角2_嗯哼
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:我不是来了吗？
 <<set_character_sprite "蒂娜" happy>>
