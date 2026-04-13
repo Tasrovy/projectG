@@ -347,6 +347,115 @@ public class CharacterControl : MonoBehaviour
     }
     #endregion
 
+    #region 画面(UI)特写缩放
+    private Vector2 originalTalkAnchoredPos;
+    private Vector3 originalTalkScale;
+    private bool isTalkZoomed = false;
+    private Coroutine activeTalkZoomCoroutine;
+
+    /// <summary>
+    /// 放大/移动演出画面 (包含背景与立绘的 talk 节点)，且不影响外层对话框 UI
+    /// 
+    /// Yarn 调用示例: <<camera_zoom 300 -200 1.5 1.0>>
+    /// 
+    /// 参数释义：
+    /// - targetX / targetY: 基于原点 (0,0) 的锚点偏移像素值。
+    ///   - 若中心点在屏幕中央 (0,0)：往左偏看右侧画面需传入负数(如 X: -300)，往右偏则传正数。
+    ///   - X/Y 的极限值：计算方式为 (屏幕分辨率的一半 * (放大倍率 - 1))。
+    ///     例如在 1920x1080 下放大 1.5 倍：X的最大偏移为 (1920/2) * 0.5 = 480，即 X 不要超过 ±480，否则会露出黑边。
+    /// - targetScale: 放大倍数 (1.0为原始大小，1.5即为放大约1.5倍)
+    /// - duration: 动画过渡时间 (秒)
+    /// </summary>
+    [YarnCommand("camera_zoom")]
+    public static void ZoomArtStatic(float targetX, float targetY, float targetScale, float duration = 1.0f)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) control.ZoomArt(targetX, targetY, targetScale, duration);
+    }
+
+    public void ZoomArt(float targetX, float targetY, float targetScale, float duration = 1.0f)
+    {
+        // 获取演出画面的根节点: talk
+        GameObject talkObj = GameObject.Find("talk");
+        if (talkObj == null)
+        {
+            Debug.LogWarning("[CharacterControl] 未找到名为 'talk' 的对象，无法执行缩放！");
+            return;
+        }
+        
+        RectTransform rt = talkObj.GetComponent<RectTransform>();
+        if (rt == null)
+        {
+            Debug.LogWarning("[CharacterControl] 'talk' 对象缺少 RectTransform 组件！");
+            return;
+        }
+
+        // 如果是首次放大，记录下原始的锚点位置和缩放比例
+        if (!isTalkZoomed)
+        {
+            originalTalkAnchoredPos = rt.anchoredPosition;
+            originalTalkScale = rt.localScale;
+            isTalkZoomed = true;
+        }
+
+        if (activeTalkZoomCoroutine != null) StopCoroutine(activeTalkZoomCoroutine);
+        // 对坐标进行取反，因为如果玩家想要视线向右 (X 为正)，其实画布的偏移量应该向左(-X)
+        activeTalkZoomCoroutine = StartCoroutine(ZoomTalkRoutine(rt, new Vector2(-targetX, -targetY), new Vector3(targetScale, targetScale, 1f), duration));
+    }
+
+    /// <summary>
+    /// 恢复缩放/移动前状态
+    /// Yarn 调用示例: <<reset_camera 1.0>>
+    /// 参数 duration 为过渡时间(秒)
+    /// </summary>
+    [YarnCommand("reset_camera")]
+    public static void ResetArtZoomStatic(float duration = 1.0f)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null) control.ResetArtZoom(duration);
+    }
+
+    public void ResetArtZoom(float duration = 1.0f)
+    {
+        if (!isTalkZoomed) return;
+
+        GameObject talkObj = GameObject.Find("talk");
+        if (talkObj != null)
+        {
+            RectTransform rt = talkObj.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                if (activeTalkZoomCoroutine != null) StopCoroutine(activeTalkZoomCoroutine);
+                activeTalkZoomCoroutine = StartCoroutine(ZoomTalkRoutine(rt, originalTalkAnchoredPos, originalTalkScale, duration));
+            }
+        }
+        
+        isTalkZoomed = false; // 状态恢复
+    }
+
+    private IEnumerator ZoomTalkRoutine(RectTransform rt, Vector2 targetPos, Vector3 targetScale, float duration)
+    {
+        Vector2 startPos = rt.anchoredPosition;
+        Vector3 startScale = rt.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            // 缓动算法使得位移和缩放更加顺滑自然
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
+
+            rt.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
+            rt.localScale = Vector3.Lerp(startScale, targetScale, t);
+
+            yield return null;
+        }
+
+        rt.anchoredPosition = targetPos;
+        rt.localScale = targetScale;
+    }
+    #endregion
+
     #region 场景切换
     [YarnCommand("set_background")]
     public static IEnumerator SetBackgroundStatic(string backgroundName)
@@ -495,6 +604,19 @@ public class CharacterControl : MonoBehaviour
                 // AudioManager内部已经配了前缀 "Sound/Whitenoise/"
                 AudioManager.Instance.PlayWhiteNoise(FormatAudioPath(audioParam));
             }
+        }
+        else
+        {
+            Debug.LogWarning("[CharacterControl] 找不到 AudioManager 实例！");
+        }
+    }
+
+    [YarnCommand("stop_whitenoise")]
+    public static void StopWhiteNoiseCommand()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopWhiteNoise();
         }
         else
         {
