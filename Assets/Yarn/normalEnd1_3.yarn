@@ -1,0 +1,26 @@
+﻿title: normalEnd1_3
+---
+<<set_background roomGround夜晚占坑>>
+<<play_bgm littleSad_黄昏分岔口>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character "伊兰莉特" peace_2>>
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite "伊兰莉特" "peace_1">>
+蒂娜 :把牌收进匣子，像树收起叶子，我们明天见。 #sfx_Character_主角2_嗯哼
+{$MY_NAME}:嗯，我去睡觉了
+（进入了梦乡）
+<<set_background roomGround白天占坑>>
+蒂娜 :林奈女士
+<<set_character_sprite "{$MY_NAME}" "saying">>
+{$MY_NAME}:不用加女士。
+<<set_character_sprite "伊兰莉特" "peace_2">>
+蒂娜 :那要叫什么？
+<<set_character_sprite "{$MY_NAME}" "speace_1">>
+{$MY_NAME}:林奈就好。
+<<set_character_sprite "伊兰莉特" "happy">>
+蒂娜 :林奈！(～￣▽￣)～
+她叫了一次，好像在想这个发音的意思。
+我想起B以前也叫我的名字。她叫的时候，尾音会微微上扬。和蒂娜的语调还挺像的。
+我已经很久没有被叫名字了。
+===
