@@ -30,12 +30,13 @@ public class HandService
         {
             if (CardIdUtility.GetCardType(card.id) == 1) num++;
         }
+        Debug.Log($"[HandService] {num}");
         return num;
     }
 
     public void ChangeHandGift(System.Func<int, CardData> getCardDataById)
     {
-        List<Card> cardsToReturn = _cardInHand.FindAll(c => c.id == 1);
+        List<Card> cardsToReturn = _cardInHand.FindAll(c => c.id.ToString()[0] == '1');
         if (cardsToReturn.Count > 0)
         {
             foreach (Card card in cardsToReturn)
@@ -46,7 +47,7 @@ public class HandService
             Debug.Log($"[HandService] 已将 {cardsToReturn.Count} 张 ID 为 1 的手牌放回牌堆。");
         }
 
-        int indexInSet = _cardSet.FindIndex(c => c.id == 1);
+        int indexInSet = _cardSet.FindIndex(c => c.id.ToString()[0] == '1');
         if (indexInSet != -1)
         {
             Card drawnCard = _cardSet[indexInSet];

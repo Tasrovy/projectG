@@ -1,0 +1,33 @@
+﻿title: simpleEnd1_5
+---
+<<set_background "黑夜素材">>
+<<play_bgm daily_日常微风(1)>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character "伊兰莉特" peace_2>>
+<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite "伊兰莉特" peace_1>>
+
+
+
+<<set_background "白天素材">>
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 林奈，暑假快结束了你知道吗？
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: 不知道。
+<<set_character_sprite "伊兰莉特" "peace_2">>
+蒂娜: 现在知道了？
+<<set_character_sprite "{$MY_NAME}" "sad">>
+{$MY_NAME}: 知道了。
+<<set_character_sprite "伊兰莉特" "peace_1">>
+蒂娜: 作业写完了吗？
+<<set_character_sprite "{$MY_NAME}" "saying">>
+{$MY_NAME}: ……还差一点。
+<<set_character_sprite "伊兰莉特" "peace_2">>
+蒂娜: 你上次也说「还差一点」。
+<<set_character_sprite "{$MY_NAME}" "happy">>
+{$MY_NAME}: 这次的「一点」比上次更小一点。
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 你好会说话。
+
+===

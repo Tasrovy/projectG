@@ -10,6 +10,14 @@ public class DayData
     public float probRarity3;
     public int day;
     public int profit;
+    public int drawNum;
+    public int getCardNum;
+    public string dailyDialog;
+    public string specialDialog;
+    public string target1;
+    public string target2;
+    public string target3;
+    public string target4;
 }
 
 public class DayDataSO : ScriptableObject

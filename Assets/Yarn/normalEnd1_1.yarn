@@ -1,4 +1,4 @@
-﻿title: normalEnd1_1
+title: normalEnd1_1
 ---
 <<set_background roomGround占坑>>
 <<play_bgm littleSad_黄昏分岔口(1)>>
@@ -10,6 +10,8 @@
 （躺在卧室的床上进入了梦乡）
 
 //<<调用日历进入第二天的动效>>
+//白天素材
+<<set_background "白天素材">>
 醒来的时候是早上七点。
 我躺在床上，盯着天花板上那盏没开的灯。
 窗帘拉着，光透不进来，房间里暗暗的。
@@ -18,6 +20,7 @@
 {$MY_NAME}:(明明睡了很久，身体却还是很重。)
 <<set_character_sprite "{$MY_NAME}" "peace_1">>
 {$MY_NAME}:(枕头旁边放着手机。没有新讯息。当然没有。<b><color=green>伊兰莉特</color></b>已经不在了。)
+//增加一句关于蒂娜的对话？
 我把手机翻过来，萤幕朝下。
 <<set_character_sprite "{$MY_NAME}" "saying">>
 {$MY_NAME}:今天做什么好呢。
