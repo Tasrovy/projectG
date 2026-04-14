@@ -261,7 +261,7 @@ MonoBehaviour:
     trigger: drawCard(2)
     nextTurn: 
   - id: 22204
-    nature1: 1
+    nature1: 0
     nature2: 0
     nature3: 0
     name: "\u6D4B\u8BD502"
