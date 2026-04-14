@@ -12,22 +12,23 @@ title: main_start
 <<set_character_sprite "{$MY_NAME}" "peace_1">>
 <<set_character_sprite "伊兰莉特" "peace_1">>
 伊兰莉特:花开得真好。#sfx_Character_主角2_好啊
-（岩壁上有一大簇正盛放的小苍兰，B最喜欢那些花了。） #line:006d230 
+（岩壁上有一大簇正盛放的小苍兰，伊兰莉特最喜欢那些花了。） #line:006d230 
 <<set_character_sprite "{$MY_NAME}" "happy">>
 <<set_character_sprite "伊兰莉特" "saying">>
 伊兰莉特:把它们做成花环戴在你头上，唔...... #line:0d9e904 
 <<set_character_sprite "伊兰莉特" "happy">>
-伊兰莉特:（开心表情）想想那个画面，一定非常可爱吧。#sfx_Character_主角2_真棒 
+伊兰莉特:想想那个画面，一定非常可爱吧。#sfx_Character_主角2_真棒 
 （伊兰莉特边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
 <<set_character_sprite "{$MY_NAME}" "saying">>
 {$MY_NAME}:伊兰莉特，注意安-- #line:0f1a741 
 <<stop_bgm>>
+<<clear_character_person Character>>
 （树枝折断了） #line:0d7301f 
 <<set_character_sprite "{$MY_NAME}" "peace_2">>
-{$MY_NAME}:（惊恐表情）！！！ #line:0c4c660 
+{$MY_NAME}:！！！ #line:0c4c660 
 <<play_bgm lake_sadStrong>>
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
-<<set_background "blackGround">>
+<<set_background "纯黑">>
 <<clear_character_person "Player">>
 <<clear_character_person "Character">>
 
@@ -48,7 +49,7 @@ title: room1_1
 {$MY_NAME}:又是梦啊。 #line:0ea787b 
 ->看看几点了
 <<set_character_person Player {$MY_NAME} saying>>
-{$MY_NAME}:已经下午四点半了吗......我睡了这么久？#sfx_Character_Plyaer_嗯哼
+{$MY_NAME}:已经下午四点半了吗......我睡了这么久？#sfx_Character_Player_嗯哼
 （明明刚才还是夜里两点多......） #line:0d21b28 
 （时间的流逝好像变得不真实。） #line:0e3d4da 
 （窗帘上投着窗外的树影，在风里来回飘荡，伴着那些若隐若现的阳光。） #line:065546b 
@@ -56,9 +57,9 @@ title: room1_1
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:还是起来吃点东西吧。#sfx_Character_Plyaer_嗯
 <<set_character_sprite {$MY_NAME} peace_1>>
-{$MY_NAME}:啊...！ #sfx_Character_Plyaer_啊（疑惑） 
+{$MY_NAME}:啊...！ #sfx_Character_Player_啊（疑惑） 
 （我踢到了放在床边地毯上的匣子。） #line:0f6d1e6 
-<<set_background 占坑匣子cg>>
+<<set_background "黑夜匣子cg">>
 （匣子上面贴着一张纸条，纸条上模糊地写着：林奈，请原谅我的不辞而别。请打开“我”。--伊兰莉特）
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:......像《爱丽丝漫游仙境》里一样的小纸条呢。
@@ -71,14 +72,13 @@ title: room1_1
 （我尝到苦涩的味道。） #line:0d806f2 
 <<set_character_sprite {$MY_NAME} sad>>
 （原来我在哭啊。） #line:0ccd8cf 
-{$MY_NAME}：我想你了。 #line:0f2f8cd 
+{$MY_NAME}：我想你了。 #line:0f2f8cd  #sfx_Character_Player_啊（疑惑）
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:呜呜呜..... #line:0ea852a 
 <<set_character_sprite {$MY_NAME} sad>>
 {$MY_NAME}:如果你还在我身边，那该多好...... #line:0a97d71 
 
-<<set_background box占坑>>
-<<摄像机朝着匣子放大指令占坑>>
+//<<摄像机朝着匣子放大指令占坑>>
 ->完全打开匣子
     <<jump card1_1>>
 ->还是把盖子盖上，放回抽屉里吧
@@ -104,7 +104,7 @@ title: room1_4
 title: card1_1
 ---
 
-<<进入战斗指令占坑>>
+.....
 
 
 ===
