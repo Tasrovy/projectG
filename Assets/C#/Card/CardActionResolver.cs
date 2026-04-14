@@ -83,6 +83,8 @@ public class CardActionResolver : Singleton<CardActionResolver>
         if (currentMode == CardPlayMode.NormalPlay)
         {
             Debug.Log($"[Resolver] 💥 玩家正常打出了卡牌: {selectedCard?.name}");
+            Debug.Log($"[Resolver][Dialog] cardId={selectedCard?.id}, dialog={selectedCard?.dialog}");
+            BattleDialogController.Instance.TryShowByCard(selectedCard);
             
             // --- 正常出牌逻辑 ---
             selectedCard.OnTrigger();
