@@ -12,8 +12,6 @@ public class DialogueHandler : MonoBehaviour
     [SerializeField] private DialogueRunner dialogueRunner;
     [SerializeField] private Button skipDialogueButton;
 
-    [Header("每日早晨自动触发的对话配置")]
-    [SerializeField] private string dailyMorningDialogueNode;
 
     private CharacterHighlightManager characterHighlightManager;
     private bool wasDialogueRunning;
@@ -71,13 +69,18 @@ public class DialogueHandler : MonoBehaviour
                 if (talkObj != null && talkObj.activeInHierarchy)
                 {
                     lastCheckedDay = currentDay;
-                    if (!string.IsNullOrEmpty(dailyMorningDialogueNode))
+                    var daySO = DayManager.Instance.daySO;
+                    if (daySO != null && currentDay < daySO.dayDatas.Count)
                     {
-                        // 触发早晨固定对话
-                        StartDialogue(dailyMorningDialogueNode);
-                        
-                        // 对话结束后自动转入 Select 场景
-                        SetNextSceneType("Select");
+                        string morningNode = daySO.dayDatas[currentDay].dailyDialog;
+                        if (!string.IsNullOrEmpty(morningNode))
+                        {
+                            // 触发当天早晨固定对话
+                            StartDialogue(morningNode);
+
+                            // 对话结束后自动转入 Select 场景
+                            SetNextSceneType("Select");
+                        }
                     }
                 }
             }
