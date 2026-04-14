@@ -375,18 +375,18 @@ public class CharacterControl : MonoBehaviour
 
     public void ZoomArt(float targetX, float targetY, float targetScale, float duration = 1.0f)
     {
-        // 获取演出画面的根节点: talk
-        GameObject talkObj = GameObject.Find("talk");
+        // 获取演出画面的根节点: Canvas/Talk
+        GameObject talkObj = GameObject.Find("Canvas/talk");
         if (talkObj == null)
         {
-            Debug.LogWarning("[CharacterControl] 未找到名为 'talk' 的对象，无法执行缩放！");
+            Debug.LogWarning("[CharacterControl] 未找到名为 'Canvas/talk' 的对象，无法执行缩放！");
             return;
         }
         
         RectTransform rt = talkObj.GetComponent<RectTransform>();
         if (rt == null)
         {
-            Debug.LogWarning("[CharacterControl] 'talk' 对象缺少 RectTransform 组件！");
+            Debug.LogWarning("[CharacterControl] 'Canvas/talk' 对象缺少 RectTransform 组件！");
             return;
         }
 
@@ -419,7 +419,7 @@ public class CharacterControl : MonoBehaviour
     {
         if (!isTalkZoomed) return;
 
-        GameObject talkObj = GameObject.Find("talk");
+        GameObject talkObj = GameObject.Find("Canvas/talk");
         if (talkObj != null)
         {
             RectTransform rt = talkObj.GetComponent<RectTransform>();
@@ -485,7 +485,7 @@ public class CharacterControl : MonoBehaviour
             var backgroundObject = GetCharacterObjectUnderTalk("talkBG");
             if (backgroundObject == null)
             {
-                Debug.LogError("[CharacterControl] UI Image named 'talkBG' was not found under 'talk' object.");
+                Debug.LogError("[CharacterControl] UI Image named 'talkBG' was not found under 'Canvas/Talk' object.");
                 return;
             }
 

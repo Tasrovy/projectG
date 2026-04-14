@@ -174,7 +174,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
     // 辅助方法：保证只在名叫 "talk" 的物体下寻找 Player 和 Character
     private GameObject GetCharacterObjectUnderTalk(string objName)
     {
-        GameObject talkObj = GameObject.Find("talk");
+        GameObject talkObj = GameObject.Find("Canvas/talk");
         if (talkObj != null && talkObj.activeInHierarchy)
         {
             Transform child = talkObj.transform.Find(objName);

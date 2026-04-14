@@ -109,6 +109,9 @@ public class CardChoosing : MonoBehaviour
         {
             if (cardObj.card == null) cardObj.card = new Card();
             cardObj.card.InitCard(data);
+
+            CardDisplayUI displayUI = cardTransform.GetComponent<CardDisplayUI>();
+            if (displayUI != null) displayUI.Setup(cardObj.card);
             
             Debug.Log($"[AssignCardTo] 给物体 {cardTransform.name} 赋予了卡牌: {cardObj.card.name} / ID: {cardObj.card.id}");
         }

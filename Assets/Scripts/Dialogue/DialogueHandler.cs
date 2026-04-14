@@ -23,6 +23,13 @@ public class DialogueHandler : MonoBehaviour
     private bool isHandlingDialogueSequence = false;
     private int lastCheckedDay = -1;
 
+    // deal/special 对话进度（内存存储，每次启动重置）
+    private Dictionary<int, int> _dealProgress = new Dictionary<int, int>();
+    private Dictionary<int, int> _specialProgress = new Dictionary<int, int>();
+
+    // 过天标志（不再依赖 CharacterHighlightManager，直接存在此处）
+    private bool _shouldAdvanceDayAfterDialogue = false;
+
         void Start()
     {
         Yarn.Unity.InMemoryVariableStorage storage = FindAnyObjectByType<Yarn.Unity.InMemoryVariableStorage>();
@@ -70,9 +77,9 @@ public class DialogueHandler : MonoBehaviour
                 {
                     lastCheckedDay = currentDay;
                     var daySO = DayManager.Instance.daySO;
-                    if (daySO != null && currentDay < daySO.dayDatas.Count)
+                    if (daySO != null && currentDay - 1 < daySO.dayDatas.Count)
                     {
-                        string morningNode = daySO.dayDatas[currentDay].dailyDialog;
+                        string morningNode = daySO.dayDatas[currentDay - 1].dailyDialog;
                         if (!string.IsNullOrEmpty(morningNode))
                         {
                             // 触发当天早晨固定对话
@@ -108,13 +115,14 @@ public class DialogueHandler : MonoBehaviour
     public void StartDialogue(string yarnScript)
     {
         // 完整回溯出到底是谁点击/触发的：
-        Debug.Log($"[DialogueHandler] 系统正在请求启动节点: {yarnScript}。调用者堆栈为：\n" + System.Environment.StackTrace);
+        Debug.Log($"[DialogueHandler] 系统正在请求启动节点: {yarnScript}。当前天数为 {DayManager.Instance?.GetDayNumber()}。");
 
         if (dialogueRunner != null)
         {
             // 如果当前有对话正在运行，或者正在处理入场/离场中，或者队列里已经有积压任务
             if (dialogueRunner.IsDialogueRunning || wasDialogueRunning || isHandlingDialogueSequence || pendingDialogues.Count > 0)
             {
+                Debug.LogWarning($"[DialogueHandler] 节点 '{yarnScript}' 被加入队列！原因: IsDialogueRunning={dialogueRunner.IsDialogueRunning}, wasDialogueRunning={wasDialogueRunning}, isHandlingDialogueSequence={isHandlingDialogueSequence}, pendingCount={pendingDialogues.Count}");
                 pendingDialogues.Enqueue(yarnScript);
             }
             else
@@ -132,6 +140,7 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     public void TriggerEndDayWithDeal(string sceneTypeName = "Talk")
     {
+        Debug.Log($"[DialogueHandler] TriggerEndDayWithDeal 被调用！sceneTypeName={sceneTypeName}, dialogueRunner={(dialogueRunner != null ? "OK" : "NULL")}, currentDay={DayManager.Instance?.GetDayNumber()}");
         // 先设好一定会过天以及目的场景
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
@@ -147,14 +156,14 @@ public class DialogueHandler : MonoBehaviour
 
         for (int i = 1; i <= currentDay; i++)
         {
-            int j = PlayerPrefs.GetInt($"DealProgress_{i}", 1);
+            if (!_dealProgress.ContainsKey(i)) _dealProgress[i] = 1;
+            int j = _dealProgress[i];
             string yarnNode = $"deal{i}_{j}";
             
             if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
             {
                 Debug.Log($"[DialogueHandler] 打工结束拦截并启动 deal 对话: {yarnNode}");
-                PlayerPrefs.SetInt($"DealProgress_{i}", j + 1);
-                PlayerPrefs.Save();
+                _dealProgress[i] = j + 1;
                 
                 // 【有deal时】：立刻播放！播完后Update函数会自动拉起EndDialogueRoutine去找special并过天。
                 StartDialogue(yarnNode);
@@ -179,6 +188,8 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     private string GetAvailableSpecialDialogue()
     {
+        Debug.Log($"[DialogueHandler] 获取可用 special 对话。当前天数为 {DayManager.Instance?.GetDayNumber()}。");
+
         if (DayManager.Instance == null || dialogueRunner == null) return null;
         
         int currentDay = DayManager.Instance.GetDayNumber();
@@ -186,7 +197,8 @@ public class DialogueHandler : MonoBehaviour
         // 遍历 special 系列的 i。设定一个安全上限 20（或100），找不到节点就不找了
         for (int i = 1; i <= 20; i++)
         {
-            int j = PlayerPrefs.GetInt($"SpecialProgress_{i}", 1);
+            if (!_specialProgress.ContainsKey(i)) _specialProgress[i] = 1;
+            int j = _specialProgress[i];
             string yarnNode = $"special{i}_{j}";
             
             // 如果存在第 i 系列的第 j 段对话
@@ -196,16 +208,12 @@ public class DialogueHandler : MonoBehaviour
                 if (currentDay >= j * 3)
                 {
                     Debug.Log($"[DialogueHandler] 睡前优先劫持！发现满足触发条件的 special 对话: {yarnNode} (系列 {i}，进度 {j})");
-                    
-                    PlayerPrefs.SetInt($"SpecialProgress_{i}", j + 1);
-                    PlayerPrefs.Save();
-                    
-                    return yarnNode; // 将此 Node 返回供黑屏播放队列使用
+                    _specialProgress[i] = j + 1;
+                    return yarnNode;
                 }
             }
             else if (j == 1)
             {
-                // 如果这个系列的第 1 篇都没写，意味着往后更大的 i 也没写了（特殊对话顺序按i编写），可以直接结束以节省开销
                 break;
             }
         }
@@ -216,15 +224,34 @@ public class DialogueHandler : MonoBehaviour
     private IEnumerator StartDialogueRoutine(string yarnScript)
     {
         // 保证顺序：先执行转场黑屏
+        Debug.Log($"[DialogueHandler][StartDialogueRoutine] 开始为 '{yarnScript}' 播放转场动画...");
         yield return TransitionManager.Instance.PlayTransition();
-        
+        Debug.Log($"[DialogueHandler][StartDialogueRoutine] 转场完毕，开始等待 talk 物体激活...");
+
+        // 如果当前场景没有 talk（例如从商店/打工场景触发），主动切换到 Talk 场景
+        GameObject talkCheck = GameObject.Find("Canvas/talk");
+        if (talkCheck == null || !talkCheck.activeInHierarchy)
+        {
+            Debug.Log($"[DialogueHandler][StartDialogueRoutine] 当前场景无 talk，主动切换到 Talk 场景...");
+            if (UISceneManager.Instance != null)
+                UISceneManager.Instance.SwitchToScene(SceneType.Talk);
+        }
+
         // 【强制阻塞】：等到场景内名叫 "talk" 的物体被激活后，才允许Yarn开始执行指令和加载物体
         GameObject talkObj = null;
+        int waitFrames = 0;
         while (talkObj == null || !talkObj.activeInHierarchy)
         {
-            talkObj = GameObject.Find("talk");
+            talkObj = GameObject.Find("Canvas/talk");
+            waitFrames++;
+            if (waitFrames % 60 == 0)
+            {
+                Debug.LogWarning($"[DialogueHandler][StartDialogueRoutine] 已等待 {waitFrames} 帧，仍未找到激活的 'talk' 物体！节点: {yarnScript}");
+            }
             yield return null;
         }
+        Debug.Log($"[DialogueHandler][StartDialogueRoutine] 找到 talk，准备启动节点: {yarnScript}");
+
         // =================强制劫持与数据同步点=================
         // 不论这是第几个场景的 VariableStorage，我们都在它开启对话前强行修正！
         if (PlayerPrefs.HasKey("PLAYER_CUSTOM_NAME"))
@@ -284,7 +311,8 @@ public class DialogueHandler : MonoBehaviour
         // =================== 修改点：拦截过天与 Special 对话 ===================
         // 【重要】：在此时趁着转场完全黑屏的时刻，我们才来判定这一天是否要“跨向第二天”！
         // 如果是过天的流程，必须在结算这一天之前先拽出来晚间的 special 对话进入待办队列！
-        if (characterHighlightManager != null && characterHighlightManager.shouldAdvanceDayAfterDialogue)
+        Debug.Log($"[EndDialogueRoutine] _shouldAdvanceDayAfterDialogue={_shouldAdvanceDayAfterDialogue}");
+        if (_shouldAdvanceDayAfterDialogue)
         {
             string specialNode = GetAvailableSpecialDialogue(); // 去找今天有没有彩蛋对话
             if (!string.IsNullOrEmpty(specialNode))
@@ -294,7 +322,7 @@ public class DialogueHandler : MonoBehaviour
                 pendingDialogues.Enqueue(specialNode);
                 
                 // 【绝不能在这里做 DayManager.NextDay()】
-                // 而是直接略过：让 shouldAdvanceDayAfterDialogue 保持为 true！
+                // 而是直接略过：让 _shouldAdvanceDayAfterDialogue 保持为 true！
                 // 等这段 Special 对话完全结束了，系统会再次发起黑屏转场，再进入到这层判断。
             }
             else
@@ -306,7 +334,7 @@ public class DialogueHandler : MonoBehaviour
                 }
                 
                 // 结算安全完毕，复位标志位
-                characterHighlightManager.shouldAdvanceDayAfterDialogue = false; 
+                _shouldAdvanceDayAfterDialogue = false; 
             }
         }
         // ====================================================================
@@ -315,14 +343,12 @@ public class DialogueHandler : MonoBehaviour
         if (pendingDialogues.Count > 0)
         {
             string nextScript = pendingDialogues.Dequeue();
-            
-            // 直接开启下一个对话（调用了自身完整带强制黑屏加载的StartDialogue，所以没问题）
+
+            // 接下来要播 special/deal，此次 willSwitchScene 的目标交由 special 结束后的下一轮 EndDialogueRoutine 来执行
+            // 所以这里先清掉，防止 StartDialogueRoutine 里的"主动补切 Talk"和后续真正的场景切换冲突
+            willSwitchScene = false;
+
             StartDialogue(nextScript);
-            
-            // 【为什么要停下立刻 yield break？】
-            // 因为如果是去播 special 对话，你绝不可以说“继续正常的向下进行切第二天的场景”，
-            // 不然屏幕就会把你切到明天早晨然后才开始播昨天晚上的 special！
-            // 所以 yield break 叫停后，新对话演完时会产生新一轮的转场并在那时安稳切换场景！
             yield break;
         }
 
@@ -403,15 +429,13 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     public void SetAdvanceDayAfterDialogue(bool advance)
     {
+        _shouldAdvanceDayAfterDialogue = advance;
+        Debug.Log($"[DialogueHandler] SetAdvanceDayAfterDialogue({advance})");
+
+        // 同步给 CharacterHighlightManager（若存在），保留其视觉逻辑不受影响
         if (characterHighlightManager == null)
-        {
             characterHighlightManager = GetComponent<CharacterHighlightManager>();
-        }
-        
-        if (characterHighlightManager != null)
-        {
-            characterHighlightManager.SetAdvanceDayAfterDialogue(advance);
-        }
+        characterHighlightManager?.SetAdvanceDayAfterDialogue(advance);
     }
 
     #endregion

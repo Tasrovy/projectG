@@ -17,7 +17,7 @@ public class DayManager : Singleton<DayManager>
         {
             Debug.Log($"成功加载了 {daySO.dayDatas.Count} 天的数据");
         }
-        NextDay();
+        //NextDay();
         DUEL.Instance.OnEndDUEL.AddListener(NextDay);
     }
     

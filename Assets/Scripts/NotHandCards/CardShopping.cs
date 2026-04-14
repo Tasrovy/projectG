@@ -183,9 +183,12 @@ public class CardShopping : MonoBehaviour
         {
             if (cardObj.card == null) cardObj.card = new Card();
             cardObj.card.InitCard(data);
-            
+
+            CardDisplayUI displayUI = cardTransform.GetComponent<CardDisplayUI>();
+            if (displayUI != null) displayUI.Setup(cardObj.card);
+
             // 查找直属子物体 Price 并设置其 TextMeshPro 的值为 sale
-            Transform priceTransform = cardTransform.Find("Price");
+            Transform priceTransform = cardTransform.Find("price");
             if (priceTransform != null)
             {
                 TextMeshProUGUI priceText = priceTransform.GetComponent<TextMeshProUGUI>();
@@ -205,7 +208,7 @@ public class CardShopping : MonoBehaviour
 
             // 查找直属子物体 rare 并根据稀有度加载图片
             int rarity = (data.id / 1000) % 10;
-            Transform rareTransform = cardTransform.Find("backYinyin (3)");
+            Transform rareTransform = cardTransform.Find("rare");
             if (rareTransform != null)
             {
                 Sprite rareSprite = Resources.Load<Sprite>($"UI/Shop/{rarity}");

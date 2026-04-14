@@ -180,6 +180,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SubmitButton
       objectReference: {fileID: 0}
+    - target: {fileID: 1323785681943195510, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5999985
+      objectReference: {fileID: 0}
     - target: {fileID: 3001956615937495283, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -303,6 +307,10 @@ PrefabInstance:
     - target: {fileID: 8800200120638788623, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_FontData.m_FontSize
       value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 8888739793692823554, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5999985
       objectReference: {fileID: 0}
     - target: {fileID: 9159935479758806952, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_FontData.m_MaxSize
