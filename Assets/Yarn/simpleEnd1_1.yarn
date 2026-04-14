@@ -1,0 +1,34 @@
+title: simpleEnd1_1
+---
+<<set_background roomGround占坑>>
+<<play_bgm daily_日常微风(1)>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character "伊兰莉特" peace_2>>
+<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite "伊兰莉特" peace_1>>
+//#sfx_Character_主角2_嗯哼
+//#sfx_Character_Player_嗯
+蒂娜 :把牌收进匣子，像树收起叶子，我们明天见 #sfx_Character_主角2_嗯哼
+{$MY_NAME}:嗯，我去睡觉了
+//进入第二天
+
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 林奈，暑假还有多久？
+<<set_character_sprite "{$MY_NAME}" "angry">>
+{$MY_NAME}: 不知道。不要提醒我。
+<<set_character_sprite "伊兰莉特" "peace_1">>
+蒂娜: 我只是问问。
+<<set_character_sprite "{$MY_NAME}" "angry">>
+{$MY_NAME}: 问也不行。
+<<set_character_sprite "伊兰莉特" "sad">>
+蒂娜: 你好凶。
+<<set_character_sprite "{$MY_NAME}" "saying">>
+{$MY_NAME}: 因为我不想面对现实。
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 现实是什么？
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
+{$MY_NAME}: 作业。
+
+
+===

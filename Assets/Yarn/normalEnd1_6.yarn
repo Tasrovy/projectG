@@ -5,10 +5,29 @@ title: normalEnd1_6
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
-<<set_character_sprite "伊兰莉特" "peace_1">>
+<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite "伊兰莉特" peace_1>>
 蒂娜 :把牌收进匣子，像树收起叶子，我们明天见。 #sfx_Character_主角2_嗯哼
 {$MY_NAME}:嗯，我去睡觉了
 （进入了梦乡）
-
+//<<依旧日历动效>>
+<<set_background roomGround白天占坑>>
+<<set_character_sprite "伊兰莉特" saying>>
+蒂娜 :你有朋友吗？
+<<set_character_sprite "{$MY_NAME}" sad>>
+{$MY_NAME}:以前有。
+<<set_character_sprite "伊兰莉特" peace_1>>
+蒂娜 :现在呢？
+我没有回答。
+蒂娜也没有追问。她只是把牌接过去，开始发牌。牌落在桌面上的声音很轻，像叶子掉在地上。
+我看着她发牌的手指。小小的，很白。指尖有一点点透明，像嫩芽。
+<<set_character_sprite "伊兰莉特" saying>>
+蒂娜 :那我现在算你的朋友吗？
+<<set_character_sprite "{$MY_NAME}" peace_2>>
+{$MY_NAME}:算吧#sfx_Character_Player_嗯
+<<set_character_sprite "伊兰莉特" happy>>
+<<set_character_shake "伊兰莉特" up_down>>
+蒂娜 :ヾ(≧▽≦*)o
+{$MY_NAME}:（我把视线移回牌上。内心一揪）
+{$MY_NAME}:（很久没有这种感觉了）
 ===

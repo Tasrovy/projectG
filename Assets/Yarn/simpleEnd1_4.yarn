@@ -1,0 +1,25 @@
+﻿title: simpleEnd1_4
+---
+<<set_background roomGround占坑>>
+<<play_bgm daily_日常微风(1)>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character "伊兰莉特" peace_2>>
+<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite "伊兰莉特" peace_1>>
+
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 林奈，你今天话好少。
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: 昨天也差不多。
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 前天也差不多。
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: 大前天也是。
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: ……你是想说，一直都很话少对吧。
+<<set_character_sprite "{$MY_NAME}" "happy">>
+{$MY_NAME}: 你终于懂了。
+
+
+===
