@@ -15,6 +15,7 @@ public class EffectCommand
 public class CardData
 {
     public int id;
+    public int dialog;
     public int nature1;
     public int nature2;
     public int nature3;
@@ -35,6 +36,7 @@ public class Card
     private static int s_triggerInvokeSerial = 0;
 
     public int id;
+    public int dialog;
     public int nature1;
     public int nature2;
     public int nature3;
@@ -66,6 +68,7 @@ public class Card
     public void InitCard(CardData cardData)
     {
         id = cardData.id;
+        dialog = cardData.dialog;
         nature1 = cardData.nature1;
         nature2 = cardData.nature2;
         nature3 = cardData.nature3;
@@ -84,6 +87,7 @@ public class Card
     public void InitCard(Card cardData)
     {
         id = cardData.id;
+        dialog = cardData.dialog;
         nature1 = cardData.nature1;
         nature2 = cardData.nature2;
         nature3 = cardData.nature3;
@@ -404,6 +408,7 @@ public class Card
         switch (fieldName.ToLower())
         {
             case "id": return id.ToString();
+            case "dialog": return dialog.ToString();
             case "nature1": return nature1.ToString();
             case "nature2": return nature2.ToString();
             case "nature3": return nature3.ToString();

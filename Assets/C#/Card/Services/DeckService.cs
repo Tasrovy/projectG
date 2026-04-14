@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class DeckService
 {
@@ -18,6 +19,44 @@ public class DeckService
         {
             GenCard(data);
         }
+    }
+
+    public bool ImplementCardSetFromInitialHandExcel(string initialHandExcelPath)
+    {
+        _cardSet.Clear();
+
+        if (string.IsNullOrWhiteSpace(initialHandExcelPath))
+        {
+            Debug.LogWarning("[DeckService] initialHandExcelPath 为空，无法按配置构建牌堆。");
+            return false;
+        }
+
+        InitialHandSO initialHandSO = ExcelLoader.Instance.ReadInitialHandExcel(initialHandExcelPath);
+        if (initialHandSO == null || initialHandSO.entries == null || initialHandSO.entries.Count == 0)
+        {
+            Debug.LogWarning($"[DeckService] 牌堆配置为空或读取失败: {initialHandExcelPath}");
+            return false;
+        }
+
+        foreach (InitialHandEntry entry in initialHandSO.entries)
+        {
+            if (entry == null || entry.id == 0 || entry.num <= 0) continue;
+
+            CardData data = _cardDatas.Find(c => c.id == entry.id);
+            if (data == null)
+            {
+                Debug.LogWarning($"[DeckService] 牌堆配置中的ID不存在于CardData: {entry.id}");
+                continue;
+            }
+
+            for (int i = 0; i < entry.num; i++)
+            {
+                GenCard(data);
+            }
+        }
+
+        Debug.Log($"[DeckService] 已按配置构建牌堆: {initialHandExcelPath}, 数量={_cardSet.Count}");
+        return true;
     }
 
     public void GenCard(CardData data)

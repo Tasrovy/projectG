@@ -17,43 +17,11 @@ public class InitialHandService
     {
         if (!useInitialHandFromExcel) return;
         if (string.IsNullOrWhiteSpace(initialHandExcelPath)) return;
-
-        InitialHandSO initialHandSO = ExcelLoader.Instance.ReadInitialHandExcel(initialHandExcelPath);
-        if (initialHandSO == null || initialHandSO.entries == null || initialHandSO.entries.Count == 0)
+        if (!_deckService.ImplementCardSetFromInitialHandExcel(initialHandExcelPath))
         {
-            Debug.LogWarning($"[InitialHandService] 初始手牌配置为空或读取失败: {initialHandExcelPath}");
+            Debug.LogWarning($"[InitialHandService] 无法按配置构建牌堆，跳过初始手牌应用: {initialHandExcelPath}");
             return;
         }
-
-        cardInHand.Clear();
-
-        foreach (InitialHandEntry entry in initialHandSO.entries)
-        {
-            if (entry == null || entry.id == 0 || entry.num <= 0) continue;
-
-            int count = entry.num;
-            for (int i = 0; i < count; i++)
-            {
-                if (_deckService.TryTakeCardById(entry.id, out Card cardFromDeck))
-                {
-                    cardInHand.Add(cardFromDeck);
-                }
-                else
-                {
-                    CardData data = getCardDataById(entry.id);
-                    if (data == null)
-                    {
-                        Debug.LogWarning($"[InitialHandService] 初始手牌ID不存在: {entry.id}");
-                        break;
-                    }
-
-                    Card fallbackCard = new Card();
-                    fallbackCard.InitCard(data);
-                    cardInHand.Add(fallbackCard);
-                }
-            }
-        }
-
-        Debug.Log($"[InitialHandService] 已应用初始手牌配置: {initialHandExcelPath}, 手牌数量={cardInHand.Count}");
+        Debug.Log($"[InitialHandService] 已按配置构建牌堆，不再根据表生成初始手牌: {initialHandExcelPath}");
     }
 }

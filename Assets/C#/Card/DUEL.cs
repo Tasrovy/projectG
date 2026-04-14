@@ -29,6 +29,7 @@ public class DUEL : Singleton<DUEL>
     
     public void Begin()
     {
+        _ = BattleDialogController.Instance;
         DUELUIObjectManager.Instance.ShowUI();
         endButton.gameObject.SetActive(true);
         Debug.Log("准备开始决斗");
