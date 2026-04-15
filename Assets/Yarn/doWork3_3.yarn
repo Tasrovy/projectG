@@ -1,0 +1,28 @@
+﻿title: doWork3_3
+---
+<<set_background "背景">>
+<<play_bgm daily_日常微风>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_sprite "{$MY_NAME}" peace_1>>
+
+
+（{$MY_NAME}今天去家庭餐厅工作了）
+主理人: 今天客人不多。你可以慢慢收。
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
+{$MY_NAME}: 好。
+（走到靠窗的座位。杯子还放在桌上。旁边有一张用过的卫生纸。）
+<<set_character_sprite "{$MY_NAME}" "happy">>
+{$MY_NAME}: （把卫生纸丢掉。杯子叠起来。）
+（窗外的阳光照进来。桌子上有一小块光斑。）
+{$MY_NAME}: （好亮。）
+（站在那里，看着光斑一下子。）
+主理人:{$MY_NAME}？怎么了？
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: 没事。
+（把杯子端起来，走去厨房。）
+{$MY_NAME}: （只是觉得，今天的光很漂亮。）
+（拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
+
+//#sfx_Character_Player_好的
+===

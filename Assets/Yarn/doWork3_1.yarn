@@ -1,0 +1,28 @@
+﻿title: doWork3_1
+---
+<<set_background "背景">>
+<<play_bgm daily_日常微风>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_sprite "{$MY_NAME}" peace_1>>
+
+(今天{$MY_NAME}在便利店工作)
+
+店长: 今天站收银台。顺便帮忙把过期便当挑出来。
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
+{$MY_NAME}: 好。
+（站在收银台。没有客人的时候，走到便当架前面。）
+{$MY_NAME}: （一个一个翻过来看日期。）
+（今天到期。明天到期。后天到期。）
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: （把今天到期的拿出来，放进篮子。）
+（里面还有大概十个便当。）
+{$MY_NAME}: （好多。这些都要丢掉吗。）
+店长: 那些等等拿去后面处理。
+<<set_character_sprite "{$MY_NAME}" "saying">>
+{$MY_NAME}: 嗯。#sfx_Character_Player_嗯
+（有点浪费。）
+（拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
+
+//#sfx_Character_Player_好的
+===
