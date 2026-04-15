@@ -1,6 +1,6 @@
 title: normalEnd1_2
 ---
-<<set_background roomGround占坑>>
+<<set_background "黑夜素材">>
 <<play_bgm littleSad_黄昏分岔口>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
@@ -11,7 +11,7 @@ title: normalEnd1_2
 {$MY_NAME}:嗯，我去睡觉了
 （进入了梦乡）
 //<<调用日历进入第二天的动效>>
-<<set_background roomGround白天占坑>>
+<<set_background "白天素材">>
 <<set_character_sprite "{$MY_NAME}" "peace_2">>
 {$MY_NAME}:看看<b><color=green>伊兰莉特</color></b>的匣子吧#sfx_Character_Player_好好
 我把匣子拿起来，放在腿上。
