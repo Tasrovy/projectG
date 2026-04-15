@@ -27,9 +27,6 @@ public class DialogueHandler : MonoBehaviour
     private Dictionary<int, int> _dealProgress = new Dictionary<int, int>();
     private Dictionary<int, int> _specialProgress = new Dictionary<int, int>();
 
-    // 过天标志（不再依赖 CharacterHighlightManager，直接存在此处）
-    private bool _shouldAdvanceDayAfterDialogue = false;
-
         void Start()
     {
         Yarn.Unity.InMemoryVariableStorage storage = FindAnyObjectByType<Yarn.Unity.InMemoryVariableStorage>();
@@ -311,8 +308,7 @@ public class DialogueHandler : MonoBehaviour
         // =================== 修改点：拦截过天与 Special 对话 ===================
         // 【重要】：在此时趁着转场完全黑屏的时刻，我们才来判定这一天是否要“跨向第二天”！
         // 如果是过天的流程，必须在结算这一天之前先拽出来晚间的 special 对话进入待办队列！
-        Debug.Log($"[EndDialogueRoutine] _shouldAdvanceDayAfterDialogue={_shouldAdvanceDayAfterDialogue}");
-        if (_shouldAdvanceDayAfterDialogue)
+        if (characterHighlightManager != null && characterHighlightManager.shouldAdvanceDayAfterDialogue)
         {
             string specialNode = GetAvailableSpecialDialogue(); // 去找今天有没有彩蛋对话
             if (!string.IsNullOrEmpty(specialNode))
@@ -322,7 +318,7 @@ public class DialogueHandler : MonoBehaviour
                 pendingDialogues.Enqueue(specialNode);
                 
                 // 【绝不能在这里做 DayManager.NextDay()】
-                // 而是直接略过：让 _shouldAdvanceDayAfterDialogue 保持为 true！
+                // 而是直接略过：让 shouldAdvanceDayAfterDialogue 保持为 true！
                 // 等这段 Special 对话完全结束了，系统会再次发起黑屏转场，再进入到这层判断。
             }
             else
@@ -334,7 +330,7 @@ public class DialogueHandler : MonoBehaviour
                 }
                 
                 // 结算安全完毕，复位标志位
-                _shouldAdvanceDayAfterDialogue = false; 
+                characterHighlightManager.shouldAdvanceDayAfterDialogue = false; 
             }
         }
         // ====================================================================
@@ -429,13 +425,15 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     public void SetAdvanceDayAfterDialogue(bool advance)
     {
-        _shouldAdvanceDayAfterDialogue = advance;
-        Debug.Log($"[DialogueHandler] SetAdvanceDayAfterDialogue({advance})");
-
-        // 同步给 CharacterHighlightManager（若存在），保留其视觉逻辑不受影响
         if (characterHighlightManager == null)
+        {
             characterHighlightManager = GetComponent<CharacterHighlightManager>();
-        characterHighlightManager?.SetAdvanceDayAfterDialogue(advance);
+        }
+        
+        if (characterHighlightManager != null)
+        {
+            characterHighlightManager.SetAdvanceDayAfterDialogue(advance);
+        }
     }
 
     #endregion

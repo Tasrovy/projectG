@@ -43,6 +43,7 @@ public class CharacterControl : MonoBehaviour
     private GameObject GetCharacterObjectUnderTalk(string objName)
     {
         GameObject talkObj = GameObject.Find("talk");
+        Debug.Log(talkObj != null ? $"[CharacterControl] 成功找到 'talk' 对象，准备在其下寻找 '{objName}'。" : "[CharacterControl] 未找到 'talk' 对象，无法在其下寻找角色物体！");
         if (talkObj != null && talkObj.activeInHierarchy)
         {
             Transform child = talkObj.transform.Find(objName);
@@ -347,7 +348,7 @@ public class CharacterControl : MonoBehaviour
     }
     #endregion
 
-    #region 画面(UI)特写缩放
+    #region 画面特写缩放
     private Vector2 originalTalkAnchoredPos;
     private Vector3 originalTalkScale;
     private bool isTalkZoomed = false;
@@ -375,11 +376,11 @@ public class CharacterControl : MonoBehaviour
 
     public void ZoomArt(float targetX, float targetY, float targetScale, float duration = 1.0f)
     {
-        // 获取演出画面的根节点: Canvas/Talk
-        GameObject talkObj = GameObject.Find("Canvas/talk");
+        // 获取演出画面的根节点: talk
+        GameObject talkObj = GameObject.Find("talk");
         if (talkObj == null)
         {
-            Debug.LogWarning("[CharacterControl] 未找到名为 'Canvas/talk' 的对象，无法执行缩放！");
+            Debug.LogWarning("[CharacterControl] 未找到名为 'talk' 的对象，无法执行缩放！");
             return;
         }
         
@@ -419,7 +420,7 @@ public class CharacterControl : MonoBehaviour
     {
         if (!isTalkZoomed) return;
 
-        GameObject talkObj = GameObject.Find("Canvas/talk");
+        GameObject talkObj = GameObject.Find("talk");
         if (talkObj != null)
         {
             RectTransform rt = talkObj.GetComponent<RectTransform>();
@@ -485,7 +486,7 @@ public class CharacterControl : MonoBehaviour
             var backgroundObject = GetCharacterObjectUnderTalk("talkBG");
             if (backgroundObject == null)
             {
-                Debug.LogError("[CharacterControl] UI Image named 'talkBG' was not found under 'Canvas/Talk' object.");
+                Debug.LogError("[CharacterControl] UI Image named 'talkBG' was not found under 'Canvas/talk' object.");
                 return;
             }
 

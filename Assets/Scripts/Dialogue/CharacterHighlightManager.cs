@@ -311,7 +311,7 @@ public class CharacterHighlightManager : DialoguePresenterBase
     {
         if (DataManager.Instance == null)
         {
-            Debug.LogError("DataManager instance is null, cannot apply dialogue complete properties.");
+            Debug.LogWarning("DataManager instance is null, cannot apply dialogue complete properties.");
             return;
         }
 
