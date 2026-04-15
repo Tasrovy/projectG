@@ -27,6 +27,11 @@ public class DUEL : Singleton<DUEL>
         OnEndDUEL.AddListener(DestroyCardObject);
         endButton.onClick.AddListener(End);
         endButton.gameObject.SetActive(false);
+
+        DUELUIObjectManager.Instance.GetEndFightButton().onClick.AddListener(() =>
+        {
+            DialogueHandler.Instance.TriggerEndDayDirectly();
+        });
     }
     
     public void Begin()

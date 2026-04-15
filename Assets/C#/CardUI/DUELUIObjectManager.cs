@@ -44,13 +44,14 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
             return;
         }
 
-        // 2. 寻找场景中的 Canvas（画布）
-        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
-        
+        // 2. 寻找场景根目录中名为 "Canvas" 的画布
+        GameObject canvasObj = GameObject.Find("Canvas");
+        Canvas canvas = canvasObj?.GetComponent<Canvas>();
+
         // 如果场景里没有 Canvas，则自动创建一个（保证 UI 能显示）
         if (canvas == null)
         {
-            GameObject canvasObj = new GameObject("Canvas");
+            canvasObj = new GameObject("Canvas");
             canvas = canvasObj.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvasObj.AddComponent<CanvasScaler>();

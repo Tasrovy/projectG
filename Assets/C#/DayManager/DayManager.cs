@@ -17,8 +17,13 @@ public class DayManager : Singleton<DayManager>
         {
             Debug.Log($"成功加载了 {daySO.dayDatas.Count} 天的数据");
         }
-        NextDay();
         DUEL.Instance.OnEndDUEL.AddListener(NextDay);
+    }
+
+    private void Start()
+    {
+        NextDay();
+        Debug.Log($"[DayManager] 初始化完成，当前是第 {dayNumber} 天");
     }
     
     public void NextDay()
@@ -30,6 +35,7 @@ public class DayManager : Singleton<DayManager>
         CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
         CardManager.Instance.SetProbRarity3(daySO.dayDatas[dayNumber].probRarity3);
         CardManager.Instance.DrawCard(daySO.dayDatas[dayNumber].drawNum);
+        Debug.Log($"[DayManager] {daySO.dayDatas[dayNumber].drawNum}");
         if(dayEvents.ContainsKey(dayNumber)) dayEvents[dayNumber]?.Invoke();
     }
 

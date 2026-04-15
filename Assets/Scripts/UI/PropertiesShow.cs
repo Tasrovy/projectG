@@ -6,9 +6,9 @@ using TMPro;
 
 public class PropertiesShow : MonoBehaviour
 {
-    private Scrollbar scrollbar1;
-    private Scrollbar scrollbar2;
-    private Scrollbar scrollbar3;
+    private Slider slider1;
+    private Slider slider2;
+    private Slider slider3;
 
     private TMP_Text numText1_TMP;
     private Text numText1_Legacy;
@@ -30,7 +30,7 @@ public class PropertiesShow : MonoBehaviour
         Transform prop1 = transform.Find("propIcon_1");
         if (prop1 != null)
         {
-            scrollbar1 = prop1.GetComponentInChildren<Scrollbar>(true);
+            slider1 = prop1.GetComponentInChildren<Slider>(true);
             Transform numTransform = FindChildRecursive(prop1, "num");
             if (numTransform != null)
             {
@@ -43,7 +43,7 @@ public class PropertiesShow : MonoBehaviour
         Transform prop2 = transform.Find("propIcon_2");
         if (prop2 != null)
         {
-            scrollbar2 = prop2.GetComponentInChildren<Scrollbar>(true);
+            slider2 = prop2.GetComponentInChildren<Slider>(true);
             Transform numTransform = FindChildRecursive(prop2, "num");
             if (numTransform != null)
             {
@@ -56,7 +56,7 @@ public class PropertiesShow : MonoBehaviour
         Transform prop3 = transform.Find("propIcon_3");
         if (prop3 != null)
         {
-            scrollbar3 = prop3.GetComponentInChildren<Scrollbar>(true);
+            slider3 = prop3.GetComponentInChildren<Slider>(true);
             Transform numTransform = FindChildRecursive(prop3, "num");
             if (numTransform != null)
             {
@@ -90,9 +90,9 @@ public class PropertiesShow : MonoBehaviour
         float fill2 = Mathf.Clamp(n2 / 100f, 0f, 1f);
         float fill3 = Mathf.Clamp(n3 / 100f, 0f, 1f);
 
-        if (scrollbar1 != null) scrollbar1.size = fill1;
-        if (scrollbar2 != null) scrollbar2.size = fill2;
-        if (scrollbar3 != null) scrollbar3.size = fill3;
+        if (slider1 != null) slider1.value = fill1;
+        if (slider2 != null) slider2.value = fill2;
+        if (slider3 != null) slider3.value = fill3;
 
         string n1Str = n1.ToString();
         if (numText1_TMP != null) numText1_TMP.text = n1Str;

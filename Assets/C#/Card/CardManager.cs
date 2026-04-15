@@ -78,6 +78,7 @@ public class CardManager : Singleton<CardManager>
 
     public void DrawCard(int num)
     {
+        Debug.Log($"[DrawCard] 请求抽 {num} 张，当前 cardSet 数量: {cardSet.Count}");
         _drawService.DrawCard(num);
         NotifyDeckOrHandChanged();
     }

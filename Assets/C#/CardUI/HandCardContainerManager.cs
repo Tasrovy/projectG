@@ -66,7 +66,7 @@ public class HandCardContainerManager : MonoBehaviour, IBeginDragHandler, IDragH
         // 计算滑动范围
         CalculateDragBounds();
 
-        Debug.Log($"[HandContainer] 卡牌:{cardCount}张, 间距:{spacing:F1}");
+        //Debug.Log($"[HandContainer] 卡牌:{cardCount}张, 间距:{spacing:F1}");
     }
 
     /// <summary>
