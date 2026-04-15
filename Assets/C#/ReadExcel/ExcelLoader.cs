@@ -316,6 +316,111 @@ public class ExcelLoader : Singleton<ExcelLoader>
     }
 #endif
 
+    /// <summary>
+    /// 读取对话配置：编辑器下同步，发布后读SO
+    /// Excel建议列名：id, comment, showTime（showTime可选，默认2秒）
+    /// </summary>
+    public DialogSO ReadDialogExcel(string excelPath)
+    {
+        string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
+
+#if UNITY_EDITOR
+        return SyncDialogExcelToSO(excelPath, fileNameNoExt);
+#else
+        return Resources.Load<DialogSO>(fileNameNoExt);
+#endif
+    }
+
+#if UNITY_EDITOR
+    private DialogSO SyncDialogExcelToSO(string excelPath, string soName)
+    {
+        string fullPath = Path.GetFullPath(excelPath);
+        if (!File.Exists(fullPath))
+        {
+            Debug.LogError("找不到Dialog Excel文件: " + fullPath);
+            return null;
+        }
+
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+        DialogSO db = ScriptableObject.CreateInstance<DialogSO>();
+        db.name = soName;
+
+        using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        {
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            {
+                var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                {
+                    ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true }
+                });
+
+                DataTable table = result.Tables[0];
+                foreach (DataRow row in table.Rows)
+                {
+                    if (!table.Columns.Contains("id")) continue;
+                    if (row["id"] == DBNull.Value || string.IsNullOrWhiteSpace(row["id"].ToString())) continue;
+
+                    DialogEntry entry = new DialogEntry();
+
+                    // 自动匹配 DialogEntry 字段名（id/comment/showTime...）
+                    foreach (var field in typeof(DialogEntry).GetFields())
+                    {
+                        if (!table.Columns.Contains(field.Name)) continue;
+
+                        object value = row[field.Name];
+                        if (value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString())) continue;
+
+                        try
+                        {
+                            string rawValue = value.ToString().Trim();
+                            if (field.FieldType == typeof(int))
+                            {
+                                float f = float.Parse(rawValue);
+                                field.SetValue(entry, (int)f);
+                            }
+                            else if (field.FieldType == typeof(float))
+                            {
+                                field.SetValue(entry, float.Parse(rawValue));
+                            }
+                            else
+                            {
+                                field.SetValue(entry, Convert.ChangeType(value, field.FieldType));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"[ExcelLoader] Dialog 字段转换失败！列名: {field.Name}, 单元格内容: '{value}', 错误: {ex.Message}");
+                        }
+                    }
+
+                    db.entries.Add(entry);
+                }
+            }
+        }
+
+        string resDir = Application.dataPath + "/Resources";
+        if (!Directory.Exists(resDir)) Directory.CreateDirectory(resDir);
+
+        string assetPath = $"Assets/Resources/{soName}.asset";
+        DialogSO existingAsset = AssetDatabase.LoadAssetAtPath<DialogSO>(assetPath);
+
+        if (existingAsset == null)
+        {
+            AssetDatabase.CreateAsset(db, assetPath);
+        }
+        else
+        {
+            EditorUtility.CopySerialized(db, existingAsset);
+            db = existingAsset;
+        }
+
+        AssetDatabase.SaveAssets();
+        Debug.Log($"<color=cyan>[ExcelLoader]</color> Dialog同步成功: {assetPath}");
+        return db;
+    }
+#endif
+
     // 依然支持你习惯的 ReadText 逻辑
     public static string ReadText(CardDatabaseSO db, string fieldName, int index)
     {

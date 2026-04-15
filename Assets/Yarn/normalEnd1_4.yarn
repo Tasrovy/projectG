@@ -1,16 +1,26 @@
-﻿title: normalEnd1_4
+title: normalEnd1_4
 ---
-<<set_background roomGround占坑>>
+<<set_background "黑夜素材">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
 <<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 林奈，你累了吗？
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: 还好。
 <<set_character_sprite "伊兰莉特" "peace_1">>
-蒂娜 :把牌收进匣子，像树收起叶子，我们明天见。 #sfx_Character_主角2_嗯哼
-{$MY_NAME}:嗯，我去睡觉了
+蒂娜: 那你陪我再聊一下嘛。
+<<set_character_sprite "{$MY_NAME}" "saying">>
+{$MY_NAME}: 聊什么。
+<<set_character_sprite "伊兰莉特" "happy">>
+蒂娜: 嗯……你以前的事？
+{$MY_NAME}: ……下次吧。今天先睡。
+蒂娜: 好吧。晚安。
 （进入了梦乡）
 
+<<set_background "白天素材">>
 {$MY_NAME}:（今天看了一部动画。）
 女主角与另一位女二一起逃课了，到体育馆二楼一起打乒乓球，休息的时候，女主就躺在女二的腿上，聊着一天的事，氛围很温暖
 我按了暂停。

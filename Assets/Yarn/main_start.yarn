@@ -55,7 +55,7 @@ title: room1_1
 （窗帘上投着窗外的树影，在风里来回飘荡，伴着那些若隐若现的阳光。） #line:065546b 
 （自从伊兰莉特离开以后，一切都好像褪了色。） #line:0616adb 
 <<set_character_sprite {$MY_NAME} saying>>
-{$MY_NAME}:还是起来吃点东西吧。#sfx_Character_Plyaer_嗯
+{$MY_NAME}:还是起来吃点东西吧。#sfx_Character_Player_嗯
 <<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:啊...！ #sfx_Character_Player_啊（疑惑） 
 （我踢到了放在床边地毯上的匣子。） #line:0f6d1e6 

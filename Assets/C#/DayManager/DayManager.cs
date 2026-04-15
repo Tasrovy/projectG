@@ -29,6 +29,7 @@ public class DayManager : Singleton<DayManager>
         CardManager.Instance.SetProbRarity1(daySO.dayDatas[dayNumber].probRarity1);
         CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
         CardManager.Instance.SetProbRarity3(daySO.dayDatas[dayNumber].probRarity3);
+        CardManager.Instance.DrawCard(daySO.dayDatas[dayNumber].drawNum);
         if(dayEvents.ContainsKey(dayNumber)) dayEvents[dayNumber]?.Invoke();
     }
 

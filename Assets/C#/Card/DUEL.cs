@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class DUEL : Singleton<DUEL>
 {
+    private const string EndFightSfxPath = "Switch sounds/button1";
+
     public GameObject DUELUI;
     public GameObject cardPrefab;
     public Transform cardParent;
@@ -29,6 +31,7 @@ public class DUEL : Singleton<DUEL>
     
     public void Begin()
     {
+        _ = BattleDialogController.Instance;
         DUELUIObjectManager.Instance.ShowUI();
         endButton.gameObject.SetActive(true);
         Debug.Log("准备开始决斗");
@@ -37,6 +40,7 @@ public class DUEL : Singleton<DUEL>
 
     public void End()
     {
+        SfxTrigger.PlaySound(EndFightSfxPath);
         DUELUIObjectManager.Instance.HideUI();
         OnEndDUEL?.Invoke();
         Debug.Log("结束决斗");

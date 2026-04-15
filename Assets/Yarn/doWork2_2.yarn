@@ -1,0 +1,30 @@
+﻿title: doWork2_1
+---
+<<set_background "背景">>
+<<play_bgm daily_日常微风>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_sprite "{$MY_NAME}" peace_1>>
+
+
+（{$MY_NAME}今天去快餐店打工了）
+店长: 收银台，拜托了。
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: ……嗯。
+（穿上制服，站在收银台前）
+{$MY_NAME}: （好亮。制服好亮。我也好想回家。）
+顾客: 一份薯条，中份的。
+<<set_character_sprite "{$MY_NAME}" "saying">>
+{$MY_NAME}: ……好的。#sfx_Character_Player_好的
+（装薯条的时候装太多了，盖子盖不上）
+{$MY_NAME}: （……算了。）
+顾客: 这薯条是不是有点多？
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: ……是。
+顾客: 哦。谢谢？
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
+{$MY_NAME}: 不客气。
+（拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
+
+//#sfx_Character_Player_好的
+===

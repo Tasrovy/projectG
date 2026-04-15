@@ -1,18 +1,28 @@
 title: normalEnd1_8
 ---
-<<set_background roomGround占坑>>
+<<set_background "黑夜素材">>
 <<play_bgm lake_happy1>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
 <<set_character_sprite "{$MY_NAME}" "peace_1">>
-<<set_character_sprite "伊兰莉特" "peace_1">>
-蒂娜 :把牌收进匣子，像树收起叶子，我们明天见。 #sfx_Character_主角2_嗯哼
-{$MY_NAME}:嗯，我去睡觉了
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 林奈，你困了吗？眼皮在打架了。#sfx_Character_主角2_呕吼（平淡）
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: 没有。
+<<set_character_sprite "伊兰莉特" "happy">>
+蒂娜: 骗人。好啦，快睡。我看着你睡。
+<<set_character_sprite "{$MY_NAME}" "angry">>
+{$MY_NAME}: 不要看。
+蒂娜: 为什么？
+{$MY_NAME}: 很奇怪。
+蒂娜: 好吧。那我不看了。晚安。
+（闭上眼睛。不知道她是不是真的没在看。）
 （进入了梦乡）
 //依旧第二天
-动画放到最后一集
-片尾曲响起了
+<<set_background "白天素材">>
+{$MY_NAME}:今天也看动画吧
+动画放到最后一集,片尾曲响起了
 走在像是冒险的回家路上————
 <<set_character_sprite "伊兰莉特" sad>>
 <<set_character_shake "伊兰莉特" up_down>>

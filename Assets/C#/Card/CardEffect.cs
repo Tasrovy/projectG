@@ -105,13 +105,14 @@ public class CardEffect : Singleton<CardEffect>
     {
         // 检查需要等待玩家选择的特殊卡牌效果
         if (effect.methodName == "beMade" || effect.methodName == "_beMadeDirect" ||
-            effect.methodName == "beAdded" || effect.methodName == "_beAddedDirect")
+            effect.methodName == "beAdded" || effect.methodName == "_beAddedDirect" ||
+            effect.methodName == "beAddedTo")
         {
             int giftCardNum = CardManager.Instance.GetGiftCardNum();
             if (giftCardNum <= 0)
             {
                 Debug.Log($"{currentChainCard.name} 技能发动失败：手牌中没有合法的目标牌可供选择！");
-                if (currentChainCard != null) MarkConditionFailed(currentChainCard);
+                ShengZhiAndJianZhiHelper.Instance.RestoreCallerCardOnInvalidTarget();
                 StartExecutingNextChain();
                 return;
             }
@@ -128,7 +129,7 @@ public class CardEffect : Singleton<CardEffect>
             if (giftCardNum < threshold)
             {
                 Debug.Log($"{currentChainCard.name} 消耗失败：礼品卡不足，停止执行当前效果链");
-                if (currentChainCard != null) MarkConditionFailed(currentChainCard);
+                ShengZhiAndJianZhiHelper.Instance.RestoreCallerCardOnInvalidTarget();
                 StartExecutingNextChain();
                 return;
             }
@@ -204,9 +205,9 @@ public class CardEffect : Singleton<CardEffect>
 
     public void beAddedTo(int num)
     {
-        CallerCard.AddTo(1, num);
-        CallerCard.AddTo(2, num);
-        CallerCard.AddTo(3, num);
+        if (num == 0) return;
+        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
+        ShengZhiAndJianZhiHelper.Instance.ShengZhangTo(num);
     }
 
     public void beMade(int num)
@@ -235,6 +236,16 @@ public class CardEffect : Singleton<CardEffect>
     {
         int addValue = DataManager.Instance.GetNatureById(type1) / 2;
         DataManager.Instance.Add(type2, addValue);
+    }
+
+    public void shake(int type, float extent)
+    {
+        BattleDialogController.Instance.Shake(type, extent);
+    }
+
+    public void magnify(float multiple)
+    {
+        BattleDialogController.Instance.Magnify(multiple);
     }
 
     public void addWithSame(int sameNum, int trueNum, int falseNum)

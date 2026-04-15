@@ -117,6 +117,42 @@ public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
         );
     }
 
+    public void ShengZhangTo(int num)
+    {
+        Debug.Log($"[Helper] 发起生长至选牌，目标数值: {num}，剩余次数: 1");
+
+        CardActionResolver.Instance.StartEffectSelection(
+            onConfirm: (selectedCard) =>
+            {
+                if (selectedCard.GetNatureById(1) != 0 && selectedCard.GetNatureById(1) < num)
+                {
+                    selectedCard.AddTo(1, num);
+                }
+
+                if (selectedCard.GetNatureById(2) != 0 && selectedCard.GetNatureById(2) < num)
+                {
+                    selectedCard.AddTo(2, num);
+                }
+
+                if (selectedCard.GetNatureById(3) != 0 && selectedCard.GetNatureById(3) < num)
+                {
+                    selectedCard.AddTo(3, num);
+                }
+
+                CardManager.Instance.NotifyDeckOrHandChanged();
+                DUEL.Instance.UpdateCardData();
+
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            },
+            onCancel: () =>
+            {
+                Debug.Log("[Helper] 生长至被取消，准备退回打出的卡牌。");
+                RestoreCallerCard();
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            }
+        );
+    }
+
     private void RestoreCallerCard()
     {
         CardEffect effect = CardEffect.Instance;
@@ -133,5 +169,10 @@ public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
             restoredCard.InitCard(caller); 
             CardManager.Instance.AddCardInHand(restoredCard);
         }
+    }
+
+    public void RestoreCallerCardOnInvalidTarget()
+    {
+        RestoreCallerCard();
     }
 }

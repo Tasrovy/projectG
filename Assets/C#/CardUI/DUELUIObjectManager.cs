@@ -125,4 +125,53 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     {
         return DUELUI.transform.Find("CardSet").gameObject;
     }
+
+    /// <summary>
+    /// 获取战斗对话根节点：DUELUI -> BattleDialog
+    /// </summary>
+    public RectTransform GetBattleDialogRoot()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog");
+        return t != null ? t.GetComponent<RectTransform>() : null;
+    }
+
+    /// <summary>
+    /// 获取立绘 Image：DUELUI -> BattleDialog -> Portrait
+    /// </summary>
+    public Image GetBattlePortraitImage()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog/Portrait");
+        return t != null ? t.GetComponent<Image>() : null;
+    }
+
+    /// <summary>
+    /// 获取对话框根节点：DUELUI -> BattleDialog -> Bubble
+    /// </summary>
+    public GameObject GetBattleDialogBubble()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog/Bubble");
+        return t != null ? t.gameObject : null;
+    }
+
+    /// <summary>
+    /// 获取对话文本：DUELUI -> BattleDialog -> Bubble -> Text
+    /// </summary>
+    public Text GetBattleDialogText()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog/Bubble/Text");
+        return t != null ? t.GetComponent<Text>() : null;
+    }
+
+    /// <summary>
+    /// 获取对话框透明度组件（若缺失则自动补一个）
+    /// </summary>
+    public CanvasGroup GetBattleDialogCanvasGroup()
+    {
+        GameObject bubble = GetBattleDialogBubble();
+        if (bubble == null) return null;
+
+        CanvasGroup group = bubble.GetComponent<CanvasGroup>();
+        if (group == null) group = bubble.AddComponent<CanvasGroup>();
+        return group;
+    }
 }

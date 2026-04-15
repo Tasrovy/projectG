@@ -10,6 +10,9 @@ public class CardUIObject : MonoBehaviour,
     IDragHandler,
     IEndDragHandler
 {
+    private const string CardClickSfxPath = "Switch sounds/button2";
+    private const string CardHoverSfxPath = "Switch sounds/bubbleSound";
+
     [Header("UI 组件引用")] 
     public Image baseImage;
     public Text nameText;
@@ -125,6 +128,7 @@ public class CardUIObject : MonoBehaviour,
     {
         if (!_isActiveMode || (!IsValidToSelect&&_isSelectMode) || _isDragging) return;
         _isHovering = true;
+        SfxTrigger.PlaySound(CardHoverSfxPath);
         UpdateVisual();
     }
 
@@ -141,6 +145,7 @@ public class CardUIObject : MonoBehaviour,
         if (!_isActiveMode || (!IsValidToSelect&&_isSelectMode) || _isDragging) return;
 
         _isSelected = !_isSelected;
+        SfxTrigger.PlaySound(CardClickSfxPath);
 
         if (CardSelector.Instance != null)
             CardSelector.Instance.SetSelectObject(_isSelected ? this : null);

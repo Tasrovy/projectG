@@ -1,6 +1,6 @@
 ﻿title : special1_2
 ---
-<<set_background box占坑>>
+<<set_background "黑夜素材">>
 <<play_bgm littleSad_黄昏分岔口(1)>>
 <<play_whitenoise bg1_bgWhiteNoise3>>
 <<set_character_person Player {$MY_NAME} peace_1>>
@@ -21,6 +21,7 @@
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:没什么。
 （只是有点儿像而已……一点儿。）
+<<set_background "BCG">>
 （这个世界上相似的人太多了。）
 
 ===

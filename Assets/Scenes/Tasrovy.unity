@@ -449,6 +449,7 @@ GameObject:
   - component: {fileID: 542249197}
   - component: {fileID: 542249199}
   - component: {fileID: 542249198}
+  - component: {fileID: 542249200}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -593,6 +594,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CallerCard:
     id: 0
+    dialog: 0
     nature1: 0
     nature2: 0
     nature3: 0
@@ -658,7 +660,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f391c325ee5644bc887a7205efa9d47e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DUELUI: {fileID: 0}
+--- !u!114 &542249200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542249187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d5e02fc227c50448aaccd45d2580b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogExcelPath: dialog.xlsx
+  defaultShowTime: 2
+  fadeOutDuration: 0.25
+  useFadeOut: 1
+  portraitResourcePath: Portraits/BattlePortrait
 --- !u!1 &1083252779
 GameObject:
   m_ObjectHideFlags: 0
