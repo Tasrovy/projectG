@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class DeckViewerUI : Singleton<DeckViewerUI>
 {
+    private const string DeckOpenSfxPath = "Switch sounds/button7";
+    private const string DeckCloseSfxPath = "Switch sounds/button8";
+
     [Header("UI 引用")] public GameObject viewerPanel; // 整个查看器面板
     public Transform contentParent; // Scroll View 里面的 Content 节点
     public GameObject displayCardPrefab; // 刚刚做的 DisplayCardPrefab
@@ -56,6 +59,7 @@ public class DeckViewerUI : Singleton<DeckViewerUI>
 
     public void OnClickDeckPile()
     {
+        SfxTrigger.PlaySound(DeckOpenSfxPath);
         OpenViewer(CardManager.Instance.cardSet, "抽牌堆");
     }
 
@@ -101,6 +105,8 @@ public class DeckViewerUI : Singleton<DeckViewerUI>
     /// </summary>
     public void CloseViewer()
     {
+        if (viewerPanel != null && viewerPanel.activeSelf)
+            SfxTrigger.PlaySound(DeckCloseSfxPath);
         viewerPanel.SetActive(false);
     }
 }

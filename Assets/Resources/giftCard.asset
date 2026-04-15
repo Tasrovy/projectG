@@ -28,7 +28,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 11602
-    dialog: 1
+    dialog: 0
     nature1: 0
     nature2: 4
     nature3: 0
