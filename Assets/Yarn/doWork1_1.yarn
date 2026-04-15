@@ -6,7 +6,6 @@
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_sprite "{$MY_NAME}" peace_1>>
 
-
 （{$MY_NAME}今天去快餐店打工了）
 店长: 收银台，拜托了。
 <<set_character_sprite "{$MY_NAME}" "peace_2">>

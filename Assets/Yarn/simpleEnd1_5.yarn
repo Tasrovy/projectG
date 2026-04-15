@@ -7,7 +7,15 @@
 <<set_character_person Character "伊兰莉特" peace_2>>
 <<set_character_sprite "{$MY_NAME}" peace_1>>
 <<set_character_sprite "伊兰莉特" peace_1>>
-
+<<set_character_sprite "伊兰莉特" "happy">>
+蒂娜: 林奈，明天见。我每天最期待的就是跟你说明天见。
+<<set_character_sprite "{$MY_NAME}" "saying">>
+{$MY_NAME}: ……为什么。
+<<set_character_sprite "伊兰莉特" "happy">>
+<<set_character_shake "伊兰莉特" left_right>>
+蒂娜: 因为说了明天见，就一定会再见到你啊。
+{$MY_NAME}: ……嗯。明天见。
+（进入了梦乡）
 
 
 <<set_background "白天素材">>

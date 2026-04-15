@@ -1,6 +1,6 @@
 title: simpleEnd1_1
 ---
-<<set_background roomGround占坑>>
+<<set_background "黑夜素材">>
 <<play_bgm daily_日常微风(1)>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
@@ -9,17 +9,24 @@ title: simpleEnd1_1
 <<set_character_sprite "伊兰莉特" peace_1>>
 //#sfx_Character_主角2_嗯哼
 //#sfx_Character_Player_嗯
-蒂娜 :把牌收进匣子，像树收起叶子，我们明天见 #sfx_Character_主角2_嗯哼
-{$MY_NAME}:嗯，我去睡觉了
+//<<set_character_shake "{$MY_NAME}" up_down>>
+<<set_character_sprite "伊兰莉特" "saying">>
+蒂娜: 夜深了。树也睡了，我们也睡吧。
+<<set_character_sprite "{$MY_NAME}" "peace_2">>
+{$MY_NAME}: 嗯。晚安。
+（她的比喻总是跟树有关。）
+（大概因为她是叶牌的精灵吧。）
+（进入了梦乡）
 //进入第二天
-
+<<set_background "白天素材">>
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 林奈，暑假还有多久？
-<<set_character_sprite "{$MY_NAME}" "angry">>
+<<set_character_sprite "{$MY_NAME}" "peace_1">>
 {$MY_NAME}: 不知道。不要提醒我。
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 我只是问问。
 <<set_character_sprite "{$MY_NAME}" "angry">>
+<<set_character_shake "{$MY_NAME}" left_right>>
 {$MY_NAME}: 问也不行。
 <<set_character_sprite "伊兰莉特" "sad">>
 蒂娜: 你好凶。
