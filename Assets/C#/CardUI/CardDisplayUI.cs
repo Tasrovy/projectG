@@ -1,14 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 纯展示用的卡牌UI脚本，没有拖拽和选中逻辑
 /// </summary>
-public class CardDisplayUI : MonoBehaviour
+public class CardDisplayUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Image baseImage;
     public Text nameText;
     public Text descriptionText;
+
+    private Vector3 _originalScale;
+    private bool _isHovered = false;
+
+    void Awake()
+    {
+        _originalScale = transform.localScale;
+    }
+
+    void Update()
+    {
+        if (_isHovered && !Input.GetMouseButton(0))
+        {
+            transform.localScale = _originalScale * 1.1f;
+        }
+        else
+        {
+            transform.localScale = _originalScale;
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData) => _isHovered = true;
+    public void OnPointerExit(PointerEventData eventData) => _isHovered = false;
 
     [Header("卡图资源")] 
     public Sprite commonSprite;

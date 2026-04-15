@@ -17,6 +17,12 @@ GameObject:
   - component: {fileID: 6896678041870131636}
   - component: {fileID: 7321786664211421992}
   - component: {fileID: 5307400695131737614}
+  - component: {fileID: 2778898904707891554}
+  - component: {fileID: 1432430541714426492}
+  - component: {fileID: 2878527077424717229}
+  - component: {fileID: 3304321047460560209}
+  - component: {fileID: 7085140586571006721}
+  - component: {fileID: 5844406895980773212}
   m_Layer: 0
   m_Name: Managers 1
   m_TagString: Untagged
@@ -176,3 +182,100 @@ MonoBehaviour:
   currNature1Effect: 0
   currNature2Effect: 0
   currNature3Effect: 0
+--- !u!114 &2778898904707891554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc6f171d7754d8580761c2dbef35f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CallerCard:
+    id: 0
+    dialog: 0
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    buff: 
+    trigger: 
+    description: 
+    nextTurn: 
+--- !u!114 &1432430541714426492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708cca735dd52d94d8678f437a18a9ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2878527077424717229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ef64294a0e4dc197df729de70528f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMode: 0
+--- !u!114 &3304321047460560209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f391c325ee5644bc887a7205efa9d47e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7085140586571006721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2623f499702b419e9ca477de51b56a83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewerPanel: {fileID: 0}
+  contentParent: {fileID: 0}
+  displayCardPrefab: {fileID: 0}
+  titleText: {fileID: 0}
+--- !u!114 &5844406895980773212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d5e02fc227c50448aaccd45d2580b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogExcelPath: dialog.xlsx
+  defaultShowTime: 2
+  fadeOutDuration: 0.25
+  useFadeOut: 1
+  portraitResourcePath: Portraits/BattlePortrait

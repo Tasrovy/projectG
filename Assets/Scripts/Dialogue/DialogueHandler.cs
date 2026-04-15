@@ -23,9 +23,11 @@ public class DialogueHandler : MonoBehaviour
     private bool isHandlingDialogueSequence = false;
     private int lastCheckedDay = -1;
 
-    // deal/special 对话进度（内存存储，每次启动重置）
+    // deal/special/doWork 对话进度（内存存储，每次启动重置）
     private Dictionary<int, int> _dealProgress = new Dictionary<int, int>();
     private Dictionary<int, int> _specialProgress = new Dictionary<int, int>();
+    private int _doWorkI = 1;
+    private int _doWorkJ = 1;
 
         void Start()
     {
@@ -175,6 +177,45 @@ public class DialogueHandler : MonoBehaviour
             Debug.Log($"[DialogueHandler] 今晚没有 deal，直接拉起过天与 special 检测。");
             StartCoroutine(EndDialogueRoutine());
         }
+    }
+
+    /// <summary>
+    /// 打工环节专用：按 doWork{i}_{j} 顺序调用对话。
+    /// j 递增直到不存在该节点，自动切换到下一个 i 系列从 j=1 开始。
+    /// </summary>
+    public void TriggerDoWorkDialogue()
+    {
+        // 从当前进度开始，找到第一个存在的节点
+        // 若当前 j 不存在，则推进 i，j 重置为 1，再继续寻找
+        int safeLimit = 100;
+        while (safeLimit-- > 0)
+        {
+            string yarnNode = $"doWork{_doWorkI}_{_doWorkJ}";
+            if (dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
+            {
+                Debug.Log($"[DialogueHandler] 打工对话启动: {yarnNode}");
+                _doWorkJ++;
+                StartDialogue(yarnNode);
+                return;
+            }
+            else
+            {
+                // 当前 i 系列的 j 已耗尽，尝试切换到下一个 i
+                _doWorkI++;
+                _doWorkJ = 1;
+
+                // 检查新 i 系列的第 1 个节点是否存在；若不存在则回绕到 i=1
+                string firstOfNextI = $"doWork{_doWorkI}_1";
+                if (!dialogueRunner.YarnProject.NodeNames.Contains(firstOfNextI))
+                {
+                    Debug.Log($"[DialogueHandler] doWork{_doWorkI}_1 不存在，回绕到 doWork1_1。");
+                    _doWorkI = 1;
+                    _doWorkJ = 1;
+                }
+            }
+        }
+
+        Debug.LogWarning("[DialogueHandler] TriggerDoWorkDialogue: 未找到任何可用的 doWork 节点。");
     }
 
     #endregion
