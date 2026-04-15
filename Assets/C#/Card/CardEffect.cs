@@ -204,9 +204,9 @@ public class CardEffect : Singleton<CardEffect>
 
     public void beAddedTo(int num)
     {
-        CallerCard.AddTo(1, num);
-        CallerCard.AddTo(2, num);
-        CallerCard.AddTo(3, num);
+        if (num == 0) return;
+        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
+        ShengZhiAndJianZhiHelper.Instance.ShengZhangTo(num);
     }
 
     public void beMade(int num)
