@@ -170,4 +170,9 @@ public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
             CardManager.Instance.AddCardInHand(restoredCard);
         }
     }
+
+    public void RestoreCallerCardOnInvalidTarget()
+    {
+        RestoreCallerCard();
+    }
 }
