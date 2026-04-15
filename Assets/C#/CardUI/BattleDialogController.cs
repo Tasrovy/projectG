@@ -23,6 +23,10 @@ public class BattleDialogController : Singleton<BattleDialogController>
     private Text _bubbleText;
     private CanvasGroup _bubbleCanvasGroup;
     private Coroutine _hideCoroutine;
+    private Coroutine _shakeCoroutine;
+    private Coroutine _magnifyCoroutine;
+    private Vector2 _portraitBaseAnchoredPosition;
+    private Vector3 _portraitBaseScale = Vector3.one;
 
     protected override bool IsPersistent => false;
 
@@ -112,6 +116,13 @@ public class BattleDialogController : Singleton<BattleDialogController>
         Debug.Log(
             $"[BattleDialog] UI refs: root={(_root != null)}, portrait={(_portraitImage != null)}, bubble={(_bubbleRoot != null)}, text={(_bubbleText != null)}, canvasGroup={(_bubbleCanvasGroup != null)}"
         );
+
+        if (_portraitImage != null)
+        {
+            RectTransform portraitRect = _portraitImage.rectTransform;
+            _portraitBaseAnchoredPosition = portraitRect.anchoredPosition;
+            _portraitBaseScale = portraitRect.localScale;
+        }
     }
 
     private void ApplyPortraitSpriteIfConfigured()
@@ -152,6 +163,85 @@ public class BattleDialogController : Singleton<BattleDialogController>
 
         if (_hideCoroutine != null) StopCoroutine(_hideCoroutine);
         _hideCoroutine = StartCoroutine(HideDialogRoutine(showTime));
+    }
+
+    public void Shake(int type, float extent)
+    {
+        EnsureUIRefs();
+        if (_portraitImage == null) return;
+
+        float clampedExtent = Mathf.Clamp01(extent);
+        if (clampedExtent <= 0f) return;
+
+        if (_shakeCoroutine != null) StopCoroutine(_shakeCoroutine);
+        _shakeCoroutine = StartCoroutine(ShakeRoutine(type, clampedExtent));
+    }
+
+    public void Magnify(float multiple)
+    {
+        EnsureUIRefs();
+        if (_portraitImage == null) return;
+
+        if (_magnifyCoroutine != null) StopCoroutine(_magnifyCoroutine);
+        _magnifyCoroutine = StartCoroutine(MagnifyRoutine(multiple));
+    }
+
+    private IEnumerator ShakeRoutine(int type, float extent)
+    {
+        RectTransform portraitRect = _portraitImage.rectTransform;
+        Vector2 origin = _portraitBaseAnchoredPosition;
+        float duration = 0.3f;
+        float amplitude = 40f * extent;
+        float frequency = 28f;
+        float elapsed = 0f;
+        Vector2 axis = type == 0 ? Vector2.up : Vector2.right;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float fade = 1f - Mathf.Clamp01(elapsed / duration);
+            float offset = Mathf.Sin(elapsed * frequency * Mathf.PI) * amplitude * fade;
+            portraitRect.anchoredPosition = origin + axis * offset;
+            yield return null;
+        }
+
+        portraitRect.anchoredPosition = origin;
+        _shakeCoroutine = null;
+    }
+
+    private IEnumerator MagnifyRoutine(float multiple)
+    {
+        RectTransform portraitRect = _portraitImage.rectTransform;
+        Vector3 origin = _portraitBaseScale;
+        float safeMultiple = Mathf.Max(0f, multiple);
+        Vector3 target = origin * (1f + safeMultiple);
+        float growDuration = 0.2f;
+        float holdDuration = 0.12f;
+        float shrinkDuration = 0.16f;
+        float elapsed = 0f;
+
+        while (elapsed < growDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / growDuration);
+            portraitRect.localScale = Vector3.Lerp(origin, target, t);
+            yield return null;
+        }
+
+        portraitRect.localScale = target;
+        yield return new WaitForSeconds(holdDuration);
+
+        elapsed = 0f;
+        while (elapsed < shrinkDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / shrinkDuration);
+            portraitRect.localScale = Vector3.Lerp(target, origin, t);
+            yield return null;
+        }
+
+        portraitRect.localScale = origin;
+        _magnifyCoroutine = null;
     }
 
     private IEnumerator HideDialogRoutine(float showTime)

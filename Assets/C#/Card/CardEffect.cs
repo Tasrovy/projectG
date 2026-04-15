@@ -237,6 +237,16 @@ public class CardEffect : Singleton<CardEffect>
         DataManager.Instance.Add(type2, addValue);
     }
 
+    public void shake(int type, float extent)
+    {
+        BattleDialogController.Instance.Shake(type, extent);
+    }
+
+    public void magnify(float multiple)
+    {
+        BattleDialogController.Instance.Magnify(multiple);
+    }
+
     public void addWithSame(int sameNum, int trueNum, int falseNum)
     {
         int sameCount = CardManager.Instance.GetMaxSameIdCardCount();

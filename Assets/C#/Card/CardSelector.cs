@@ -8,6 +8,9 @@ using System.Collections.Generic;
 /// </summary>
 public class CardSelector : Singleton<CardSelector>
 {
+    private const string CardSubmitSfxPath = "intangibleClick/Collect star 3";
+    private const string CardCancelSfxPath = "Switch sounds/button3";
+
     [Header("UI引用")]
     [SerializeField] private Button submitButton;
     [SerializeField] private Text submitButtonText;
@@ -100,6 +103,8 @@ public class CardSelector : Singleton<CardSelector>
     private void OnSubmitClicked()
     {
         if (_selectedCardObject == null) return;
+        SfxTrigger.PlaySound(CardSubmitSfxPath);
+
         Card selectedCard = _selectedCardObject.Card;
         Debug.Log($"[CardSelector][Submit] frame={Time.frameCount}, time={Time.time:F3}, selectedRef={(selectedCard != null ? selectedCard.GetHashCode() : 0)}, id={selectedCard?.id}, name={selectedCard?.name}");
 
@@ -111,6 +116,7 @@ public class CardSelector : Singleton<CardSelector>
 
     private void OnCancelClicked()
     {
+        SfxTrigger.PlaySound(CardCancelSfxPath);
         DeselectCurrent();
         OnCancelEvent?.Invoke();
     }
