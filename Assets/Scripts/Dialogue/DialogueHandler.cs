@@ -21,7 +21,7 @@ public class DialogueHandler : MonoBehaviour
     // 对话队列管理
     private Queue<string> pendingDialogues = new Queue<string>();
     private bool isHandlingDialogueSequence = false;
-    private int lastCheckedDay = -1;
+    private int lastCheckedDay = 1;
 
     // deal/special/doWork 对话进度（内存存储，每次启动重置）
     private Dictionary<int, int> _dealProgress = new Dictionary<int, int>();
@@ -76,9 +76,9 @@ public class DialogueHandler : MonoBehaviour
                 {
                     lastCheckedDay = currentDay;
                     var daySO = DayManager.Instance.daySO;
-                    if (daySO != null && currentDay - 1 < daySO.dayDatas.Count)
+                    if (daySO != null && currentDay - 2 < daySO.dayDatas.Count)
                     {
-                        string morningNode = daySO.dayDatas[currentDay - 1].dailyDialog;
+                        string morningNode = daySO.dayDatas[currentDay - 2].dailyDialog;
                         if (!string.IsNullOrEmpty(morningNode))
                         {
                             // 触发当天早晨固定对话
@@ -133,7 +133,6 @@ public class DialogueHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// 【安全一键连招】：强烈推荐过天结算专用！
     /// 尝试播放 deal，无论有没有可用的 deal，随后都会无缝拉起 special 检测并进入第二天！
     /// 提供给 Inspector 里的 Button OnClick 直接调用，参数填第二天早晨的场景名(匹配 SceneType 枚举)。
     /// </summary>
@@ -181,41 +180,48 @@ public class DialogueHandler : MonoBehaviour
 
     /// <summary>
     /// 打工环节专用：按 doWork{i}_{j} 顺序调用对话。
-    /// j 递增直到不存在该节点，自动切换到下一个 i 系列从 j=1 开始。
+    /// 每次调用按进入次数顺序推进：第1次=doWork1_1，第2次=doWork1_2，以此类推；
+    /// 当前 i 系列的 j 耗尽后自动切换到下一个 i 系列从 j=1 开始，不回绕。
     /// </summary>
     public void TriggerDoWorkDialogue()
     {
-        // 从当前进度开始，找到第一个存在的节点
-        // 若当前 j 不存在，则推进 i，j 重置为 1，再继续寻找
-        int safeLimit = 100;
-        while (safeLimit-- > 0)
+        if (dialogueRunner == null || dialogueRunner.YarnProject == null)
         {
-            string yarnNode = $"doWork{_doWorkI}_{_doWorkJ}";
+            Debug.LogWarning("[DialogueHandler] TriggerDoWorkDialogue: dialogueRunner 或 YarnProject 为空。");
+            return;
+        }
+
+        string yarnNode = $"doWork{_doWorkI}_{_doWorkJ}";
+
+        if (dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
+        {
+            // 当前节点存在，直接播放并推进 j
+            Debug.Log($"[DialogueHandler] 打工对话启动（第 {_doWorkI}_{_doWorkJ} 节）: {yarnNode}");
+            _doWorkJ++;
+            StartDialogue(yarnNode);
+        }
+        else
+        {
+            // 当前 i 系列已耗尽，切换到下一个 i 系列
+            _doWorkI++;
+            _doWorkJ = 1;
+            yarnNode = $"doWork{_doWorkI}_{_doWorkJ}";
+
             if (dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
             {
-                Debug.Log($"[DialogueHandler] 打工对话启动: {yarnNode}");
+                Debug.Log($"[DialogueHandler] 切换到新系列，打工对话启动: {yarnNode}");
                 _doWorkJ++;
                 StartDialogue(yarnNode);
-                return;
             }
             else
             {
-                // 当前 i 系列的 j 已耗尽，尝试切换到下一个 i
-                _doWorkI++;
-                _doWorkJ = 1;
-
-                // 检查新 i 系列的第 1 个节点是否存在；若不存在则回绕到 i=1
-                string firstOfNextI = $"doWork{_doWorkI}_1";
-                if (!dialogueRunner.YarnProject.NodeNames.Contains(firstOfNextI))
-                {
-                    Debug.Log($"[DialogueHandler] doWork{_doWorkI}_1 不存在，回绕到 doWork1_1。");
-                    _doWorkI = 1;
-                    _doWorkJ = 1;
-                }
+                // 新 i 系列不存在，回绕到 doWork1_1
+                Debug.Log($"[DialogueHandler] doWork{_doWorkI}_1 不存在，回绕到 doWork1_1。");
+                _doWorkI = 1;
+                _doWorkJ = 2; // 已播放 doWork1_1，下次从 _2 开始
+                StartDialogue("doWork1_1");
             }
         }
-
-        Debug.LogWarning("[DialogueHandler] TriggerDoWorkDialogue: 未找到任何可用的 doWork 节点。");
     }
 
     #endregion

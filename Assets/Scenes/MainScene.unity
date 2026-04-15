@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SubmitButton
       objectReference: {fileID: 0}
+    - target: {fileID: 132533058774280539, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3001956615937495283, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4600,6 +4604,14 @@ PrefabInstance:
       propertyPath: endButton
       value: 
       objectReference: {fileID: 1414183779}
+    - target: {fileID: 1998982659299980096, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: dayNumber
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577431768715865317, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: useInitialHandFromExcel
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6515135111267380439, guid: a9f366fec9524654abc1b5799a896207, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
