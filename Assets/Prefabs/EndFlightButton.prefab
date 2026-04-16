@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8073150800118443443}
   - component: {fileID: 6969107931886610532}
   - component: {fileID: 5007807296407008989}
+  - component: {fileID: 227230266714088387}
   m_Layer: 5
   m_Name: EndFlightButton
   m_TagString: Untagged
@@ -120,6 +121,21 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6969107931886610532}
   m_OnClick:
     m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &227230266714088387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2283098716253017709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41667692d913a8a4b85883f368a08e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClickAction:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: DUEL, Assembly-CSharp
@@ -145,6 +161,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  hideOnClick: 0
 --- !u!1 &4929577954499692457
 GameObject:
   m_ObjectHideFlags: 0
