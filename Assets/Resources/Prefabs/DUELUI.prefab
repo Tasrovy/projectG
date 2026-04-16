@@ -905,19 +905,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5007807296407008989, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5007807296407008989, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7535055992073799019}
+      objectReference: {fileID: 0}
     - target: {fileID: 5007807296407008989, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5007807296407008989, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5007807296407008989, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5146708748917597395, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_SortingLayer
@@ -1023,10 +1027,5 @@ PrefabInstance:
 --- !u!224 &1921941251603849800 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7895598280096215374, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
-  m_PrefabInstance: {fileID: 8592542286684197638}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7535055992073799019 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2283098716253017709, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
   m_PrefabInstance: {fileID: 8592542286684197638}
   m_PrefabAsset: {fileID: 0}
