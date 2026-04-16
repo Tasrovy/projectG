@@ -5,10 +5,10 @@ title: normalEnd1_5
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 今天就到这里吧。养足精神，明天再一起玩。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 嗯。晚安。
 {$MY_NAME}:（她今天的声音比平常轻。）
 （是累了吗。）
@@ -17,16 +17,16 @@ title: normalEnd1_5
 <<set_background "白天素材">>
 <<set_character_person Character "伊兰莉特" happy>>
 蒂娜 :今天在看什么啊林奈(ﾉ>ω<)ﾉ
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}:漫画。
 我把漫画插图拿给她看。两个女生额头碰额头的构图。
 <<set_character_person Character "伊兰莉特" peace_1>>
 蒂娜 :她们在做什么？
-<<set_character_sprite "{$MY_NAME}" saying>>
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:这是漫画设定，她们在进行心灵感应#sfx_Character_Player_呐呐
 <<set_character_person Character "伊兰莉特" saying>>
 蒂娜 :为什么要靠那么近？
-<<set_character_sprite "{$MY_NAME}" happy>>
+<<set_character_sprite {$MY_NAME} happy>>
 {$MY_NAME}:设定就是这样的，没什么别的意思
 我翻到下一页，假装很专心在看，脑袋里却放着什么别的东西
 ===
