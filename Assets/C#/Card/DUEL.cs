@@ -96,7 +96,7 @@ public class DUEL : Singleton<DUEL>
                 newActiveObjects.Add(existingObject);
                 // 从映射中移除，避免后续重复使用
                 cardToObjectMap.Remove(card);
-                Debug.Log($"[DUEL] 保留卡牌物体: {card.name} (ID:{card.id})");
+                // Debug.Log($"[DUEL] 保留卡牌物体: {card.name} (ID:{card.id})");
             }
             else
             {

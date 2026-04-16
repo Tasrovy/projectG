@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 
 public class DayManager : Singleton<DayManager>
 {
     public Dictionary<int,UnityEvent> dayEvents = new Dictionary<int, UnityEvent>();
     public int dayNumber = 0;
     public DayDataSO daySO;
+    [SerializeField] private TMP_Text dayText;
     protected override bool IsPersistent => true;
     protected override void Awake()
     {
@@ -17,7 +19,7 @@ public class DayManager : Singleton<DayManager>
         {
             Debug.Log($"成功加载了 {daySO.dayDatas.Count} 天的数据");
         }
-        DUEL.Instance.OnEndDUEL.AddListener(NextDay);
+        // DUEL.Instance.OnEndDUEL.AddListener(NextDay);
     }
 
     private void Start()
@@ -30,13 +32,14 @@ public class DayManager : Singleton<DayManager>
     {
         OnDayEnd();
         dayNumber++;
-        Debug.Log($"========== [DayManager 检测器] 天数改变，当前是第 {dayNumber} 天 ==========");
+        Debug.Log($"<color=#FFD700>========== [DayManager 检测器] 天数改变，当前是第 {dayNumber} 天 ==========</color>");
         CardManager.Instance.SetProbRarity1(daySO.dayDatas[dayNumber].probRarity1);
         CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
         CardManager.Instance.SetProbRarity3(daySO.dayDatas[dayNumber].probRarity3);
         CardManager.Instance.DrawCard(daySO.dayDatas[dayNumber].drawNum);
         Debug.Log($"[DayManager] {daySO.dayDatas[dayNumber].drawNum}");
         if(dayEvents.ContainsKey(dayNumber)) dayEvents[dayNumber]?.Invoke();
+        if (dayText != null) dayText.text = $"DAY{dayNumber}";
     }
 
     public UnityEvent GetNextDayEvent()
