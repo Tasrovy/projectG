@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCards:
   - id: 31001
-    dialog: 0
+    dialog: 3
     nature1: 0
     nature2: 0
     nature3: 30
@@ -42,7 +42,7 @@ MonoBehaviour:
     trigger: addNatureAtSum(30,3)
     nextTurn: changeProperty(1.5)
   - id: 3203
-    dialog: 0
+    dialog: 2
     nature1: 0
     nature2: 0
     nature3: 20
@@ -56,7 +56,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: addRandomCard(2,1,1)
   - id: 33001
-    dialog: 0
+    dialog: 12
     nature1: 0
     nature2: 0
     nature3: 0

@@ -5,14 +5,14 @@ title: normalEnd1_8
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 林奈，你困了吗？眼皮在打架了。#sfx_Character_主角2_呕吼（平淡）
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 没有。
 <<set_character_sprite "伊兰莉特" "happy">>
 蒂娜: 骗人。好啦，快睡。我看着你睡。
-<<set_character_sprite "{$MY_NAME}" "angry">>
+<<set_character_sprite {$MY_NAME} "angry">>
 {$MY_NAME}: 不要看。
 蒂娜: 为什么？
 {$MY_NAME}: 很奇怪。
@@ -27,12 +27,12 @@ title: normalEnd1_8
 <<set_character_sprite "伊兰莉特" sad>>
 <<set_character_shake "伊兰莉特" up_down>>
 蒂娜 :这就完结了吗，两个主角演完话剧就没了？这不是快乐结局!
-<<set_character_sprite "{$MY_NAME}" saying>>
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:故事就是这样
 <<set_character_sprite "伊兰莉特" saying>>
 <<set_character_shake "伊兰莉特" left_right>>
 蒂娜 :我不喜欢没完结的结局,我要快乐结局！
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 {$MY_NAME}:你不能改变结局，只能想办法接受，就这样
 
 ===

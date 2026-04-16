@@ -5,10 +5,10 @@ title: simpleEnd1_6
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 <<set_character_sprite "伊兰莉特" peace_1>>
 蒂娜: 林奈，你今天好像比昨天开心一点。#sfx_Character_主角2_真棒
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 是吗。
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 嗯。我能感觉到。
@@ -20,15 +20,15 @@ title: simpleEnd1_6
 
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 林奈，暑假快结束了。
-<<set_character_sprite "{$MY_NAME}" "angry">>
+<<set_character_sprite {$MY_NAME} "angry">>
 {$MY_NAME}: 不要提醒我。
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 你每次都这样说。
-<<set_character_sprite "{$MY_NAME}" "saying">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 因为你每次都提醒我。
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 那你什么时候才想被提醒？
-<<set_character_sprite "{$MY_NAME}" "sad">>
+<<set_character_sprite {$MY_NAME} "sad">>
 {$MY_NAME}: 永远不会。
 
 

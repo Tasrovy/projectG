@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCards:
   - id: 11601
-    dialog: 0
+    dialog: 1
     nature1: 4
     nature2: 0
     nature3: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 11602
-    dialog: 0
+    dialog: 1
     nature1: 0
     nature2: 4
     nature3: 0
@@ -55,8 +55,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
-  - id: 11002
-    dialog: 0
+  - id: 2
+    dialog: 2
     nature1: 0
     nature2: 12
     nature3: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 11003
-    dialog: 0
+    dialog: 3
     nature1: 2
     nature2: 2
     nature3: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 11004
-    dialog: 0
+    dialog: 3
     nature1: 0
     nature2: 0
     nature3: 2
@@ -98,7 +98,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 11005
-    dialog: 0
+    dialog: 4
     nature1: 12
     nature2: -8
     nature3: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 11006
-    dialog: 0
+    dialog: 4
     nature1: 1
     nature2: 1
     nature3: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12002
-    dialog: 0
+    dialog: 10
     nature1: 4
     nature2: 6
     nature3: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12003
-    dialog: 0
+    dialog: 11
     nature1: 0
     nature2: 20
     nature3: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12004
-    dialog: 0
+    dialog: 12
     nature1: 30
     nature2: 0
     nature3: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
     trigger: addNatureAtSum(-10,2)
     nextTurn: 
   - id: 12005
-    dialog: 0
+    dialog: 13
     nature1: 8
     nature2: 0
     nature3: 0
@@ -196,7 +196,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12006
-    dialog: 0
+    dialog: 15
     nature1: 0
     nature2: 16
     nature3: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12007
-    dialog: 0
+    dialog: 1
     nature1: 0
     nature2: 14
     nature3: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12008
-    dialog: 0
+    dialog: 13
     nature1: 12
     nature2: 0
     nature3: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12009
-    dialog: 0
+    dialog: 14
     nature1: 40
     nature2: 0
     nature3: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: changeProperty(0.5)
   - id: 12010
-    dialog: 0
+    dialog: 10
     nature1: 0
     nature2: 10
     nature3: 0
@@ -266,7 +266,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 12011
-    dialog: 0
+    dialog: 2
     nature1: 2
     nature2: 2
     nature3: 0
@@ -281,7 +281,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 13001
-    dialog: 2
+    dialog: 4
     nature1: 0
     nature2: 0
     nature3: 0

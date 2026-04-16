@@ -1,29 +1,29 @@
-﻿title: doWork2_1
+title: doWork2_2
 ---
 <<set_background "背景">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 
 
-（{$MY_NAME}今天去快餐店打工了）
-店长: 收银台，拜托了。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
-{$MY_NAME}: ……嗯。
-（穿上制服，站在收银台前）
-{$MY_NAME}: （好亮。制服好亮。我也好想回家。）
-顾客: 一份薯条，中份的。
-<<set_character_sprite "{$MY_NAME}" "saying">>
-{$MY_NAME}: ……好的。#sfx_Character_Player_好的
-（装薯条的时候装太多了，盖子盖不上）
-{$MY_NAME}: （……算了。）
-顾客: 这薯条是不是有点多？
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
-{$MY_NAME}: ……是。
-顾客: 哦。谢谢？
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
-{$MY_NAME}: 不客气。
+（今天又去店打工了）
+店主: 今天的货是满天星。帮忙分束，一小束一小束的。
+<<set_character_sprite {$MY_NAME} "peace_1">>
+{$MY_NAME}: 好。
+（把满天星从大包装里拿出来）
+{$MY_NAME}: （轻轻的。摸起来沙沙的。）
+店主: 绑好之后放在那边的桶子里。
+<<set_character_sprite {$MY_NAME} "saying">>
+{$MY_NAME}: 嗯。#sfx_Character_Player_嗯哼
+（一束。两束。三束。）
+{$MY_NAME}: （不用动脑。很好。）
+店主: 你绑得挺好看的。
+<<set_character_sprite {$MY_NAME} "peace_2">>
+{$MY_NAME}: 是吗。
+店主: 嗯。很整齐。
+<<set_character_sprite {$MY_NAME} "happy">>
+{$MY_NAME}: ……谢谢。
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的

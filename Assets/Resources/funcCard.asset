@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCards:
   - id: 21601
-    dialog: 0
+    dialog: 5
     nature1: 0
     nature2: 0
     nature3: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 21001
-    dialog: 0
+    dialog: 5
     nature1: 0
     nature2: 0
     nature3: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 21002
-    dialog: 0
+    dialog: 11
     nature1: 0
     nature2: 0
     nature3: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 21003
-    dialog: 0
+    dialog: 9
     nature1: 0
     nature2: 0
     nature3: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: addRandomCard(1,1,2)
   - id: 21004
-    dialog: 3
+    dialog: 8
     nature1: 0
     nature2: 0
     nature3: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
     trigger: addNatureAtSum(30,2)
     nextTurn: 
   - id: 21005
-    dialog: 0
+    dialog: 8
     nature1: 50
     nature2: 0
     nature3: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
     trigger: addNatureAtSum(50,1)
     nextTurn: 
   - id: 21006
-    dialog: 0
+    dialog: 7
     nature1: 0
     nature2: 0
     nature3: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
     trigger: beAddedTo(12)
     nextTurn: 
   - id: 22001
-    dialog: 3
+    dialog: 7
     nature1: 0
     nature2: 0
     nature3: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 22002
-    dialog: 0
+    dialog: 6
     nature1: 0
     nature2: 0
     nature3: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: addRandomCard(1,1,1)
   - id: 22003
-    dialog: 0
+    dialog: 6
     nature1: 100
     nature2: 0
     nature3: 100
@@ -154,7 +154,7 @@ MonoBehaviour:
     trigger: 
     nextTurn: 
   - id: 22004
-    dialog: 0
+    dialog: 7
     nature1: 0
     nature2: 0
     nature3: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
     trigger: addWithSame(3,40,5)
     nextTurn: 
   - id: 22005
-    dialog: 0
+    dialog: 12
     nature1: 0
     nature2: 0
     nature3: 0
@@ -196,7 +196,7 @@ MonoBehaviour:
     trigger: addAddNum(4)
     nextTurn: 
   - id: 22007
-    dialog: 0
+    dialog: 9
     nature1: 0
     nature2: 0
     nature3: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
     trigger: addNatureAtSumIf(40,1)
     nextTurn: 
   - id: 22008
-    dialog: 0
+    dialog: 13
     nature1: 0
     nature2: 0
     nature3: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
     trigger: changeHandGift()
     nextTurn: 
   - id: 23001
-    dialog: 0
+    dialog: 15
     nature1: 0
     nature2: 0
     nature3: 0

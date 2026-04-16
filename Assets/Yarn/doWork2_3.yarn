@@ -1,29 +1,32 @@
-﻿title: doWork2_1
+title: doWork2_3
 ---
 <<set_background "背景">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 
 
-（{$MY_NAME}今天去快餐店打工了）
-店长: 收银台，拜托了。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+（{$MY_NAME}今天去也在花店打工了）
+
+店主: 今天要做花篮。客人订的。
+<<set_character_sprite {$MY_NAME} "peace_1">>
+{$MY_NAME}: 好。
+（看着店主示范一次）
+店主: 大概就是这样。你试试看。
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: ……嗯。
-（穿上制服，站在收银台前）
-{$MY_NAME}: （好亮。制服好亮。我也好想回家。）
-顾客: 一份薯条，中份的。
-<<set_character_sprite "{$MY_NAME}" "saying">>
-{$MY_NAME}: ……好的。#sfx_Character_Player_好的
-（装薯条的时候装太多了，盖子盖不上）
-{$MY_NAME}: （……算了。）
-顾客: 这薯条是不是有点多？
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
-{$MY_NAME}: ……是。
-顾客: 哦。谢谢？
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
-{$MY_NAME}: 不客气。
+（把花泥放进篮子。开始插花。）
+{$MY_NAME}: （这朵放这里。那朵放那里。）
+店主: 不对，那朵太高了。剪短一点。
+<<set_character_sprite {$MY_NAME} "saying">>
+{$MY_NAME}: 这样？
+店主: 再短一点。
+<<set_character_sprite {$MY_NAME} "saying">>
+{$MY_NAME}: 这样？#sfx_Character_Player_呐呐
+店主: ……算了，就这样吧。挺有个性的。
+<<set_character_sprite "{$MY_NAME}" "happy">>
+{$MY_NAME}: 嗯？谢谢 
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的
