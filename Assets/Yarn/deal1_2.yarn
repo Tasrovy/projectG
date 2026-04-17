@@ -1,6 +1,6 @@
 ﻿title: deal1_2
 ---
-<<set_background box占坑>>
+<<set_background "背景">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bgAir_atmosphereNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
