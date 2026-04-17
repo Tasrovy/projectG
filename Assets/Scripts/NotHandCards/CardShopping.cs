@@ -284,6 +284,7 @@ public class CardShopping : MonoBehaviour
     {
         selectedCard = cardObj;
         Debug.Log($"[CardShopping] 当前选中了商店卡牌: {(cardObj != null && cardObj.card != null ? cardObj.card.name : "null")}");
+        DialogueUIAudio.Instance.PlayCardClickAudio();
     }
 
     /// <summary>

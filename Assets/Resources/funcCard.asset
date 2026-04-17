@@ -79,7 +79,7 @@ MonoBehaviour:
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
+    description: "\u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
     buff: 
     trigger: addNatureAtSum(30,2)
     nextTurn: 
@@ -93,7 +93,7 @@ MonoBehaviour:
     made: 0
     broken: 2
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u89D2\u8272\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
+    description: "\u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: addNatureAtSum(50,1)
     nextTurn: 
@@ -149,7 +149,7 @@ MonoBehaviour:
     made: 0
     broken: 5
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u4ED9\u53F0\u540C\u5B66\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
+    description: "\u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: 
     nextTurn: 
@@ -236,60 +236,4 @@ MonoBehaviour:
     description: "\u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
     buff: 
     trigger: addWIthSameTogether(6,80)
-    nextTurn: 
-  - id: 22201
-    dialog: 0
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: beAdded(4,1)
-    buff: 
-    trigger: beAdded(4,1)
-    nextTurn: 
-  - id: 22202
-    dialog: 0
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: beAddedTo(4,1)
-    buff: 
-    trigger: beAddedTo(88,1)
-    nextTurn: 
-  - id: 22203
-    dialog: 0
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: "\u6D4B\u8BD501@"
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: drawCard(2)
-    buff: 
-    trigger: drawCard(2)
-    nextTurn: 
-  - id: 22204
-    dialog: 0
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: "\u6D4B\u8BD502"
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: addNatureAtSumIf(1,2)
-    buff: 
-    trigger: addNatureAtSumIf(1,2)
     nextTurn: 

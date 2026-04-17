@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
-public class PointTester : MonoBehaviour, IPointerClickHandler
+public class PointTester : MonoBehaviour
 {
     [Header("触发的事件 (可在此绑定Confirm/Skip)")]
     public UnityEvent onClickAction;
@@ -24,11 +23,13 @@ public class PointTester : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    private void Update()
     {
-        if (eventData.button != PointerEventData.InputButton.Left) return;
+        // 高性能过滤：只有按下鼠标左键的那一帧才会进入坐标判断
+        if (!Input.GetMouseButtonDown(0)) return;
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, eventData.position, cachedCamera))
+        // 这里原脚本有冗余的 GetWorldCorners(数组)，其实 RectangleContainsScreenPoint 内部就算过了，直接干掉避免多余算力
+        if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, cachedCamera))
         {
             Debug.Log($"[PointTester] 成功点击到【{gameObject.name}】的四个角框定区域内！");
             onClickAction?.Invoke();
