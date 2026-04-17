@@ -1,6 +1,5 @@
 ﻿title : special1_1
 ---
-{$MY_NAME}
 <<set_background "背景">>
 <<play_bgm daily_日常微风(1)>>
 <<play_whitenoise bgAir_atmosphereNoise2>>
