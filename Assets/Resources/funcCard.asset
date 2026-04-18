@@ -65,10 +65,10 @@ MonoBehaviour:
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269"
+    description: "\u526A\u679D{broken}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u7F55\u89C1\u793C\u7269\u5361"
     buff: 
-    trigger: 
-    nextTurn: addRandomCard(1,1,2)
+    trigger: addRandomCard(1,1,2)
+    nextTurn: 
   - id: 21004
     dialog: 8
     nature1: 0
@@ -135,10 +135,10 @@ MonoBehaviour:
     made: 1
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u666E\u901A\u793C\u7269"
+    description: "\u751F\u679D{made}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u5C5E\u6027\u5361"
     buff: 
-    trigger: 
-    nextTurn: addRandomCard(1,1,1)
+    trigger: addRandomCard(1,1,1)
+    nextTurn: 
   - id: 22003
     dialog: 6
     nature1: 100

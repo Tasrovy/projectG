@@ -51,7 +51,7 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
+    description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
     buff: 
     trigger: addRandomCard(2,1,1)
     nextTurn: 
