@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 2576261519635394348}
   - component: {fileID: 5304106805916645415}
   - component: {fileID: 2576261519635394347}
+  - component: {fileID: 7476589106664679526}
   m_Layer: 5
   m_Name: Option Item
   m_TagString: Untagged
@@ -326,7 +327,7 @@ MonoBehaviour:
   m_margin: {x: 30, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &2576261519635394347
@@ -382,3 +383,30 @@ MonoBehaviour:
     sprite: {fileID: 0}
     colour: {r: 0.5, g: 0.5, b: 0.5, a: 0.5019608}
   disabledStrikeThrough: 1
+--- !u!114 &7476589106664679526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8135782471263027723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 264b7d8ed57b5bf4da825aa789a121ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClickEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7476589106664679526}
+        m_TargetAssemblyTypeName: OptionSoundHelper, Assembly-CSharp
+        m_MethodName: SelectAudioPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

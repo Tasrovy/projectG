@@ -19,6 +19,11 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
         _originalScale = transform.localScale;
     }
 
+    void OnEnable()
+    {
+        _isSelected = false;
+    }
+
     void Update()
     {
         transform.localScale = _isSelected ? _originalScale * 1.1f : _originalScale;
@@ -28,6 +33,16 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
         _isSelected = !_isSelected;
+
+        // 如果当前变为选中，取消同级所有其他 CardDisplayUI 的选中状态
+        if (_isSelected && transform.parent != null)
+        {
+            foreach (var sibling in transform.parent.GetComponentsInChildren<CardDisplayUI>())
+            {
+                if (sibling != this)
+                    sibling._isSelected = false;
+            }
+        }
     }
 
     [Header("卡图资源")] 

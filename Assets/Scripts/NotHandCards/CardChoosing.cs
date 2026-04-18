@@ -183,6 +183,7 @@ public class CardChoosing : MonoBehaviour
         selectedCard = cardObj;
         Debug.Log($"[CardChoosing] 当前选中了卡牌: {(cardObj != null && cardObj.card != null ? cardObj.card.name : "null")}");
         // 如果你需要做UI上的高亮描边显示特效等，可以在这里附加逻辑
+        DialogueUIAudio.Instance.PlayCardClickAudio();
     }
 
     /// <summary>
