@@ -68,31 +68,82 @@ public class CardChoosing : MonoBehaviour
     }
 
     /// <summary>
-    /// 功能1：从 CardManager 随机加载三个不重复的数据到物体上
+    /// 功能1：从 CardManager 根据 DayManager 当天配置的稀有度概率加载三个不重复的数据到物体上
     /// </summary>
     private void LoadRandomCards()
     {
-        if (CardManager.Instance == null)
+        if (CardManager.Instance == null || CardManager.Instance.cardDatas == null || CardManager.Instance.cardDatas.Count < 3)
         {
-            Debug.LogError("[CardChoosing] CardManager.Instance 是空的！可能是执行顺序问题。");
-            return;
-        }
-        if (CardManager.Instance.cardDatas == null || CardManager.Instance.cardDatas.Count == 0)
-        {
-            Debug.LogError("[CardChoosing] CardManager.Instance.cardDatas 为空或为0！牌库没有加载成功。");
-            return;
-        }
-        
-        List<CardData> pool = new List<CardData>(CardManager.Instance.cardDatas);
-        if (pool.Count < 3)
-        {
-            Debug.LogWarning($"[CardChoosing] 牌库数据不足3张！当前数量: {pool.Count}");
+            Debug.LogError("[CardChoosing] 牌库数据异常或不足3张！");
             return;
         }
 
-        AssignCardTo(card1, PopRandom(pool));
-        AssignCardTo(card2, PopRandom(pool));
-        AssignCardTo(card3, PopRandom(pool));
+        // 获取当天的权重配置
+        int dayNum = DayManager.Instance.dayNumber;
+        var dayData = DayManager.Instance.daySO.dayDatas[dayNum];
+        float prob1 = dayData.probRarity1;
+        float prob2 = dayData.probRarity2;
+        float prob3 = dayData.probRarity3;
+
+        // 根据千位稀有度分类卡池
+        List<CardData> pool1 = new List<CardData>();
+        List<CardData> pool2 = new List<CardData>();
+        List<CardData> pool3 = new List<CardData>();
+
+        foreach (var data in CardManager.Instance.cardDatas)
+        {
+            int rarity = (data.id / 1000) % 10; // 解析5位数ID的千位
+            if (rarity == 1) pool1.Add(data);
+            else if (rarity == 2) pool2.Add(data);
+            else if (rarity == 3) pool3.Add(data);
+        }
+
+        AssignCardTo(card1, PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3));
+        AssignCardTo(card2, PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3));
+        AssignCardTo(card3, PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3));
+    }
+
+    /// <summary>
+    /// 按权重随机从三个卡池中抽取一张卡并移除防止重复
+    /// </summary>
+    private CardData PopWeightedRandom(List<CardData> p1, List<CardData> p2, List<CardData> p3, float w1, float w2, float w3)
+    {
+        // 如果某个卡池空了，那么抽到它的实际概率直接降为0
+        float curW1 = p1.Count > 0 ? w1 : 0f;
+        float curW2 = p2.Count > 0 ? w2 : 0f;
+        float curW3 = p3.Count > 0 ? w3 : 0f;
+
+        float totalWeight = curW1 + curW2 + curW3;
+
+        if (totalWeight <= 0f)
+        {
+            Debug.LogError("[CardChoosing] 严重错误：符合条件的卡牌库存全空了！");
+            return null;
+        }
+
+        // 轮盘法进行权重随机
+        float randomVal = Random.Range(0f, totalWeight);
+        List<CardData> selectedPool = null;
+
+        if (randomVal < curW1)
+        {
+            selectedPool = p1;
+        }
+        else if (randomVal < curW1 + curW2)
+        {
+            selectedPool = p2;
+        }
+        else
+        {
+            selectedPool = p3;
+        }
+
+        // 从确定的池子中等概率随机抽取一张卡，并剔除
+        int index = Random.Range(0, selectedPool.Count);
+        CardData data = selectedPool[index];
+        selectedPool.RemoveAt(index);
+
+        return data;
     }
 
     private void AssignCardTo(Transform cardTransform, CardData data)
