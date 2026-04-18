@@ -20,7 +20,7 @@ MonoBehaviour:
     profit: 100
     drawNum: 4
     getCardNum: 2
-    dailyDialog: normalEnd1_1
+    dailyDialog: cardFirstEnd
     specialDialog: 
     target1: 
     target2: 
