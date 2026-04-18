@@ -39,8 +39,8 @@ MonoBehaviour:
     added: 
     description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
     buff: 
-    trigger: addNatureAtSum(30,3)
-    nextTurn: changeProperty(1.5)
+    trigger: addNatureAtSum(30,3);changeProperty(1.5)
+    nextTurn: 
   - id: 3203
     dialog: 2
     nature1: 0
@@ -51,10 +51,10 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
+    description: "\u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
     buff: 
-    trigger: 
-    nextTurn: addRandomCard(2,1,1)
+    trigger: addRandomCard(2,1,1)
+    nextTurn: 
   - id: 33001
     dialog: 12
     nature1: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u89D2\u8272\u83B7\u5F97\u5C5E\u6027\u4E09\uFF08\u89D2\u8272\u5C5E\u6027\u4E00/2\uFF09\u70B9"
+    description: "\u8482\u5A1C\u83B7\u5F97\u5C5E\u6027\u4E09\uFF08\u8482\u5A1C\u5C5E\u6027\u4E00/2\uFF09\u70B9"
     buff: 
     trigger: addNatureByOther(3,1)
     nextTurn: 
