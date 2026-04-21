@@ -112,7 +112,7 @@ public class CardEffect : Singleton<CardEffect>
             if (giftCardNum <= 0)
             {
                 Debug.Log($"{currentChainCard.name} 技能发动失败：手牌中没有合法的目标牌可供选择！");
-                ShengZhiAndJianZhiHelper.Instance.RestoreCallerCardOnInvalidTarget();
+                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
                 StartExecutingNextChain();
                 return;
             }
@@ -129,7 +129,7 @@ public class CardEffect : Singleton<CardEffect>
             if (giftCardNum < threshold)
             {
                 Debug.Log($"{currentChainCard.name} 消耗失败：礼品卡不足，停止执行当前效果链");
-                ShengZhiAndJianZhiHelper.Instance.RestoreCallerCardOnInvalidTarget();
+                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
                 StartExecutingNextChain();
                 return;
             }
@@ -200,28 +200,28 @@ public class CardEffect : Singleton<CardEffect>
     {
         if (num == 0 || times == 0) return;
         // 唤起 UI，开启连续选牌模式
-        ShengZhiAndJianZhiHelper.Instance.ShengZhang(num, times);
+        CardSubmitHelper.Instance.ShengZhang(num, times);
     }
 
     public void beAddedTo(int num)
     {
         if (num == 0) return;
-        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
-        ShengZhiAndJianZhiHelper.Instance.ShengZhangTo(num);
+        CardSubmitHelper.Instance.SetNum(num);
+        CardSubmitHelper.Instance.ShengZhangTo(num);
     }
 
     public void beMade(int num)
     {
         if (num == 0) return;
-        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
-        ShengZhiAndJianZhiHelper.Instance.ShengZhi(); // 呼叫UI
+        CardSubmitHelper.Instance.SetNum(num);
+        CardSubmitHelper.Instance.ShengZhi(); // 呼叫UI
     }
 
     public void beBroken(int num)
     {
         if (num == 0) return;
-        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
-        ShengZhiAndJianZhiHelper.Instance.JianZhi(); // 呼叫UI
+        CardSubmitHelper.Instance.SetNum(num);
+        CardSubmitHelper.Instance.JianZhi(); // 呼叫UI
     }
 
     public void addAddNum(int num) => CallerCard?.TryModifyAddedValue(num);
@@ -339,22 +339,22 @@ public class CardEffect : Singleton<CardEffect>
     public void _beMadeDirect(int num)
     {
         if (CallerCard == null || num == 0) return;
-        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
-        ShengZhiAndJianZhiHelper.Instance.ShengZhi();
+        CardSubmitHelper.Instance.SetNum(num);
+        CardSubmitHelper.Instance.ShengZhi();
     }
 
     public void _beBrokenDirect(int num)
     {
         if (CallerCard == null || num == 0) return;
-        ShengZhiAndJianZhiHelper.Instance.SetNum(num);
-        ShengZhiAndJianZhiHelper.Instance.JianZhi();
+        CardSubmitHelper.Instance.SetNum(num);
+        CardSubmitHelper.Instance.JianZhi();
     }
 
     public void _beAddedDirect(int num, int times = 1)
     {
         if (CallerCard == null || num == 0 || times == 0) return;
         // 唤起 UI，开启连续选牌模式
-        ShengZhiAndJianZhiHelper.Instance.ShengZhang(num, times);
+        CardSubmitHelper.Instance.ShengZhang(num, times);
     }
 
     public void _onTriggerFinalize()
