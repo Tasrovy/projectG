@@ -5,34 +5,45 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// 纯展示用的卡牌UI脚本，没有拖拽和选中逻辑
 /// </summary>
-public class CardDisplayUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
 {
     public Image baseImage;
     public Text nameText;
     public Text descriptionText;
 
     private Vector3 _originalScale;
-    private bool _isHovered = false;
+    private bool _isSelected = false;
 
     void Awake()
     {
         _originalScale = transform.localScale;
     }
 
-    void Update()
+    void OnEnable()
     {
-        if (_isHovered && !Input.GetMouseButton(0))
-        {
-            transform.localScale = _originalScale * 1.1f;
-        }
-        else
-        {
-            transform.localScale = _originalScale;
-        }
+        _isSelected = false;
     }
 
-    public void OnPointerEnter(PointerEventData eventData) => _isHovered = true;
-    public void OnPointerExit(PointerEventData eventData) => _isHovered = false;
+    void Update()
+    {
+        transform.localScale = _isSelected ? _originalScale * 1.1f : _originalScale;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        _isSelected = !_isSelected;
+
+        // 如果当前变为选中，取消同级所有其他 CardDisplayUI 的选中状态
+        if (_isSelected && transform.parent != null)
+        {
+            foreach (var sibling in transform.parent.GetComponentsInChildren<CardDisplayUI>())
+            {
+                if (sibling != this)
+                    sibling._isSelected = false;
+            }
+        }
+    }
 
     [Header("卡图资源")] 
     public Sprite commonSprite;

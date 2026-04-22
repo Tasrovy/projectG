@@ -1,12 +1,12 @@
 ﻿title: cardFirstEnd
 ---
-<<set_background roomGround占坑>>
+<<set_background "黑夜素材">>
 <<play_bgm littleSad_黄昏分岔口(1)>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Playerr {$MY_NAME} peace_1>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character "伊兰莉特" peace_2>>
 <<set_character_sprite {$MY_NAME} sad>>
 （透过被泪水模糊的眼睛，我好像看到--）
-<<set_character_person Character "蒂娜" peace_1>>
 <<set_character_sprite "蒂娜" peace_1>>
 ？？？ : 你好啊，人类。#sfx_Character_主角2_嗯哼
 <<set_character_sprite "蒂娜" saying>>
@@ -44,6 +44,31 @@
 蒂娜 :太！好！啦！#sfx_Character_主角2_真棒
 （蒂娜原地转了个圈，裙摆险些撞到那些未收拾的书堆和杂物，坐回了匣子上。
 蒂娜 :我会一直在这里等你哦！
+
+{$MY_NAME}:嗯，时候也不早了我要入睡了。
+<<clear_character_person Character>>
+（躺在卧室的床上进入了梦乡）
+
+//<<调用日历进入第二天的动效>>
+//白天素材
+<<set_background "白天素材">>
+醒来的时候是早上七点。
+我躺在床上，盯着天花板上那盏没开的灯。
+窗帘拉着，光透不进来，房间里暗暗的。
+伸出手，张开五指，在昏暗里看自己的手指。
+<<set_character_sprite {$MY_NAME} "peace_2">>
+{$MY_NAME}:(明明睡了很久，身体却还是很重。)
+<<set_character_sprite {$MY_NAME} "peace_1">>
+{$MY_NAME}:(枕头旁边放着手机。没有新讯息。当然没有。<b><color=green>伊兰莉特</color></b>已经不在了。)
+//增加一句关于蒂娜的对话？
+我把手机翻过来，萤幕朝下。
+<<set_character_sprite {$MY_NAME} "saying">>
+{$MY_NAME}:今天做什么好呢。
+<<set_character_sprite {$MY_NAME} "peace_2">>
+{$MY_NAME}:不知道。
+把棉被拉上来，盖住脸。
+再睡一下好了。
+
 
 
 ===

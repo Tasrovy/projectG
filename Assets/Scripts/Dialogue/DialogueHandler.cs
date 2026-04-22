@@ -267,18 +267,24 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator StartDialogueRoutine(string yarnScript)
     {
-        // 保证顺序：先执行转场黑屏
-        Debug.Log($"[DialogueHandler][StartDialogueRoutine] 开始为 '{yarnScript}' 播放转场动画...");
-        yield return TransitionManager.Instance.PlayTransition();
-        Debug.Log($"[DialogueHandler][StartDialogueRoutine] 转场完毕，开始等待 talk 物体激活...");
-
-        // 如果当前场景没有 talk（例如从商店/打工场景触发），主动切换到 Talk 场景
+        // 提前判断是否需要切换场景——必须在转场前判断，否则黑屏后再切会被玩家看到
         GameObject talkCheck = GameObject.Find("Canvas/talk");
-        if (talkCheck == null || !talkCheck.activeInHierarchy)
+        bool needsSceneSwitch = (talkCheck == null || !talkCheck.activeInHierarchy);
+
+        if (needsSceneSwitch)
         {
-            Debug.Log($"[DialogueHandler][StartDialogueRoutine] 当前场景无 talk，主动切换到 Talk 场景...");
-            if (UISceneManager.Instance != null)
-                UISceneManager.Instance.SwitchToScene(SceneType.Talk);
+            // 只有需要切场景时才播放转场，且把 SwitchToScene 放进 midPoint 回调，保证切换动作发生在黑屏正中央
+            Debug.Log($"[DialogueHandler][StartDialogueRoutine] 当前场景无 talk，播放转场并在黑屏中切换到 Talk 场景...");
+            yield return TransitionManager.Instance.PlayTransition(() =>
+            {
+                if (UISceneManager.Instance != null)
+                    UISceneManager.Instance.SwitchToScene(SceneType.Talk);
+            });
+        }
+        else
+        {
+            // 已在 Talk 场景，无需入场转场，直接进入
+            Debug.Log($"[DialogueHandler][StartDialogueRoutine] 已在 Talk 场景，跳过入场转场，直接启动对话: {yarnScript}");
         }
 
         // 【强制阻塞】：等到场景内名叫 "talk" 的物体被激活后，才允许Yarn开始执行指令和加载物体
@@ -391,7 +397,9 @@ public class DialogueHandler : MonoBehaviour
             // 所以这里先清掉，防止 StartDialogueRoutine 里的"主动补切 Talk"和后续真正的场景切换冲突
             willSwitchScene = false;
 
-            StartDialogue(nextScript);
+            // 此时 isHandlingDialogueSequence 仍为 true，StartDialogue 会把节点再次入队而非执行，造成死锁。
+            // 直接启动 StartDialogueRoutine 协程，保持锁的持有状态，无缝衔接下一段对话。
+            StartCoroutine(StartDialogueRoutine(nextScript));
             yield break;
         }
 

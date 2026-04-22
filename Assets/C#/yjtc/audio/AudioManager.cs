@@ -435,8 +435,7 @@ public class AudioManager : MonoBehaviour
     {
         return (float)(rand.NextDouble() * (lowMaxPitch - lowMinPitch) + lowMinPitch);
     }
-    #endregion
-
+    
     /// <summary>
     /// 清理对象池（在场景切换或游戏结束时调用）
     /// </summary>
@@ -449,4 +448,5 @@ public class AudioManager : MonoBehaviour
     {
         ClearPool();
     }
+    #endregion
 }

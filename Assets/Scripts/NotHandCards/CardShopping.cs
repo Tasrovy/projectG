@@ -9,14 +9,6 @@ public class CardShopping : MonoBehaviour
     private GameObject blackOverlay;
     private Transform[] sellCards = new Transform[6];
 
-    [Tooltip("概率值，从0到100")]
-    [Range(0, 100)][SerializeField][Header("不稀有")]
-    private int CardChance_1 = 60;
-    [Range(0, 100)][SerializeField][Header("一般")]
-    private int CardChance_2 = 30;
-    [Range(0, 100)][SerializeField][Header("稀有")]
-    private int CardChance_3 = 10;
-
     private CardObject selectedCard;
 
     private void Awake()
@@ -75,102 +67,114 @@ public class CardShopping : MonoBehaviour
     }
 
     /// <summary>
-    /// 从 CardManager 随机加载6个不重复的数据到物体上
+    /// 从 CardManager 根据 DayManager 当天配置的稀有度概率加载6个不重复的数据到物体上
     /// </summary>
     private void LoadRandomCards()
     {
-        if (CardManager.Instance == null || CardManager.Instance.cardDatas == null || CardManager.Instance.cardDatas.Count == 0)
+        if (CardManager.Instance == null || CardManager.Instance.cardDatas == null || CardManager.Instance.cardDatas.Count < 6)
         {
-            Debug.LogError("[CardShopping] 牌库数据为空或 CardManager 尚未初始化！");
+            Debug.LogError("[CardShopping] 牌库数据异常或不足6张！");
             return;
         }
-        
-        List<CardData> pool = new List<CardData>(CardManager.Instance.cardDatas);
-        if (pool.Count < 6)
+
+        // 获取当天的权重配置
+        int dayNum = DayManager.Instance.dayNumber;
+        var dayData = DayManager.Instance.daySO.dayDatas[dayNum];
+        float prob1 = dayData.probRarity1;
+        float prob2 = dayData.probRarity2;
+        float prob3 = dayData.probRarity3;
+
+        // 根据千位稀有度分类卡池
+        List<CardData> pool1 = new List<CardData>();
+        List<CardData> pool2 = new List<CardData>();
+        List<CardData> pool3 = new List<CardData>();
+
+        foreach (var data in CardManager.Instance.cardDatas)
         {
-            Debug.LogWarning($"[CardShopping] 牌库数据不足6张！当前数量: {pool.Count}");
+            int rarity = (data.id / 1000) % 10;
+            if (rarity == 1) pool1.Add(data);
+            else if (rarity == 2) pool2.Add(data);
+            else if (rarity == 3) pool3.Add(data);
         }
 
-        // 决定6个卡位的类型要求，保证三种类型至少各出现一次
-        List<int> requiredTypes = new List<int> { 1, 2, 3, 0, 0, 0 }; 
-        // 0代表任意类型
-        
-        // 打乱类型要求
-        for (int i = 0; i < requiredTypes.Count; i++)
+        // 保底机制：连续4次未获得礼物牌时，强制第一个卡位为礼物牌（id万位为1）
+        bool pityActive = CardManager.Instance.consecutiveNonGiftCount >= 4;
+        CardData forcedGift = null;
+        if (pityActive && CardManager.Instance.giftCards != null && CardManager.Instance.giftCards.Count > 0)
         {
-            int temp = requiredTypes[i];
-            int randomIndex = Random.Range(i, requiredTypes.Count);
-            requiredTypes[i] = requiredTypes[randomIndex];
-            requiredTypes[randomIndex] = temp;
+            int gIdx = Random.Range(0, CardManager.Instance.giftCards.Count);
+            forcedGift = CardManager.Instance.giftCards[gIdx];
+            pool1.RemoveAll(d => d.id == forcedGift.id);
+            pool2.RemoveAll(d => d.id == forcedGift.id);
+            pool3.RemoveAll(d => d.id == forcedGift.id);
+            Debug.Log($"[CardShopping] 保底触发！强制插入礼物牌: {forcedGift.name}");
         }
 
-        for (int i = 0; i < 6 && pool.Count > 0; i++)
+        // 保底触发时 forcedGift 绕过了 PopWeightedRandom，需在此处单独更新计数
+        if (forcedGift != null)
         {
-            CardData selectedData = PopRandomWeighted(pool, requiredTypes[i]);
-            if (selectedData != null)
-            {
-                AssignCardTo(sellCards[i], selectedData);
-            }
+            CardManager.Instance.consecutiveNonGiftCount = 0;
+            Debug.Log("[CardShopping] 保底礼物牌直接插入，计数重置为0。");
         }
+
+        for (int i = 0; i < sellCards.Length; i++)
+        {
+            CardData selectedData = (i == 0 && forcedGift != null)
+                ? forcedGift
+                : PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
+            if (selectedData == null) continue;
+            AssignCardTo(sellCards[i], selectedData);
+        }
+        Debug.Log($"[CardShopping] 本轮生成完毕，保底计数: {CardManager.Instance.consecutiveNonGiftCount}");
     }
 
-    private CardData PopRandomWeighted(List<CardData> pool, int requiredType)
+    /// <summary>
+    /// 按权重随机从三个卡池中抽取一张卡并移除防止重复（与 CardChoosing 共用同一逻辑）
+    /// </summary>
+    private CardData PopWeightedRandom(List<CardData> p1, List<CardData> p2, List<CardData> p3, float w1, float w2, float w3)
     {
-        // 1. 筛选符合类型要求的卡牌
-        List<CardData> validCards = new List<CardData>();
-        foreach (var card in pool)
+        // 如果某个卡池空了，那么抽到它的实际概率直接降为0
+        float curW1 = p1.Count > 0 ? w1 : 0f;
+        float curW2 = p2.Count > 0 ? w2 : 0f;
+        float curW3 = p3.Count > 0 ? w3 : 0f;
+
+        float totalWeight = curW1 + curW2 + curW3;
+
+        if (totalWeight <= 0f)
         {
-            int cardType = card.id / 10000;
-            if (requiredType == 0 || cardType == requiredType)
-            {
-                validCards.Add(card);
-            }
+            Debug.LogError("[CardShopping] 严重错误：符合条件的卡牌库存全空了！");
+            return null;
         }
 
-        // 如果没有符合类型的卡牌（比如某类型卡牌已经被抽完），则降级为不限制类型
-        if (validCards.Count == 0 && requiredType != 0)
+        // 轮盘法进行权重随机
+        float randomVal = Random.Range(0f, totalWeight);
+        List<CardData> selectedPool = null;
+
+        if (randomVal < curW1)
         {
-            validCards.AddRange(pool);
+            selectedPool = p1;
+        }
+        else if (randomVal < curW1 + curW2)
+        {
+            selectedPool = p2;
+        }
+        else
+        {
+            selectedPool = p3;
         }
 
-        if (validCards.Count == 0) return null;
+        // 从确定的池子中等概率随机抽取一张卡，并剔除
+        int index = Random.Range(0, selectedPool.Count);
+        CardData data = selectedPool[index];
+        selectedPool.RemoveAt(index);
 
-        // 2. 根据稀有度计算权重
-        // 稀有度：(id / 1000) % 10，假设1为普通, 2为稀有, 3为史诗
-        // 权重可以自己调整，这里假设 1: 60, 2: 30, 3: 10
-        int totalWeight = 0;
-        List<int> weights = new List<int>();
+        // 无论何种原因抽到礼物牌都重置保底计数，否则+1
+        if (data.id / 10000 == 1)
+            CardManager.Instance.consecutiveNonGiftCount = 0;
+        else
+            CardManager.Instance.consecutiveNonGiftCount++;
 
-        foreach (var card in validCards)
-        {
-            int rarity = (card.id / 1000) % 10;
-            int weight = 10; // 默认权重
-            if (rarity == 1) weight = CardChance_1;
-            else if (rarity == 2) weight = CardChance_2;
-            else if (rarity == 3) weight = CardChance_3;
-
-            weights.Add(weight);
-            totalWeight += weight;
-        }
-
-        // 3. 随机抽取
-        int randomValue = Random.Range(0, totalWeight);
-        int currentWeight = 0;
-        int selectedIndex = 0;
-
-        for (int i = 0; i < validCards.Count; i++)
-        {
-            currentWeight += weights[i];
-            if (randomValue < currentWeight)
-            {
-                selectedIndex = i;
-                break;
-            }
-        }
-
-        CardData selectedData = validCards[selectedIndex];
-        pool.Remove(selectedData);
-        return selectedData;
+        return data;
     }
 
     private void AssignCardTo(Transform cardTransform, CardData data)
@@ -284,6 +288,7 @@ public class CardShopping : MonoBehaviour
     {
         selectedCard = cardObj;
         Debug.Log($"[CardShopping] 当前选中了商店卡牌: {(cardObj != null && cardObj.card != null ? cardObj.card.name : "null")}");
+        DialogueUIAudio.Instance.PlayCardClickAudio();
     }
 
     /// <summary>

@@ -4,24 +4,24 @@
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 （今天也在快餐店打工）
 店长: 今天客人比较多，辛苦你了。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 嗯。
 （站在饮料机前面）
 顾客: 一杯可乐，去冰。
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 {$MY_NAME}: 好的。
 （按下按钮。可乐流出来的声音咕噜咕噜的。）
 顾客: ……那个，可乐满出来了。
-<<set_character_sprite "{$MY_NAME}" "sad">>
+<<set_character_sprite {$MY_NAME} "sad">>
 {$MY_NAME}: 啊。#sfx_Character_Player_ono
 （杯子已经溢出来了）
-<<set_character_sprite "{$MY_NAME}" "saying">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: ……我重新装一杯。
 顾客: 不用了，这样就好。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 是吗。谢谢。
 
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy

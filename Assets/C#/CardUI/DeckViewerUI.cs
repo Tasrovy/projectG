@@ -51,9 +51,14 @@ public class DeckViewerUI : Singleton<DeckViewerUI>
 
         // 绑定卡组图标点击事件: DUELUI -> CardSet
         Button btn = DUELUIObjectManager.Instance.GetCardSetGameObject().GetComponent<Button>();
+        PointTester pt = btn.GetComponent<PointTester>();
         if (btn != null)
         {
             btn.onClick.AddListener(OnClickDeckPile);
+        }
+        if (pt != null)
+        {
+            pt.onClickAction.AddListener(OnClickDeckPile);
         }
     }
 

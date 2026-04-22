@@ -19,6 +19,13 @@ public class UISceneManager : MonoBehaviour
     [Header("常驻显示节点 (一直显示)")]
     [SerializeField] private GameObject[] alwaysShowRoots; // 常驻显示的GameObjects
 
+    [Header("BGM 设置")]
+    [Tooltip("配置每个场景对应的BGM文件夹（资源需放在 Resources/Sound/bgm/ 下）")]
+    public List<SceneFolderConfig> sceneBGMConfigs = new List<SceneFolderConfig>();
+
+    private Dictionary<SceneType, string> bgmFolderDictionary = new Dictionary<SceneType, string>();
+    private Coroutine currentBgmCoroutine;
+
     public SceneType testChange;
 
     // 单例模式，以便全局调用
@@ -33,6 +40,15 @@ public class UISceneManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // 初始化字典
+        foreach (var config in sceneBGMConfigs)
+        {
+            if (!bgmFolderDictionary.ContainsKey(config.sceneType))
+            {
+                bgmFolderDictionary.Add(config.sceneType, config.folderName);
+            }
+        }
     }
 
     private void Start()
@@ -117,6 +133,64 @@ public class UISceneManager : MonoBehaviour
                 if (namingRoot != null) namingRoot.SetActive(true);
                 break;
         }
+
+        // 处理场景切换后的 BGM 逻辑
+        PlayBGMForScene(sceneType);
+    }
+
+    /// <summary>
+    /// 播放该场景对应的 BGM 列表
+    /// </summary>
+    private void PlayBGMForScene(SceneType sceneType)
+    {
+        if (currentBgmCoroutine != null)
+        {
+            StopCoroutine(currentBgmCoroutine);
+            currentBgmCoroutine = null;
+        }
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopBGM();
+        }
+
+        if (bgmFolderDictionary.TryGetValue(sceneType, out string folderName) && !string.IsNullOrEmpty(folderName))
+        {
+            currentBgmCoroutine = StartCoroutine(BgmRoutine(folderName));
+        }
+    }
+
+    private IEnumerator BgmRoutine(string folderName)
+    {
+        // 动态加载该文件夹下所有的音频（注意：需要将音频放在 Resources/Sound/bgm/ 对应文件夹下）
+        AudioClip[] clips = Resources.LoadAll<AudioClip>($"Sound/bgm/{folderName}");
+
+        if (clips == null || clips.Length == 0)
+        {
+            Debug.LogWarning($"[UISceneManager] 未在该文件夹找到音频文件: Sound/bgm/{folderName}");
+            yield break;
+        }
+
+        while (true)
+        {
+            // 随机挑一首歌
+            int randomIndex = Random.Range(0, clips.Length);
+            AudioClip clip = clips[randomIndex];
+
+            if (clip != null && AudioManager.Instance != null)
+            {
+                // 使用 AudioManager 播放这首 BGM（相对路径：文件夹名/音频名）
+                AudioManager.Instance.PlayBGM($"{folderName}/{clip.name}");
+                
+                // 等待这首 BGM 播放完
+                // 为了防止AudioManager的loop导致末尾重复播放，可稍微提前0.05秒切歌
+                yield return new WaitForSeconds(clip.length - 0.05f);
+            }
+            else
+            {
+                yield return null;
+            }
+        }
     }
 
     /// <summary>
@@ -150,4 +224,11 @@ public enum SceneType
     Work,
     Naming,
     End
+}
+
+[System.Serializable]
+public struct SceneFolderConfig
+{
+    public SceneType sceneType;
+    public string folderName; // Unity 面板填入对应的文件夹名称
 }

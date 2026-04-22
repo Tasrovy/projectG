@@ -26,7 +26,7 @@ public class testSOund : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.A))
         {
-            
+            UISceneManager.Instance.SwitchToScene(SceneType.Naming);
         }
 
     }

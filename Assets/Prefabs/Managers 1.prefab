@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 3304321047460560209}
   - component: {fileID: 7085140586571006721}
   - component: {fileID: 5844406895980773212}
+  - component: {fileID: 4544418261533419066}
   m_Layer: 0
   m_Name: Managers 1
   m_TagString: Untagged
@@ -88,6 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayNumber: 0
   daySO: {fileID: 11400000, guid: 25d7647c376de7744a0fa4822a2adfc2, type: 2}
+  dayText: {fileID: 0}
 --- !u!114 &4577431768715865317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,7 +112,7 @@ MonoBehaviour:
   - giftCard.xlsx
   - funcCard.xlsx
   - eventCard.xlsx
-  useInitialHandFromExcel: 0
+  useInitialHandFromExcel: 1
   initialHandExcelPath: initialHand.xlsx
 --- !u!114 &588924484645409348
 MonoBehaviour:
@@ -279,3 +281,15 @@ MonoBehaviour:
   fadeOutDuration: 0.25
   useFadeOut: 1
   portraitResourcePath: Portraits/BattlePortrait
+--- !u!114 &4544418261533419066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be7891edc4c725b40bb8e3f88b5aceec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

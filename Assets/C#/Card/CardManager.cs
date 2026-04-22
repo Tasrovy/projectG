@@ -5,8 +5,10 @@ using UnityEngine;
 public class CardManager : Singleton<CardManager>
 {
     public List<CardData> cardDatas = new List<CardData>();
+    public List<CardData> giftCards = new List<CardData>();
     public List<Card> cardSet = new List<Card>();
     public List<Card> cardInHand = new List<Card>();
+    [HideInInspector] public int consecutiveNonGiftCount = 0; // 礼物牌保底计数：连续未抽到礼物牌的次数
 
     protected override bool IsPersistent => true;
 
@@ -39,6 +41,7 @@ public class CardManager : Singleton<CardManager>
         InitializeServices();
 
         LoadAllCards();
+        FilterGiftCards();
         ImplementCardSet();
         ApplyInitialHandFromExcel();
     }
@@ -101,6 +104,22 @@ public class CardManager : Singleton<CardManager>
     }
 
     // ===================== 数据与牌堆（Repository + Deck） =====================
+    /// <summary>
+    /// 从 cardDatas 中筛选 ID 最高位（万位）为 1 的卡牌到 giftCards 列表
+    /// </summary>
+    private void FilterGiftCards()
+    {
+        giftCards.Clear();
+        foreach (var data in cardDatas)
+        {
+            if (data.id / 10000 == 1)
+            {
+                giftCards.Add(data);
+            }
+        }
+        Debug.Log($"[CardManager] FilterGiftCards 完成，共筛选到 {giftCards.Count} 张礼物卡。");
+    }
+
     public void LoadAllCards()
     {
         _repositoryService.LoadAllCards();

@@ -5,14 +5,14 @@ title: normalEnd1_4
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 林奈，你累了吗？
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 还好。
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 那你陪我再聊一下嘛。
-<<set_character_sprite "{$MY_NAME}" "saying">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 聊什么。
 <<set_character_sprite "伊兰莉特" "happy">>
 蒂娜: 嗯……你以前的事？
@@ -24,16 +24,16 @@ title: normalEnd1_4
 {$MY_NAME}:（今天看了一部动画。）
 女主角与另一位女二一起逃课了，到体育馆二楼一起打乒乓球，休息的时候，女主就躺在女二的腿上，聊着一天的事，氛围很温暖
 我按了暂停。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}:（好眼熟。不是说我。我没有那样看过谁。只是……那种心跳声，好像在哪里听过。）
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜 :林奈，为什么不继续看了？
 蒂娜从匣子边缘探出头。
-<<set_character_sprite "{$MY_NAME}" "saying">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}:没什么。#sfx_Character_Player_唉？
 蒂娜 :你的脸有点红喔。
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
-<<set_character_shake "{$MY_NAME}" left_right>>
+<<set_character_sprite {$MY_NAME} "peace_1">>
+<<set_character_shake {$MY_NAME} left_right>>
 {$MY_NAME}:……是天气太热。
 
 ===

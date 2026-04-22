@@ -5,19 +5,20 @@ title: normalEnd1_2
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜 :把牌收进匣子，像树收起叶子，我们明天见。 #sfx_Character_主角2_嗯哼
 {$MY_NAME}:嗯，我去睡觉了
+<<clear_character_person Character>>
 （进入了梦乡）
 //<<调用日历进入第二天的动效>>
 <<set_background "白天素材">>
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}:看看<b><color=green>伊兰莉特</color></b>的匣子吧#sfx_Character_Player_好好
 我把匣子拿起来，放在腿上。
 很轻。
 木头表面有一些磨损的痕迹。
-<<set_character_sprite "{$MY_NAME}" "sad">>
+<<set_character_sprite {$MY_NAME} "sad">>
 {$MY_NAME}:<b><color=green>伊兰莉特</color></b>以前一定经常碰它吧。
 纸条上的字被我的拇指遮住了。
 我把匣子放回地毯上。

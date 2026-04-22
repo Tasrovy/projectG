@@ -11,45 +11,32 @@ public class PointTester : MonoBehaviour
     public bool hideOnClick = false;
 
     private RectTransform rectTransform;
-    private Canvas parentCanvas;
-    
-    // 用于保存四个角的数组
-    private Vector3[] worldCorners = new Vector3[4];
+    private Camera cachedCamera;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        parentCanvas = GetComponentInParent<Canvas>();
+        Canvas parentCanvas = GetComponentInParent<Canvas>();
+        if (parentCanvas != null && parentCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        {
+            cachedCamera = parentCanvas.worldCamera;
+        }
     }
 
     private void Update()
     {
-        // 监听鼠标左键点击
-        if (Input.GetMouseButtonDown(0))
+        // 高性能过滤：只有按下鼠标左键的那一帧才会进入坐标判断
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        // 这里原脚本有冗余的 GetWorldCorners(数组)，其实 RectangleContainsScreenPoint 内部就算过了，直接干掉避免多余算力
+        if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, cachedCamera))
         {
-            // 实时获取当前物体在世界空间中的四个角坐标：
-            // [0] 左下, [1] 左上, [2] 右上, [3] 右下
-            rectTransform.GetWorldCorners(worldCorners);
+            Debug.Log($"[PointTester] 成功点击到【{gameObject.name}】的四个角框定区域内！");
+            onClickAction?.Invoke();
 
-            // 获取相应的相机 (如果是 Overlay 模式则为 null)
-            Camera currentCamera = null;
-            if (parentCanvas != null && parentCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            if (hideOnClick)
             {
-                currentCamera = parentCanvas.worldCamera;
-            }
-
-            // RectTransformUtility.RectangleContainsScreenPoint 的底层逻辑就是：
-            // 检测传递进来的屏幕点(Input.mousePosition)是否在这四个角(worldCorners)构成的矩形区域内。
-            // 这个方法完美兼容了被旋转、缩放或者不同Canvas下的情况
-            if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, currentCamera))
-            {
-                Debug.Log($"[PointTester] 成功点击到【{gameObject.name}】的四个角框定区域内！");
-                onClickAction?.Invoke(); // 触发UnityEvent
-
-                if (hideOnClick)
-                {
-                    gameObject.SetActive(false); // 隐藏自己
-                }
+                gameObject.SetActive(false);
             }
         }
     }
@@ -62,3 +49,4 @@ public class PointTester : MonoBehaviour
         gameObject.SetActive(false);
     }
 }
+

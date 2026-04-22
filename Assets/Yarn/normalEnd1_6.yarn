@@ -5,10 +5,10 @@ title: normalEnd1_6
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 <<set_character_sprite "伊兰莉特" "happy">>
 蒂娜: {$MY_NAME}，明天见。我会想你的。
-<<set_character_sprite "{$MY_NAME}" "saying">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 只是睡一觉而已。
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 可是睡觉的时候看不到你啊。
@@ -19,7 +19,7 @@ title: normalEnd1_6
 <<set_background "白天素材">>
 <<set_character_sprite "伊兰莉特" saying>>
 蒂娜 :你有朋友吗？
-<<set_character_sprite "{$MY_NAME}" sad>>
+<<set_character_sprite {$MY_NAME} sad>>
 {$MY_NAME}:以前有。
 <<set_character_sprite "伊兰莉特" peace_1>>
 蒂娜 :现在呢？
@@ -28,7 +28,7 @@ title: normalEnd1_6
 我看着她发牌的手指。小小的，很白。指尖有一点点透明，像嫩芽。
 <<set_character_sprite "伊兰莉特" saying>>
 蒂娜 :那我现在算你的朋友吗？
-<<set_character_sprite "{$MY_NAME}" peace_2>>
+<<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:算吧#sfx_Character_Player_嗯
 <<set_character_sprite "伊兰莉特" happy>>
 <<set_character_shake "伊兰莉特" up_down>>

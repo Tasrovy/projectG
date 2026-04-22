@@ -5,11 +5,11 @@ title: simpleEnd1_3
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 <<set_character_sprite "伊兰莉特" peace_1>>
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 林奈，你今天笑了两次。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 有吗。
 <<set_character_sprite "伊兰莉特" "happy">>
 蒂娜: 有。我都有在数。
@@ -18,15 +18,15 @@ title: simpleEnd1_3
 （进入了梦乡）
 
 <<set_background "白天素材">>
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 {$MY_NAME}: 下雨了。
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 你喜欢下雨吗？
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 不讨厌。
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 为什么？
-<<set_character_sprite "{$MY_NAME}" "saying">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 下雨的时候，待在家里就变得很有道理。
 
 

@@ -5,10 +5,10 @@ title: simpleEnd1_2
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite "{$MY_NAME}" peace_1>>
+<<set_character_sprite {$MY_NAME} peace_1>>
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 林奈，你今天好像一直在想事情。
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 没有。
 <<set_character_sprite "伊兰莉特" "peace_1">>
 蒂娜: 有。不过我不问了。等你愿意说的时候再说。
@@ -20,15 +20,15 @@ title: simpleEnd1_2
 <<set_background "白天素材">>
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 林奈，暑假过一半了。
-<<set_character_sprite "{$MY_NAME}" "peace_1">>
+<<set_character_sprite {$MY_NAME} "peace_1">>
 {$MY_NAME}: 是吗。
 <<set_character_sprite "伊兰莉特" "peace_2">>
 蒂娜: 你没有想做的事吗？
-<<set_character_sprite "{$MY_NAME}" "peace_2">>
+<<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 没有。
 <<set_character_sprite "伊兰莉特" "saying">>
 蒂娜: 一件都没有？
-<<set_character_sprite "{$MY_NAME}" "happy">>
+<<set_character_sprite {$MY_NAME} "happy">>
 {$MY_NAME}: ……现在这样就很好。
 
 
