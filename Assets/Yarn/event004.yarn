@@ -1,0 +1,12 @@
+﻿title: event004
+---
+<<set_background "黑夜素材">>
+<<play_bgm daily_日常微风2>>
+<<play_whitenoise bg1_bgWhiteNoise2>>
+<<set_character_person Player {$MY_NAME} peace_1>>
+<<set_character_person Character "伊兰莉特" peace_2>>
+蒂娜 :光合作用也需要休息，今天就到这里吧 #sfx_Character_主角2_嗯
+{$MY_NAME}:嗯，时候也不早了我要入睡了。
+（躺在卧室的床上进入了梦乡）
+
+===
