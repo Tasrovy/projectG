@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Text.RegularExpressions;
 
 [System.Serializable]
 public class EffectCommand
@@ -33,8 +31,6 @@ public class CardData
 [System.Serializable]
 public class Card
 {
-    private static int s_triggerInvokeSerial = 0;
-
     public int id;
     public int dialog;
     public int nature1;
@@ -50,23 +46,24 @@ public class Card
     public string description;
     public string nextTurn;
 
-    // --- 被动生命周期效果列表 (仅当字段为字符串函数时，在 OnMade/OnBroken/OnAdded 中触发) ---
-    private List<EffectCommand> madeEffects = new List<EffectCommand>();
-    private List<EffectCommand> brokenEffects = new List<EffectCommand>();
-    private List<EffectCommand> addedEffects = new List<EffectCommand>();
-    
-    // --- 主动打出条件效果列表 (仅当字段为纯数字时，在 OnTrigger 中作为前置条件触发) ---
-    private List<EffectCommand> triggerMadeEffects = new List<EffectCommand>();
-    private List<EffectCommand> triggerBrokenEffects = new List<EffectCommand>();
-    private List<EffectCommand> triggerAddedEffects = new List<EffectCommand>();
+    [NonSerialized] private CardEffectPlan _effectPlan;
+    [NonSerialized] private CardEffectPlanParser _effectPlanParser;
+    [NonSerialized] private CardNatureState _natureState;
+    [NonSerialized] private CardRuntime _runtime;
+    [NonSerialized] private CardDescriptionFormatter _descriptionFormatter;
 
-    // --- 其他常规效果列表 ---
-    private List<EffectCommand> buffEffects = new List<EffectCommand>();
-    private List<EffectCommand> triggerEffects = new List<EffectCommand>();
-    private List<EffectCommand> nextTurnEffects = new List<EffectCommand>();
+    private void EnsureComponents()
+    {
+        if (_effectPlan == null) _effectPlan = new CardEffectPlan();
+        if (_effectPlanParser == null) _effectPlanParser = new CardEffectPlanParser();
+        if (_natureState == null) _natureState = new CardNatureState(this);
+        if (_runtime == null) _runtime = new CardRuntime(this, _effectPlan);
+        if (_descriptionFormatter == null) _descriptionFormatter = new CardDescriptionFormatter();
+    }
 
     public void InitCard(CardData cardData)
     {
+        EnsureComponents();
         id = cardData.id;
         dialog = cardData.dialog;
         nature1 = cardData.nature1;
@@ -81,11 +78,12 @@ public class Card
         buff = cardData.buff;
         trigger = cardData.trigger;
         nextTurn = cardData.nextTurn;
-        ParseAllEffects();
+        _effectPlanParser.ParseAll(this, _effectPlan);
     }
     
     public void InitCard(Card cardData)
     {
+        EnsureComponents();
         id = cardData.id;
         dialog = cardData.dialog;
         nature1 = cardData.nature1;
@@ -100,127 +98,7 @@ public class Card
         buff = cardData.buff;
         trigger = cardData.trigger;
         nextTurn = cardData.nextTurn;
-        ParseAllEffects();
-    }
-    
-    // 解析所有效果字段
-    private void ParseAllEffects()
-    {
-        // 将数字逻辑和字符串逻辑分流到不同的列表中
-        ParseFieldWithIntSupport(made, triggerMadeEffects, madeEffects, "made");
-        ParseFieldWithIntSupport(broken, triggerBrokenEffects, brokenEffects, "broken");
-        ParseFieldWithIntSupport(added, triggerAddedEffects, addedEffects, "added");
-        
-        ParseStringToCommands(buff, buffEffects);
-        ParseStringToCommands(trigger, triggerEffects);
-        ParseStringToCommands(nextTurn, nextTurnEffects);
-    }
-
-    /// <summary>
-    /// 解析核心分流逻辑：
-    /// 如果是纯数字 -> 解析成内部指令，放入 triggerList，由 OnTrigger 执行
-    /// 如果是字符串 -> 解析成常规效果，放入 lifecycleList，由 OnBroken/OnMade 等被动执行
-    /// </summary>
-    private void ParseFieldWithIntSupport(string fieldValue, List<EffectCommand> triggerList, List<EffectCommand> lifecycleList, string fieldName)
-    {
-        triggerList.Clear();
-        lifecycleList.Clear();
-        
-        if (string.IsNullOrEmpty(fieldValue)) return;
-
-        // 检查是否为纯数字（且不包含括号，确保不是函数调用）
-        if (!fieldValue.Contains("(") && !fieldValue.Contains(")") && int.TryParse(fieldValue.Trim(), out int intValue))
-        {
-            if (intValue == 0) return;
-
-            EffectCommand command = new EffectCommand();
-            switch (fieldName.ToLower())
-            {
-                case "made":
-                    command.methodName = "_beMadeDirect";
-                    command.parameters = new object[] { intValue };
-                    break;
-                case "broken":
-                    command.methodName = "_beBrokenDirect";
-                    command.parameters = new object[] { intValue };
-                    break;
-                case "added":
-                    command.methodName = "_beAddedDirect";
-                    command.parameters = new object[] { intValue, 1 };
-                    break;
-                default:
-                    Debug.LogWarning($"[Card] 未知的int类型字段: {fieldName}");
-                    return;
-            }
-            
-            triggerList.Add(command);
-            Debug.Log($"[Card] 字段 '{fieldName}' 解析为前置条件 (数字:{intValue})，将在 OnTrigger 触发");
-        }
-        else
-        {
-            // 字符串类型：使用原有的解析逻辑，作为被动效果
-            ParseStringToCommands(fieldValue, lifecycleList);
-            Debug.Log($"[Card] 字段 '{fieldName}' 解析为被动效果 (字符串:'{fieldValue}')，将在 On{char.ToUpper(fieldName[0]) + fieldName.Substring(1)} 触发");
-        }
-    }
-
-    // 通用解析核心逻辑
-    private void ParseStringToCommands(string effectSource, List<EffectCommand> targetList)
-    {
-        targetList.Clear();
-        if (string.IsNullOrEmpty(effectSource)) return;
-
-        string[] commands = effectSource.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-        foreach (string cmd in commands)
-        {
-            string trimmedCmd = cmd.Trim();
-            int leftBracket = trimmedCmd.IndexOf('(');
-            int rightBracket = trimmedCmd.LastIndexOf(')');
-
-            if (leftBracket > 0 && rightBracket > leftBracket)
-            {
-                string methodName = trimmedCmd.Substring(0, leftBracket).Trim();
-                string argsContent = trimmedCmd.Substring(leftBracket + 1, rightBracket - leftBracket - 1);
-                
-                string[] rawArgs = string.IsNullOrWhiteSpace(argsContent) 
-                    ? new string[0] 
-                    : argsContent.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                EffectCommand command = new EffectCommand();
-                command.methodName = methodName;
-
-                try
-                {
-                    command.parameters = CardEffect.Instance.ConvertParameters(methodName, rawArgs);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"[Card] 参数转换失败: 方法 '{methodName}', 参数 '{argsContent}'. 错误: {ex.Message}");
-                    continue;
-                }
-
-                // 确保打断机制相关的核心方法始终排在前面
-                if (methodName == "beMade" || methodName == "_beMadeDirect" || methodName == "beBroken" || methodName == "_beBrokenDirect")
-                {
-                    targetList.Insert(0, command);
-                }
-                else
-                {
-                    targetList.Add(command);
-                }
-            }
-            else
-            {
-                Debug.LogWarning($"[Card] 格式解析错误: {trimmedCmd}");
-            }
-        }
-    }
-
-    private void ExecuteEffectList(List<EffectCommand> effectList)
-    {
-        if (effectList == null || effectList.Count == 0) return;
-        CardEffect.Instance.ExecuteEffectList(this, effectList);
+        _effectPlanParser.ParseAll(this, _effectPlan);
     }
     
     private int GetCardType(int id)
@@ -231,212 +109,81 @@ public class Card
     
     public void Add(int id, int num)
     {
-        switch (id)
-        {
-            case 1 :AddNature1(num); break;
-            case 2 :AddNature2(num); break;
-            case 3 :AddNature3(num); break;
-            default: Debug.LogError($"unknown id :{id}"); break;
-        }
+        EnsureComponents();
+        _natureState.Add(id, num);
     }
 
     public void AddTo(int id, int num)
     {
-        switch (id)
-        {
-            case 1 :AddNature1To(num); break;
-            case 2 :AddNature2To(num); break;
-            case 3 :AddNature3To(num); break;
-            default: Debug.LogError($"unknown id :{id}"); break;
-        }
+        EnsureComponents();
+        _natureState.AddTo(id, num);
     }
 
     public int GetNatureById(int id)
     {
-        switch (id)
-        {
-            case 1 :return nature1;
-            case 2 :return nature2;
-            case 3 :return nature3;
-        }
-        return 0;
-    }
-
-    // --- 加法逻辑 ---
-    private void AddNature1(int num)
-    {
-        if (nature1 == 0) return; 
-        int target = nature1 + num;
-        if (nature1 < 0) nature1 = target > 0 ? 0 : target;
-        else if (nature1 > 0) nature1 = target < 0 ? 0 : target;
-    }
-
-    private void AddNature2(int num)
-    {
-        if (nature2 == 0) return;
-        int target = nature2 + num;
-        if (nature2 < 0) nature2 = target > 0 ? 0 : target;
-        else if (nature2 > 0) nature2 = target < 0 ? 0 : target;
-    }
-
-    private void AddNature3(int num)
-    {
-        if (nature3 == 0) return;
-        int target = nature3 + num;
-        if (nature3 < 0) nature3 = target > 0 ? 0 : target;
-        else if (nature3 > 0) nature3 = target < 0 ? 0 : target;
-    }
-
-    // --- 目标赋值逻辑 ---
-    private void AddNature1To(int num)
-    {
-        if (nature1 == 0) return; 
-        int safeNum = num;
-        if (nature1 < 0 && num > 0) safeNum = 0;
-        else if (nature1 > 0 && num < 0) safeNum = 0;
-        if (nature1 < safeNum) nature1 = safeNum;
-    }
-
-    private void AddNature2To(int num)
-    {
-        if (nature2 == 0) return;
-        int safeNum = num;
-        if (nature2 < 0 && num > 0) safeNum = 0;
-        else if (nature2 > 0 && num < 0) safeNum = 0;
-        if (nature2 < safeNum) nature2 = safeNum; 
-    }
-
-    private void AddNature3To(int num)
-    {
-        if (nature3 == 0) return;
-        int safeNum = num;
-        if (nature3 < 0 && num > 0) safeNum = 0;
-        else if (nature3 > 0 && num < 0) safeNum = 0;
-        if (nature3 < safeNum) nature3 = safeNum;
+        EnsureComponents();
+        return _natureState.GetNatureById(id);
     }
     
     // ==========================================
     // 生命周期回调被动触发：只有当字段为字符串时，才会触发这里的效果
     // ==========================================
-    public void OnMade() => ExecuteEffectList(madeEffects);
-    public void OnBroken() => ExecuteEffectList(brokenEffects);
-    public void OnAdded() => ExecuteEffectList(addedEffects);
-    public void OnBuffUpdate() => ExecuteEffectList(buffEffects);
+    public void OnMade()
+    {
+        EnsureComponents();
+        _runtime.OnMade();
+    }
+
+    public void OnBroken()
+    {
+        EnsureComponents();
+        _runtime.OnBroken();
+    }
+
+    public void OnAdded()
+    {
+        EnsureComponents();
+        _runtime.OnAdded();
+    }
+
+    public void OnBuffUpdate()
+    {
+        EnsureComponents();
+        _runtime.OnBuffUpdate();
+    }
 
     // ==========================================
     // 主动打出触发：专门执行前置条件（纯数字配置）和Trigger常规配置
     // ==========================================
     public void OnTrigger()
     {
-        int serial = ++s_triggerInvokeSerial;
-        int cardRef = GetHashCode();
-        Debug.Log($"[Card][OnTrigger][Enter] serial={serial}, frame={Time.frameCount}, time={Time.time:F3}, cardRef={cardRef}, id={id}, name={name}");
-        Debug.Log($"[Card][OnTrigger][Effects] serial={serial}, made={triggerMadeEffects?.Count ?? 0}, broken={triggerBrokenEffects?.Count ?? 0}, added={triggerAddedEffects?.Count ?? 0}, trigger={triggerEffects?.Count ?? 0}");
-        Debug.Log($"[Card][OnTrigger][Stack] serial={serial}\n{StackTraceUtility.ExtractStackTrace()}");
-
-        if (CardEffect.Instance != null)
-        {
-            CardEffect.Instance.ClearConditionFailed(this);
-        }
-        Debug.Log($"[Card] OnTrigger: 卡牌 {name} (ID:{id}) 开始执行效果");
-
-        // 将前置条件与 Trigger 合并为单条效果链，保证异步选牌结束后才继续后续逻辑
-        List<EffectCommand> triggerExecutionPlan = new List<EffectCommand>();
-
-        if (triggerMadeEffects != null && triggerMadeEffects.Count > 0)
-        {
-            Debug.Log("[Card] OnTrigger: 加入前置条件 [Made(数字配置)]");
-            triggerExecutionPlan.AddRange(triggerMadeEffects);
-        }
-
-        if (triggerBrokenEffects != null && triggerBrokenEffects.Count > 0)
-        {
-            Debug.Log("[Card] OnTrigger: 加入前置条件 [Broken(数字配置)]");
-            triggerExecutionPlan.AddRange(triggerBrokenEffects);
-        }
-
-        if (triggerAddedEffects != null && triggerAddedEffects.Count > 0)
-        {
-            Debug.Log("[Card] OnTrigger: 加入前置条件 [Added(数字配置)]");
-            triggerExecutionPlan.AddRange(triggerAddedEffects);
-        }
-
-        if (triggerEffects != null && triggerEffects.Count > 0)
-        {
-            triggerExecutionPlan.AddRange(triggerEffects);
-        }
-
-        // 链尾统一结算：加属性 + 追加下回合监听（仅在未失败时生效）
-        triggerExecutionPlan.Add(new EffectCommand
-        {
-            methodName = "_onTriggerFinalize",
-            parameters = new object[0]
-        });
-
-        Debug.Log($"[Card][OnTrigger][Plan] serial={serial}, total={triggerExecutionPlan.Count}");
-        for (int i = 0; i < triggerExecutionPlan.Count; i++)
-        {
-            var cmd = triggerExecutionPlan[i];
-            string paramText = (cmd.parameters == null || cmd.parameters.Length == 0)
-                ? "[]"
-                : $"[{string.Join(", ", cmd.parameters)}]";
-            Debug.Log($"[Card][OnTrigger][PlanItem] serial={serial}, index={i}, method={cmd.methodName}, params={paramText}");
-        }
-
-        ExecuteEffectList(triggerExecutionPlan);
+        EnsureComponents();
+        _runtime.OnTrigger();
     }
 
-    public void OnNextTurn() => ExecuteEffectList(nextTurnEffects);
+    public void OnNextTurn()
+    {
+        EnsureComponents();
+        _runtime.OnNextTurn();
+    }
 
     public string GetParsedDescription()
     {
-        if (string.IsNullOrEmpty(description)) return string.Empty;
-
-        return Regex.Replace(description, @"\{([^}]+)\}", match =>
-        {
-            if (match.Success && match.Groups.Count > 1)
-            {
-                string fieldName = match.Groups[1].Value;
-                return GetFieldValue(fieldName);
-            }
-            return match.Value;
-        });
-    }
-
-    private string GetFieldValue(string fieldName)
-    {
-        switch (fieldName.ToLower())
-        {
-            case "id": return id.ToString();
-            case "dialog": return dialog.ToString();
-            case "nature1": return nature1.ToString();
-            case "nature2": return nature2.ToString();
-            case "nature3": return nature3.ToString();
-            case "name": return name ?? string.Empty;
-            case "sale": return sale.ToString();
-            case "made": return made ?? string.Empty;
-            case "broken": return broken ?? string.Empty;
-            case "added": return added ?? string.Empty;
-            case "buff": return buff ?? string.Empty;
-            case "trigger": return trigger ?? string.Empty;
-            case "nextturn": return nextTurn ?? string.Empty;
-            case "description": return description ?? string.Empty;
-            default: return string.Empty;
-        }
+        EnsureComponents();
+        return _descriptionFormatter.Format(this);
     }
 
     public bool TryModifyAddedValue(int delta)
     {
+        EnsureComponents();
         if (string.IsNullOrEmpty(added)) return false;
 
-        // 检查是否为纯数字类型
         if (!added.Contains("(") && !added.Contains(")") && int.TryParse(added.Trim(), out int currentValue))
         {
             int newValue = currentValue + delta;
             added = newValue.ToString();
 
-            // 重新解析 added 字段，更新 triggerAddedEffects 列表
-            ParseFieldWithIntSupport(added, triggerAddedEffects, addedEffects, "added");
+            _effectPlanParser.ReparseAdded(this, _effectPlan);
 
             Debug.Log($"[Card] 成功修改 added 字段数值: {currentValue} → {newValue}");
             return true;

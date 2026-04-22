@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class ShengZhiAndJianZhiHelper : Singleton<ShengZhiAndJianZhiHelper>
+public class CardSubmitHelper : Singleton<CardSubmitHelper>
 {
     private int _targetNum; 
     

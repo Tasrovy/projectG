@@ -88,7 +88,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
             
             // --- 正常出牌逻辑 ---
             selectedCard.OnTrigger();
-            if(selectedCard.id.ToString()[0]=='1')CardManager.Instance.BreakCard(selectedCard);
+            if(selectedCard.id.ToString()[0]=='1'||selectedCard.id.ToString()[0]=='3')CardManager.Instance.BreakCard(selectedCard);
             else
             {
                 CardManager.Instance.BreakCard(selectedCard);
