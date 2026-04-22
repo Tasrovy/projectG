@@ -19,6 +19,11 @@ public sealed class CardEffectLibrary
     public void addRandomCardIfNot(int type, int num, int level) => CardManager.Instance.AddRandomCardIfNot(type, num, level);
     public void addMoney(int money) => DataManager.Instance.Add(4, money);
 
+    public void triggerEventDialogue(string str)
+    {
+        DialogueHandler.Instance.TriggerEventDialogue(str);
+    }
+    
     public void changeProperty(float ratio)
     {
         if (_owner.CallerCard == null) return;
