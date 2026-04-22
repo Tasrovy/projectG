@@ -224,6 +224,22 @@ public class DialogueHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 事件对话入口：由打出事件牌触发。
+    /// 先播放 <paramref name="eventNodeName"/> 对应的事件对话；
+    /// 结束后依次检测当天 special 对话（有则播放），最后过天并切换场景。
+    /// </summary>
+    /// <param name="eventNodeName">事件对话的 Yarn 节点名（即事件牌对应的文件名）。</param>
+    /// <param name="sceneTypeName">过天后要切换到的场景名，默认 "Talk"。</param>
+    public void TriggerEventDialogue(string eventNodeName, string sceneTypeName = "Talk")
+    {
+        Debug.Log($"[DialogueHandler] TriggerEventDialogue 被调用！eventNode={eventNodeName}, sceneTypeName={sceneTypeName}");
+
+        SetAdvanceDayAfterDialogue(true);
+        SetNextSceneType(sceneTypeName);
+        StartDialogue(eventNodeName);
+    }
+
     #endregion
 
     /// <summary>
