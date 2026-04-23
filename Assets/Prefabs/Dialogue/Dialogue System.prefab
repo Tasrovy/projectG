@@ -311,15 +311,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Yarn.Unity.LineView, Assembly-CSharp
-        m_MethodName: OnContinueClicked
+        m_TargetAssemblyTypeName: DialogueUIAudio, Assembly-CSharp
+        m_MethodName: PlayDialogueClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Sound/Switch sounds/easyClick
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &2958262986446477828
@@ -713,6 +713,7 @@ GameObject:
   - component: {fileID: 8150228081625468094}
   - component: {fileID: 3443573992243610163}
   - component: {fileID: 7227784380660382400}
+  - component: {fileID: 1613263503939159749}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -806,6 +807,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1613263503939159749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416868783655305253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c51b104e5f72c4caf1d50ec67a36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3859336322602399711
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,6 +929,11 @@ MonoBehaviour:
   multiAdvanceIsCancel: 0
   advanceRequestsBeforeCancellingLine: 2
   inputMode: 1
+  hurryUpLineAction: {fileID: 0}
+  nextLineAction: {fileID: 0}
+  hurryUpOptionsAction: {fileID: 0}
+  cancelDialogueAction: {fileID: 0}
+  enableActions: 1
   hurryUpLineAxis: Jump
   nextLineAxis: Cancel
   hurryUpOptionsAxis: Jump
@@ -952,7 +970,7 @@ RectTransform:
   m_GameObject: {fileID: 5318678713559995341}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -5, y: 5, z: 1}
+  m_LocalScale: {x: -10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2355361765340444347}
@@ -1044,9 +1062,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7262066351540048079}
-        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: DialogueUIAudio, Assembly-CSharp
+        m_MethodName: PlaySkipDialogue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1087,8 +1105,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.63589406, y: 0.63589406, z: 0.63589406}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2355361765340444347}
   - {fileID: 3859336322602399704}
@@ -1179,7 +1197,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueRunner: {fileID: 8309902628685535410}
   skipDialogueButton: {fileID: 5601664230953040250}
-  dayDialoguesConfig: []
 --- !u!114 &1639362683754660290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1322,7 +1339,7 @@ MonoBehaviour:
     m_Top: 24
     m_Bottom: 32
   m_ChildAlignment: 4
-  m_Spacing: 40
+  m_Spacing: 60
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
