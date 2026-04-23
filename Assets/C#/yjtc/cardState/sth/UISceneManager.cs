@@ -92,7 +92,6 @@ public class UISceneManager : MonoBehaviour
         // 隐藏所有的互斥场景节点
         DeactivateAllMutexRoots();
 
-        // 动态处理“常驻显示节点”：只要不是Begin场景，就全部开启。如果是Begin，就全部隐藏。
         bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin && sceneType != SceneType.Naming && sceneType != SceneType.Talk);
         if (alwaysShowRoots != null)
         {
