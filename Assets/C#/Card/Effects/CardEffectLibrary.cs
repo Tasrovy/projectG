@@ -21,6 +21,7 @@ public sealed class CardEffectLibrary
 
     public void triggerEventDialogue(string str)
     {
+        DUEL.Instance.End();
         DialogueHandler.Instance.TriggerEventDialogue(str);
     }
     
