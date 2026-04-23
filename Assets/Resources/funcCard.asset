@@ -20,12 +20,12 @@ MonoBehaviour:
     nature3: 0
     name: "\u521D\u59CB\u529F\u80FD\u724C"
     sale: 0
-    made: 1
+    made: 0
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u751F\u679D{made}"
     buff: 
-    trigger: 
+    trigger: beMade(2)
     nextTurn: 
   - id: 21001
     dialog: 5
@@ -37,9 +37,9 @@ MonoBehaviour:
     made: 1
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}\uFF0C\u4E5F\u5C31\u662F\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u751F\u679D{made}\uFF0C\u4E5F\u5C31\u662F\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
     buff: 
-    trigger: 
+    trigger: shake(1,0.2)
     nextTurn: 
   - id: 21002
     dialog: 11
@@ -51,7 +51,7 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 4
-    description: "\u751F\u957F{added}"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u751F\u957F{added}"
     buff: 
     trigger: 
     nextTurn: 
@@ -65,9 +65,9 @@ MonoBehaviour:
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u7F55\u89C1\u793C\u7269\u5361"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u526A\u679D{broken}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u7F55\u89C1\u793C\u7269\u5361"
     buff: 
-    trigger: addRandomCard(1,1,2)
+    trigger: addRandomCard(1,1,2);magnify(0.2)
     nextTurn: 
   - id: 21004
     dialog: 8
@@ -79,7 +79,7 @@ MonoBehaviour:
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E09\u63D0\u534730\u70B9"
     buff: 
     trigger: addNatureAtSum(30,2)
     nextTurn: 
@@ -93,7 +93,7 @@ MonoBehaviour:
     made: 0
     broken: 2
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: addNatureAtSum(50,1)
     nextTurn: 
@@ -107,9 +107,9 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "\u751F\u957F\uFF0C\u5C06\u5361\u4E2D\u6570\u503C\u4E0D\u8DB312\u7684\u90E8\u5206\u52A0\u6210\u523012"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u751F\u957F\uFF0C\u5C06\u5361\u4E2D\u6570\u503C\u4E0D\u8DB312\u7684\u90E8\u5206\u52A0\u6210\u523012"
     buff: 
-    trigger: beAddedTo(12)
+    trigger: beAddedTo(12);shake(1,0.2)
     nextTurn: 
   - id: 22001
     dialog: 7
@@ -121,7 +121,7 @@ MonoBehaviour:
     made: 3
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u751F\u679D{made}\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u751F\u679D\u7684\u724C"
     buff: 
     trigger: 
     nextTurn: 
@@ -135,9 +135,9 @@ MonoBehaviour:
     made: 1
     broken: 0
     added: 0
-    description: "\u751F\u679D{made}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u5C5E\u6027\u5361"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u751F\u679D{made}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u5C5E\u6027\u5361"
     buff: 
-    trigger: addRandomCard(1,1,1)
+    trigger: addRandomCard(1,1,1);shake(1,0.2)
     nextTurn: 
   - id: 22003
     dialog: 6
@@ -149,9 +149,9 @@ MonoBehaviour:
     made: 0
     broken: 5
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u526A\u679D{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
     buff: 
-    trigger: 
+    trigger: shake(1,0.2)
     nextTurn: 
   - id: 22004
     dialog: 7
@@ -163,9 +163,9 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "\u82E5\u5361\u7EC4\u4E2D\u6709\u4E09\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F40\uFF0C\u5426\u5219\u751F\u957F5"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u82E5\u5361\u7EC4\u4E2D\u6709\u4E09\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F40\uFF0C\u5426\u5219\u751F\u957F5"
     buff: 
-    trigger: addWithSame(3,40,5)
+    trigger: addWithSame(3,40,5);magnify(0.3)
     nextTurn: 
   - id: 22005
     dialog: 12
@@ -177,7 +177,7 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "\u82E5\u624B\u4E2D\u6CA1\u6709\u793C\u7269\u724C\uFF0C\u5219\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269\u5361"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u82E5\u624B\u4E2D\u6CA1\u6709\u793C\u7269\u724C\uFF0C\u5219\u968F\u673A\u83B7\u5F97\u4E00\u4E2A\u7F55\u89C1\u793C\u7269\u5361"
     buff: 
     trigger: addRandomCardIfNot(1,1,2)
     nextTurn: 
@@ -191,9 +191,9 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 4
-    description: "\u751F\u957F{added}\uFF0C\u6B64\u724C\u751F\u957F\u7684\u6570\u503C\u63D0\u53474"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u751F\u957F{added}\uFF0C\u6B64\u724C\u751F\u957F\u7684\u6570\u503C\u63D0\u53474"
     buff: 
-    trigger: addAddNum(4)
+    trigger: addAddNum(4);magnify(0.2)
     nextTurn: 
   - id: 22007
     dialog: 9
@@ -205,9 +205,9 @@ MonoBehaviour:
     made: 0
     broken: 1
     added: 0
-    description: "\u526A\u679D{broken}\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u526A\u679D{broken}\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
     buff: 
-    trigger: addNatureAtSumIf(40,1)
+    trigger: addNatureAtSumIf(40,1);shake(1,0.3)
     nextTurn: 
   - id: 22008
     dialog: 13
@@ -219,7 +219,7 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "\u5C06\u624B\u724C\u4E2D\u7684\u6240\u6709\u793C\u7269\u90FD\u53D8\u6210\u540C\u4E00\u4E2A\u968F\u673A\u793C\u7269"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u5C06\u624B\u724C\u4E2D\u7684\u6240\u6709\u793C\u7269\u90FD\u53D8\u6210\u540C\u4E00\u4E2A\u968F\u673A\u793C\u7269"
     buff: 
     trigger: changeHandGift()
     nextTurn: 
@@ -233,7 +233,63 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "\u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color> \u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
     buff: 
-    trigger: addWIthSameTogether(6,80)
+    trigger: addWIthSameTogether(6,80);magnify(0.5)
+    nextTurn: 
+  - id: 21601
+    dialog: 0
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: "\u6D4B\u8BD5\u5361\u724C"
+    sale: 0
+    made: 0
+    broken: 0
+    added: 0
+    description: beMade(2)
+    buff: 
+    trigger: beMade(2)
+    nextTurn: 
+  - id: 21602
+    dialog: 0
+    nature1: 1
+    nature2: 1
+    nature3: 1
+    name: "\u6D4B\u8BD5\u5361\u724C"
+    sale: 0
+    made: 0
+    broken: 0
+    added: 0
+    description: beMade(3)
+    buff: 
+    trigger: beMade(3)
+    nextTurn: 
+  - id: 21603
+    dialog: 0
+    nature1: 2
+    nature2: 2
+    nature3: 2
+    name: "\u6D4B\u8BD5\u5361\u724C"
+    sale: 0
+    made: 0
+    broken: 0
+    added: 0
+    description: beMade(4)
+    buff: 
+    trigger: beMade(4)
+    nextTurn: 
+  - id: 21604
+    dialog: 0
+    nature1: 3
+    nature2: 3
+    nature3: 3
+    name: "\u6D4B\u8BD5\u5361\u724C"
+    sale: 0
+    made: 0
+    broken: 0
+    added: 0
+    description: beMade(5)
+    buff: 
+    trigger: beMade(5)
     nextTurn: 
