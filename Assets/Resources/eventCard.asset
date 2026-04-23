@@ -41,7 +41,7 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSum(30,3);changeProperty(1.5)
     nextTurn: 
-  - id: 3203
+  - id: 32003
     dialog: 2
     nature1: 0
     nature2: 0

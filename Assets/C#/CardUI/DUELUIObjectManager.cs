@@ -31,41 +31,57 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     /// <summary>
     /// 核心初始化逻辑：加载资源、寻找/创建画布、实例化
     /// </summary>
-    private void InitializeUI()
+private void InitializeUI()
+{
+    // 如果已经实例化过了，直接返回
+    if (_duelUI != null) return;
+
+    // 1. 加载 Prefab
+    GameObject prefab = Resources.Load<GameObject>("Prefabs/DUELUI");
+    if (prefab == null)
     {
-        // 如果已经实例化过了，直接返回
-        if (_duelUI != null) return;
-
-        // 1. 加载 Prefab
-        GameObject prefab = Resources.Load<GameObject>("Prefabs/DUELUI");
-        if (prefab == null)
-        {
-            Debug.LogError("DUELUIObjectManager: 未能在 Resources/Prefabs/ 路径下找到 DUELUI 预制体！");
-            return;
-        }
-
-        // 2. 寻找场景根目录中名为 "Canvas" 的画布
-        GameObject canvasObj = GameObject.Find("Canvas");
-        Canvas canvas = canvasObj?.GetComponent<Canvas>();
-
-        // 如果场景里没有 Canvas，则自动创建一个（保证 UI 能显示）
-        if (canvas == null)
-        {
-            canvasObj = new GameObject("Canvas");
-            canvas = canvasObj.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasObj.AddComponent<CanvasScaler>();
-            canvasObj.AddComponent<GraphicRaycaster>();
-            canvasObj.layer = LayerMask.NameToLayer("UI");
-            Debug.LogWarning("场景中未发现 Canvas，已自动创建。");
-        }
-
-        // 3. 实例化并设置为 Canvas 的子物体
-        _duelUI = Instantiate(prefab, canvas.transform);
-        
-        // 4. 重构命名并重置 UI 布局坐标
-        _duelUI.name = "DUELUI";
+        Debug.LogError("DUELUIObjectManager: 未能在 Resources/Prefabs/ 路径下找到 DUELUI 预制体！");
+        return;
     }
+
+    // --- 修正：提前声明变量，确保全方法可见 ---
+    Canvas canvas = null;
+    GameObject canvasObj = null;
+
+    // 2. 寻找场景中挂载了 CardUICanvas 脚本的物体
+    CardUICanvas cardUIScript = Object.FindAnyObjectByType<CardUICanvas>(); 
+
+    if (cardUIScript != null) 
+    {
+        canvas = cardUIScript.GetComponent<Canvas>();
+        if (canvas != null) {
+            canvasObj = canvas.gameObject;
+            Debug.Log("找到了 Canvas: " + canvasObj.name);
+        }
+    }
+
+    // 3. 如果场景里没有找到 Canvas，则自动创建一个
+    if (canvas == null)
+    {
+        canvasObj = new GameObject("Canvas");
+        canvas = canvasObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        
+        // 关键补丁：必须配置 CanvasScaler，否则打包后 UI 会因为分辨率问题导致点击范围偏移
+        CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920, 1080); // 设置为你开发时的基准分辨率
+        scaler.matchWidthOrHeight = 0.5f;
+
+        canvasObj.AddComponent<GraphicRaycaster>();
+        canvasObj.layer = LayerMask.NameToLayer("UI");
+        Debug.LogWarning("场景中未发现 CardUICanvas，已自动创建并配置。");
+    }
+
+    // 4. 实例化并设置为 Canvas 的子物体
+    _duelUI = Instantiate(prefab, canvas.transform);
+    _duelUI.name = "DUELUI";
+}
 
     /// <summary>
     /// 激活/显示整个 DUEL UI 界面
