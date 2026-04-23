@@ -514,6 +514,7 @@ GameObject:
   - component: {fileID: 3192622498012684481}
   - component: {fileID: 2784365402369955343}
   - component: {fileID: 1368541322810720995}
+  - component: {fileID: 907530547339213814}
   m_Layer: 5
   m_Name: "\u7ED3\u675F\u6E38\u620F"
   m_TagString: Untagged
@@ -621,6 +622,45 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2784365402369955343}
   m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: DialogueUIAudio, Assembly-CSharp
+        m_MethodName: PlayDefaultAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 907530547339213814}
+        m_TargetAssemblyTypeName: QuitGame, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &907530547339213814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947576985752725209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74a915e155041804f8170be8fed7915e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnQuit:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2103713941381781175
@@ -1358,31 +1398,19 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Talk
+          m_StringArgument: Naming
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
-        m_MethodName: StartDialogue
-        m_Mode: 5
+        m_TargetAssemblyTypeName: DialogueUIAudio, Assembly-CSharp
+        m_MethodName: PlayStartGameAudio
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: main_start
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
-        m_MethodName: SetNextSceneType
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Select
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &5054007532474830287
@@ -2082,6 +2110,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: DialogueUIAudio, Assembly-CSharp
+        m_MethodName: PlayDefaultAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8120392051947744724
 GameObject:
   m_ObjectHideFlags: 0
@@ -2183,7 +2223,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e717ad8523489cb4e9ab0b21ce50a074, type: 3}
+  m_Sprite: {fileID: 448111448, guid: e717ad8523489cb4e9ab0b21ce50a074, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
