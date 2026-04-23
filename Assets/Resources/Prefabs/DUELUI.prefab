@@ -458,8 +458,32 @@ PrefabInstance:
       value: SubmitButton
       objectReference: {fileID: 0}
     - target: {fileID: 1323785681943195510, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323785681943195510, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.5999985
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2159619319743337163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.4627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 2159619319743337163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 2159619319743337163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2159619319743337163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4285984255
+      objectReference: {fileID: 0}
+    - target: {fileID: 2159619319743337163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 3001956615937495283, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_Pivot.x
@@ -545,29 +569,69 @@ PrefabInstance:
       propertyPath: m_Name
       value: Submit
       objectReference: {fileID: 0}
+    - target: {fileID: 3521763349326139163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521763349326139163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1683704561, guid: 937c5608e4f7fbf46877c7d76b3d14f2, type: 3}
+    - target: {fileID: 3521763349326139163, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133271555179377205, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133271555179377205, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1683704561, guid: 937c5608e4f7fbf46877c7d76b3d14f2, type: 3}
+    - target: {fileID: 5271158701277154627, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_Transition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5271158701277154627, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+    - target: {fileID: 5271158701277154627, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+    - target: {fileID: 5271158701277154627, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
     - target: {fileID: 5629687855209593721, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 185.2877
+      value: 185
       objectReference: {fileID: 0}
     - target: {fileID: 5629687855209593721, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 146.9561
+      value: 66
       objectReference: {fileID: 0}
     - target: {fileID: 5629687855209593721, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 12.6439
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5629687855209593721, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -58.478
+      value: -21.999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 5647678703638027607, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6748343684626743108, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 185.29
+      value: 185
       objectReference: {fileID: 0}
     - target: {fileID: 6748343684626743108, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 146.96
+      value: 66
       objectReference: {fileID: 0}
     - target: {fileID: 6748343684626743108, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -575,7 +639,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6748343684626743108, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -58.476
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894442830966709566, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8154165311478946447, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_Transition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8154165311478946447, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+    - target: {fileID: 8154165311478946447, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+    - target: {fileID: 8154165311478946447, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+    - target: {fileID: 8548526662330448394, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.46226406
+      objectReference: {fileID: 0}
+    - target: {fileID: 8548526662330448394, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.92739266
+      objectReference: {fileID: 0}
+    - target: {fileID: 8548526662330448394, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8548526662330448394, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4285983999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8548526662330448394, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 8800200120638788623, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_FontData.m_MaxSize
@@ -586,8 +690,12 @@ PrefabInstance:
       value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 8888739793692823554, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8888739793692823554, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.5999985
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9159935479758806952, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_FontData.m_MaxSize
