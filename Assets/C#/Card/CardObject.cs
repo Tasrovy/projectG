@@ -7,7 +7,7 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
 
     private Vector3 _originalScale;
     private CardChoosing _choosingManager;
-    private CardShopping _shoppingManager;
+    private ShopController _shoppingManager;
     private CardUIObject _uiObject;
 
     private void Awake()
@@ -16,7 +16,7 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
         
         // 缓存组件
         _choosingManager = GetComponentInParent<CardChoosing>(); 
-        _shoppingManager = GetComponentInParent<CardShopping>();
+        _shoppingManager = GetComponentInParent<ShopController>();
         _uiObject = GetComponent<CardUIObject>();
     }
 
