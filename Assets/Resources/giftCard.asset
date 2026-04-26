@@ -294,5 +294,217 @@ MonoBehaviour:
     added: 
     description: "<color=yellow><b>\u73CD\u8D35</b></color>\u8BA9\u8482\u5A1C\u7684\u5C5E\u6027\u4E00\u7684\u6570\u503C\u7B49\u4E8E\u8482\u5A1C\u7684\u5C5E\u6027\u4E8C"
     buff: 
+<<<<<<< Updated upstream
     trigger: addNatureFromTo(1,2);magnify(0.5)
+=======
+    trigger: addNatureFromTo(1,2)
+    nextTurn: 
+  - id: 11201
+    nature1: 1
+    nature2: 1
+    nature3: 1
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C01"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u6D4B\u8BD5\u4F7F\u7528"
+    buff: 
+    trigger: addNature(4,1)
+    nextTurn: 
+  - id: 11202
+    nature1: 2
+    nature2: 2
+    nature3: 2
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C02"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: addnaturefromTo
+    buff: 
+    trigger: addNatureFromTo(1,2)
+    nextTurn: 
+  - id: 11203
+    nature1: 3
+    nature2: 3
+    nature3: 3
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C03"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: addcard
+    buff: 
+    trigger: addCard(11001,1)
+    nextTurn: 
+  - id: 11204
+    nature1: 4
+    nature2: 4
+    nature3: 4
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C04"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: addran
+    buff: 
+    trigger: addRandomCard(2,1,2)
+    nextTurn: 
+  - id: 11205
+    nature1: 5
+    nature2: 5
+    nature3: 5
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C05"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: addmoney
+    buff: 
+    trigger: addMoney(1001)
+    nextTurn: 
+  - id: 11206
+    nature1: 6
+    nature2: 6
+    nature3: 6
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C06"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: changepro
+    buff: 
+    trigger: changeProperty(2)
+    nextTurn: 
+  - id: 11207
+    nature1: 7
+    nature2: 7
+    nature3: 7
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C07"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: beadd
+    buff: 
+    trigger: beAdded(1,8)
+    nextTurn: 
+  - id: 11208
+    nature1: 8
+    nature2: 8
+    nature3: 8
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C08"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: beaddto
+    buff: 
+    trigger: beAddedTo(20)
+    nextTurn: 
+  - id: 11209
+    nature1: 9
+    nature2: 9
+    nature3: 9
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C09"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u89E6\u53D1\u751F\u679D\uFF08\u624B\u5DE5\uFF09times\u6B21"
+    buff: 
+    trigger: beMade(1)
+    nextTurn: 
+  - id: 11210
+    nature1: 10
+    nature2: 10
+    nature3: 10
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C10"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u89E6\u53D1\u526A\u679D\uFF08\u62C6\u5378\uFF09times\u6B21"
+    buff: 
+    trigger: beBroken(1)
+    nextTurn: 
+  - id: 11211
+    nature1: 11
+    nature2: 11
+    nature3: 11
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C11"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u529F\u80FD\u5361\u589E\u52A0add\u7684\u6570\u503Cnum\u70B9"
+    buff: 
+    trigger: addAddNum
+    nextTurn: 
+  - id: 11212
+    nature1: 12
+    nature2: 12
+    nature3: 12
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C12"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u82E5\u5361\u7EC4\u4E2D\u6709sameNum\u4E2A\u53CA\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957FtrueNum\uFF0C\u5426\u5219\u751F\u957FfalseNum"
+    buff: 
+    trigger: addWithSame(3,40,5)
+    nextTurn: 
+  - id: 11213
+    nature1: 13
+    nature2: 13
+    nature3: 13
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C13"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u82E5\u5361\u7EC4\u4E2D\u6709sameNum\u4E2A\u53CA\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u751F\u957F\u6240\u6709\u8FD9\u4E9B\u76F8\u540C\u7684\u793C\u7269addNum"
+    buff: 
+    trigger: addWIthSameTogether(3,100)
+    nextTurn: 
+  - id: 11214
+    nature1: 14
+    nature2: 14
+    nature3: 14
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C14"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u5C06\u624B\u724C\u4E2D\u6240\u6709\u793C\u7269\u53D8\u6210\u4E00\u4E2A\u968F\u673A\u793C\u7269"
+    buff: 
+    trigger: changeHandGift()
+    nextTurn: 
+  - id: 11215
+    nature1: 15
+    nature2: 15
+    nature3: 15
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C15"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u82E5\u5361\u724C\u7684type1\u5C5E\u6027\u5927\u4E8E0\uFF08\u5B58\u5728\uFF09\uFF0C\u63D0\u5347\u89D2\u8272\u7684type\u5C5E\u602740"
+    buff: 
+    trigger: addNatureAtSumIf(1,50)
+    nextTurn: 
+  - id: 11216
+    nature1: 16
+    nature2: 16
+    nature3: 16
+    name: "\u6D4B\u8BD5\u793C\u7269\u5361\u724C16"
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: "\u83B7\u5F97n2\u5C5E\u6027(n1)/2\u70B9"
+    buff: 
+    trigger: addNatureByOther(1,2)
+>>>>>>> Stashed changes
     nextTurn: 

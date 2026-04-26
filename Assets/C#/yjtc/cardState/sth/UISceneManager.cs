@@ -131,6 +131,7 @@ public class UISceneManager : MonoBehaviour
             case SceneType.Naming:
                 if (namingRoot != null) namingRoot.SetActive(true);
                 break;
+<<<<<<< Updated upstream
         }
 
         // 处理场景切换后的 BGM 逻辑
@@ -189,6 +190,8 @@ public class UISceneManager : MonoBehaviour
             {
                 yield return null;
             }
+=======
+>>>>>>> Stashed changes
         }
     }
 
