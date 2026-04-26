@@ -80,5 +80,6 @@ public class CalendarPopup : MonoBehaviour
         Debug.Log($"[Calendar] 点击了 {date:yyyy-MM-dd}");
         if (todoList != null)
             todoList.SetActive(true);
+        DateManager.Instance?.OnDateClicked(date);
     }
 }

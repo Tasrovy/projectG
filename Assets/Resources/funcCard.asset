@@ -237,7 +237,7 @@ MonoBehaviour:
     buff: 
     trigger: addWIthSameTogether(6,80);magnify(0.5)
     nextTurn: 
-  - id: 21601
+  - id: 21801
     dialog: 0
     nature1: 0
     nature2: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
     buff: 
     trigger: beMade(2)
     nextTurn: 
-  - id: 21602
+  - id: 21802
     dialog: 0
     nature1: 1
     nature2: 1
@@ -265,7 +265,7 @@ MonoBehaviour:
     buff: 
     trigger: beMade(3)
     nextTurn: 
-  - id: 21603
+  - id: 21803
     dialog: 0
     nature1: 2
     nature2: 2
@@ -279,7 +279,7 @@ MonoBehaviour:
     buff: 
     trigger: beMade(4)
     nextTurn: 
-  - id: 21604
+  - id: 21804
     dialog: 0
     nature1: 3
     nature2: 3

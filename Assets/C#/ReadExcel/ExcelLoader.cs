@@ -221,6 +221,110 @@ public class ExcelLoader : Singleton<ExcelLoader>
 #endif
 
     /// <summary>
+    /// 读取日期流程数据：编辑器下同步，发布后读SO
+    /// Excel列名：day, date, morning, afternoon, afterclass, text
+    /// </summary>
+    public DateDataSO ReadDateExcel(string excelPath)
+    {
+        string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
+
+#if UNITY_EDITOR
+        return SyncDateExcelToSO(excelPath, fileNameNoExt);
+#else
+        return Resources.Load<DateDataSO>(fileNameNoExt);
+#endif
+    }
+
+#if UNITY_EDITOR
+    private DateDataSO SyncDateExcelToSO(string excelPath, string soName)
+    {
+        string fullPath = Path.GetFullPath(excelPath);
+        if (!File.Exists(fullPath))
+        {
+            Debug.LogError("找不到Date Excel文件: " + fullPath);
+            return null;
+        }
+
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+        DateDataSO db = ScriptableObject.CreateInstance<DateDataSO>();
+        db.name = soName;
+
+        using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        {
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            {
+                var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                {
+                    ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true }
+                });
+
+                DataTable table = result.Tables[0];
+                foreach (DataRow row in table.Rows)
+                {
+                    if (!table.Columns.Contains("day")) continue;
+                    if (row["day"] == DBNull.Value || string.IsNullOrWhiteSpace(row["day"].ToString())) continue;
+
+                    DateData data = new DateData();
+
+                    foreach (var field in typeof(DateData).GetFields())
+                    {
+                        if (!table.Columns.Contains(field.Name)) continue;
+
+                        object value = row[field.Name];
+                        if (value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString())) continue;
+
+                        try
+                        {
+                            string rawValue = value.ToString().Trim();
+                            if (field.FieldType == typeof(int))
+                            {
+                                float f = float.Parse(rawValue);
+                                field.SetValue(data, (int)f);
+                            }
+                            else if (field.FieldType == typeof(float))
+                            {
+                                field.SetValue(data, float.Parse(rawValue));
+                            }
+                            else
+                            {
+                                field.SetValue(data, Convert.ChangeType(rawValue, field.FieldType));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"[ExcelLoader] Date 字段转换失败！列名: {field.Name}, 单元格内容: '{value}', 错误: {ex.Message}");
+                        }
+                    }
+
+                    db.dateDatas.Add(data);
+                }
+            }
+        }
+
+        string resDir = Application.dataPath + "/Resources";
+        if (!Directory.Exists(resDir)) Directory.CreateDirectory(resDir);
+
+        string assetPath = $"Assets/Resources/{soName}.asset";
+        DateDataSO existingAsset = AssetDatabase.LoadAssetAtPath<DateDataSO>(assetPath);
+
+        if (existingAsset == null)
+        {
+            AssetDatabase.CreateAsset(db, assetPath);
+        }
+        else
+        {
+            EditorUtility.CopySerialized(db, existingAsset);
+            db = existingAsset;
+        }
+
+        AssetDatabase.SaveAssets();
+        Debug.Log($"<color=cyan>[ExcelLoader]</color> Date同步成功: {assetPath}");
+        return db;
+    }
+#endif
+
+    /// <summary>
     /// 读取初始手牌ID数据：编辑器下同步，发布后读SO
     /// Excel建议列名：id, num（num可选，默认1）
     /// </summary>

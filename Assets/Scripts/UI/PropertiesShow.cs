@@ -6,9 +6,23 @@ using TMPro;
 
 public class PropertiesShow : MonoBehaviour
 {
+    [SerializeField] private float moneyCoefficient = 0.1f;
+
+#region propIcons
     private Slider slider1;
     private Slider slider2;
     private Slider slider3;
+    private Slider slider4;
+
+    private Image fillImage1;
+    private Image fillImage2;
+    private Image fillImage3;
+    private Image fillImage4;
+
+    private Color defaultFillColor1;
+    private Color defaultFillColor2;
+    private Color defaultFillColor3;
+    private Color defaultFillColor4;
 
     private TMP_Text numText1_TMP;
     private Text numText1_Legacy;
@@ -19,9 +33,37 @@ public class PropertiesShow : MonoBehaviour
     private TMP_Text numText3_TMP;
     private Text numText3_Legacy;
 
+    private TMP_Text numText4_TMP;
+    private Text numText4_Legacy;
+#endregion
+
+    private TMP_Text targetText;
+
     private void Awake()
     {
         InitializeReferences();
+        InitializeRandomTargetText();
+    }
+
+    private void InitializeRandomTargetText()
+    {
+        Transform targetTransform = FindChildRecursive(transform, "target");
+        if (targetTransform == null) return;
+
+        targetText = targetTransform.GetComponent<TMP_Text>();
+        if (targetText == null) return;
+
+        int targetType = Random.Range(1, 5);
+        string targetName = targetType switch
+        {
+            1 => "友情羁绊",
+            2 => "情绪依赖",
+            3 => "安全感",
+            4 => "魅力值",
+            _ => "友情羁绊"
+        };
+
+        targetText.text = $"攻略目标：{targetName}";
     }
 
     private void InitializeReferences()
@@ -31,6 +73,8 @@ public class PropertiesShow : MonoBehaviour
         if (prop1 != null)
         {
             slider1 = prop1.GetComponentInChildren<Slider>(true);
+            fillImage1 = GetSliderFillImage(slider1);
+            if (fillImage1 != null) defaultFillColor1 = fillImage1.color;
             Transform numTransform = FindChildRecursive(prop1, "num");
             if (numTransform != null)
             {
@@ -44,6 +88,8 @@ public class PropertiesShow : MonoBehaviour
         if (prop2 != null)
         {
             slider2 = prop2.GetComponentInChildren<Slider>(true);
+            fillImage2 = GetSliderFillImage(slider2);
+            if (fillImage2 != null) defaultFillColor2 = fillImage2.color;
             Transform numTransform = FindChildRecursive(prop2, "num");
             if (numTransform != null)
             {
@@ -57,11 +103,28 @@ public class PropertiesShow : MonoBehaviour
         if (prop3 != null)
         {
             slider3 = prop3.GetComponentInChildren<Slider>(true);
+            fillImage3 = GetSliderFillImage(slider3);
+            if (fillImage3 != null) defaultFillColor3 = fillImage3.color;
             Transform numTransform = FindChildRecursive(prop3, "num");
             if (numTransform != null)
             {
                 numText3_TMP = numTransform.GetComponent<TMP_Text>();
                 numText3_Legacy = numTransform.GetComponent<Text>();
+            }
+        }
+
+        // 4. 获取 propIcon_4 下的元素
+        Transform prop4 = transform.Find("propIcon_4");
+        if (prop4 != null)
+        {
+            slider4 = prop4.GetComponentInChildren<Slider>(true);
+            fillImage4 = GetSliderFillImage(slider4);
+            if (fillImage4 != null) defaultFillColor4 = fillImage4.color;
+            Transform numTransform = FindChildRecursive(prop4, "num");
+            if (numTransform != null)
+            {
+                numText4_TMP = numTransform.GetComponent<TMP_Text>();
+                numText4_Legacy = numTransform.GetComponent<Text>();
             }
         }
     }
@@ -84,15 +147,13 @@ public class PropertiesShow : MonoBehaviour
         int n1 = DataManager.Instance.nature1;
         int n2 = DataManager.Instance.nature2;
         int n3 = DataManager.Instance.nature3;
+        int money = DataManager.Instance.MoneyNum;
+        float n4 = n1 + n2 * 2f + n3 * 3f + money * moneyCoefficient;
 
-        // 根据最新要求，最小值为0，最大值为100
-        float fill1 = Mathf.Clamp(n1 / 100f, 0f, 1f);
-        float fill2 = Mathf.Clamp(n2 / 100f, 0f, 1f);
-        float fill3 = Mathf.Clamp(n3 / 100f, 0f, 1f);
-
-        if (slider1 != null) slider1.value = fill1;
-        if (slider2 != null) slider2.value = fill2;
-        if (slider3 != null) slider3.value = fill3;
+        UpdateSliderVisual(slider1, fillImage1, defaultFillColor1, n1);
+        UpdateSliderVisual(slider2, fillImage2, defaultFillColor2, n2);
+        UpdateSliderVisual(slider3, fillImage3, defaultFillColor3, n3);
+        UpdateSliderVisual(slider4, fillImage4, defaultFillColor4, n4);
 
         string n1Str = n1.ToString();
         if (numText1_TMP != null) numText1_TMP.text = n1Str;
@@ -105,6 +166,42 @@ public class PropertiesShow : MonoBehaviour
         string n3Str = n3.ToString();
         if (numText3_TMP != null) numText3_TMP.text = n3Str;
         if (numText3_Legacy != null) numText3_Legacy.text = n3Str;
+
+        string n4Str = FormatValue(n4);
+        if (numText4_TMP != null) numText4_TMP.text = n4Str;
+        if (numText4_Legacy != null) numText4_Legacy.text = n4Str;
+    }
+
+    private void UpdateSliderVisual(Slider slider, Image fillImage, Color defaultColor, float value)
+    {
+        if (slider == null) return;
+
+        float maxValue = value > 100f ? 1000f : 100f;
+        float normalized = Mathf.Clamp(value / maxValue, 0f, 1f);
+        slider.normalizedValue = normalized;
+
+        if (fillImage != null)
+        {
+            fillImage.color = value > 100f ? Color.red : defaultColor;
+        }
+    }
+
+    private Image GetSliderFillImage(Slider slider)
+    {
+        if (slider == null) return null;
+        if (slider.fillRect == null) return null;
+        return slider.fillRect.GetComponent<Image>();
+    }
+
+    private string FormatValue(float value)
+    {
+        float rounded = Mathf.Round(value);
+        if (Mathf.Approximately(value, rounded))
+        {
+            return ((int)rounded).ToString();
+        }
+
+        return value.ToString("0.##");
     }
 
     /// <summary>
