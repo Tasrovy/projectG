@@ -37,6 +37,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
     [Header("UI Background (对话时显示，结束时隐藏)")]
     public GameObject dialogueBackground;
 
+    // 对话 UI 射线拦截控制（自动从 LinePresenter / OptionsPresenter 获取）
+    private readonly List<CanvasGroup> dialogueUICanvasGroups = new();
+
     private InMemoryVariableStorage variableStorage;
 
     private bool wasStorageReady = false;
@@ -47,6 +50,34 @@ public class CharacterHighlightManager : DialoguePresenterBase
     private void Start()
     {
         variableStorage = FindAnyObjectByType<InMemoryVariableStorage>();
+
+        // 自动为 LinePresenter 和 OptionsPresenter 添加 CanvasGroup，初始关闭射线拦截
+        dialogueUICanvasGroups.Clear();
+        var linePresenter = FindAnyObjectByType<Yarn.Unity.LinePresenter>();
+        if (linePresenter != null)
+            dialogueUICanvasGroups.Add(GetOrAddCanvasGroup(linePresenter.gameObject));
+
+        // Options Presenter 上没有 OptionsListView 组件，改用名字定位
+        var optionsPresenterObj = GameObject.Find("Options Presenter");
+        if (optionsPresenterObj != null)
+            dialogueUICanvasGroups.Add(GetOrAddCanvasGroup(optionsPresenterObj));
+
+        SetDialogueUIRaycasts(false);
+    }
+
+    private static CanvasGroup GetOrAddCanvasGroup(GameObject go)
+    {
+        var cg = go.GetComponent<CanvasGroup>();
+        if (cg == null) cg = go.AddComponent<CanvasGroup>();
+        return cg;
+    }
+
+    private void SetDialogueUIRaycasts(bool blocksRaycasts)
+    {
+        foreach (var cg in dialogueUICanvasGroups)
+        {
+            if (cg != null) cg.blocksRaycasts = blocksRaycasts;
+        }
     }
 
     private void Update()
@@ -211,8 +242,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
 
     public override async YarnTask OnDialogueStartedAsync()
     {
-        // 对话开始时，显示背景
+        // 对话开始时，显示背景，并重新开启射线拦截
         if (dialogueBackground != null) dialogueBackground.SetActive(true);
+        SetDialogueUIRaycasts(true);
 
         // 对话开始时，仅显示名为 "Player" 和 "Character" 的立绘物体 (限定在talk下)
         GameObject playerObj = GetCharacterObjectUnderTalk("Player");
@@ -250,8 +282,9 @@ public class CharacterHighlightManager : DialoguePresenterBase
     /// </summary>
     public void ClearVisualsOnTransitionMidpoint()
     {
-        // 隐藏背景
+        // 隐藏背景，并关闭射线拦截，避免对话 UI 阻挡其他界面点击
         if (dialogueBackground != null) dialogueBackground.SetActive(false);
+        SetDialogueUIRaycasts(false);
 
         // 清空映射表
         var charControl = GetComponent<CharacterControl>();

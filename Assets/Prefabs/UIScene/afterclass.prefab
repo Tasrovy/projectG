@@ -590,7 +590,6 @@ GameObject:
   - component: {fileID: 61828338416310999}
   - component: {fileID: 5179988977730640022}
   - component: {fileID: 1427832601402659680}
-  - component: {fileID: 4813005985881103830}
   m_Layer: 5
   m_Name: work
   m_TagString: Untagged
@@ -700,81 +699,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4813005985881103830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3480581141267201649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7451a47de7d39743851d15ebc2b52e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onClickActions:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
-        m_MethodName: SetDialogueMoney
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 50
-          m_FloatArgument: 0
-          m_StringArgument: talk
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UISceneManager, Assembly-CSharp
-        m_MethodName: SwitchToScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Talk
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
-        m_MethodName: SetNextSceneType
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 50
-          m_FloatArgument: 0
-          m_StringArgument: Talk
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
-        m_MethodName: SetAdvanceDayAfterDialogue
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: working
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueHandler, Assembly-CSharp
-        m_MethodName: TriggerDoWorkDialogue
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: working
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!1 &3500343327787582710
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,7 +1113,6 @@ GameObject:
   - component: {fileID: 5354308463128365690}
   - component: {fileID: 8355909416834736667}
   - component: {fileID: 7865911361434297072}
-  - component: {fileID: 8614954634470544648}
   m_Layer: 5
   m_Name: playcards
   m_TagString: Untagged
@@ -1299,33 +1222,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8614954634470544648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8293531953858047074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7451a47de7d39743851d15ebc2b52e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onClickActions:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UISceneManager, Assembly-CSharp
-        m_MethodName: SwitchToScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: CardFight
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &8702248528905183076
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,7 +1234,6 @@ GameObject:
   - component: {fileID: 5337960377703492791}
   - component: {fileID: 8519933416458994596}
   - component: {fileID: 6164983158292017238}
-  - component: {fileID: 5619734880263650529}
   m_Layer: 5
   m_Name: shopping
   m_TagString: Untagged
@@ -1448,30 +1343,3 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5619734880263650529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8702248528905183076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7451a47de7d39743851d15ebc2b52e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onClickActions:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UISceneManager, Assembly-CSharp
-        m_MethodName: SwitchToScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Shop
-          m_BoolArgument: 0
-        m_CallState: 2

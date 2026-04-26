@@ -139,9 +139,26 @@ public class DateManager : Singleton<DateManager>
 
     private void SetTodoTexts(string morning, string afternoon, string afterclass, string text)
     {
-        if (morningTodo != null) morningTodo.text = morning ?? "";
-        if (afternoonTodo != null) afternoonTodo.text = afternoon ?? "";
-        if (afterclassTodo != null) afterclassTodo.text = afterclass ?? "";
-        if (dayDesc != null) dayDesc.text = text ?? "";
+        SetTMP(morningTodo,    morning);
+        SetTMP(afternoonTodo,  afternoon);
+        SetTMP(afterclassTodo, afterclass);
+        SetTMP(dayDesc,        text);
+    }
+
+    private static void SetTMP(TMP_Text tmp, string value)
+    {
+        if (tmp == null) return;
+        tmp.richText = true;
+        tmp.text = ProcessRichText(value);
+    }
+
+    /// <summary>
+    /// 将 Excel 单元格里的字面 \n 转换为真正的换行符，
+    /// 其余 TMP 富文本标签（&lt;b&gt;、&lt;size&gt; 等）直接透传。
+    /// </summary>
+    private static string ProcessRichText(string raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return "";
+        return raw.Replace("\\n", "\n");
     }
 }
