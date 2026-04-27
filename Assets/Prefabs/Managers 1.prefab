@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 7085140586571006721}
   - component: {fileID: 5844406895980773212}
   - component: {fileID: 4544418261533419066}
+  - component: {fileID: 9070557426827048834}
   m_Layer: 0
   m_Name: Managers 1
   m_TagString: Untagged
@@ -90,6 +91,9 @@ MonoBehaviour:
   dayNumber: 0
   daySO: {fileID: 11400000, guid: 25d7647c376de7744a0fa4822a2adfc2, type: 2}
   dayText: {fileID: 0}
+  startYear: 2026
+  startMonth: 5
+  startDay: 17
 --- !u!114 &4577431768715865317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,8 +107,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDatas: []
+  giftCards: []
   cardSet: []
   cardInHand: []
+  consecutiveNonGiftCount: 0
   probRarity1: 0.7
   probRarity2: 0.2
   probRarity3: 0.1
@@ -293,3 +299,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7891edc4c725b40bb8e3f88b5aceec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9070557426827048834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5187c2405ba80844f8795181e015e400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  excelFileName: date.xlsx
+  dateSO: {fileID: 11400000, guid: e75b6b39847cac14abb29151c777dd19, type: 2}
