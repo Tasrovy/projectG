@@ -20,12 +20,12 @@ MonoBehaviour:
     nature3: 0
     name: "\u521D\u59CB\u529F\u80FD\u724C"
     sale: 0
-    made: 0
+    made: 1
     broken: 0
     added: 0
     description: "<color=grey><b>\u666E\u901A</b></color> \u751F\u679D{made}"
     buff: 
-    trigger: beMade(2)
+    trigger: 
     nextTurn: 
   - id: 21001
     dialog: 5
