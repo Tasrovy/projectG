@@ -34,37 +34,45 @@ public class HandService
         return num;
     }
 
-    public void ChangeHandGift(System.Func<int, CardData> getCardDataById)
+    public void ChangeHandGift(System.Func<int, CardData> getCardDataById, Card ignoredCard = null)
     {
-        List<Card> cardsToReturn = _cardInHand.FindAll(c => c.id.ToString()[0] == '1');
-        if (cardsToReturn.Count > 0)
+        List<Card> giftCardsInHand = _cardInHand.FindAll(c =>
+            CardIdUtility.GetCardType(c.id) == 1 && c != ignoredCard);
+        int giftCount = giftCardsInHand.Count;
+        if (giftCount <= 0) return;
+
+        foreach (Card card in giftCardsInHand)
         {
-            foreach (Card card in cardsToReturn)
-            {
-                _cardSet.Add(card);
-                _cardInHand.Remove(card);
-            }
-            Debug.Log($"[HandService] 已将 {cardsToReturn.Count} 张 ID 为 1 的手牌放回牌堆。");
+            _cardInHand.Remove(card);
         }
 
-        int indexInSet = _cardSet.FindIndex(c => c.id.ToString()[0] == '1');
-        if (indexInSet != -1)
+        Debug.Log($"[HandService] 已销毁 {giftCount} 张礼物手牌。");
+
+        Card templateCard = _cardSet.Find(c => CardIdUtility.GetCardType(c.id) == 1);
+        if (templateCard != null)
         {
-            Card drawnCard = _cardSet[indexInSet];
-            _cardSet.RemoveAt(indexInSet);
-            _cardInHand.Add(drawnCard);
-            Debug.Log($"[HandService] 已从牌堆重新抽回一张 ID 为 1 的牌: {drawnCard.name}");
+            for (int i = 0; i < giftCount; i++)
+            {
+                Card newCard = new Card();
+                newCard.InitCard(templateCard);
+                _cardInHand.Add(newCard);
+            }
+
+            Debug.Log($"[HandService] 已根据牌堆中的礼物样本复制 {giftCount} 张加入手牌: {templateCard.name}");
+            return;
         }
-        else
+
+        CardData data = getCardDataById(1);
+        if (data != null)
         {
-            CardData data = getCardDataById(1);
-            if (data != null)
+            for (int i = 0; i < giftCount; i++)
             {
                 Card newCard = new Card();
                 newCard.InitCard(data);
                 _cardInHand.Add(newCard);
-                Debug.Log("[HandService] 牌堆中无 ID 为 1 的牌，已直接生成一张加入手牌。");
             }
+
+            Debug.Log($"[HandService] 牌堆中无礼物牌，已直接生成 {giftCount} 张礼物加入手牌。");
         }
     }
 }

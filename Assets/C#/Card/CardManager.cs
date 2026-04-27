@@ -158,6 +158,11 @@ public class CardManager : Singleton<CardManager>
         return _deckService.GetCardsInDeckById(cardId);
     }
 
+    public List<List<Card>> GetGiftCardGroupsWithCountGreaterThan(int minCount)
+    {
+        return _deckService.GetGiftCardGroupsWithCountGreaterThan(minCount);
+    }
+
     // ===================== 手牌（Hand） =====================
     public void BreakCard(Card card)
     {
@@ -176,10 +181,10 @@ public class CardManager : Singleton<CardManager>
         return _handService.GetGiftCardNum();
     }
 
-    public void ChangeHandGift()
+    public void ChangeHandGift(Card ignoredCard = null)
     {
         Debug.Log("[CardManager] Begin Change Hand Gift");
-        _handService.ChangeHandGift(GetCardDataById);
+        _handService.ChangeHandGift(GetCardDataById, ignoredCard);
         NotifyDeckOrHandChanged();
     }
 

@@ -18,6 +18,8 @@ public sealed class CardEffectExecutor
         _owner = owner;
     }
 
+    public bool IsWaitingForAsync => _waitingForAsync;
+
     public void ExecuteEffectList(Card card, List<EffectCommand> effects)
     {
         if (effects == null || effects.Count == 0) return;
@@ -85,7 +87,7 @@ public sealed class CardEffectExecutor
     {
         if (effect.methodName == "beMade" || effect.methodName == "_beMadeDirect" ||
             effect.methodName == "beAdded" || effect.methodName == "_beAddedDirect" ||
-            effect.methodName == "beAddedTo")
+            effect.methodName == "beAddedTo" || effect.methodName == "addNatureAtSumIf")
         {
             int giftCardNum = CardManager.Instance.GetGiftCardNum();
             if (giftCardNum <= 0)

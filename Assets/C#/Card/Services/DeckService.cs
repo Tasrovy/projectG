@@ -113,6 +113,35 @@ public class DeckService
         return result;
     }
 
+    public List<List<Card>> GetGiftCardGroupsWithCountGreaterThan(int minCount)
+    {
+        Dictionary<int, List<Card>> giftCardGroups = new Dictionary<int, List<Card>>();
+
+        foreach (Card card in _cardSet)
+        {
+            if (card.id / 10000 != 1) continue;
+
+            if (!giftCardGroups.TryGetValue(card.id, out List<Card> cards))
+            {
+                cards = new List<Card>();
+                giftCardGroups[card.id] = cards;
+            }
+
+            cards.Add(card);
+        }
+
+        List<List<Card>> result = new List<List<Card>>();
+        foreach (List<Card> cards in giftCardGroups.Values)
+        {
+            if (cards.Count > minCount)
+            {
+                result.Add(cards);
+            }
+        }
+
+        return result;
+    }
+
     public void AddCardToSet(Card card)
     {
         if(!_cardSet.Contains(card)) _cardSet.Add(card);
