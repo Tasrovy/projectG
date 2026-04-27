@@ -6,11 +6,6 @@ using TMPro;
 
 public class PropertiesShow : MonoBehaviour
 {
-    [Header("属性1权重")][SerializeField] private float natureCoefficient1 = 1f;
-    [Header("属性2权重")][SerializeField] private float natureCoefficient2 = 2f;
-    [Header("属性3权重")][SerializeField] private float natureCoefficient3 = 3f;
-    [Header("金钱权重")][SerializeField] private float moneyCoefficient = 0.1f;
-
 #region propIcons
     private Slider slider1;
     private Slider slider2;
@@ -46,6 +41,15 @@ public class PropertiesShow : MonoBehaviour
     {
         InitializeReferences();
         InitializeRandomTargetText();
+    }
+
+    /// <summary>
+    /// 返回魅力値，权重由 DataManager 统一管理
+    /// </summary>
+    public float GetCharm()
+    {
+        if (DataManager.Instance == null) return 0f;
+        return DataManager.Instance.GetCharm();
     }
 
     private void InitializeRandomTargetText()
@@ -154,7 +158,7 @@ public class PropertiesShow : MonoBehaviour
         int n2 = DataManager.Instance.nature2;
         int n3 = DataManager.Instance.nature3;
         int money = DataManager.Instance.MoneyNum;
-        float n4 = n1 * natureCoefficient1 + n2 * natureCoefficient2 + n3 * natureCoefficient3 + money * moneyCoefficient;
+        float n4 = DataManager.Instance.GetCharm();
 
         UpdateSliderVisual(slider1, fillImage1, defaultFillColor1, n1);
         UpdateSliderVisual(slider2, fillImage2, defaultFillColor2, n2);

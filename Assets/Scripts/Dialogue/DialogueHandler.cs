@@ -29,6 +29,9 @@ public class DialogueHandler : MonoBehaviour
     private int _doWorkI = 1;
     private int _doWorkJ = 1;
 
+    // 失败对话标志：当前正在播放失败对话
+    private bool _isPlayingFailedDialogue = false;
+
         void Start()
     {
         Yarn.Unity.InMemoryVariableStorage storage = FindAnyObjectByType<Yarn.Unity.InMemoryVariableStorage>();
@@ -111,6 +114,45 @@ public class DialogueHandler : MonoBehaviour
 
     #region 对话呼出与日常结算
 
+    /// <summary>
+    /// 尝试获取失败对话节点。
+    /// 如果当天存在 failedDialog 且对应属性未达标准，返回 true 并输出节点名。
+    /// </summary>
+    private bool TryGetFailedDialogue(out string failedNode)
+    {
+        failedNode = null;
+        if (DayManager.Instance == null || DataManager.Instance == null) return false;
+
+        var daySO = DayManager.Instance.daySO;
+        int dayIndex = DayManager.Instance.GetDayNumber();
+        if (daySO == null || dayIndex < 0 || dayIndex >= daySO.dayDatas.Count) return false;
+
+        DayData today = daySO.dayDatas[dayIndex];
+        if (string.IsNullOrEmpty(today.failedDialog)) return false;
+
+        int targetType = DayManager.Instance.TargetType;
+        float playerValue;
+        int targetValue;
+
+        switch (targetType)
+        {
+            case 1: playerValue = DataManager.Instance.nature1; targetValue = today.target1; break;
+            case 2: playerValue = DataManager.Instance.nature2; targetValue = today.target2; break;
+            case 3: playerValue = DataManager.Instance.nature3; targetValue = today.target3; break;
+            case 4:
+                playerValue = DataManager.Instance.GetCharm();
+                targetValue = today.target4;
+                break;
+            default:
+                return false;
+        }
+
+        if (playerValue >= targetValue) return false; // 属性达标，无事发生
+
+        failedNode = today.failedDialog;
+        return true;
+    }
+
     public void StartDialogue(string yarnScript)
     {
         // 完整回溯出到底是谁点击/触发的：
@@ -139,6 +181,16 @@ public class DialogueHandler : MonoBehaviour
     public void TriggerEndDayWithDeal(string sceneTypeName = "Talk")
     {
         Debug.Log($"[DialogueHandler] TriggerEndDayWithDeal 被调用！sceneTypeName={sceneTypeName}, dialogueRunner={(dialogueRunner != null ? "OK" : "NULL")}, currentDay={DayManager.Instance?.GetDayNumber()}");
+
+        // 失败检定：如果今天存在 failedDialog 且属性未达标，播放失败对话，不进行正常过天流程
+        if (TryGetFailedDialogue(out string failedNode))
+        {
+            Debug.Log($"[DialogueHandler] 失败检定未通过，播放失败对话: {failedNode}");
+            _isPlayingFailedDialogue = true;
+            StartDialogue(failedNode);
+            return;
+        }
+
         // 先设好一定会过天以及目的场景
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
@@ -191,6 +243,15 @@ public class DialogueHandler : MonoBehaviour
             return;
         }
 
+        // 失败检定
+        if (TryGetFailedDialogue(out string failedNode))
+        {
+            Debug.Log($"[DialogueHandler] 失败检定未通过，播放失败对话: {failedNode}");
+            _isPlayingFailedDialogue = true;
+            StartDialogue(failedNode);
+            return;
+        }
+
         string yarnNode = $"doWork{_doWorkI}_{_doWorkJ}";
 
         if (dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
@@ -234,6 +295,15 @@ public class DialogueHandler : MonoBehaviour
     public void TriggerEventDialogue(string eventNodeName, string sceneTypeName = "Talk")
     {
         Debug.Log($"[DialogueHandler] TriggerEventDialogue 被调用！eventNode={eventNodeName}, sceneTypeName={sceneTypeName}");
+
+        // 失败检定
+        if (TryGetFailedDialogue(out string failedNode))
+        {
+            Debug.Log($"[DialogueHandler] 失败检定未通过，播放失败对话: {failedNode}");
+            _isPlayingFailedDialogue = true;
+            StartDialogue(failedNode);
+            return;
+        }
 
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
@@ -374,6 +444,15 @@ public class DialogueHandler : MonoBehaviour
             }
         });
 
+        // 失败对话流程结束：调用全局失败处理，跳过过天逻辑
+        if (_isPlayingFailedDialogue)
+        {
+            _isPlayingFailedDialogue = false;
+            isHandlingDialogueSequence = false;
+            OnGameFailed();
+            yield break;
+        }
+
         // =================== 修改点：拦截过天与 Special 对话 ===================
         // 【重要】：在此时趁着转场完全黑屏的时刻，我们才来判定这一天是否要“跨向第二天”！
         // 如果是过天的流程，必须在结算这一天之前先拽出来晚间的 special 对话进入待办队列！
@@ -442,12 +521,49 @@ public class DialogueHandler : MonoBehaviour
     #region 强制过天与数值属性设置
 
     /// <summary>
+    /// 全局游戏失败处理函数。
+    /// 当失败对话结束后自动调用，具体功能待后实现。
+    /// </summary>
+    public void OnGameFailed()
+    {
+        Debug.Log("[DialogueHandler] OnGameFailed 被触发，执行失败结算。");
+
+        // 数据清零
+        if (DataManager.Instance != null)
+        {
+            DataManager.Instance.nature1 = 0;
+            DataManager.Instance.nature2 = 0;
+            DataManager.Instance.nature3 = 0;
+            DataManager.Instance.MoneyNum = 0;
+        }
+
+        // 清空手牌堆
+        if (CardManager.Instance != null)
+            CardManager.Instance.ClearAllCards();
+
+        // 跳转回 Begin 场景
+        if (UISceneManager.Instance != null)
+            UISceneManager.Instance.SwitchToScene(SceneType.Begin);
+        else
+            Debug.LogError("[DialogueHandler] OnGameFailed: UISceneManager.Instance 为空，无法跳转场景。");
+    }
+
+    /// <summary>
     /// 给外部（如直接回家的UI按钮）触发“过天检测”的方法。
     /// 如果触发了 Special，则进入对话流；如果没有，它会自己拉黑屏并跨天切场景。
     /// 可以直接给 UnityEvent 传递诸如 "Talk" 或 "DayMenu" 等字符串。
     /// </summary>
     public void TriggerEndDayDirectly(string sceneTypeName = "Talk")
     {
+        // 失败检定
+        if (TryGetFailedDialogue(out string failedNode))
+        {
+            Debug.Log($"[DialogueHandler] 失败检定未通过，播放失败对话: {failedNode}");
+            _isPlayingFailedDialogue = true;
+            StartDialogue(failedNode);
+            return;
+        }
+
         // 勾上过天的标记并排入要切换的后置场景
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);

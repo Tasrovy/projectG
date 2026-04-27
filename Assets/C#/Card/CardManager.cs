@@ -225,6 +225,16 @@ public class CardManager : Singleton<CardManager>
         }
     }
 
+    /// <summary>
+    /// 清空手牌与牌堆。游戏失败时调用。
+    /// </summary>
+    public void ClearAllCards()
+    {
+        cardInHand.Clear();
+        cardSet.Clear();
+        NotifyDeckOrHandChanged();
+    }
+
     public void AddCardToSet(Card card)
     {
         _deckService.AddCardToSet(card);

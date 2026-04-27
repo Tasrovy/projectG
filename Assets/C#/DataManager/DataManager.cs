@@ -11,6 +11,20 @@ public class DataManager : Singleton<DataManager>
     public float currNature2Effect;
     public float currNature3Effect;
 
+    [Header("魅力値权重")]
+    public float charmCoefficient1 = 1f;
+    public float charmCoefficient2 = 2f;
+    public float charmCoefficient3 = 3f;
+    public float charmMoneyCoefficient = 0.1f;
+
+    public float GetCharm()
+    {
+        return nature1 * charmCoefficient1
+             + nature2 * charmCoefficient2
+             + nature3 * charmCoefficient3
+             + MoneyNum * charmMoneyCoefficient;
+    }
+
     protected override void Awake()
     {
         base.Awake();

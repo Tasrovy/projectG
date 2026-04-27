@@ -30,7 +30,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
         ResetToNormalMode();
     }
 
-    private void OnDestroy()
+    private void _OnDestroy()
     {
         if (CardSelector.Instance != null)
         {

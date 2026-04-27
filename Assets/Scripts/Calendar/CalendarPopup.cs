@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CalendarPopup : MonoBehaviour
 {
-    [SerializeField] private GameObject todoList;
+    private GameObject todoList;
 
     private GameObject popupRoot;
     private Transform gridParent;
@@ -14,6 +14,13 @@ public class CalendarPopup : MonoBehaviour
 
     private int viewYear;
     private int viewMonth;
+
+    private void Awake()
+    {
+        Transform t = transform.Find("todoList");
+        if (t != null) todoList = t.gameObject;
+        else Debug.LogError("[CalendarPopup] 未找到子物体 todoList！");
+    }
 
     private void OnEnable()
     {

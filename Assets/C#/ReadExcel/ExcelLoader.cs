@@ -155,6 +155,7 @@ public class ExcelLoader : Singleton<ExcelLoader>
 
         // 创建临时实例
         DayDataSO db = ScriptableObject.CreateInstance<DayDataSO>();
+        db.name = soName;
 
         using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
         {
@@ -352,6 +353,7 @@ public class ExcelLoader : Singleton<ExcelLoader>
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
         InitialHandSO db = ScriptableObject.CreateInstance<InitialHandSO>();
+        db.name = soName;
 
         using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
         {
