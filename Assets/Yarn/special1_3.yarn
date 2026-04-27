@@ -4,15 +4,10 @@ title : special1_3
 <<play_bgm lake_happy2>>
 <<play_whitenoise bg1_bgWhiteNoise3>>
 <<set_character_person Player {$MY_NAME} peace_1>>
-<<<<<<< Updated upstream
 <<set_character_person Character "伊兰莉特" peace_1>>
-=======
-<<set_character_person Character "蒂娜" peace_1>>
->>>>>>> Stashed changes
 
 （连续几天的牌局。我已经习惯了蒂娜的存在。）
 （空气中带着毛茸茸的暖意。和她共处时的快乐如此真实。）
-<<<<<<< Updated upstream
 <<set_character_sprite "伊兰莉特" peace_2>>
 蒂娜:喂，你今天打牌的反应好慢哦。
 <<set_character_sprite {$MY_NAME} peace_2>>
@@ -35,56 +30,20 @@ title : special1_3
 （她伸出手，轻轻戳了戳我的眉心。）
 <<set_character_sprite "伊兰莉特" saying>>
 <<set_character_shake "伊兰莉特" up_down>>
-=======
-<<set_character_sprite "蒂娜" peace_2>>
-蒂娜:喂，你今天打牌的反应好慢哦。
-<<set_character_sprite {$MY_NAME} peace_2>>
-{$MY_NAME}:……有点累了。
-<<set_character_sprite "蒂娜" saying>>
-蒂娜:（凑近）累了也要加油哇！不然我会——
-（她的话说到一半，突然停住了。）
-（因为我闭上了眼睛。）
-<<set_character_sprite "蒂娜" saying>>
-<<set_character_shake "蒂娜" left_right>>
-蒂娜:……喂？
-蒂娜:睡着了吗？
-（沉默。）
-<<set_character_sprite "蒂娜" angry>>
-蒂娜:真是的……
-（她坐在我旁边，小声嘟囔着。）
-（我能感觉到她的目光，落在我的脸上。）
-<<set_character_sprite "蒂娜" saying>>
-蒂娜:你知道吗？你睡觉的时候，眉毛总是皱着的。
-（她伸出手，轻轻戳了戳我的眉心。）
-<<set_character_sprite "蒂娜" saying>>
-<<set_character_shake "蒂娜" up_down>>
->>>>>>> Stashed changes
 蒂娜:明明醒着的时候装得那么平静……你到底在想什么呢？
 （我没有回答。或者说，我打心底里无法回答这个问题。）
 蒂娜:算了，反正你也不会告诉我。
 （她收回手，抱着膝盖坐在旁边。）
-<<<<<<< Updated upstream
 <<set_character_sprite "伊兰莉特" peace_1>>
 蒂娜:我啊……有时候会觉得，我好像认识你很久了。
 蒂娜:但这是不可能的，对吧？
 （她的声音越来越轻。）
 <<set_character_sprite "伊兰莉特" saying>>
-=======
-<<set_character_sprite "蒂娜" peace_1>>
-蒂娜:我啊……有时候会觉得，我好像认识你很久了。
-蒂娜:但这是不可能的，对吧？
-（她的声音越来越轻。）
-<<set_character_sprite "蒂娜" saying>>
->>>>>>> Stashed changes
 蒂娜:：毕竟我才出现几天而已……
 （她沉默了。）
 蒂娜:我在说什么啊，你反正也听不见。
 （她打了个哈欠。精灵也会有些疲惫吗？）
-<<<<<<< Updated upstream
 <<set_character_sprite "伊兰莉特" peace_2>>
-=======
-<<set_character_sprite "蒂娜" peace_2>>
->>>>>>> Stashed changes
 蒂娜:……我也睡一会儿好了。
 （轻而暖的呼吸声传来，她的头靠在了我的肩膀上。）
 

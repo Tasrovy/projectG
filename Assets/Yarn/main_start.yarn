@@ -13,13 +13,8 @@ title: main_start
 （鲜花簇拥着我们，溪水潺潺。） #line:09f9855 
 <<set_character_sprite "{$MY_NAME}" "peace_1">>
 <<set_character_sprite "伊兰莉特" "peace_1">>
-<<<<<<< Updated upstream
 伊兰莉特:花开得真好。#sfx_Character_主角2_好啊
 （岩壁上有一大簇正盛放的小苍兰，伊兰莉特最喜欢那些花了。） #line:006d230 
-=======
-伊兰莉特:花开得真好。 #line:0b2cd4e 
-（岩壁上有一大簇正盛放的小苍兰，{$MY_NAME}最喜欢那些花了。） #line:006d230 
->>>>>>> Stashed changes
 <<set_character_sprite "{$MY_NAME}" "happy">>
 <<set_character_sprite "伊兰莉特" "saying">>
 伊兰莉特:把它们做成花环戴在你头上，唔...... #line:0d9e904 
@@ -85,10 +80,6 @@ title: room1_1
 <<set_character_sprite {$MY_NAME} sad>>
 {$MY_NAME}:如果你还在我身边，那该多好...... #line:0a97d71 
 
-<<<<<<< Updated upstream
-//<<摄像机朝着匣子放大指令占坑>>
-->完全打开匣子
-=======
 title: room1_3
 ---
 <<set_background box占坑>>
@@ -137,7 +128,6 @@ title: room1_3
 蒂娜 :我会一直在这里等你哦！
 
 ->寻找卡牌说明书 
->>>>>>> Stashed changes
     <<jump card1_1>>
 ->还是把盖子盖上，放回抽屉里吧
     ？？？: 喂喂，这位女士，你可别把我关回去呀！#sfx_Character_主角2_啊？
