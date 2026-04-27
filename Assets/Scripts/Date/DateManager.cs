@@ -61,7 +61,7 @@ public class DateManager : Singleton<DateManager>
         if (morningTodo == null)   morningTodo   = FindTMP(todoList, "morning_todo");
         if (afternoonTodo == null) afternoonTodo = FindTMP(todoList, "afternoon_todo");
         if (afterclassTodo == null) afterclassTodo = FindTMP(todoList, "afterclass_todo");
-        if (dayDesc == null)       dayDesc       = FindTMP(todoList, "dayDesc");
+        if (dayDesc == null) dayDesc = FindTMP(todoList, "dayDesc");
     }
 
     private static TMP_Text FindTMP(Transform parent, string childName)

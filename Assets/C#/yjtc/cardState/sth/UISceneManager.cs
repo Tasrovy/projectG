@@ -92,7 +92,7 @@ public class UISceneManager : MonoBehaviour
         // 隐藏所有的互斥场景节点
         DeactivateAllMutexRoots();
 
-        bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin && sceneType != SceneType.Naming && sceneType != SceneType.Talk);
+        bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin && sceneType != SceneType.Naming);
         if (alwaysShowRoots != null)
         {
             foreach(var root in alwaysShowRoots)

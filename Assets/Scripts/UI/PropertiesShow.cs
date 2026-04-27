@@ -6,7 +6,10 @@ using TMPro;
 
 public class PropertiesShow : MonoBehaviour
 {
-    [SerializeField] private float moneyCoefficient = 0.1f;
+    [Header("属性1权重")][SerializeField] private float natureCoefficient1 = 1f;
+    [Header("属性2权重")][SerializeField] private float natureCoefficient2 = 2f;
+    [Header("属性3权重")][SerializeField] private float natureCoefficient3 = 3f;
+    [Header("金钱权重")][SerializeField] private float moneyCoefficient = 0.1f;
 
 #region propIcons
     private Slider slider1;
@@ -64,6 +67,9 @@ public class PropertiesShow : MonoBehaviour
         };
 
         targetText.text = $"攻略目标：{targetName}";
+        // 存入 DayManager 供其他系统读取
+        if (DayManager.Instance != null)
+            DayManager.Instance.SetTargetType(targetType);
     }
 
     private void InitializeReferences()
@@ -148,7 +154,7 @@ public class PropertiesShow : MonoBehaviour
         int n2 = DataManager.Instance.nature2;
         int n3 = DataManager.Instance.nature3;
         int money = DataManager.Instance.MoneyNum;
-        float n4 = n1 + n2 * 2f + n3 * 3f + money * moneyCoefficient;
+        float n4 = n1 * natureCoefficient1 + n2 * natureCoefficient2 + n3 * natureCoefficient3 + money * moneyCoefficient;
 
         UpdateSliderVisual(slider1, fillImage1, defaultFillColor1, n1);
         UpdateSliderVisual(slider2, fillImage2, defaultFillColor2, n2);

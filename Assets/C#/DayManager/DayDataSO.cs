@@ -14,10 +14,11 @@ public class DayData
     public int getCardNum;
     public string dailyDialog;
     public string specialDialog;
-    public string target1;
-    public string target2;
-    public string target3;
-    public string target4;
+    public string failedDialog;
+    public int target1;
+    public int target2;
+    public int target3;
+    public int target4;
 }
 
 public class DayDataSO : ScriptableObject
