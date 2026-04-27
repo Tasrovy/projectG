@@ -18,7 +18,7 @@ MonoBehaviour:
     probRarity3: 0
     day: 1
     profit: 100
-    drawNum: 4
+    drawNum: 10
     getCardNum: 2
     dailyDialog: cardFirstEnd
     specialDialog: 

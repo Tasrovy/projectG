@@ -18,7 +18,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 30
-    name: "\u98CE\u8FC7\u758F\u7AF9(\u4E8B\u4EF6\uFF09"
+    name: "\u4E00\u8D77\u6253\u4E52\u4E53\u7403\u5427"
     sale: 60
     made: 
     broken: 
@@ -32,7 +32,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 20
-    name: "\u6625\u98CE\u53C8\u751F(\u4E8B\u4EF6\uFF09"
+    name: "\u4E50\u961Fjam"
     sale: 60
     made: 
     broken: 
@@ -46,7 +46,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 20
-    name: "\u4EAD\u4EAD\u5982\u76D6(\u4E8B\u4EF6\uFF09"
+    name: "\u8F85\u5BFC\u4F5C\u4E1A"
     sale: 60
     made: 
     broken: 
@@ -60,7 +60,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u4E00\u53F6\u77E5\u79CB(\u4E8B\u4EF6\uFF09"
+    name: livehouse
     sale: 120
     made: 
     broken: 

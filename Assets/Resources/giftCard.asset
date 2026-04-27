@@ -15,7 +15,7 @@ MonoBehaviour:
   allCards:
   - id: 11601
     dialog: 1
-    nature1: 4
+    nature1: 1001
     nature2: 0
     nature3: 0
     name: "\u521D\u59CB\u793C\u72691"

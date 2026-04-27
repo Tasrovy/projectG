@@ -14,30 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allCards:
   - id: 21601
-<<<<<<< Updated upstream
     dialog: 5
-=======
->>>>>>> Stashed changes
     nature1: 0
     nature2: 0
     nature3: 0
     name: "\u521D\u59CB\u529F\u80FD\u724C"
     sale: 0
-<<<<<<< Updated upstream
-    made: 0
+    made: 1
     broken: 0
     added: 0
     description: "<color=grey><b>\u666E\u901A</b></color> \u751F\u679D{made}"
     buff: 
-    trigger: beMade(2)
-=======
-    made: 1
-    broken: 0
-    added: 0
-    description: "\u751F\u679D{made}"
-    buff: 
     trigger: 
->>>>>>> Stashed changes
     nextTurn: 
   - id: 21001
     dialog: 5
