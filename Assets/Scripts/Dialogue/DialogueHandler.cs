@@ -535,6 +535,7 @@ public class DialogueHandler : MonoBehaviour
             DataManager.Instance.nature2 = 0;
             DataManager.Instance.nature3 = 0;
             DataManager.Instance.MoneyNum = 0;
+            DataManager.Instance.extraCharm = 0;
         }
 
         // 清空手牌堆

@@ -6,6 +6,8 @@ public class DataManager : Singleton<DataManager>
     public int nature2;
     public int nature3;
     public int MoneyNum;
+    /// <summary>额外魅力値，初始为 0，只能通过 AddExtraCharm 增加。</summary>
+    public int extraCharm;
     protected override bool IsPersistent => true;
     public float currNature1Effect;
     public float currNature2Effect;
@@ -19,11 +21,13 @@ public class DataManager : Singleton<DataManager>
 
     public float GetCharm()
     {
-        return nature1 * charmCoefficient1
-             + nature2 * charmCoefficient2
-             + nature3 * charmCoefficient3
-             + MoneyNum * charmMoneyCoefficient;
+        float baseCharm = nature1 * charmCoefficient1
+                        + nature2 * charmCoefficient2
+                        + nature3 * charmCoefficient3
+                        + MoneyNum * charmMoneyCoefficient;
+        return baseCharm + extraCharm;
     }
+
 
     protected override void Awake()
     {
@@ -32,6 +36,7 @@ public class DataManager : Singleton<DataManager>
         nature2 = 0;
         nature3 = 0;
         MoneyNum = 0;
+        extraCharm = 0;
         currNature1Effect = 0;
         currNature2Effect = 0;
         currNature3Effect = 0;
@@ -59,6 +64,8 @@ public class DataManager : Singleton<DataManager>
             case 3 :AddNature3(num);
                 break;
             case 4 :AddMoneyNum(num);
+                break;
+            case 5 :AddExtraCharm(num);
                 break;
             default:
                 Debug.LogError($"unknown id :{id}");
@@ -145,10 +152,16 @@ public class DataManager : Singleton<DataManager>
         MoneyNum += num;
     }
 
+    private void AddExtraCharm(int amount)
+    {
+        extraCharm += amount;
+    }
+
     public int GetNature1()=>nature1;
     public int GetNature2()=>nature2;
     public int GetNature3()=>nature3;
     public int GetMoneyNum()=>MoneyNum;
+    public int GetExtraCharm()=>extraCharm;
 
     public void SetNature1Effect(float num)
     {

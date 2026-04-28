@@ -201,7 +201,7 @@ public class ShopController : MonoBehaviour
     {
         ClearVisibleCards();
         ResetSelection();
-        gameObject.SetActive(false);
+        DialogueHandler.Instance.TriggerEndDayWithDeal();
     }
 
     protected virtual void SwitchMode(ShopMode mode)
@@ -259,7 +259,7 @@ public class ShopController : MonoBehaviour
             return;
         }
 
-        button.onClick = new Button.ButtonClickedEvent();
+        // button.onClick = new Button.ButtonClickedEvent();
         button.onClick.AddListener(action);
     }
 
