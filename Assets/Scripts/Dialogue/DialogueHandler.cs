@@ -32,6 +32,27 @@ public class DialogueHandler : MonoBehaviour
     // 失败对话标志：当前正在播放失败对话
     private bool _isPlayingFailedDialogue = false;
 
+    private Coroutine StartManagedCoroutine(IEnumerator routine)
+    {
+        if (routine == null)
+        {
+            return null;
+        }
+
+        if (isActiveAndEnabled && gameObject.activeInHierarchy)
+        {
+            return StartCoroutine(routine);
+        }
+
+        if (TransitionManager.Instance != null)
+        {
+            return TransitionManager.Instance.StartCoroutine(routine);
+        }
+
+        Debug.LogError("[DialogueHandler] 无法启动协程：DialogueHandler 未激活且 TransitionManager 不可用。");
+        return null;
+    }
+
     private static Transform FindAncestorByName(Transform start, string name)
     {
         Transform current = start;
@@ -143,7 +164,7 @@ public class DialogueHandler : MonoBehaviour
         {
             HideSkipButton();
             wasDialogueRunning = false;
-            StartCoroutine(EndDialogueRoutine());
+            StartManagedCoroutine(EndDialogueRoutine());
         }
         // 状态转为运行中：YarnSpinner内部真正启动时（可能要花几帧启动），才拉起UI
         else if (!wasDialogueRunning && isDialogueRunning)
@@ -210,7 +231,7 @@ public class DialogueHandler : MonoBehaviour
             else
             {
                 isHandlingDialogueSequence = true;
-                StartCoroutine(StartDialogueRoutine(yarnScript));
+                StartManagedCoroutine(StartDialogueRoutine(yarnScript));
             }
         }
     }
@@ -238,7 +259,7 @@ public class DialogueHandler : MonoBehaviour
 
         if (DayManager.Instance == null || dialogueRunner == null) 
         {
-            StartCoroutine(EndDialogueRoutine());
+            StartManagedCoroutine(EndDialogueRoutine());
             return;
         }
 
@@ -267,7 +288,7 @@ public class DialogueHandler : MonoBehaviour
         {
             // 【没deal时】：直接拉起黑屏，跑去检测今晚有没有special，都没有就安静切去第二天。
             Debug.Log($"[DialogueHandler] 今晚没有 deal，直接拉起过天与 special 检测。");
-            StartCoroutine(EndDialogueRoutine());
+            StartManagedCoroutine(EndDialogueRoutine());
         }
     }
 
@@ -535,7 +556,7 @@ public class DialogueHandler : MonoBehaviour
 
             // 此时 isHandlingDialogueSequence 仍为 true，StartDialogue 会把节点再次入队而非执行，造成死锁。
             // 直接启动 StartDialogueRoutine 协程，保持锁的持有状态，无缝衔接下一段对话。
-            StartCoroutine(StartDialogueRoutine(nextScript));
+            StartManagedCoroutine(StartDialogueRoutine(nextScript));
             yield break;
         }
 
@@ -611,7 +632,7 @@ public class DialogueHandler : MonoBehaviour
         SetNextSceneType(sceneTypeName);
         
         // 然后，人为触发一次清场与过天检测漏斗
-        StartCoroutine(EndDialogueRoutine());
+        StartManagedCoroutine(EndDialogueRoutine());
     }
 
     public void SetDialogueProperties(int p1, int p2, int p3)
@@ -690,7 +711,7 @@ public class DialogueHandler : MonoBehaviour
         wasDialogueRunning = false;
 
         // 如果玩家因为跳过而人工强停对话结束，那么同样触发离场的转场
-        StartCoroutine(EndDialogueRoutine());
+        StartManagedCoroutine(EndDialogueRoutine());
     }
 
     private void ShowSkipButton()
