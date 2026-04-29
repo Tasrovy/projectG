@@ -32,6 +32,40 @@ public class DialogueHandler : MonoBehaviour
     // 失败对话标志：当前正在播放失败对话
     private bool _isPlayingFailedDialogue = false;
 
+    private static Transform FindAncestorByName(Transform start, string name)
+    {
+        Transform current = start;
+        while (current != null)
+        {
+            if (current.name == name)
+            {
+                return current;
+            }
+            current = current.parent;
+        }
+        return null;
+    }
+
+    private GameObject ResolveTalkObject()
+    {
+        if (dialogueRunner != null)
+        {
+            Transform talkFromRunner = FindAncestorByName(dialogueRunner.transform, "talk");
+            if (talkFromRunner != null)
+            {
+                return talkFromRunner.gameObject;
+            }
+        }
+
+        Transform talkFromSelf = FindAncestorByName(transform, "talk");
+        if (talkFromSelf != null)
+        {
+            return talkFromSelf.gameObject;
+        }
+
+        return GameObject.Find("talk");
+    }
+
         void Start()
     {
         Yarn.Unity.InMemoryVariableStorage storage = FindAnyObjectByType<Yarn.Unity.InMemoryVariableStorage>();
@@ -47,7 +81,6 @@ public class DialogueHandler : MonoBehaviour
             Destroy(gameObject); return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
         
 
         characterHighlightManager = GetComponent<CharacterHighlightManager>();
@@ -57,6 +90,14 @@ public class DialogueHandler : MonoBehaviour
             skipDialogueButton.onClick.RemoveListener(HandleSkipDialogueClicked);
             skipDialogueButton.onClick.AddListener(HandleSkipDialogueClicked);
             skipDialogueButton.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
         }
     }
 
@@ -74,7 +115,7 @@ public class DialogueHandler : MonoBehaviour
             if (currentDay > 0 && currentDay != lastCheckedDay) // 防止默认0天时无意义判定
             {
                 // 【锁】：必须要在 talk 能检测到时才能试图开始天数事件检测，否则等待（不更新 lastCheckedDay）
-                GameObject talkObj = GameObject.Find("talk");
+                GameObject talkObj = ResolveTalkObject();
                 if (talkObj != null && talkObj.activeInHierarchy)
                 {
                     lastCheckedDay = currentDay;
@@ -354,7 +395,7 @@ public class DialogueHandler : MonoBehaviour
     private IEnumerator StartDialogueRoutine(string yarnScript)
     {
         // 提前判断是否需要切换场景——必须在转场前判断，否则黑屏后再切会被玩家看到
-        GameObject talkCheck = GameObject.Find("Canvas/talk");
+        GameObject talkCheck = ResolveTalkObject();
         bool needsSceneSwitch = (talkCheck == null || !talkCheck.activeInHierarchy);
 
         if (needsSceneSwitch)
@@ -378,7 +419,7 @@ public class DialogueHandler : MonoBehaviour
         int waitFrames = 0;
         while (talkObj == null || !talkObj.activeInHierarchy)
         {
-            talkObj = GameObject.Find("Canvas/talk");
+            talkObj = ResolveTalkObject();
             waitFrames++;
             if (waitFrames % 60 == 0)
             {

@@ -12,6 +12,24 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] 
     [Header("抖动幅度")] private float shakeMagnitude = 40.0f;
 
+    private static void HidePortraitImage(Image image)
+    {
+        if (image == null) return;
+        image.sprite = null;
+        var c = image.color;
+        image.color = new Color(c.r, c.g, c.b, 0f);
+        image.enabled = false;
+    }
+
+    private static void ShowPortraitImage(Image image, Sprite sprite)
+    {
+        if (image == null || sprite == null) return;
+        image.sprite = sprite;
+        image.enabled = true;
+        var c = image.color;
+        image.color = new Color(c.r, c.g, c.b, 1f);
+    }
+
     // 辅助方法：判断名字是否为玩家
     private bool IsPlayerName(string characterName, CharacterHighlightManager manager)
     {
@@ -39,10 +57,35 @@ public class CharacterControl : MonoBehaviour
     // 新增：保存当前物体上挂载的角色名称字典
     public Dictionary<string, string> objectToCharacterMap = new Dictionary<string, string>();
 
+    private static Transform FindAncestorByName(Transform start, string name)
+    {
+        Transform current = start;
+        while (current != null)
+        {
+            if (current.name == name)
+            {
+                return current;
+            }
+            current = current.parent;
+        }
+        return null;
+    }
+
+    private GameObject ResolveTalkObject()
+    {
+        Transform talkFromSelf = FindAncestorByName(transform, "talk");
+        if (talkFromSelf != null)
+        {
+            return talkFromSelf.gameObject;
+        }
+
+        return GameObject.Find("talk");
+    }
+
     // 辅助方法：从指定的 talk 节点下获取对应名字的子物体，而不是全局寻找
     private GameObject GetCharacterObjectUnderTalk(string objName)
     {
-        GameObject talkObj = GameObject.Find("talk");
+        GameObject talkObj = ResolveTalkObject();
         Debug.Log(talkObj != null ? $"[CharacterControl] 成功找到 'talk' 对象，准备在其下寻找 '{objName}'。" : "[CharacterControl] 未找到 'talk' 对象，无法在其下寻找角色物体！");
         if (talkObj != null && talkObj.activeInHierarchy)
         {
@@ -56,7 +99,7 @@ public class CharacterControl : MonoBehaviour
     }
 
     // 辅助方法：根据输入的人物名字找它被挂载在了哪一个物体上
-    private SpriteRenderer GetTargetRendererByCharacterMap(string characterName)
+    private Image GetTargetImageByCharacterMap(string characterName)
     {
         // 遍历记录表，看看传入的故事角色名当前分配在了哪个物体（"Player" 还是 "Character"）
         foreach (var kvp in objectToCharacterMap)
@@ -66,7 +109,7 @@ public class CharacterControl : MonoBehaviour
                 GameObject targetObj = GetCharacterObjectUnderTalk(kvp.Key);
                 if (targetObj != null)
                 {
-                    return targetObj.GetComponent<SpriteRenderer>();
+                    return targetObj.GetComponent<Image>();
                 }
             }
         }
@@ -86,14 +129,14 @@ public class CharacterControl : MonoBehaviour
         var manager = GetComponent<CharacterHighlightManager>();
         if (manager != null)
         {
-            SpriteRenderer targetRenderer = GetTargetRendererByCharacterMap(characterName);
-            if (targetRenderer != null)
+            Image targetImage = GetTargetImageByCharacterMap(characterName);
+            if (targetImage != null)
             {
-                StartCoroutine(ShakeRoutine(targetRenderer.transform, shakeDuration, shakeMagnitude, shakeType));
+                StartCoroutine(ShakeRoutine(targetImage.rectTransform, shakeDuration, shakeMagnitude, shakeType));
             }
             else
             {
-                Debug.LogWarning($"[CharacterControl] 找不到名为'{ (IsPlayerName(characterName, manager) ? "Player" : "Character") }'的对象，或未赋予SpriteRenderer！");
+                Debug.LogWarning($"[CharacterControl] 找不到名为'{ (IsPlayerName(characterName, manager) ? "Player" : "Character") }'的对象，或未赋予Image组件！");
             }
         }
         else
@@ -133,15 +176,15 @@ public class CharacterControl : MonoBehaviour
 
             if (ch != null)
             {
-                SpriteRenderer targetRenderer = GetTargetRendererByCharacterMap(characterName);
-                if (targetRenderer != null)
+                Image targetImage = GetTargetImageByCharacterMap(characterName);
+                if (targetImage != null)
                 {
                     if (ch.emotionSprites != null)
                     {
                         var targetState = ch.emotionSprites.Find(s => string.Equals(s.emotion, emotion, System.StringComparison.OrdinalIgnoreCase));
                         if (targetState != null && targetState.sprite != null)
                         {
-                            targetRenderer.sprite = targetState.sprite;
+                            ShowPortraitImage(targetImage, targetState.sprite);
                         }
                         else
                         {
@@ -203,8 +246,8 @@ public class CharacterControl : MonoBehaviour
                 GameObject targetObj = GetCharacterObjectUnderTalk(objectName);
                 if (targetObj != null)
                 {
-                    SpriteRenderer sr = targetObj.GetComponent<SpriteRenderer>();
-                    if (sr != null)
+                    Image img = targetObj.GetComponent<Image>();
+                    if (img != null)
                     {
                         // 2. 找到对应 emotion 的差分图
                         Sprite newSprite = null;
@@ -229,7 +272,7 @@ public class CharacterControl : MonoBehaviour
                         // 3. 执行渐变切换
                         if (newSprite != null)
                         {
-                            StartCoroutine(CrossfadeSpriteRoutine(sr, newSprite, 0.4f));
+                            StartCoroutine(CrossfadeSpriteRoutine(img, newSprite, 0.4f));
                         }
                     }
                 }
@@ -271,10 +314,10 @@ public class CharacterControl : MonoBehaviour
         GameObject targetObj = GetCharacterObjectUnderTalk(objectName);
         if (targetObj != null)
         {
-            SpriteRenderer sr = targetObj.GetComponent<SpriteRenderer>();
-            if (sr != null)
+            Image img = targetObj.GetComponent<Image>();
+            if (img != null)
             {
-                sr.sprite = null;
+                HidePortraitImage(img);
             }
         }
         else
@@ -285,49 +328,70 @@ public class CharacterControl : MonoBehaviour
     #endregion
 
     #region 淡入淡出
-    private IEnumerator CrossfadeSpriteRoutine(SpriteRenderer targetSR, Sprite newSprite, float duration)
+    private IEnumerator CrossfadeSpriteRoutine(Image targetImage, Sprite newSprite, float duration)
     {
-        if (targetSR == null || newSprite == null) yield break;
+        if (targetImage == null || newSprite == null) yield break;
 
         // 如果要更替的图片就是现在的图片，直接跳过
-        if (targetSR.sprite == newSprite) yield break;
+        if (targetImage.sprite == newSprite && targetImage.enabled)
+        {
+            var currentColor = targetImage.color;
+            targetImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, 1f);
+            yield break;
+        }
 
         // 当前没有任何图片时，直接淡入即可
-        if (targetSR.sprite == null)
+        if (targetImage.sprite == null || targetImage.enabled == false)
         {
-            Color baseColor = targetSR.color;
-            targetSR.color = new Color(baseColor.r, baseColor.g, baseColor.b, 0f);
-            targetSR.sprite = newSprite;
+            Color baseColor = targetImage.color;
+            targetImage.enabled = true;
+            targetImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, 0f);
+            targetImage.sprite = newSprite;
+            float targetAlpha = 1f;
             
             float elaps = 0f;
             while (elaps < duration)
             {
                 elaps += Time.deltaTime;
-                targetSR.color = new Color(baseColor.r, baseColor.g, baseColor.b, Mathf.Lerp(0f, baseColor.a, elaps / duration));
+                targetImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, Mathf.Lerp(0f, targetAlpha, elaps / duration));
                 yield return null;
             }
-            targetSR.color = baseColor;
+            targetImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, targetAlpha);
             yield break;
         }
 
         // --- 存在原图时，执行交叉淡入淡出 (Crossfade) ---
-        Color originalColor = targetSR.color;
+        Color originalColor = targetImage.color;
+        RectTransform targetRect = targetImage.rectTransform;
         
         // 1. 创建临时对象，承载旧图片原地淡出
-        GameObject tempObj = new GameObject("TempFadeOutSprite");
-        tempObj.transform.SetParent(targetSR.transform.parent);
-        tempObj.transform.localPosition = targetSR.transform.localPosition;
-        tempObj.transform.localScale = targetSR.transform.localScale;
-        
-        SpriteRenderer tempSR = tempObj.AddComponent<SpriteRenderer>();
-        tempSR.sprite = targetSR.sprite;
-        tempSR.color = originalColor;
-        tempSR.sortingLayerID = targetSR.sortingLayerID;
-        tempSR.sortingOrder = targetSR.sortingOrder - 1; // 调整一点层级避免Z-fighting闪烁
+        GameObject tempObj = new GameObject("TempFadeOutImage", typeof(RectTransform), typeof(Image));
+        RectTransform tempRect = tempObj.GetComponent<RectTransform>();
+        tempRect.SetParent(targetRect.parent, false);
+        tempRect.anchorMin = targetRect.anchorMin;
+        tempRect.anchorMax = targetRect.anchorMax;
+        tempRect.pivot = targetRect.pivot;
+        tempRect.anchoredPosition = targetRect.anchoredPosition;
+        tempRect.sizeDelta = targetRect.sizeDelta;
+        tempRect.localScale = targetRect.localScale;
+        tempRect.localRotation = targetRect.localRotation;
 
-        // 2. 将目标SR换上新图片，透明度设为0准备淡入
-        targetSR.sprite = newSprite;
-        targetSR.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        int targetSiblingIndex = targetRect.GetSiblingIndex();
+        tempRect.SetSiblingIndex(Mathf.Max(0, targetSiblingIndex - 1));
+        
+        Image tempImage = tempObj.GetComponent<Image>();
+        tempImage.enabled = true;
+        tempImage.sprite = targetImage.sprite;
+        tempImage.color = originalColor;
+        tempImage.material = targetImage.material;
+        tempImage.preserveAspect = targetImage.preserveAspect;
+        tempImage.raycastTarget = false;
+
+        // 2. 将目标Image换上新图片，透明度设为0准备淡入
+        targetImage.enabled = true;
+        targetImage.sprite = newSprite;
+        targetImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        float targetAlpha2 = originalColor.a > 0f ? originalColor.a : 1f;
 
         // 3. 开始执行渐变
         float elapsed = 0f;
@@ -336,14 +400,14 @@ public class CharacterControl : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
 
-            tempSR.color = new Color(tempSR.color.r, tempSR.color.g, tempSR.color.b, Mathf.Lerp(originalColor.a, 0f, t));
-            targetSR.color = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(0f, originalColor.a, t));
+            tempImage.color = new Color(tempImage.color.r, tempImage.color.g, tempImage.color.b, Mathf.Lerp(originalColor.a, 0f, t));
+            targetImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(0f, targetAlpha2, t));
 
             yield return null;
         }
 
         // 渐变结束清理
-        targetSR.color = originalColor;
+        targetImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha2);
         Destroy(tempObj);
     }
     #endregion
@@ -377,7 +441,7 @@ public class CharacterControl : MonoBehaviour
     public void ZoomArt(float targetX, float targetY, float targetScale, float duration = 1.0f)
     {
         // 获取演出画面的根节点: talk
-        GameObject talkObj = GameObject.Find("talk");
+        GameObject talkObj = ResolveTalkObject();
         if (talkObj == null)
         {
             Debug.LogWarning("[CharacterControl] 未找到名为 'talk' 的对象，无法执行缩放！");
@@ -420,7 +484,7 @@ public class CharacterControl : MonoBehaviour
     {
         if (!isTalkZoomed) return;
 
-        GameObject talkObj = GameObject.Find("talk");
+        GameObject talkObj = ResolveTalkObject();
         if (talkObj != null)
         {
             RectTransform rt = talkObj.GetComponent<RectTransform>();
