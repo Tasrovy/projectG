@@ -95,27 +95,23 @@ public sealed class CardEffectLibrary
 
     public void addWithSame(int sameNum, int trueNum, int falseNum)
     {
+        if (_owner.CallerCard == null) return;
+
         int sameCount = CardManager.Instance.GetMaxSameIdCardCount();
-        beAdded(sameCount >= sameNum ? trueNum : falseNum, 1);
+        int addNum = sameCount >= sameNum ? trueNum : falseNum;
+        CardSubmitHelper.Instance.ShengZhang(_owner.CallerCard, addNum, 1);
     }
 
     public void addWithSameTogether(int sameNum, int addNum)
     {
-        bool hasChanged = false;
-
         List<List<Card>> giftCardGroups = CardManager.Instance.GetGiftCardGroupsWithCountGreaterThan(sameNum);
         foreach (List<Card> giftCards in giftCardGroups)
         {
             foreach (Card card in giftCards)
             {
-                card.Add(1, addNum);
-                card.Add(2, addNum);
-                card.Add(3, addNum);
+                CardSubmitHelper.Instance.ShengZhang(card, addNum, 1);
             }
-
-            hasChanged = true;
         }
-        CardManager.Instance.NotifyDeckOrHandChanged();
     }
 
     public void drawCard(int num)
@@ -127,7 +123,6 @@ public sealed class CardEffectLibrary
     {
         Card copyCard = new Card();
         copyCard.InitCard(_owner.CallerCard);
-        copyCard.OnAdded();
         CardManager.Instance.AddCardInHand(copyCard);
     }
 

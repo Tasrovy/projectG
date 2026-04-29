@@ -27,7 +27,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                     {
                         Card newCard = new Card();
                         newCard.InitCard(templateSnapshot); 
-                        newCard.OnAdded(); 
+                        newCard.OnMade(); 
                         CardManager.Instance.AddCardInHand(newCard); 
                     }
                 });
@@ -90,14 +90,9 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) => 
             {
-                selectedCard.Add(1, amount);
-                selectedCard.Add(2, amount);
-                selectedCard.Add(3, amount);
-                
-                CardManager.Instance.NotifyDeckOrHandChanged();
+                ApplyShengZhang(selectedCard, amount);
 
                 int remaining = timesLeft - 1;
-                DUEL.Instance.UpdateCardData();
                 if (remaining > 0)
                 {
                     Debug.Log($"[Helper] 还有 {remaining} 次机会，再次唤起选牌UI...");
@@ -118,6 +113,29 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
             }
         );
+    }
+
+    public void ShengZhang(Card selectedCard, int amount, int times)
+    {
+        if (selectedCard == null || times <= 0) return;
+
+        Debug.Log($"[Helper] 直接生长卡牌: {selectedCard.name}，每次增加: {amount}，次数: {times}");
+        for (int i = 0; i < times; i++)
+        {
+            ApplyShengZhang(selectedCard, amount);
+        }
+    }
+
+    private void ApplyShengZhang(Card selectedCard, int amount)
+    {
+        if (selectedCard == null) return;
+
+        selectedCard.Add(1, amount);
+        selectedCard.Add(2, amount);
+        selectedCard.Add(3, amount);
+        selectedCard.OnAdded();
+        CardManager.Instance.NotifyDeckOrHandChanged();
+        if (DUEL.Instance != null) DUEL.Instance.UpdateCardData();
     }
 
     public void ShengZhangTo(int num)
