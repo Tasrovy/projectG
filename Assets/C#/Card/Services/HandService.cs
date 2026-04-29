@@ -4,12 +4,10 @@ using UnityEngine;
 public class HandService
 {
     private readonly List<Card> _cardInHand;
-    private readonly List<Card> _cardSet;
 
-    public HandService(List<Card> cardInHand, List<Card> cardSet)
+    public HandService(List<Card> cardInHand)
     {
         _cardInHand = cardInHand;
-        _cardSet = cardSet;
     }
 
     public void BreakCard(Card card)
@@ -34,7 +32,7 @@ public class HandService
         return num;
     }
 
-    public void ChangeHandGift(System.Func<int, CardData> getCardDataById, Card ignoredCard = null)
+    public void ChangeHandGift(System.Func<int, CardData> getRandomCardDataByType, Card ignoredCard = null)
     {
         List<Card> giftCardsInHand = _cardInHand.FindAll(c =>
             CardIdUtility.GetCardType(c.id) == 1 && c != ignoredCard);
@@ -46,33 +44,22 @@ public class HandService
             _cardInHand.Remove(card);
         }
 
-        Debug.Log($"[HandService] 已销毁 {giftCount} 张礼物手牌。");
+        Debug.Log($"[HandService] Destroyed {giftCount} gift cards in hand.");
 
-        Card templateCard = _cardSet.Find(c => CardIdUtility.GetCardType(c.id) == 1);
-        if (templateCard != null)
+        CardData data = getRandomCardDataByType(1);
+        if (data == null)
         {
-            for (int i = 0; i < giftCount; i++)
-            {
-                Card newCard = new Card();
-                newCard.InitCard(templateCard);
-                _cardInHand.Add(newCard);
-            }
-
-            Debug.Log($"[HandService] 已根据牌堆中的礼物样本复制 {giftCount} 张加入手牌: {templateCard.name}");
+            Debug.LogWarning("[HandService] Failed to get random type 1 card data.");
             return;
         }
 
-        CardData data = getCardDataById(1);
-        if (data != null)
+        for (int i = 0; i < giftCount; i++)
         {
-            for (int i = 0; i < giftCount; i++)
-            {
-                Card newCard = new Card();
-                newCard.InitCard(data);
-                _cardInHand.Add(newCard);
-            }
-
-            Debug.Log($"[HandService] 牌堆中无礼物牌，已直接生成 {giftCount} 张礼物加入手牌。");
+            Card newCard = new Card();
+            newCard.InitCard(data);
+            _cardInHand.Add(newCard);
         }
+
+        Debug.Log($"[HandService] Generated {giftCount} gift cards from random data: {data.name}.");
     }
 }

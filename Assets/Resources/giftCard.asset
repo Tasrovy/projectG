@@ -296,3 +296,17 @@ MonoBehaviour:
     buff: 
     trigger: addNatureFromTo(1,2);magnify(0.5)
     nextTurn: 
+  - id: 11111
+    dialog: 0
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: 
+    buff: 
+    trigger: changeHandGift()
+    nextTurn: 
