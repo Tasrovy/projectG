@@ -17,6 +17,8 @@ public class CardActionResolver : Singleton<CardActionResolver>
     // 存储效果选牌的回调
     private Action<Card> _onEffectConfirm;
     private Action _onEffectCancel;
+    private Card _pendingPlayedCard;
+    private bool _pendingShouldAddToSet;
 
     private void Start()
     {
@@ -85,20 +87,19 @@ public class CardActionResolver : Singleton<CardActionResolver>
             Debug.Log($"[Resolver] 💥 玩家正常打出了卡牌: {selectedCard?.name}");
             Debug.Log($"[Resolver][Dialog] cardId={selectedCard?.id}, dialog={selectedCard?.dialog}");
             BattleDialogController.Instance.TryShowByCard(selectedCard);
-            
-            // --- 正常出牌逻辑 ---
+
+            _pendingPlayedCard = selectedCard;
+            _pendingShouldAddToSet = selectedCard.id.ToString()[0] != '1' && selectedCard.id.ToString()[0] != '3';
+
+            CardManager.Instance.BreakCard(selectedCard);
             selectedCard.OnTrigger();
-            if(selectedCard.id.ToString()[0]=='1'||selectedCard.id.ToString()[0]=='3')CardManager.Instance.BreakCard(selectedCard);
-            else
+
+            if (CardEffect.Instance != null && CardEffect.Instance.IsWaitingForAsync)
             {
-                CardManager.Instance.BreakCard(selectedCard);
-                CardManager.Instance.AddCardToSet(selectedCard);
+                return;
             }
-            // 1. 从手牌数据中移除
-            ///CardManager.Instance.RemoveCardFromHand(selectedCard);
-            
-            // 2. 触发这张牌自身的效果
-            // selectedCard.OnTrigger(); 或者 CardEffect.Instance.Execute(selectedCard);
+
+            CompletePendingPlayedCard(true);
         }
         else if (currentMode == CardPlayMode.EffectSelect)
         {
@@ -112,6 +113,29 @@ public class CardActionResolver : Singleton<CardActionResolver>
             ResetToNormalMode(); 
             
             confirmAction?.Invoke(selectedCard);
+        }
+    }
+
+    public void CompletePendingPlayedCard(bool shouldCommit)
+    {
+        if (_pendingPlayedCard == null) return;
+
+        Card pendingCard = _pendingPlayedCard;
+        bool shouldAddToSet = _pendingShouldAddToSet;
+
+        _pendingPlayedCard = null;
+        _pendingShouldAddToSet = false;
+
+        if (!shouldCommit)
+        {
+            CardManager.Instance.AddCardInHand(pendingCard);
+            return;
+        }
+
+        if (shouldAddToSet)
+        {
+            CardManager.Instance.AddCardToSet(pendingCard);
+            CardManager.Instance.NotifyDeckOrHandChanged();
         }
     }
 

@@ -32,6 +32,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                     }
                 });
                 
+                CardActionResolver.Instance.CompletePendingPlayedCard(true);
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
             },
             onCancel: () => 
@@ -69,6 +70,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                 }
                 else
                 {
+                    CardActionResolver.Instance.CompletePendingPlayedCard(true);
                     if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
                 }
             },
@@ -142,6 +144,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                 CardManager.Instance.NotifyDeckOrHandChanged();
                 DUEL.Instance.UpdateCardData();
 
+                CardActionResolver.Instance.CompletePendingPlayedCard(true);
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
             },
             onCancel: () =>
@@ -153,21 +156,41 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         );
     }
 
+    public void AddNatureAtSumIf(int type1, int type2, int num)
+    {
+        Debug.Log($"[Helper] 发起条件加属性选牌，检测属性: {type1}，增加角色属性: {type2}，数值: {num}");
+
+        CardActionResolver.Instance.StartEffectSelection(
+            onConfirm: (selectedCard) =>
+            {
+                if (selectedCard != null && selectedCard.GetNatureById(type1) > 0)
+                {
+                    DataManager.Instance.Add(type2, num);
+                    DUEL.Instance.UpdateCardData();
+                }
+
+                CardActionResolver.Instance.CompletePendingPlayedCard(true);
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            },
+            onCancel: () =>
+            {
+                Debug.Log("[Helper] 条件加属性被取消，准备退回打出的卡牌。");
+                RestoreCallerCard();
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            }
+        );
+    }
+
     private void RestoreCallerCard()
     {
         CardEffect effect = CardEffect.Instance;
         Card caller = effect != null ? effect.CallerCard : null;
 
+        CardActionResolver.Instance.CompletePendingPlayedCard(false);
+
         if (effect != null && caller != null)
         {
             effect.MarkConditionFailed(caller);
-        }
-
-        if (caller != null)
-        {
-            Card restoredCard = new Card();
-            restoredCard.InitCard(caller); 
-            CardManager.Instance.AddCardInHand(restoredCard);
         }
     }
 

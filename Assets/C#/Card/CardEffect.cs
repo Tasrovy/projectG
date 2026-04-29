@@ -147,10 +147,10 @@ public class CardEffect : Singleton<CardEffect>
         _library.changeHandGift();
     }
 
-    public void addNatureAtSumIf(int type1, int type2)
+    public void addNatureAtSumIf(int type1, int type2, int num)
     {
         EnsureComponents();
-        _library.addNatureAtSumIf(type1, type2);
+        _library.addNatureAtSumIf(type1, type2, num);
     }
 
     public void addNatureByOther(int type1, int type2)
@@ -226,6 +226,7 @@ public class CardEffect : Singleton<CardEffect>
     }
 
     public void SetCallerCard(Card card) => CallerCard = card;
+    public bool IsWaitingForAsync => _executor != null && _executor.IsWaitingForAsync;
     public bool IsConditionFailed(Card card) => card != null && conditionFailedCards.Contains(card);
     public void MarkConditionFailed(Card card)
     {

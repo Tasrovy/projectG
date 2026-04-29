@@ -68,11 +68,13 @@ public sealed class CardEffectLibrary
     }
 
     public void addAddNum(int num) => _owner.CallerCard?.TryModifyAddedValue(num);
-    public void changeHandGift() => CardManager.Instance.ChangeHandGift();
+    public void changeHandGift() => CardManager.Instance.ChangeHandGift(_owner.CallerCard);
 
-    public void addNatureAtSumIf(int type1, int type2)
+    public void addNatureAtSumIf(int type1, int type2, int num)
     {
-        if (_owner.CallerCard.GetNatureById(type1) > 0) DataManager.Instance.Add(type2, 10);
+        if (_owner.CallerCard == null || num == 0) return;
+        if (CardIdUtility.GetCardType(_owner.CallerCard.id) != 2) return;
+        CardSubmitHelper.Instance.AddNatureAtSumIf(type1, type2, num);
     }
 
     public void addNatureByOther(int type1, int type2)
@@ -99,15 +101,22 @@ public sealed class CardEffectLibrary
 
     public void addWithSameTogether(int sameNum, int addNum)
     {
-        List<Card> sameCards = CardManager.Instance.GetCardsInDeckById(_owner.CallerCard.id);
-        if (sameCards.Count >= sameNum)
+        bool hasChanged = false;
+
+        List<List<Card>> giftCardGroups = CardManager.Instance.GetGiftCardGroupsWithCountGreaterThan(sameNum);
+        foreach (List<Card> giftCards in giftCardGroups)
         {
-            foreach (Card card in sameCards)
+            foreach (Card card in giftCards)
             {
                 card.Add(1, addNum);
                 card.Add(2, addNum);
                 card.Add(3, addNum);
             }
+
+            hasChanged = true;
+        }
+        if (hasChanged)
+        {
             CardManager.Instance.NotifyDeckOrHandChanged();
         }
     }
