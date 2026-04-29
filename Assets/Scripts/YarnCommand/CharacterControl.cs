@@ -12,6 +12,20 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] 
     [Header("抖动幅度")] private float shakeMagnitude = 40.0f;
 
+    [Header("立绘大小参数")]
+    [SerializeField, Min(1f)] private float portraitSizeType2Scale = 1.15f;
+    [SerializeField, Min(1f)] private float portraitSizeType3Scale = 1.3f;
+
+    private class PortraitSizeState
+    {
+        public RectTransform Rect;
+        public Vector2 BaseAnchoredPos;
+        public Vector3 BaseScale;
+    }
+
+    private readonly Dictionary<string, PortraitSizeState> portraitSizeStates = new Dictionary<string, PortraitSizeState>();
+    private readonly Dictionary<string, Coroutine> activePortraitSizeCoroutines = new Dictionary<string, Coroutine>();
+
     private static void HidePortraitImage(Image image)
     {
         if (image == null) return;
@@ -324,6 +338,155 @@ public class CharacterControl : MonoBehaviour
         {
             Debug.LogWarning($"[CharacterControl] 清除立绘失败：场景中不存在名为 '{objectName}' 的物体！");
         }
+    }
+    #endregion
+
+    #region 立绘大小切换
+    [YarnCommand("set_character_size")]
+    public static void SetCharacterSizeStatic(string objectName, int sizeType, float yPoint, float duration = 1.0f)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null)
+        {
+            control.SetCharacterSize(objectName, sizeType, yPoint, duration);
+        }
+    }
+
+    public void SetCharacterSize(string objectName, int sizeType, float yPoint, float duration = 1.0f)
+    {
+        string normalizedObjectName = NormalizePortraitObjectName(objectName);
+        if (string.IsNullOrEmpty(normalizedObjectName))
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：objectName 必须是 'Player' 或 'Character'，当前为: {objectName}");
+            return;
+        }
+
+        GameObject targetObj = GetCharacterObjectUnderTalk(normalizedObjectName);
+        if (targetObj == null)
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：未找到对象 {normalizedObjectName}");
+            return;
+        }
+
+        RectTransform targetRect = targetObj.GetComponent<RectTransform>();
+        if (targetRect == null)
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：对象 {normalizedObjectName} 缺少 RectTransform");
+            return;
+        }
+
+        EnsurePortraitSizeState(normalizedObjectName, targetRect);
+        PortraitSizeState state = portraitSizeStates[normalizedObjectName];
+
+        float scaleFactor = GetScaleFactorByType(sizeType);
+        if (scaleFactor < 0f)
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：sizeType 仅支持 1/2/3，当前为: {sizeType}");
+            return;
+        }
+
+        Vector3 targetScale = new Vector3(
+            state.BaseScale.x * scaleFactor,
+            state.BaseScale.y * scaleFactor,
+            state.BaseScale.z
+        );
+
+        Vector2 targetAnchoredPos = GetTargetAnchoredPosition(state, targetRect, sizeType, Mathf.Clamp01(yPoint), scaleFactor);
+        float clampedDuration = Mathf.Max(0f, duration);
+
+        if (activePortraitSizeCoroutines.TryGetValue(normalizedObjectName, out Coroutine running) && running != null)
+        {
+            StopCoroutine(running);
+        }
+
+        activePortraitSizeCoroutines[normalizedObjectName] = StartCoroutine(
+            AnimatePortraitSize(normalizedObjectName, targetRect, targetScale, targetAnchoredPos, clampedDuration)
+        );
+    }
+
+    private static string NormalizePortraitObjectName(string objectName)
+    {
+        if (string.Equals(objectName, "Player", System.StringComparison.OrdinalIgnoreCase))
+        {
+            return "Player";
+        }
+        if (string.Equals(objectName, "Character", System.StringComparison.OrdinalIgnoreCase))
+        {
+            return "Character";
+        }
+        return string.Empty;
+    }
+
+    private void EnsurePortraitSizeState(string objectName, RectTransform rect)
+    {
+        if (!portraitSizeStates.TryGetValue(objectName, out PortraitSizeState state) || state.Rect != rect)
+        {
+            portraitSizeStates[objectName] = new PortraitSizeState
+            {
+                Rect = rect,
+                BaseAnchoredPos = rect.anchoredPosition,
+                BaseScale = rect.localScale,
+            };
+        }
+    }
+
+    private float GetScaleFactorByType(int sizeType)
+    {
+        switch (sizeType)
+        {
+            case 1:
+                return 1f;
+            case 2:
+                return portraitSizeType2Scale;
+            case 3:
+                return portraitSizeType3Scale;
+            default:
+                return -1f;
+        }
+    }
+
+    private static Vector2 GetTargetAnchoredPosition(PortraitSizeState state, RectTransform rect, int sizeType, float yPoint01, float scaleFactor)
+    {
+        if (sizeType == 1)
+        {
+            // 1档始终回到原始位置与原始大小
+            return state.BaseAnchoredPos;
+        }
+
+        // yPoint: 上=0 下=1, 基于图片中轴线
+        float localY = Mathf.Lerp(rect.rect.yMax, rect.rect.yMin, yPoint01);
+        float scaledOffsetY = localY * (state.BaseScale.y * scaleFactor);
+
+        // 让目标 y 点在放大结束后落到承载物体原始坐标点
+        return state.BaseAnchoredPos - new Vector2(0f, scaledOffsetY);
+    }
+
+    private IEnumerator AnimatePortraitSize(string objectName, RectTransform rect, Vector3 targetScale, Vector2 targetAnchoredPos, float duration)
+    {
+        if (duration <= 0f)
+        {
+            rect.localScale = targetScale;
+            rect.anchoredPosition = targetAnchoredPos;
+            activePortraitSizeCoroutines.Remove(objectName);
+            yield break;
+        }
+
+        Vector3 startScale = rect.localScale;
+        Vector2 startPos = rect.anchoredPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
+            rect.localScale = Vector3.Lerp(startScale, targetScale, t);
+            rect.anchoredPosition = Vector2.Lerp(startPos, targetAnchoredPos, t);
+            yield return null;
+        }
+
+        rect.localScale = targetScale;
+        rect.anchoredPosition = targetAnchoredPos;
+        activePortraitSizeCoroutines.Remove(objectName);
     }
     #endregion
 
