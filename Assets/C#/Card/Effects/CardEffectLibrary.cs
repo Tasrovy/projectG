@@ -95,11 +95,30 @@ public sealed class CardEffectLibrary
 
     public void addWithSame(int sameNum, int trueNum, int falseNum)
     {
-        if (_owner.CallerCard == null) return;
+        CardActionResolver.Instance.StartEffectSelection(
+            onConfirm: (selectedCard) =>
+            {
+                int sameCount = 0;
+                foreach (Card card in CardManager.Instance.cardInHand)
+                {
+                    if (card.id == selectedCard.id)
+                    {
+                        sameCount++;
+                    }
+                }
 
-        int sameCount = CardManager.Instance.GetMaxSameIdCardCount();
-        int addNum = sameCount >= sameNum ? trueNum : falseNum;
-        CardSubmitHelper.Instance.ShengZhang(_owner.CallerCard, addNum, 1);
+                int addNum = sameCount >= sameNum ? trueNum : falseNum;
+                CardSubmitHelper.Instance.ShengZhang(selectedCard, addNum, 1);
+
+                CardActionResolver.Instance.CompletePendingPlayedCard(true);
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            },
+            onCancel: () =>
+            {
+                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            }
+        );
     }
 
     public void addWithSameTogether(int sameNum, int addNum)

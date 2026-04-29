@@ -17,6 +17,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) => 
             {
+                selectedCard.OnMade();
                 Card templateSnapshot = new Card();
                 templateSnapshot.InitCard(selectedCard);
                 int copyNum = _targetNum; 
@@ -27,7 +28,6 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                     {
                         Card newCard = new Card();
                         newCard.InitCard(templateSnapshot); 
-                        newCard.OnMade(); 
                         CardManager.Instance.AddCardInHand(newCard); 
                     }
                 });

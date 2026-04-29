@@ -308,5 +308,19 @@ MonoBehaviour:
     added: 
     description: 
     buff: 
-    trigger: addWIthSameTogether(1,10)
+    trigger: addWithSame(2,10,5)
+    nextTurn: 
+  - id: 11102
+    dialog: 0
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    made: 
+    broken: 
+    added: 
+    description: 
+    buff: 
+    trigger: addWIthSameTogether(2,10)
     nextTurn: 

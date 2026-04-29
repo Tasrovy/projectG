@@ -85,7 +85,19 @@ public sealed class CardEffectExecutor
 
     private void ExecuteSingleEffect(EffectCommand effect)
     {
-        if (effect.methodName == "beMade" || effect.methodName == "_beMadeDirect" ||
+        if (effect.methodName == "addWithSame")
+        {
+            if (CardManager.Instance.cardInHand.Count <= 0)
+            {
+                Debug.Log($"{_currentChainCard.name} 技能发动失败：手牌中没有可供选择的牌。");
+                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
+                StartExecutingNextChain();
+                return;
+            }
+
+            _waitingForAsync = true;
+        }
+        else if (effect.methodName == "beMade" || effect.methodName == "_beMadeDirect" ||
             effect.methodName == "beAdded" || effect.methodName == "_beAddedDirect" ||
             effect.methodName == "beAddedTo" || effect.methodName == "addNatureAtSumIf")
         {
