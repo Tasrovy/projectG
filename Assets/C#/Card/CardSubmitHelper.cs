@@ -107,6 +107,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                 else
                 {
                     Debug.Log($"[Helper] 生长次数全部用完，结束本次技能。");
+                    CardActionResolver.Instance.CompletePendingPlayedCard(true);
                     if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
                 }
             },

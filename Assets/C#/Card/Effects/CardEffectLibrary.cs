@@ -115,10 +115,7 @@ public sealed class CardEffectLibrary
 
             hasChanged = true;
         }
-        if (hasChanged)
-        {
-            CardManager.Instance.NotifyDeckOrHandChanged();
-        }
+        CardManager.Instance.NotifyDeckOrHandChanged();
     }
 
     public void drawCard(int num)

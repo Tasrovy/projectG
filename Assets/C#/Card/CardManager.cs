@@ -165,7 +165,7 @@ public class CardManager : Singleton<CardManager>
 
     public List<List<Card>> GetGiftCardGroupsWithCountGreaterThan(int minCount)
     {
-        return _deckService.GetGiftCardGroupsWithCountGreaterThan(minCount);
+        return _handService.GetGiftCardGroupsWithCountGreaterThan(minCount);
     }
 
     // ===================== 手牌（Hand） =====================
