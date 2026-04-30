@@ -52,7 +52,7 @@ public class HandService
         List<List<Card>> result = new List<List<Card>>();
         foreach (List<Card> cards in giftCardGroups.Values)
         {
-            if (cards.Count > minCount)
+            if (cards.Count >= minCount)
             {
                 result.Add(cards);
             }
