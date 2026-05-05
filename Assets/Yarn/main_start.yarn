@@ -19,7 +19,7 @@ title: main_start
 <<set_character_sprite "伊兰莉特" "saying">>
 伊兰莉特:把它们做成花环戴在你头上，唔...... #line:0d9e904 
 <<set_character_sprite "伊兰莉特" "happy">>
-伊兰莉特:想想那个画面，一定非常可爱吧。#sfx_Character_主角2_真棒 
+伊兰莉特:<wave>想想那个画面，一定非常可爱吧。</wave>#sfx_Character_主角2_真棒 
 （伊兰莉特边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
 <<set_character_sprite "{$MY_NAME}" "saying">>
 {$MY_NAME}:伊兰莉特，注意安-- #line:0f1a741 
@@ -27,14 +27,14 @@ title: main_start
 <<clear_character_person Character>>
 （树枝折断了） #line:0d7301f 
 <<set_character_sprite "{$MY_NAME}" "peace_2">>
-{$MY_NAME}:！！！ #line:0c4c660 
+{$MY_NAME}:<shake>！！！</shake> #line:0c4c660 
 <<play_bgm lake_sadStrong>>
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
 <<set_background "纯黑">>
 <<clear_character_person "Player">>
 <<clear_character_person "Character">>
 
-(..........) #line:07a7a58 
+(<shake>..........</shake>) #line:07a7a58 
 (..........) #line:007dd97 
 <<jump room1_1>>
 ===
