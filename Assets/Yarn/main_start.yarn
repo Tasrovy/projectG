@@ -79,6 +79,7 @@ title: room1_1
 {$MY_NAME}:呜呜呜..... #line:0ea852a 
 <<set_character_sprite {$MY_NAME} sad>>
 {$MY_NAME}:如果你还在我身边，那该多好...... #line:0a97d71 
+<<jump room1_3>>
 ===
 
 title: room1_3
@@ -86,7 +87,7 @@ title: room1_3
 <<set_background box占坑>>
 <<play_bgm littleSad_黄昏分岔口(1)>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Playerr {$MY_NAME} peace_1>>
+<<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_sprite {$MY_NAME} sad>>
 （透过被泪水模糊的眼睛，我好像看到--）
 <<set_character_person Character "蒂娜" peace_1>>
@@ -154,6 +155,5 @@ title: card1_1
 ---
 
 .....
-
 
 ===
