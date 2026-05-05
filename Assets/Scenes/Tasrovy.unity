@@ -583,9 +583,14 @@ MonoBehaviour:
   nature2: 0
   nature3: 0
   MoneyNum: 0
+  extraCharm: 0
   currNature1Effect: 0
   currNature2Effect: 0
   currNature3Effect: 0
+  charmCoefficient1: 1
+  charmCoefficient2: 2
+  charmCoefficient3: 3
+  charmMoneyCoefficient: 0.1
 --- !u!114 &542249195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,6 +618,8 @@ MonoBehaviour:
     trigger: 
     description: 
     nextTurn: 
+    text: 
+    prompt: 
 --- !u!114 &542249196
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,6 +26,9 @@ public class CardData
     public string buff;
     public string trigger;
     public string nextTurn;
+    public string text;
+    public string prompt;
+
 }
 
 [System.Serializable]
@@ -45,6 +48,8 @@ public class Card
     public string trigger;
     public string description;
     public string nextTurn;
+    public string text;
+    public string prompt;
 
     [NonSerialized] private CardEffectPlan _effectPlan;
     [NonSerialized] private CardEffectPlanParser _effectPlanParser;
@@ -78,9 +83,11 @@ public class Card
         buff = cardData.buff;
         trigger = cardData.trigger;
         nextTurn = cardData.nextTurn;
+        text = cardData.text;
+        prompt = cardData.prompt;
         _effectPlanParser.ParseAll(this, _effectPlan);
     }
-    
+
     public void InitCard(Card cardData)
     {
         EnsureComponents();
@@ -91,13 +98,15 @@ public class Card
         nature3 = cardData.nature3;
         name = cardData.name;
         description = cardData.description;
-        sale = cardData.sale;        
+        sale = cardData.sale;
         made = cardData.made;
         broken = cardData.broken;
         added = cardData.added;
         buff = cardData.buff;
         trigger = cardData.trigger;
         nextTurn = cardData.nextTurn;
+        text = cardData.text;
+        prompt = cardData.prompt;
         _effectPlanParser.ParseAll(this, _effectPlan);
     }
     

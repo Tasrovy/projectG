@@ -13,6 +13,7 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
 
     private Vector3 _originalScale;
     private bool _isSelected = false;
+    private Card _card;
 
     void Awake()
     {
@@ -45,7 +46,7 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    [Header("卡图资源")] 
+    [Header("卡图资源")]
     public Sprite commonSprite;
     public Sprite ShengZhi;
     public Sprite JianZhi;
@@ -54,6 +55,8 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
     public void Setup(Card card)
     {
         if (card == null) return;
+
+        _card = card;
 
         // 设置文本
         nameText.text = card.name;

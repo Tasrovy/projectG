@@ -27,6 +27,8 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSum(30,3);triggerEventDialogue(event001)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 32002
     dialog: 4
     nature1: 0
@@ -41,6 +43,8 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSum(30,3);changeProperty(1.5);triggerEventDialogue(event002)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 32003
     dialog: 2
     nature1: 0
@@ -55,6 +59,8 @@ MonoBehaviour:
     buff: 
     trigger: addRandomCard(2,1,1);triggerEventDialogue(event001)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 33001
     dialog: 12
     nature1: 0
@@ -69,3 +75,5 @@ MonoBehaviour:
     buff: 
     trigger: addNatureByOther(3,1);triggerEventDialogue(event001)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4

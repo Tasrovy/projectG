@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
 {
     private GameObject _duelUI;
+    private CardDetailUI _cardDetailUI;
 
     /// <summary>
     /// 对外公开的 DUELUI 引用。
@@ -82,6 +83,53 @@ private void InitializeUI()
     _duelUI = Instantiate(prefab, canvas.transform);
     _duelUI.name = "DUELUI";
 }
+
+    private void InitializeCardDetailUI()
+    {
+        if (_cardDetailUI != null) return;
+
+        // 1. 加载 Prefab
+        GameObject prefab = Resources.Load<GameObject>("Prefabs/CardDetailUI");
+        if (prefab == null)
+        {
+            Debug.LogError("DUELUIObjectManager: 未能在 Resources/Prefabs/ 路径下找到 CardDetailUI 预制体！");
+            return;
+        }
+
+        // 2. 寻找场景中的 Canvas
+        Canvas canvas = null;
+        CardUICanvas cardUIScript = Object.FindAnyObjectByType<CardUICanvas>();
+        if (cardUIScript != null)
+            canvas = cardUIScript.GetComponent<Canvas>();
+
+        // 3. 没有则创建
+        if (canvas == null)
+        {
+            GameObject canvasObj = new GameObject("Canvas");
+            canvas = canvasObj.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvasObj.AddComponent<CanvasScaler>();
+            canvasObj.AddComponent<GraphicRaycaster>();
+            canvasObj.layer = LayerMask.NameToLayer("UI");
+        }
+
+        // 4. 实例化并设为 Canvas 的子物体
+        GameObject go = Instantiate(prefab, canvas.transform);
+        go.name = "CardDetailUI";
+        _cardDetailUI = go.GetComponent<CardDetailUI>();
+        if (_cardDetailUI == null)
+            Debug.LogError("CardDetailUI 预制体上缺少 CardDetailUI 组件！");
+    }
+
+    /// <summary>
+    /// 获取 CardDetailUI 组件（懒加载）
+    /// </summary>
+    public CardDetailUI GetCardDetailUI()
+    {
+        if (_cardDetailUI == null)
+            InitializeCardDetailUI();
+        return _cardDetailUI;
+    }
 
     /// <summary>
     /// 激活/显示整个 DUEL UI 界面

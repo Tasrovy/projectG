@@ -527,6 +527,110 @@ public class ExcelLoader : Singleton<ExcelLoader>
     }
 #endif
 
+    /// <summary>
+    /// 读取提示词配置：编辑器下同步，发布后读SO
+    /// Excel列名：id, text, description
+    /// </summary>
+    public PromptItemSO ReadPromptExcel(string excelPath)
+    {
+        string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
+
+#if UNITY_EDITOR
+        return SyncPromptExcelToSO(excelPath, fileNameNoExt);
+#else
+        return Resources.Load<PromptItemSO>(fileNameNoExt);
+#endif
+    }
+
+#if UNITY_EDITOR
+    private PromptItemSO SyncPromptExcelToSO(string excelPath, string soName)
+    {
+        string fullPath = Path.GetFullPath(excelPath);
+        if (!File.Exists(fullPath))
+        {
+            Debug.LogError("找不到Prompt Excel文件: " + fullPath);
+            return null;
+        }
+
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+        PromptItemSO db = ScriptableObject.CreateInstance<PromptItemSO>();
+        db.name = soName;
+
+        using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        {
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            {
+                var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                {
+                    ConfigureDataTable = (_) => new ExcelDataTableConfiguration() { UseHeaderRow = true }
+                });
+
+                DataTable table = result.Tables[0];
+                foreach (DataRow row in table.Rows)
+                {
+                    if (!table.Columns.Contains("id")) continue;
+                    if (row["id"] == DBNull.Value || string.IsNullOrWhiteSpace(row["id"].ToString())) continue;
+
+                    PromptItem data = new PromptItem();
+
+                    foreach (var field in typeof(PromptItem).GetFields())
+                    {
+                        if (!table.Columns.Contains(field.Name)) continue;
+
+                        object value = row[field.Name];
+                        if (value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString())) continue;
+
+                        try
+                        {
+                            string rawValue = value.ToString().Trim();
+                            if (field.FieldType == typeof(int))
+                            {
+                                float f = float.Parse(rawValue);
+                                field.SetValue(data, (int)f);
+                            }
+                            else if (field.FieldType == typeof(float))
+                            {
+                                field.SetValue(data, float.Parse(rawValue));
+                            }
+                            else
+                            {
+                                field.SetValue(data, Convert.ChangeType(rawValue, field.FieldType));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"[ExcelLoader] Prompt 字段转换失败！列名: {field.Name}, 单元格内容: '{value}', 错误: {ex.Message}");
+                        }
+                    }
+
+                    db.allItems.Add(data);
+                }
+            }
+        }
+
+        string resDir = Application.dataPath + "/Resources";
+        if (!Directory.Exists(resDir)) Directory.CreateDirectory(resDir);
+
+        string assetPath = $"Assets/Resources/{soName}.asset";
+        PromptItemSO existingAsset = AssetDatabase.LoadAssetAtPath<PromptItemSO>(assetPath);
+
+        if (existingAsset == null)
+        {
+            AssetDatabase.CreateAsset(db, assetPath);
+        }
+        else
+        {
+            EditorUtility.CopySerialized(db, existingAsset);
+            db = existingAsset;
+        }
+
+        AssetDatabase.SaveAssets();
+        Debug.Log($"<color=cyan>[ExcelLoader]</color> Prompt同步成功: {assetPath}");
+        return db;
+    }
+#endif
+
     // 依然支持你习惯的 ReadText 逻辑
     public static string ReadText(CardDatabaseSO db, string fieldName, int index)
     {

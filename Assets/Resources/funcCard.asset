@@ -27,6 +27,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 1
   - id: 21001
     dialog: 5
     nature1: 0
@@ -41,6 +43,8 @@ MonoBehaviour:
     buff: 
     trigger: shake(1,0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 1
   - id: 21002
     dialog: 11
     nature1: 0
@@ -55,6 +59,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 3
   - id: 21003
     dialog: 9
     nature1: 0
@@ -69,6 +75,8 @@ MonoBehaviour:
     buff: 
     trigger: addRandomCard(1,1,2);magnify(0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 2
   - id: 21004
     dialog: 8
     nature1: 0
@@ -83,6 +91,8 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSum(30,2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 2
   - id: 21005
     dialog: 8
     nature1: 50
@@ -97,6 +107,8 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSum(50,1)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 2
   - id: 21006
     dialog: 7
     nature1: 0
@@ -111,6 +123,8 @@ MonoBehaviour:
     buff: 
     trigger: beAddedTo(12);shake(1,0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 3
   - id: 22001
     dialog: 7
     nature1: 0
@@ -125,6 +139,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 1
   - id: 22002
     dialog: 6
     nature1: 0
@@ -139,6 +155,8 @@ MonoBehaviour:
     buff: 
     trigger: addRandomCard(1,1,1);shake(1,0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 1
   - id: 22003
     dialog: 6
     nature1: 100
@@ -153,6 +171,8 @@ MonoBehaviour:
     buff: 
     trigger: shake(1,0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22004
     dialog: 7
     nature1: 0
@@ -167,6 +187,8 @@ MonoBehaviour:
     buff: 
     trigger: addWithSame(3,40,5);magnify(0.3)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22005
     dialog: 12
     nature1: 0
@@ -181,6 +203,8 @@ MonoBehaviour:
     buff: 
     trigger: addRandomCardIfNot(1,1,2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22006
     dialog: 3
     nature1: 0
@@ -195,6 +219,8 @@ MonoBehaviour:
     buff: 
     trigger: addAddNum(4);magnify(0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22007
     dialog: 9
     nature1: 0
@@ -209,6 +235,8 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSumIf(40,1);shake(1,0.3)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22008
     dialog: 13
     nature1: 0
@@ -223,6 +251,8 @@ MonoBehaviour:
     buff: 
     trigger: changeHandGift()
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 23001
     dialog: 15
     nature1: 0
@@ -237,6 +267,8 @@ MonoBehaviour:
     buff: 
     trigger: addWIthSameTogether(6,80);magnify(0.5)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22801
     dialog: 0
     nature1: 0
@@ -251,6 +283,8 @@ MonoBehaviour:
     buff: 
     trigger: addWithSame(2,10,5)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22802
     dialog: 0
     nature1: 1
@@ -265,6 +299,8 @@ MonoBehaviour:
     buff: 
     trigger: addWIthSameTogether(2,80);magnify(0.5)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22803
     dialog: 0
     nature1: 2
@@ -279,6 +315,8 @@ MonoBehaviour:
     buff: 
     trigger: changeHandGift()
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 22804
     dialog: 0
     nature1: 3
@@ -293,3 +331,5 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSumIf(1,2,88)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4

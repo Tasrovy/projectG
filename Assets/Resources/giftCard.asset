@@ -22,11 +22,13 @@ MonoBehaviour:
     sale: 0
     made: 
     broken: 
-    added: shake(1,0.2)
+    added: 
     description: "<color=grey><b>\u666E\u901A</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E00{nature1}\u70B9"
     buff: 
     trigger: shake(1,0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 11602
     dialog: 1
     nature1: 0
@@ -41,6 +43,8 @@ MonoBehaviour:
     buff: 
     trigger: magnify(0.2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 11001
     dialog: 2
     nature1: 8
@@ -55,6 +59,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 11002
     dialog: 2
     nature1: 0
@@ -69,6 +75,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 11003
     dialog: 3
     nature1: 2
@@ -83,6 +91,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 11004
     dialog: 3
     nature1: 0
@@ -97,6 +107,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 11005
     dialog: 4
     nature1: 12
@@ -111,6 +123,8 @@ MonoBehaviour:
     buff: 
     trigger: shake(1,0.4)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 11006
     dialog: 4
     nature1: 1
@@ -125,6 +139,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12001
     dialog: 2
     nature1: 2
@@ -139,6 +155,8 @@ MonoBehaviour:
     buff: 
     trigger: magnify(0.4)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12002
     dialog: 10
     nature1: 4
@@ -153,6 +171,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12003
     dialog: 11
     nature1: 0
@@ -167,6 +187,8 @@ MonoBehaviour:
     buff: 
     trigger: magnify(0.4)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12004
     dialog: 12
     nature1: 30
@@ -181,6 +203,8 @@ MonoBehaviour:
     buff: 
     trigger: addNatureAtSum(-10,2)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12005
     dialog: 13
     nature1: 8
@@ -195,6 +219,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12006
     dialog: 15
     nature1: 0
@@ -209,6 +235,8 @@ MonoBehaviour:
     buff: 
     trigger: shake(1,0.3)
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12007
     dialog: 1
     nature1: 0
@@ -224,6 +252,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12008
     dialog: 13
     nature1: 12
@@ -238,6 +268,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12009
     dialog: 14
     nature1: 40
@@ -252,6 +284,8 @@ MonoBehaviour:
     buff: 
     trigger: magnify(0.4)
     nextTurn: changeProperty(0.5)
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12010
     dialog: 10
     nature1: 0
@@ -267,6 +301,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 12011
     dialog: 2
     nature1: 2
@@ -282,6 +318,8 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
   - id: 13001
     dialog: 4
     nature1: 0
@@ -296,17 +334,5 @@ MonoBehaviour:
     buff: 
     trigger: addNatureFromTo(1,2);magnify(0.5)
     nextTurn: 
-  - id: 11101
-    dialog: 0
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: 
-    sale: 0
-    made: 
-    broken: 
-    added: 
-    description: 
-    buff: 
-    trigger: addWithSameTogether(2,10)
-    nextTurn: 
+    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 4
