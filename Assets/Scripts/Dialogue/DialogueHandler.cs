@@ -202,7 +202,7 @@ public class DialogueHandler : MonoBehaviour
             case 2: playerValue = DataManager.Instance.nature2; targetValue = today.target2; break;
             case 3: playerValue = DataManager.Instance.nature3; targetValue = today.target3; break;
             case 4:
-                playerValue = DataManager.Instance.GetCharm();
+                playerValue = DataManager.Instance.MoneyNum;
                 targetValue = today.target4;
                 break;
             default:

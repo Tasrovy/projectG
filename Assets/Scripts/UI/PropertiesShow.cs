@@ -66,7 +66,7 @@ public class PropertiesShow : MonoBehaviour
             1 => "友情羁绊",
             2 => "情绪依赖",
             3 => "安全感",
-            4 => "魅力值",
+            4 => "金钱",
             _ => "友情羁绊"
         };
 
@@ -158,7 +158,7 @@ public class PropertiesShow : MonoBehaviour
         int n2 = DataManager.Instance.nature2;
         int n3 = DataManager.Instance.nature3;
         int money = DataManager.Instance.MoneyNum;
-        float n4 = DataManager.Instance.GetCharm();
+        float n4 = money;
 
         UpdateSliderVisual(slider1, fillImage1, defaultFillColor1, n1);
         UpdateSliderVisual(slider2, fillImage2, defaultFillColor2, n2);

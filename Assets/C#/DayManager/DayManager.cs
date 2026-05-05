@@ -73,7 +73,7 @@ public class DayManager : Singleton<DayManager>
     public int GetDayNumber()=>dayNumber;
 
     /// <summary>
-    /// 目标类型（1=友情籁绑 2=情绪依赖 3=安全感 4=魅力値），由 PropertiesShow 在游戏开始时写入
+    /// 目标类型（1=友情羁绊 2=情绪依赖 3=安全感 4=金钱），由 PropertiesShow 在游戏开始时写入
     /// </summary>
     public void SetTargetType(int type) => TargetType = type;
 
