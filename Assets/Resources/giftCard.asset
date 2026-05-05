@@ -28,7 +28,7 @@ MonoBehaviour:
     trigger: shake(1,0.2)
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
-    prompt: 4
+    prompt: 1,4
   - id: 11602
     dialog: 1
     nature1: 0
