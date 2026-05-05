@@ -79,6 +79,7 @@ title: room1_1
 {$MY_NAME}:呜呜呜..... #line:0ea852a 
 <<set_character_sprite {$MY_NAME} sad>>
 {$MY_NAME}:如果你还在我身边，那该多好...... #line:0a97d71 
+===
 
 title: room1_3
 ---
@@ -105,7 +106,7 @@ title: room1_3
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:？
 <<set_character_sprite "蒂娜" saying>>
-蒂娜 :（疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
+蒂娜: （疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:（摇头）不用了，谢谢。
 {$MY_NAME}:所以，你是从哪里来的？
@@ -114,7 +115,7 @@ title: room1_3
 （不管怎么想……这个说法……）
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:听起来有点像是胡扯呢。
-蒂娜 : 你怎么喊出来了！呜呜呜，就这么不相信可怜的蒂娜吗……
+蒂娜: 你怎么喊出来了！呜呜呜，就这么不相信可怜的蒂娜吗……
 （我怎么会直接说出来了……但她说的话，真的可以相信吗？）
 {$MY_NAME}:（我手上还捏着那张从匣子上取下的纸条。）
 <<set_character_sprite {$MY_NAME} peace_1>>
@@ -123,9 +124,9 @@ title: room1_3
 {$MY_NAME}:那我相信你。
 <<set_character_sprite "蒂娜" happy>>
 <<set_character_shake "蒂娜" left_right>>
-蒂娜 :太！好！啦！
+蒂娜: 太！好！啦！
 （蒂娜原地转了个圈，裙摆险些撞到那些未收拾的书堆和杂物，坐回了匣子上。
-蒂娜 :我会一直在这里等你哦！
+蒂娜: 我会一直在这里等你哦！
 
 ->寻找卡牌说明书 
     <<jump card1_1>>

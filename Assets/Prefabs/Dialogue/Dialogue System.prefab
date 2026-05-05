@@ -992,8 +992,8 @@ Transform:
   m_Children:
   - {fileID: 6018543767898244680}
   - {fileID: 2958262986446477829}
-  - {fileID: 8020628925107869966}
   - {fileID: 2958262985454349539}
+  - {fileID: 8020628925107869966}
   - {fileID: 3859336322602399704}
   - {fileID: 3859336324316773514}
   - {fileID: 8815209183597109338}
@@ -1068,6 +1068,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shakeDuration: 0.5
   shakeMagnitude: 2
+  portraitSizeType2Scale: 1.15
+  portraitSizeType3Scale: 1.3
 --- !u!114 &8060940546425592418
 MonoBehaviour:
   m_ObjectHideFlags: 0
