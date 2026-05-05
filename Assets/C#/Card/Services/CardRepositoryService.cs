@@ -37,4 +37,22 @@ public class CardRepositoryService
     {
         return _cardDatas.Find(c => c.id == id);
     }
+
+    public CardData GetRandomCardDataByType(int type)
+    {
+        if (type < 1 || type > 3)
+        {
+            Debug.LogWarning($"[CardRepository] Unsupported card type: {type}. Type must be 1, 2, or 3.");
+            return null;
+        }
+
+        List<CardData> cardsOfType = _cardDatas.FindAll(c => CardIdUtility.GetCardType(c.id) == type);
+        if (cardsOfType.Count == 0)
+        {
+            Debug.LogWarning($"[CardRepository] No card data found for type {type}.");
+            return null;
+        }
+
+        return cardsOfType[Random.Range(0, cardsOfType.Count)];
+    }
 }

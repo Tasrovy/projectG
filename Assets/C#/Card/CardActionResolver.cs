@@ -88,8 +88,17 @@ public class CardActionResolver : Singleton<CardActionResolver>
             Debug.Log($"[Resolver][Dialog] cardId={selectedCard?.id}, dialog={selectedCard?.dialog}");
             BattleDialogController.Instance.TryShowByCard(selectedCard);
 
-            _pendingPlayedCard = selectedCard;
-            _pendingShouldAddToSet = selectedCard.id.ToString()[0] != '1' && selectedCard.id.ToString()[0] != '3';
+            bool shouldReturnToDeck = selectedCard != null && CardIdUtility.GetCardType(selectedCard.id) == 2;
+            if (shouldReturnToDeck)
+            {
+                _pendingPlayedCard = selectedCard;
+                _pendingShouldAddToSet = true;
+            }
+            else
+            {
+                _pendingPlayedCard = null;
+                _pendingShouldAddToSet = false;
+            }
 
             CardManager.Instance.BreakCard(selectedCard);
             selectedCard.OnTrigger();
@@ -99,7 +108,10 @@ public class CardActionResolver : Singleton<CardActionResolver>
                 return;
             }
 
-            CompletePendingPlayedCard(true);
+            if (shouldReturnToDeck)
+            {
+                CompletePendingPlayedCard(true);
+            }
         }
         else if (currentMode == CardPlayMode.EffectSelect)
         {

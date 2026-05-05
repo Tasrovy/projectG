@@ -95,29 +95,41 @@ public sealed class CardEffectLibrary
 
     public void addWithSame(int sameNum, int trueNum, int falseNum)
     {
-        int sameCount = CardManager.Instance.GetMaxSameIdCardCount();
-        beAdded(sameCount >= sameNum ? trueNum : falseNum, 1);
+        CardActionResolver.Instance.StartEffectSelection(
+            onConfirm: (selectedCard) =>
+            {
+                int sameCount = 0;
+                foreach (Card card in CardManager.Instance.cardInHand)
+                {
+                    if (card.id == selectedCard.id)
+                    {
+                        sameCount++;
+                    }
+                }
+
+                int addNum = sameCount >= sameNum ? trueNum : falseNum;
+                CardSubmitHelper.Instance.ShengZhang(selectedCard, addNum, 1);
+
+                CardActionResolver.Instance.CompletePendingPlayedCard(true);
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            },
+            onCancel: () =>
+            {
+                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            }
+        );
     }
 
     public void addWithSameTogether(int sameNum, int addNum)
     {
-        bool hasChanged = false;
-
         List<List<Card>> giftCardGroups = CardManager.Instance.GetGiftCardGroupsWithCountGreaterThan(sameNum);
         foreach (List<Card> giftCards in giftCardGroups)
         {
             foreach (Card card in giftCards)
             {
-                card.Add(1, addNum);
-                card.Add(2, addNum);
-                card.Add(3, addNum);
+                CardSubmitHelper.Instance.ShengZhang(card, addNum, 1);
             }
-
-            hasChanged = true;
-        }
-        if (hasChanged)
-        {
-            CardManager.Instance.NotifyDeckOrHandChanged();
         }
     }
 
@@ -130,7 +142,6 @@ public sealed class CardEffectLibrary
     {
         Card copyCard = new Card();
         copyCard.InitCard(_owner.CallerCard);
-        copyCard.OnAdded();
         CardManager.Instance.AddCardInHand(copyCard);
     }
 

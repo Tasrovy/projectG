@@ -55,7 +55,7 @@ public class CardManager : Singleton<CardManager>
     {
         _repositoryService = new CardRepositoryService(cardDatas, cardExcelPaths);
         _deckService = new DeckService(cardSet, cardDatas);
-        _handService = new HandService(cardInHand, cardSet);
+        _handService = new HandService(cardInHand);
         _drawService = new DrawService(cardSet, cardInHand, _rng, probRarity1, probRarity2, probRarity3);
         _initialHandService = new InitialHandService(_deckService);
     }
@@ -148,6 +148,11 @@ public class CardManager : Singleton<CardManager>
         return _repositoryService.GetCardDataById(id);
     }
 
+    public CardData GetRandomCardDataByType(int type)
+    {
+        return _repositoryService.GetRandomCardDataByType(type);
+    }
+
     public int GetCardCountInDeck(int cardId)
     {
         return _deckService.GetCardCountInDeck(cardId);
@@ -160,7 +165,7 @@ public class CardManager : Singleton<CardManager>
 
     public List<List<Card>> GetGiftCardGroupsWithCountGreaterThan(int minCount)
     {
-        return _deckService.GetGiftCardGroupsWithCountGreaterThan(minCount);
+        return _handService.GetGiftCardGroupsWithCountGreaterThan(minCount);
     }
 
     // ===================== 手牌（Hand） =====================
@@ -184,7 +189,7 @@ public class CardManager : Singleton<CardManager>
     public void ChangeHandGift(Card ignoredCard = null)
     {
         Debug.Log("[CardManager] Begin Change Hand Gift");
-        _handService.ChangeHandGift(GetCardDataById, ignoredCard);
+        _handService.ChangeHandGift(GetRandomCardDataByType, ignoredCard);
         NotifyDeckOrHandChanged();
     }
 

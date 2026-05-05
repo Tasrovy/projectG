@@ -131,18 +131,21 @@ public class Card
     public void OnMade()
     {
         EnsureComponents();
+        Debug.Log("[Card]卡牌被生枝");
         _runtime.OnMade();
     }
 
     public void OnBroken()
     {
         EnsureComponents();
+        Debug.Log("[Card]卡牌被剪枝");
         _runtime.OnBroken();
     }
 
     public void OnAdded()
     {
         EnsureComponents();
+        Debug.Log("[Card]卡牌被生长");
         _runtime.OnAdded();
     }
 
