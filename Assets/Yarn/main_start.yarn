@@ -19,7 +19,7 @@ title: main_start
 <<set_character_sprite "伊兰莉特" "saying">>
 伊兰莉特:把它们做成花环戴在你头上，唔...... #line:0d9e904 
 <<set_character_sprite "伊兰莉特" "happy">>
-伊兰莉特:想想那个画面，一定非常可爱吧。#sfx_Character_主角2_真棒 
+伊兰莉特:<wave>想想那个画面，一定非常可爱吧。</wave>#sfx_Character_主角2_真棒 
 （伊兰莉特边说边爬上一根横垂的树枝，想去摘下岩壁上的花朵。） #line:05659c5 
 <<set_character_sprite "{$MY_NAME}" "saying">>
 {$MY_NAME}:伊兰莉特，注意安-- #line:0f1a741 
@@ -27,14 +27,14 @@ title: main_start
 <<clear_character_person Character>>
 （树枝折断了） #line:0d7301f 
 <<set_character_sprite "{$MY_NAME}" "peace_2">>
-{$MY_NAME}:！！！ #line:0c4c660 
+{$MY_NAME}:<shake>！！！</shake> #line:0c4c660 
 <<play_bgm lake_sadStrong>>
 （她连人带花一起落下那呜咽的溪水里。） #line:0ef6cfc 
 <<set_background "纯黑">>
 <<clear_character_person "Player">>
 <<clear_character_person "Character">>
 
-(..........) #line:07a7a58 
+(<shake>..........</shake>) #line:07a7a58 
 (..........) #line:007dd97 
 <<jump room1_1>>
 ===
@@ -79,13 +79,15 @@ title: room1_1
 {$MY_NAME}:呜呜呜..... #line:0ea852a 
 <<set_character_sprite {$MY_NAME} sad>>
 {$MY_NAME}:如果你还在我身边，那该多好...... #line:0a97d71 
+<<jump room1_3>>
+===
 
 title: room1_3
 ---
 <<set_background box占坑>>
 <<play_bgm littleSad_黄昏分岔口(1)>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Playerr {$MY_NAME} peace_1>>
+<<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_sprite {$MY_NAME} sad>>
 （透过被泪水模糊的眼睛，我好像看到--）
 <<set_character_person Character "蒂娜" peace_1>>
@@ -105,7 +107,7 @@ title: room1_3
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:？
 <<set_character_sprite "蒂娜" saying>>
-蒂娜 :（疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
+蒂娜: （疑惑）唔？你看不见吗？就在你说的话上面哦？需要我指给你看吗？
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:（摇头）不用了，谢谢。
 {$MY_NAME}:所以，你是从哪里来的？
@@ -114,7 +116,7 @@ title: room1_3
 （不管怎么想……这个说法……）
 <<set_character_sprite {$MY_NAME} peace_2>>
 {$MY_NAME}:听起来有点像是胡扯呢。
-蒂娜 : 你怎么喊出来了！呜呜呜，就这么不相信可怜的蒂娜吗……
+蒂娜: 你怎么喊出来了！呜呜呜，就这么不相信可怜的蒂娜吗……
 （我怎么会直接说出来了……但她说的话，真的可以相信吗？）
 {$MY_NAME}:（我手上还捏着那张从匣子上取下的纸条。）
 <<set_character_sprite {$MY_NAME} peace_1>>
@@ -123,9 +125,9 @@ title: room1_3
 {$MY_NAME}:那我相信你。
 <<set_character_sprite "蒂娜" happy>>
 <<set_character_shake "蒂娜" left_right>>
-蒂娜 :太！好！啦！
+蒂娜: 太！好！啦！
 （蒂娜原地转了个圈，裙摆险些撞到那些未收拾的书堆和杂物，坐回了匣子上。
-蒂娜 :我会一直在这里等你哦！
+蒂娜: 我会一直在这里等你哦！
 
 ->寻找卡牌说明书 
     <<jump card1_1>>
@@ -153,6 +155,5 @@ title: card1_1
 ---
 
 .....
-
 
 ===

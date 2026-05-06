@@ -36,44 +36,40 @@ public class PropertiesShow : MonoBehaviour
 #endregion
 
     private TMP_Text targetText;
+    private int selectedTargetType = 1;
 
     private void Awake()
     {
         InitializeReferences();
-        InitializeRandomTargetText();
+        InitializeTargetTextReference();
     }
 
-    /// <summary>
-    /// 返回魅力値，权重由 DataManager 统一管理
-    /// </summary>
-    public float GetCharm()
-    {
-        if (DataManager.Instance == null) return 0f;
-        return DataManager.Instance.GetCharm();
-    }
-
-    private void InitializeRandomTargetText()
+    private void InitializeTargetTextReference()
     {
         Transform targetTransform = FindChildRecursive(transform, "target");
         if (targetTransform == null) return;
 
         targetText = targetTransform.GetComponent<TMP_Text>();
-        if (targetText == null) return;
+    }
+
+    /// <summary>
+    /// 开局由 UI 的 UnityEvent 主动调用，随机一次并写入 DayManager。
+    /// </summary>
+    public void InitializeRandomTargetByEvent()
+    {
+        if (targetText == null)
+        {
+            InitializeTargetTextReference();
+        }
 
         int targetType = Random.Range(1, 5);
-        string targetName = targetType switch
-        {
-            1 => "友情羁绊",
-            2 => "情绪依赖",
-            3 => "安全感",
-            4 => "魅力值",
-            _ => "友情羁绊"
-        };
+        selectedTargetType = targetType;
 
-        targetText.text = $"攻略目标：{targetName}";
         // 存入 DayManager 供其他系统读取
         if (DayManager.Instance != null)
             DayManager.Instance.SetTargetType(targetType);
+
+        RefreshTargetText();
     }
 
     private void InitializeReferences()
@@ -141,13 +137,14 @@ public class PropertiesShow : MonoBehaviour
 
     private void OnEnable()
     {
+        if (DayManager.Instance != null)
+            DayManager.OnDayAdvanced += RefreshTargetText;
         UpdatePropertiesShow();
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        // 如果需要在每帧实时刷新，可以将此方法放在 Update 中
-        UpdatePropertiesShow();
+        DayManager.OnDayAdvanced -= RefreshTargetText;
     }
 
     public void UpdatePropertiesShow()
@@ -158,7 +155,7 @@ public class PropertiesShow : MonoBehaviour
         int n2 = DataManager.Instance.nature2;
         int n3 = DataManager.Instance.nature3;
         int money = DataManager.Instance.MoneyNum;
-        float n4 = DataManager.Instance.GetCharm();
+        float n4 = money;
 
         UpdateSliderVisual(slider1, fillImage1, defaultFillColor1, n1);
         UpdateSliderVisual(slider2, fillImage2, defaultFillColor2, n2);
@@ -180,6 +177,71 @@ public class PropertiesShow : MonoBehaviour
         string n4Str = FormatValue(n4);
         if (numText4_TMP != null) numText4_TMP.text = n4Str;
         if (numText4_Legacy != null) numText4_Legacy.text = n4Str;
+    }
+
+    private void RefreshTargetText()
+    {
+        if (targetText == null) return;
+
+        int targetType = selectedTargetType;
+        if (DayManager.Instance != null && DayManager.Instance.TargetType >= 1 && DayManager.Instance.TargetType <= 4)
+        {
+            targetType = DayManager.Instance.TargetType;
+            selectedTargetType = targetType;
+        }
+
+        string targetName = targetType switch
+        {
+            1 => "友情羁绊",
+            2 => "情绪依赖",
+            3 => "安全感",
+            4 => "金钱",
+            _ => "友情羁绊"
+        };
+
+        string detailLine = BuildNextCheckDetailLine(targetType);
+        targetText.text = $"<size=18>攻略目标：{targetName}</size>\n<size=12>{detailLine}</size>";
+    }
+
+    private string BuildNextCheckDetailLine(int targetType)
+    {
+        if (DayManager.Instance == null || DayManager.Instance.daySO == null || DayManager.Instance.daySO.dayDatas == null)
+        {
+            return "距离下次检定：--天，目标值：--";
+        }
+
+        List<DayData> dayDatas = DayManager.Instance.daySO.dayDatas;
+        int currentDay = DayManager.Instance.GetDayNumber();
+
+        // 用 dayData.day 字段做差值，避免数组下标与天数不一致时出现偏移
+        DayData nextCheck = null;
+        foreach (DayData d in dayDatas)
+        {
+            if (d.day > currentDay && !string.IsNullOrEmpty(d.failedDialog))
+            {
+                if (nextCheck == null || d.day < nextCheck.day)
+                    nextCheck = d;
+            }
+        }
+
+        if (nextCheck == null)
+            return "距离下次检定：--天，目标值：--";
+
+        int daysUntilCheck = nextCheck.day - currentDay;
+        int targetValue = GetTargetValueByType(nextCheck, targetType);
+        return $"距离下次检定：{daysUntilCheck}天，目标值：{targetValue}";
+    }
+
+    private int GetTargetValueByType(DayData dayData, int targetType)
+    {
+        return targetType switch
+        {
+            1 => dayData.target1,
+            2 => dayData.target2,
+            3 => dayData.target3,
+            4 => dayData.target4,
+            _ => dayData.target1
+        };
     }
 
     private void UpdateSliderVisual(Slider slider, Image fillImage, Color defaultColor, float value)
