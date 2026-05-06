@@ -343,7 +343,7 @@ public class CharacterControl : MonoBehaviour
 
     #region 立绘大小切换
     [YarnCommand("set_character_size")]
-    public static void SetCharacterSizeStatic(string objectName, int sizeType, float yPoint, float duration = 1.0f)
+    public static void SetCharacterSizeStatic(string objectName, int sizeType, float yPoint, float duration = 0f)
     {
         var control = Object.FindAnyObjectByType<CharacterControl>();
         if (control != null)
@@ -352,7 +352,7 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
-    public void SetCharacterSize(string objectName, int sizeType, float yPoint, float duration = 1.0f)
+    public void SetCharacterSize(string objectName, int sizeType, float yPoint, float duration = 0f)
     {
         string normalizedObjectName = NormalizePortraitObjectName(objectName);
         if (string.IsNullOrEmpty(normalizedObjectName))
@@ -595,13 +595,13 @@ public class CharacterControl : MonoBehaviour
     /// - duration: 动画过渡时间 (秒)
     /// </summary>
     [YarnCommand("camera_zoom")]
-    public static void ZoomArtStatic(float targetX, float targetY, float targetScale, float duration = 1.0f)
+    public static void ZoomArtStatic(float targetX, float targetY, float targetScale, float duration = 0f)
     {
         var control = Object.FindAnyObjectByType<CharacterControl>();
         if (control != null) control.ZoomArt(targetX, targetY, targetScale, duration);
     }
 
-    public void ZoomArt(float targetX, float targetY, float targetScale, float duration = 1.0f)
+    public void ZoomArt(float targetX, float targetY, float targetScale, float duration = 0f)
     {
         // 获取演出画面的根节点: talk
         GameObject talkObj = ResolveTalkObject();
@@ -628,7 +628,13 @@ public class CharacterControl : MonoBehaviour
 
         if (activeTalkZoomCoroutine != null) StopCoroutine(activeTalkZoomCoroutine);
         // 对坐标进行取反，因为如果玩家想要视线向右 (X 为正)，其实画布的偏移量应该向左(-X)
-        activeTalkZoomCoroutine = StartCoroutine(ZoomTalkRoutine(rt, new Vector2(-targetX, -targetY), new Vector3(targetScale, targetScale, 1f), duration));
+        // targetScale 为倍数，需乘以原始缩放值得到目标绝对缩放
+        Vector3 targetScaleVec = new Vector3(
+            originalTalkScale.x * targetScale,
+            originalTalkScale.y * targetScale,
+            originalTalkScale.z
+        );
+        activeTalkZoomCoroutine = StartCoroutine(ZoomTalkRoutine(rt, new Vector2(-targetX, -targetY), targetScaleVec, duration));
     }
 
     /// <summary>
@@ -637,13 +643,13 @@ public class CharacterControl : MonoBehaviour
     /// 参数 duration 为过渡时间(秒)
     /// </summary>
     [YarnCommand("reset_camera")]
-    public static void ResetArtZoomStatic(float duration = 1.0f)
+    public static void ResetArtZoomStatic(float duration = 0f)
     {
         var control = Object.FindAnyObjectByType<CharacterControl>();
         if (control != null) control.ResetArtZoom(duration);
     }
 
-    public void ResetArtZoom(float duration = 1.0f)
+    public void ResetArtZoom(float duration = 0f)
     {
         if (!isTalkZoomed) return;
 
