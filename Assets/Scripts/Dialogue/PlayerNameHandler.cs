@@ -39,7 +39,5 @@ public class PlayerNameHandler : MonoBehaviour
                 ? $"Retrieved name from storage: {retrievedName}" 
                 : "Failed to retrieve name from storage.");
         }
-
-        gameObject.SetActive(false);
     }
 }
