@@ -41,28 +41,20 @@ public class CardUIObject : MonoBehaviour,
     public float moveSpeed = 15f;
     public float sortLerpSpeed = 15f; // 别人让位时的平滑速度
 
-    [Header("长按设置")]
-    [SerializeField] private float longPressDuration = 0.5f;
-
     // 内部状态
     private CardObject _cardObject;
     private Vector2 _containerTargetPos;
     private Vector2 _containerOriginalPos;
     private Vector3 _targetScale = Vector3.one;
-    
+
     // 【新增】：记录上一帧根节点的位置，用于计算 LayoutGroup 造成的瞬移
-    private Vector3 _lastRootPosition; 
+    private Vector3 _lastRootPosition;
 
     [SerializeField]private bool _isSelected = false;
     [SerializeField]private bool _isActiveMode = false;
     [SerializeField]private bool _isHovering = false;
     [SerializeField]private bool _isDragging = false;
     public bool _isSelectMode => CardActionResolver.Instance.currentMode==CardPlayMode.EffectSelect;
-
-    // 长按检测状态
-    private bool _isPointerDown;
-    private float _pressTimer;
-    private bool _isLongPressTriggered;
 
     private Transform _dragCanvasParent; 
 
@@ -130,17 +122,6 @@ public class CardUIObject : MonoBehaviour,
         {
             visualContainer.localScale = Vector3.Lerp(visualContainer.localScale, _targetScale, Time.deltaTime * moveSpeed);
         }
-
-        // 3. 长按检测
-        if (_isPointerDown && !_isDragging)
-        {
-            _pressTimer += Time.deltaTime;
-            if (_pressTimer >= longPressDuration && !_isLongPressTriggered)
-            {
-                _isLongPressTriggered = true;
-                TriggerLongPress();
-            }
-        }
     }
 
     // ================= 鼠标悬浮交互 =================
@@ -151,12 +132,25 @@ public class CardUIObject : MonoBehaviour,
         _isHovering = true;
         SfxTrigger.PlaySound(CardHoverSfxPath);
         UpdateVisual();
+
+        // 未选中时滑入显示卡牌详情
+        if (!_isSelected)
+        {
+            var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+            if (detailUI != null)
+                detailUI.Show(Card);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         _isHovering = false;
         UpdateVisual();
+
+        // 仅当详情面板正在显示当前卡牌时才关闭，避免竞态导致闪烁
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null && detailUI.CurrentCard == Card)
+            detailUI.Hide();
     }
 
     // ================= 鼠标点击交互 =================
@@ -165,34 +159,19 @@ public class CardUIObject : MonoBehaviour,
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
 
-        _isPointerDown = true;
-        _pressTimer = 0f;
-        _isLongPressTriggered = false;
+        // 按下时关闭卡牌详情
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Hide();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left) return;
-        _isPointerDown = false;
-
-        // 长按松开后自动关闭卡牌详情
-        if (_isLongPressTriggered)
-        {
-            var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
-            if (detailUI != null)
-                detailUI.Hide();
-        }
+        // 不再需要长按松开关闭逻辑
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // 如果是长按触发的，跳过点击选中逻辑
-        if (_isLongPressTriggered)
-        {
-            _isLongPressTriggered = false;
-            return;
-        }
-
         if (!_isActiveMode || (!IsValidToSelect&&_isSelectMode) || _isDragging) return;
 
         _isSelected = !_isSelected;
@@ -202,21 +181,6 @@ public class CardUIObject : MonoBehaviour,
             CardSelector.Instance.SetSelectObject(_isSelected ? this : null);
 
         UpdateVisual();
-    }
-
-    /// <summary>
-    /// 长按触发：打开卡牌详情
-    /// </summary>
-    private void TriggerLongPress()
-    {
-        Card card = Card;
-        if (card == null) return;
-
-        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
-        if (detailUI != null)
-            detailUI.Show(card);
-        else
-            Debug.LogWarning("[CardUIObject] 无法获取 CardDetailUI，请确认 Prefabs/CardDetailUI 预制体存在");
     }
 
     // ================= 鼠标拖拽换位交互 =================

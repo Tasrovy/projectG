@@ -12,30 +12,13 @@ public class CardDetailUI : MonoBehaviour
     [SerializeField] private bool hideOnAwake = true;
 
     [Header("Main Display")]
-    [SerializeField] private Image baseImage;
-    [SerializeField] private Text nameText;
-    [SerializeField] private Text idText;
     [SerializeField] private Text descriptionText;
+    [SerializeField] private Text textText;
 
-    [Header("Detail Text")]
-    [SerializeField] private Text natureText;
-    [SerializeField] private Text saleText;
-    [SerializeField] private Text madeText;
-    [SerializeField] private Text brokenText;
-    [SerializeField] private Text addedText;
-    [SerializeField] private Text buffText;
-    [SerializeField] private Text triggerText;
-    [SerializeField] private Text nextTurnText;
 
     [Header("Prompt (ScrollView)")]
     [SerializeField] private PromptItemUI promptItemPrefab;
     [SerializeField] private Transform promptContent;
-
-    [Header("Card Sprites")]
-    [SerializeField] private Sprite commonSprite;
-    [SerializeField] private Sprite shengZhiSprite;
-    [SerializeField] private Sprite jianZhiSprite;
-    [SerializeField] private Sprite shengZhangSprite;
 
     public Card CurrentCard { get; private set; }
     public bool IsVisible => panelRoot != null && panelRoot.activeSelf;
@@ -51,6 +34,11 @@ public class CardDetailUI : MonoBehaviour
 
         if (closeButton != null)
             closeButton.onClick.AddListener(Hide);
+
+        // 面板背景不拦截射线，避免挡住卡牌导致闪烁
+        Image panelImage = panelRoot.GetComponent<Image>();
+        if (panelImage != null)
+            panelImage.raycastTarget = false;
 
         if (hideOnAwake)
             Hide();
@@ -101,21 +89,11 @@ public class CardDetailUI : MonoBehaviour
     {
         if (CurrentCard == null) return;
 
-        SetText(nameText, CurrentCard.name);
-        SetText(idText, CurrentCard.id.ToString());
         SetText(descriptionText, CurrentCard.GetParsedDescription());
-        SetText(natureText, BuildNatureText(CurrentCard));
-        SetText(saleText, CurrentCard.sale.ToString());
-        SetText(madeText, FormatOptional(CurrentCard.made));
-        SetText(brokenText, FormatOptional(CurrentCard.broken));
-        SetText(addedText, FormatOptional(CurrentCard.added));
-        SetText(buffText, FormatOptional(CurrentCard.buff));
-        SetText(triggerText, FormatOptional(CurrentCard.trigger));
-        SetText(nextTurnText, FormatOptional(CurrentCard.nextTurn));
+        SetText(textText, CurrentCard.text);
+        
         BuildPromptItems(CurrentCard);
 
-        if (baseImage != null)
-            baseImage.sprite = ResolveCardSprite(CurrentCard);
     }
 
     private void SetVisible(bool visible)
@@ -196,24 +174,6 @@ public class CardDetailUI : MonoBehaviour
         _promptLoaded = true;
 
         _promptItemSO = ExcelLoader.Instance.ReadPromptExcel("prompt.xlsx");
-    }
-
-    private Sprite ResolveCardSprite(Card card)
-    {
-        int cardType = GetCardType(card.id);
-        int brokenValue = ParseInt(card.broken);
-        int addedValue = ParseInt(card.added);
-
-        if (cardType == 1 && commonSprite != null)
-            return commonSprite;
-
-        if (brokenValue > 0 && jianZhiSprite != null)
-            return jianZhiSprite;
-
-        if (addedValue > 0 && shengZhangSprite != null)
-            return shengZhangSprite;
-
-        return shengZhiSprite != null ? shengZhiSprite : baseImage != null ? baseImage.sprite : null;
     }
 
     private static int GetCardType(int id)
