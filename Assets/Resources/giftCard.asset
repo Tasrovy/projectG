@@ -19,7 +19,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u521D\u59CB\u793C\u72691"
-    sale: 0
+    sale: 1
     made: 
     broken: 
     added: 
@@ -35,7 +35,7 @@ MonoBehaviour:
     nature2: 4
     nature3: 0
     name: "\u521D\u59CB\u793C\u72692"
-    sale: 0
+    sale: 1
     made: 
     broken: 
     added: 
