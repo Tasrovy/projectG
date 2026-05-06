@@ -582,43 +582,43 @@ public class CharacterControl : MonoBehaviour
     private Coroutine activeTalkZoomCoroutine;
 
     /// <summary>
-    /// 放大/移动演出画面 (包含背景与立绘的 talk 节点)，且不影响外层对话框 UI
+    /// 通过仅缩放/移动背景 (talkBG) 制造「镜头推近」的错觉，立绘（Player/Character）与对话框保持原位不受影响。
     /// 
-    /// Yarn 调用示例: <<camera_zoom 300 -200 1.5 1.0>>
+    /// Yarn 调用示例: <<camera_zoom 0.5 0.5 1.5 1.0>>
     /// 
     /// 参数释义：
-    /// - targetX / targetY: 基于原点 (0,0) 的锚点偏移像素值。
-    ///   - 若中心点在屏幕中央 (0,0)：往左偏看右侧画面需传入负数(如 X: -300)，往右偏则传正数。
-    ///   - X/Y 的极限值：计算方式为 (屏幕分辨率的一半 * (放大倍率 - 1))。
-    ///     例如在 1920x1080 下放大 1.5 倍：X的最大偏移为 (1920/2) * 0.5 = 480，即 X 不要超过 ±480，否则会露出黑边。
+    /// - anchorX / anchorY: 缩放锚点的归一化坐标 (0~1)
+    ///   - anchorX: 0=左边缘, 1=右边缘, 0.5=水平居中
+    ///   - anchorY: 0=上边缘, 1=下边缘, 0.5=垂直居中
+    ///   - 锚点位置在缩放前后保持屏幕坐标不变（即「向该点推进」的效果）
     /// - targetScale: 放大倍数 (1.0为原始大小，1.5即为放大约1.5倍)
     /// - duration: 动画过渡时间 (秒)
     /// </summary>
     [YarnCommand("camera_zoom")]
-    public static void ZoomArtStatic(float targetX, float targetY, float targetScale, float duration = 0f)
+    public static void ZoomArtStatic(float anchorX, float anchorY, float targetScale, float duration = 0f)
     {
         var control = Object.FindAnyObjectByType<CharacterControl>();
-        if (control != null) control.ZoomArt(targetX, targetY, targetScale, duration);
+        if (control != null) control.ZoomArt(anchorX, anchorY, targetScale, duration);
     }
 
-    public void ZoomArt(float targetX, float targetY, float targetScale, float duration = 0f)
+    public void ZoomArt(float anchorX, float anchorY, float targetScale, float duration = 0f)
     {
-        // 获取演出画面的根节点: talk
-        GameObject talkObj = ResolveTalkObject();
-        if (talkObj == null)
+        // 只缩放/移动背景(talkBG)，立绘(Player/Character)和对话框完全不受影响
+        GameObject bgObj = GetCharacterObjectUnderTalk("talkBG");
+        if (bgObj == null)
         {
-            Debug.LogWarning("[CharacterControl] 未找到名为 'talk' 的对象，无法执行缩放！");
-            return;
-        }
-        
-        RectTransform rt = talkObj.GetComponent<RectTransform>();
-        if (rt == null)
-        {
-            Debug.LogWarning("[CharacterControl] 'Canvas/talk' 对象缺少 RectTransform 组件！");
+            Debug.LogWarning("[CharacterControl] 未找到 'talkBG' 对象，无法执行缩放！");
             return;
         }
 
-        // 如果是首次放大，记录下原始的锚点位置和缩放比例
+        RectTransform rt = bgObj.GetComponent<RectTransform>();
+        if (rt == null)
+        {
+            Debug.LogWarning("[CharacterControl] 'talkBG' 对象缺少 RectTransform 组件！");
+            return;
+        }
+
+        // 首次调用时记录 talkBG 的原始状态
         if (!isTalkZoomed)
         {
             originalTalkAnchoredPos = rt.anchoredPosition;
@@ -627,14 +627,24 @@ public class CharacterControl : MonoBehaviour
         }
 
         if (activeTalkZoomCoroutine != null) StopCoroutine(activeTalkZoomCoroutine);
-        // 对坐标进行取反，因为如果玩家想要视线向右 (X 为正)，其实画布的偏移量应该向左(-X)
-        // targetScale 为倍数，需乘以原始缩放值得到目标绝对缩放
+
+        // 将归一化锚点坐标转换为本地空间坐标
+        // anchorX: 0=左(xMin), 1=右(xMax)；anchorY: 0=上(yMax), 1=下(yMin)
+        float localX = Mathf.Lerp(rt.rect.xMin, rt.rect.xMax, anchorX);
+        float localY = Mathf.Lerp(rt.rect.yMax, rt.rect.yMin, anchorY);
+
+        // 让锚点在缩放前后保持世界坐标不变：
+        // newAnchoredPos = originalPos - localPoint * originalScale * (targetScale - 1)
+        float offsetX = localX * originalTalkScale.x * (targetScale - 1f);
+        float offsetY = localY * originalTalkScale.y * (targetScale - 1f);
+        Vector2 targetPos = originalTalkAnchoredPos - new Vector2(offsetX, offsetY);
+
         Vector3 targetScaleVec = new Vector3(
             originalTalkScale.x * targetScale,
             originalTalkScale.y * targetScale,
             originalTalkScale.z
         );
-        activeTalkZoomCoroutine = StartCoroutine(ZoomTalkRoutine(rt, new Vector2(-targetX, -targetY), targetScaleVec, duration));
+        activeTalkZoomCoroutine = StartCoroutine(ZoomTalkRoutine(rt, targetPos, targetScaleVec, duration));
     }
 
     /// <summary>
@@ -653,17 +663,17 @@ public class CharacterControl : MonoBehaviour
     {
         if (!isTalkZoomed) return;
 
-        GameObject talkObj = ResolveTalkObject();
-        if (talkObj != null)
+        GameObject bgObj = GetCharacterObjectUnderTalk("talkBG");
+        if (bgObj != null)
         {
-            RectTransform rt = talkObj.GetComponent<RectTransform>();
+            RectTransform rt = bgObj.GetComponent<RectTransform>();
             if (rt != null)
             {
                 if (activeTalkZoomCoroutine != null) StopCoroutine(activeTalkZoomCoroutine);
                 activeTalkZoomCoroutine = StartCoroutine(ZoomTalkRoutine(rt, originalTalkAnchoredPos, originalTalkScale, duration));
             }
         }
-        
+
         isTalkZoomed = false; // 状态恢复
     }
 

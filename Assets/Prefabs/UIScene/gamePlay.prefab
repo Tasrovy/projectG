@@ -55,4 +55,15 @@ MonoBehaviour:
   namingRoot: {fileID: 0}
   alwaysShowRoots:
   - {fileID: 0}
+  sceneBGMConfigs:
+  - sceneType: 0
+    folderName: begin
+  - sceneType: 4
+    folderName: cardFight
+  - sceneType: 2
+    folderName: other
+  - sceneType: 3
+    folderName: shop
+  - sceneType: 5
+    folderName: other
   testChange: 0

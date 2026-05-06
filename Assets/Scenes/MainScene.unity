@@ -8246,57 +8246,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1571787614}
     - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
       propertyPath: alwaysShowRoots.Array.data[0]
       value: 
       objectReference: {fileID: 2034834526}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[1].sceneType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[2].sceneType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[3].sceneType
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[4].sceneType
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[5].sceneType
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[0].folderName
-      value: begin
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[1].folderName
-      value: cardFight
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[2].folderName
-      value: other
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[3].folderName
-      value: shop
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[4].folderName
-      value: other
-      objectReference: {fileID: 0}
-    - target: {fileID: 4540486522659085021, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
-      propertyPath: sceneBGMConfigs.Array.data[5].folderName
-      value: other
-      objectReference: {fileID: 0}
     - target: {fileID: 7177233014380217530, guid: 88c70759bae493547acf0e48eae7ecf6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 50
