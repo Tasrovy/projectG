@@ -217,7 +217,7 @@ public class PropertiesShow : MonoBehaviour
         DayData nextCheck = null;
         foreach (DayData d in dayDatas)
         {
-            if (d.day > currentDay && !string.IsNullOrEmpty(d.failedDialog))
+            if (d.day >= currentDay && !string.IsNullOrEmpty(d.failedDialog))
             {
                 if (nextCheck == null || d.day < nextCheck.day)
                     nextCheck = d;
@@ -229,6 +229,7 @@ public class PropertiesShow : MonoBehaviour
 
         int daysUntilCheck = nextCheck.day - currentDay;
         int targetValue = GetTargetValueByType(nextCheck, targetType);
+        Debug.Log($"[PropertiesShow] 距离下次检定：{daysUntilCheck}天，目标值：{targetValue}");
         return $"距离下次检定：{daysUntilCheck}天，目标值：{targetValue}";
     }
 

@@ -32,6 +32,9 @@ public class DialogueHandler : MonoBehaviour
     // 失败对话标志：当前正在播放失败对话
     private bool _isPlayingFailedDialogue = false;
 
+    // 延迟失败检定：记录本次过天流程应当在前置对话结束后触发的失败节点
+    private string _deferredFailureNode = null;
+
     private Coroutine StartManagedCoroutine(IEnumerator routine)
     {
         if (routine == null)
@@ -187,9 +190,12 @@ public class DialogueHandler : MonoBehaviour
 
         var daySO = DayManager.Instance.daySO;
         int dayIndex = DayManager.Instance.GetDayNumber();
-        if (daySO == null || dayIndex < 0 || dayIndex >= daySO.dayDatas.Count) return false;
+        // dayDatas 是0-indexed，dayDatas[k].day = k+1
+        // dayNumber=N 时应读取 dayDatas[N-1] 才是当天的真实数据
+        int arrayIndex = dayIndex - 1;
+        if (daySO == null || arrayIndex < 0 || arrayIndex >= daySO.dayDatas.Count) return false;
 
-        DayData today = daySO.dayDatas[dayIndex];
+        DayData today = daySO.dayDatas[arrayIndex];
         if (string.IsNullOrEmpty(today.failedDialog)) return false;
 
         int targetType = DayManager.Instance.TargetType;
@@ -244,14 +250,8 @@ public class DialogueHandler : MonoBehaviour
     {
         Debug.Log($"[DialogueHandler] TriggerEndDayWithDeal 被调用！sceneTypeName={sceneTypeName}, dialogueRunner={(dialogueRunner != null ? "OK" : "NULL")}, currentDay={DayManager.Instance?.GetDayNumber()}");
 
-        // 失败检定：如果今天存在 failedDialog 且属性未达标，播放失败对话，不进行正常过天流程
-        if (TryGetFailedDialogue(out string failedNode))
-        {
-            Debug.Log($"[DialogueHandler] 失败检定未通过，播放失败对话: {failedNode}");
-            _isPlayingFailedDialogue = true;
-            StartDialogue(failedNode);
-            return;
-        }
+        // 记录失败检定结果，但不立刻触发 —— 等 deal 对话播完后再接着播失败对话
+        TryGetFailedDialogue(out _deferredFailureNode);
 
         // 先设好一定会过天以及目的场景
         SetAdvanceDayAfterDialogue(true);
@@ -305,14 +305,8 @@ public class DialogueHandler : MonoBehaviour
             return;
         }
 
-        // 失败检定
-        if (TryGetFailedDialogue(out string failedNode))
-        {
-            Debug.Log($"[DialogueHandler] 失败检定未通过，播放失败对话: {failedNode}");
-            _isPlayingFailedDialogue = true;
-            StartDialogue(failedNode);
-            return;
-        }
+        // 记录失败检定结果，但不立刻触发 —— 等打工对话播完后再接着播失败对话
+        TryGetFailedDialogue(out _deferredFailureNode);
 
         string yarnNode = $"doWork{_doWorkI}_{_doWorkJ}";
 
@@ -358,14 +352,8 @@ public class DialogueHandler : MonoBehaviour
     {
         Debug.Log($"[DialogueHandler] TriggerEventDialogue 被调用！eventNode={eventNodeName}, sceneTypeName={sceneTypeName}");
 
-        // 失败检定
-        if (TryGetFailedDialogue(out string failedNode))
-        {
-            Debug.Log($"[DialogueHandler] 失败检定未通过，播放失败对话: {failedNode}");
-            _isPlayingFailedDialogue = true;
-            StartDialogue(failedNode);
-            return;
-        }
+        // 记录失败检定结果，但不立刻触发 —— 等事件对话播完后再接着播失败对话
+        TryGetFailedDialogue(out _deferredFailureNode);
 
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
@@ -513,6 +501,21 @@ public class DialogueHandler : MonoBehaviour
             isHandlingDialogueSequence = false;
             OnGameFailed();
             yield break;
+        }
+
+        // 延迟失败检定处理：在本次前置对话（打工/商店/约会）结束后，插入失败对话
+        if (!string.IsNullOrEmpty(_deferredFailureNode))
+        {
+            string failedNode = _deferredFailureNode;
+            _deferredFailureNode = null;
+            _isPlayingFailedDialogue = true;
+            // 取消过天（失败结局不应该过天）
+            if (characterHighlightManager != null)
+                characterHighlightManager.shouldAdvanceDayAfterDialogue = false;
+            willSwitchScene = false;
+            pendingDialogues.Clear(); // 清空 special 等其他待播项，失败优先
+            pendingDialogues.Enqueue(failedNode);
+            Debug.Log($"[DialogueHandler] 前置对话结束，延迟失败检定触发，即将播放失败对话: {failedNode}");
         }
 
         // =================== 修改点：拦截过天与 Special 对话 ===================
