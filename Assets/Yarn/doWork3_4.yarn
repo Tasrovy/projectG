@@ -22,6 +22,7 @@
 <<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: ……好。
 （还有十五瓶。）
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的

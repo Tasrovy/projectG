@@ -23,6 +23,7 @@
 顾客: 哦。谢谢？
 <<set_character_sprite {$MY_NAME} "peace_1">>
 {$MY_NAME}: 不客气。
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookRougSound_buySth
 
 //#sfx_Character_Player_好的

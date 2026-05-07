@@ -788,6 +788,28 @@ public class CharacterControl : MonoBehaviour
         targetTransform.localPosition = originalPos;
     }
 
+    #region 数值修改
+    /// <summary>
+    /// 增加或减少玩家属性值
+    /// Yarn 调用示例: <<add_property 1 10>> (nature1增加10)
+    /// 参数:
+    /// type: 1=nature1, 2=nature2, 3=nature3, 4=MoneyNum, 5=ExtraCharm
+    /// num: 增加的数值（可以为负数）
+    /// </summary>
+    [YarnCommand("add_property")]
+    public static void AddPropertyStatic(int type, int num)
+    {
+        if (DataManager.Instance != null)
+        {
+            DataManager.Instance.Add(type, num);
+        }
+        else
+        {
+            Debug.LogWarning("[CharacterControl] DataManager 实例未找到！无法执行 add_property。");
+        }
+    }
+    #endregion
+
     #region 音频功能
     /// <summary>
     /// 独立封装的路径处理功能：将下划线风格的文件参数变更为资源文件夹路径

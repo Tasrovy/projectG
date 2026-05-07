@@ -23,7 +23,7 @@ title: doWork2_4
 <<set_background "纯黑">>
 <<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: （把时间留下来吗。）
-
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的
