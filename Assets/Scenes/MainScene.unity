@@ -5058,6 +5058,9 @@ MonoBehaviour:
   - target: {fileID: 1382389158}
     fieldName: eventPityThreshold
     value: 4
+  - target: {fileID: 1382389158}
+    fieldName: funcPityThreshold
+    value: 4
   - target: {fileID: 693238217}
     fieldName: slotsPerPage
     value: 6

@@ -614,6 +614,7 @@ public class DialogueHandler : MonoBehaviour
         {
             CardManager.Instance.ClearAllCards();
             CardManager.Instance.consecutiveNonGiftCount = 0;
+            CardManager.Instance.consecutiveNonFuncCount  = 0;
             CardManager.Instance.consecutiveNonEventCount = 0;
         }
 

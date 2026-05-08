@@ -214,15 +214,49 @@ public class ConfigHubEditor : Editor
 
         switch (typeIdx)
         {
-            case 0: _hub.intEntries.Add(new ConfigHub.IntEntry
-                        { target = target, fieldName = fieldName, value = current is int i ? i : 0 }); break;
-            case 1: _hub.floatEntries.Add(new ConfigHub.FloatEntry
-                        { target = target, fieldName = fieldName, value = current is float f ? f : 0f }); break;
-            case 2: _hub.boolEntries.Add(new ConfigHub.BoolEntry
-                        { target = target, fieldName = fieldName, value = current is bool b && b }); break;
-            case 3: _hub.stringEntries.Add(new ConfigHub.StringEntry
-                        { target = target, fieldName = fieldName, value = current as string ?? "" }); break;
+            case 0:
+                InsertGrouped(_hub.intEntries, new ConfigHub.IntEntry
+                    { target = target, fieldName = fieldName, value = current is int i ? i : 0 },
+                    e => e.target);
+                break;
+            case 1:
+                InsertGrouped(_hub.floatEntries, new ConfigHub.FloatEntry
+                    { target = target, fieldName = fieldName, value = current is float f ? f : 0f },
+                    e => e.target);
+                break;
+            case 2:
+                InsertGrouped(_hub.boolEntries, new ConfigHub.BoolEntry
+                    { target = target, fieldName = fieldName, value = current is bool b && b },
+                    e => e.target);
+                break;
+            case 3:
+                InsertGrouped(_hub.stringEntries, new ConfigHub.StringEntry
+                    { target = target, fieldName = fieldName, value = current as string ?? "" },
+                    e => e.target);
+                break;
         }
         EditorUtility.SetDirty(_hub);
+    }
+
+    /// <summary>
+    /// 将 item 插入到列表中与其相同 target 组的最后一个元素之后。
+    /// 若列表中还没有该 target，则直接追加到末尾。
+    /// </summary>
+    private static void InsertGrouped<T>(List<T> list, T item, Func<T, Component> getTarget)
+    {
+        Component target = getTarget(item);
+        int insertAt = -1;
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (getTarget(list[i]) == target)
+            {
+                insertAt = i + 1;
+                break;
+            }
+        }
+        if (insertAt < 0 || insertAt >= list.Count)
+            list.Add(item);
+        else
+            list.Insert(insertAt, item);
     }
 }

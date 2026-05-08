@@ -17,7 +17,8 @@ public class CardChoosing : MonoBehaviour
     private CardObject selectedCard;
 
     [Header("保底配置")]
-    [SerializeField] private int giftPityThreshold = 4;  // 礼物牌保底所需连续未获得次数
+    [SerializeField] private int giftPityThreshold  = 4; // 礼物牌保底所需连续未获得次数
+    [SerializeField] private int funcPityThreshold  = 4; // 功能牌保底所需连续未获得次数
     [SerializeField] private int eventPityThreshold = 4; // 事件牌保底所需连续未获得次数
 
     private void Awake()
@@ -102,7 +103,7 @@ public class CardChoosing : MonoBehaviour
             else if (rarity == 3) pool3.Add(data);
         }
 
-        // 保底机制：连续多次未获得礼物牌时，强制第一个卡位为礼物牌（id万位为1）
+        // 保底机制：礼物牌（优先级1）—强制第一张卡位
         bool pityActive = CardManager.Instance.consecutiveNonGiftCount >= giftPityThreshold;
         CardData forcedGift = null;
         if (pityActive && CardManager.Instance.giftCards != null && CardManager.Instance.giftCards.Count > 0)
@@ -115,14 +116,32 @@ public class CardChoosing : MonoBehaviour
             Debug.Log($"[CardChoosing] 礼物牌保底触发！强制插入礼物牌: {forcedGift.name}");
         }
 
-        // 保底机制：连续多次未获得事件牌时，强制第二个卡位为事件牌（id万位为3）
+        // 保底机制：功能牌（优先级2）—强制第二张卡位
+        bool funcPityActive = CardManager.Instance.consecutiveNonFuncCount >= funcPityThreshold;
+        CardData forcedFunc = null;
+        if (funcPityActive && CardManager.Instance.funcCards != null && CardManager.Instance.funcCards.Count > 0)
+        {
+            var funcPool = new List<CardData>(CardManager.Instance.funcCards);
+            if (forcedGift != null) funcPool.RemoveAll(d => d.id == forcedGift.id);
+            if (funcPool.Count > 0)
+            {
+                int fIdx = Random.Range(0, funcPool.Count);
+                forcedFunc = funcPool[fIdx];
+                pool1.RemoveAll(d => d.id == forcedFunc.id);
+                pool2.RemoveAll(d => d.id == forcedFunc.id);
+                pool3.RemoveAll(d => d.id == forcedFunc.id);
+                Debug.Log($"[CardChoosing] 功能牌保底触发！强制插入功能牌: {forcedFunc.name}");
+            }
+        }
+
+        // 保底机制：事件牌（优先级3）—强制第三张卡位
         bool eventPityActive = CardManager.Instance.consecutiveNonEventCount >= eventPityThreshold;
         CardData forcedEvent = null;
         if (eventPityActive && CardManager.Instance.eventCards != null && CardManager.Instance.eventCards.Count > 0)
         {
-            // 避开已经被礼物牌保底占用的卡位
             var eventPool = new List<CardData>(CardManager.Instance.eventCards);
             if (forcedGift != null) eventPool.RemoveAll(d => d.id == forcedGift.id);
+            if (forcedFunc != null) eventPool.RemoveAll(d => d.id == forcedFunc.id);
             if (eventPool.Count > 0)
             {
                 int eIdx = Random.Range(0, eventPool.Count);
@@ -135,24 +154,29 @@ public class CardChoosing : MonoBehaviour
         }
 
         CardData data1 = forcedGift ?? PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
-        // 保底触发时 forcedGift 绕过了 PopWeightedRandom，需在此处单独更新计数
         if (forcedGift != null)
         {
             CardManager.Instance.consecutiveNonGiftCount = 0;
-            // 礼物牌不是事件牌，事件牌计数+1
+            CardManager.Instance.consecutiveNonFuncCount++;
             CardManager.Instance.consecutiveNonEventCount++;
             Debug.Log("[CardChoosing] 保底礼物牌直接插入，礼物牌计数重置为0。");
         }
-        CardData data2 = forcedEvent ?? PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
-        // 保底触发时 forcedEvent 绕过了 PopWeightedRandom，需在此处单独更新计数
+        CardData data2 = forcedFunc ?? PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
+        if (forcedFunc != null)
+        {
+            CardManager.Instance.consecutiveNonFuncCount = 0;
+            CardManager.Instance.consecutiveNonGiftCount++;
+            CardManager.Instance.consecutiveNonEventCount++;
+            Debug.Log("[CardChoosing] 保底功能牌直接插入，功能牌计数重置为0。");
+        }
+        CardData data3 = forcedEvent ?? PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
         if (forcedEvent != null)
         {
             CardManager.Instance.consecutiveNonEventCount = 0;
-            // 事件牌不是礼物牌，礼物牌计数+1
             CardManager.Instance.consecutiveNonGiftCount++;
+            CardManager.Instance.consecutiveNonFuncCount++;
             Debug.Log("[CardChoosing] 保底事件牌直接插入，事件牌计数重置为0。");
         }
-        CardData data3 = PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
 
         AssignCardTo(card1, data1);
         AssignCardTo(card2, data2);
@@ -205,6 +229,12 @@ public class CardChoosing : MonoBehaviour
             CardManager.Instance.consecutiveNonGiftCount = 0;
         else
             CardManager.Instance.consecutiveNonGiftCount++;
+
+        // 无论何种原因抽到功能牌都重置保底计数，否则+1
+        if (data.id / 10000 == 2)
+            CardManager.Instance.consecutiveNonFuncCount = 0;
+        else
+            CardManager.Instance.consecutiveNonFuncCount++;
 
         // 无论何种原因抽到事件牌都重置保底计数，否则+1
         if (data.id / 10000 == 3)
