@@ -23,10 +23,10 @@ MonoBehaviour:
     dailyDialog: cardFirstEnd
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 10
+    target2: 11
+    target3: 12
+    target4: 13
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
@@ -37,10 +37,10 @@ MonoBehaviour:
     dailyDialog: normalEnd1_2
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 10
+    target2: 11
+    target3: 12
+    target4: 13
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
@@ -51,10 +51,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_1
     specialDialog: special1_1
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 10
+    target2: 11
+    target3: 12
+    target4: 13
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
@@ -65,10 +65,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_2
     specialDialog: 
     failedDialog: failed1_1
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 10
+    target2: 11
+    target3: 12
+    target4: 13
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
@@ -79,10 +79,10 @@ MonoBehaviour:
     dailyDialog: normalEnd1_3
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 20
+    target2: 21
+    target3: 22
+    target4: 23
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
@@ -93,10 +93,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_4
     specialDialog: special1_2
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 21
+    target2: 22
+    target3: 23
+    target4: 24
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
@@ -107,10 +107,10 @@ MonoBehaviour:
     dailyDialog: normalEnd1_4
     specialDialog: 
     failedDialog: failed1_2
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 22
+    target2: 23
+    target3: 24
+    target4: 25
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
@@ -121,10 +121,10 @@ MonoBehaviour:
     dailyDialog: normalEnd1_5
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 23
+    target2: 24
+    target3: 25
+    target4: 26
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -135,10 +135,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_5
     specialDialog: special1_3
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 24
+    target2: 25
+    target3: 26
+    target4: 27
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -149,10 +149,10 @@ MonoBehaviour:
     dailyDialog: normalEnd1_6
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 25
+    target2: 26
+    target3: 27
+    target4: 28
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -163,10 +163,10 @@ MonoBehaviour:
     dailyDialog: normalEnd1_7
     specialDialog: 
     failedDialog: failed1_3
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 26
+    target2: 27
+    target3: 28
+    target4: 29
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -177,10 +177,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_8
     specialDialog: special1_4
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 27
+    target2: 28
+    target3: 29
+    target4: 30
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -191,10 +191,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_2
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 28
+    target2: 29
+    target3: 30
+    target4: 31
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -205,10 +205,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_3
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 29
+    target2: 30
+    target3: 31
+    target4: 32
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -219,10 +219,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_4
     specialDialog: 
     failedDialog: failed1_4
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 30
+    target2: 31
+    target3: 32
+    target4: 33
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -233,10 +233,10 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_5
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 31
+    target2: 32
+    target3: 33
+    target4: 34
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -247,7 +247,7 @@ MonoBehaviour:
     dailyDialog: simpleEnd1_6
     specialDialog: 
     failedDialog: 
-    target1: 1000
-    target2: 1000
-    target3: 1000
-    target4: 1000
+    target1: 32
+    target2: 33
+    target3: 34
+    target4: 35
