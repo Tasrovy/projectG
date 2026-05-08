@@ -26,5 +26,5 @@ MonoBehaviour:
     text: "\u6D4B\u8BD5"
     description: "\u5360\u5751\u6D4B\u8BD5\u7528"
   - id: 5
-    text: 
-    description: 
+    text: "\u53D6\u51FA\u7269\u54C1"
+    description: "\u5C06\u888B\u5B50\u4E2D\u7684\u7269\u54C1\u653E\u7F6E\u5230\u684C\u4E0A"

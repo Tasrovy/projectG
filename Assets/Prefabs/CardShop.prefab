@@ -1257,8 +1257,8 @@ MonoBehaviour:
   buyModeButton: {fileID: 4132038938004691769}
   sellModeButton: {fileID: 8832281610591768428}
   confirmButton: {fileID: 1511988495753341590}
-  nextPageButton: {fileID: 0}
-  previousPageButton: {fileID: 0}
+  nextPageButton: {fileID: 5675693300811170580}
+  previousPageButton: {fileID: 7662386126059803228}
   closeButton: {fileID: 4773816073194357808}
   buyModeLabel: "\u8D2D\u4E70"
   sellModeLabel: "\u51FA\u552E"

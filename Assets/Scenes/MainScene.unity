@@ -5016,6 +5016,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardId: 0
+  posX: 0
+  posY: 0
+  multiple: 0
+  lastTime: 0
+  objectName: 
+  size: 0
+  Ypoint: 0
+  chaLastTime: 0
 --- !u!4 &1573210550
 Transform:
   m_ObjectHideFlags: 0
@@ -7867,6 +7875,14 @@ PrefabInstance:
     - target: {fileID: 2491364572011800520, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6142992529401377470, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: portraitSizeType2Scale
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6142992529401377470, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: portraitSizeType3Scale
+      value: 2.6
       objectReference: {fileID: 0}
     - target: {fileID: 7293114627776184083, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_Name
