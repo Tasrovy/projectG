@@ -213,11 +213,11 @@ MonoBehaviour:
     name: "\u4E0D\u7720\u7CBE\u7075"
     sale: 20
     made: 
-    broken: noConsumed()
+    broken: 
     added: 
     description: "<color=blue><b>\u7F55\u89C1</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u5F53\u6B64\u724C\u88AB\u526A\u679D\u65F6\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
     buff: 
-    trigger: 
+    trigger: noConsumed()
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
     prompt: 4
@@ -240,15 +240,14 @@ MonoBehaviour:
   - id: 12007
     dialog: 1
     nature1: 0
-    nature2: 14
+    nature2: 18
     nature3: 0
     name: "\u67F3\u6210\u836B"
     sale: 20
     made: 
     broken: 
     added: addNature(10,2)
-    description: "<color=blue><b>\u7F55\u89C1</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u88AB\u751F\u679D\u65F6\uFF0C<color=blue><b>\u7F55\u89C1</b></color>
-      \u63D0\u5347\u5361\u724C\u7684\u5C5E\u6027\u4E8C10\u70B9"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u88AB\u751F\u679D\u65F6\uFF0C\u63D0\u5347\u5361\u724C\u7684\u5C5E\u6027\u4E8C10\u70B9"
     buff: 
     trigger: 
     nextTurn: 
@@ -360,11 +359,11 @@ MonoBehaviour:
     name: "\u5927\u53F7\u68C9\u82B1\u5A03\u5A03"
     sale: 0
     made: 
-    broken: noConsumed()
+    broken: 
     added: 
     description: "<color=yellow><b>\u73CD\u8D35</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
     buff: 
-    trigger: 
+    trigger: noConsumed()
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
     prompt: 
@@ -394,7 +393,7 @@ MonoBehaviour:
     made: 
     broken: addNatureAtSum(40,3);addNatureAtSum(40,1);addNatureAtSum(60,2)
     added: 
-    description: "\u88AB\u62C6\u5378\u65F6\uFF0C\u63D0\u5347\u5C5E\u6027\u4E0040\u70B9\uFF0C\u5C5E\u6027\u4E8C60\u70B9\uFF0C\u5C5E\u6027\u4E0940\u70B9"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color> \u88AB\u62C6\u5378\u65F6\uFF0C\u63D0\u5347\u5C5E\u6027\u4E0040\u70B9\uFF0C\u5C5E\u6027\u4E8C60\u70B9\uFF0C\u5C5E\u6027\u4E0940\u70B9"
     buff: 
     trigger: 
     nextTurn: 

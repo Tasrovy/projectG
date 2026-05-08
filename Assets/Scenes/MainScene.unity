@@ -1555,6 +1555,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1665980182}
     m_Modifications:
+    - target: {fileID: 861071278927889854, guid: ba66547061a761644ba660a5087f788a, type: 3}
+      propertyPath: m_text
+      value: "\u4E3B\u7B56\u5212\uFF1A\u7389\u7686\u900F\u6F88\\n\u6587\u6848\u7B56\u5212\uFF1A\u732B\u5187\u51C9\u767D\u5F00\\n\u7A0B\u5E8F1\uFF1A\u5C0F\u61A9\n\u7A0B\u5E8F2\uFF1A\u4ED6\u5C71\u843D\u96E8\n\u539F\u753B\u7F8E\u672F\uFF1Ahibi\nUI\u7F8E\u672F\uFF1A\u8D1D\u679C "
+      objectReference: {fileID: 0}
     - target: {fileID: 1074291507806473480, guid: ba66547061a761644ba660a5087f788a, type: 3}
       propertyPath: m_VerticalAlignment
       value: 512
