@@ -24,7 +24,7 @@ title: doWork2_1
 店主: 你意外地很认真啊。
 <<set_character_sprite {$MY_NAME} "peace_1">>
 {$MY_NAME}: ……因为停下来就不想再开始了。
-
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的

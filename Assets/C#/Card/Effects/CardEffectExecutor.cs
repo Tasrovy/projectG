@@ -47,6 +47,11 @@ public sealed class CardEffectExecutor
         if (_effectChainQueue.Count == 0)
         {
             _isExecutingChain = false;
+            
+            if (PropertiesShow.Instance != null)
+            {
+                PropertiesShow.Instance.UpdatePropertiesShow();
+            }
             return;
         }
 

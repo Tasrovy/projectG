@@ -149,6 +149,12 @@ public class CardActionResolver : Singleton<CardActionResolver>
             CardManager.Instance.AddCardToSet(pendingCard);
             CardManager.Instance.NotifyDeckOrHandChanged();
         }
+
+        // 卡牌成功打出后，可能有属性变化，刷新 UI
+        if (PropertiesShow.Instance != null)
+        {
+            PropertiesShow.Instance.UpdatePropertiesShow();
+        }
     }
 
     /// <summary>

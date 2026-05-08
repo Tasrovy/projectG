@@ -485,6 +485,12 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator EndDialogueRoutine()
     {
+        // 尝试更新 UI 属性条
+        if (PropertiesShow.Instance != null)
+        {
+            PropertiesShow.Instance.UpdatePropertiesShow();
+        }
+
         // 1. 先播放离场转场动画，并在屏幕完全黑掉的瞬间去清除立绘和背景
         yield return TransitionManager.Instance.PlayTransition(() => 
         {

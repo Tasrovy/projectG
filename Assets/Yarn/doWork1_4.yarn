@@ -25,6 +25,7 @@ title: doWork1_4
 主理人: 辛苦了。还有三桌要收。
 <<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: ……嗯。
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookRougSound_buySth
 //#sfx_Character_Player_好的
 ===

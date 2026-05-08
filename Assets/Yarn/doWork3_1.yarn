@@ -22,6 +22,7 @@
 <<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 嗯。#sfx_Character_Player_嗯
 （有点浪费。）
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的

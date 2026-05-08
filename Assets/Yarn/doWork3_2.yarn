@@ -25,6 +25,7 @@ title: doWork3_2
 {$MY_NAME}: 谢谢光临。
 （客人走出去。门关起来。又安静了。）
 {$MY_NAME}: （一个人的店啊，要是蒂娜在这里就好了）
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的

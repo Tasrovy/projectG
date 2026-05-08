@@ -24,6 +24,7 @@ title: doWork2_2
 店主: 嗯。很整齐。
 <<set_character_sprite {$MY_NAME} "happy">>
 {$MY_NAME}: ……谢谢。
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的
