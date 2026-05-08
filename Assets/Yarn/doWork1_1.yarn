@@ -5,7 +5,7 @@
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_sprite {$MY_NAME} peace_1>>
-<<add_property 4 50>>
+<<add_property 4 60>>
 
 （{$MY_NAME}今天去快餐店打工了）
 店长: 收银台，拜托了。

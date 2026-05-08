@@ -5,6 +5,7 @@
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_sprite {$MY_NAME} peace_1>>
+<<add_property 4 60>>
 （今天也在快餐店打工）
 店长: 今天客人比较多，辛苦你了。
 <<set_character_sprite {$MY_NAME} "peace_2">>
@@ -23,7 +24,7 @@
 顾客: 不用了，这样就好。
 <<set_character_sprite {$MY_NAME} "peace_2">>
 {$MY_NAME}: 是吗。谢谢。
-<<add_property 4 50>>
+
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 //#sfx_Character_Player_好的
 ===
