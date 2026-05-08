@@ -81,6 +81,18 @@ public class DayManager : Singleton<DayManager>
     /// </summary>
     public void SetTargetType(int type) => TargetType = type;
 
+    /// <summary>
+    /// 游戏失败后重置天数与目标类型，供 OnGameFailed 调用。
+    /// 重置后下一次调用 NextDay() 将从第1天重新开始。
+    /// </summary>
+    public void ResetToStart()
+    {
+        dayNumber = 0;
+        TargetType = 0;
+        dayEvents.Clear();
+        Debug.Log("[DayManager] ResetToStart 完成，dayNumber 重置为 0。");
+    }
+
     public void OnDayEnd()
     {
         DataManager.Instance.SetNature1Effect(0);

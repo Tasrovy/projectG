@@ -609,9 +609,17 @@ public class DialogueHandler : MonoBehaviour
             DataManager.Instance.extraCharm = 0;
         }
 
-        // 清空手牌堆
+        // 清空手牌堆并重置保底计数
         if (CardManager.Instance != null)
+        {
             CardManager.Instance.ClearAllCards();
+            CardManager.Instance.consecutiveNonGiftCount = 0;
+            CardManager.Instance.consecutiveNonEventCount = 0;
+        }
+
+        // 重置天数与目标类型（DayManager 是 DontDestroyOnLoad，必须手动重置）
+        if (DayManager.Instance != null)
+            DayManager.Instance.ResetToStart();
 
         // 跳转回 Begin 场景
         if (UISceneManager.Instance != null)
