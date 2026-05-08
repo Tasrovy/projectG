@@ -136,7 +136,11 @@
 
 #### `TryGetFailedDialogue(out string failedNode)`（私有）
 
-读取 `DayManager.daySO.dayDatas[当前天-1]`，若该天有 `failedDialog` 字段且玩家对应属性（由 `DayManager.TargetType` 映射到 `target1~4`）**未达标**，返回 `true` 并输出节点名。
+读取 `DayManager.daySO.dayDatas[当前天-1]`，若该天有 `failedDialog` 字段，则按以下逻辑判断是否触发失败：
+
+1. 根据 `DayManager.TargetType`（1~4）将玩家对应属性（`nature1/2/3` / `MoneyNum`）与 `target1~4` 比对，**属性达标则直接通过**。
+2. 属性未达标时，进一步检测魅力：若 `DayData.targetCharm > 0` 且 `DataManager.GetCharm() >= targetCharm`，**魅力达标也视为通过**（两者满足其一即可）。
+3. 两项均未达标时，返回 `true` 并输出 `failedDialog` 节点名，触发失败流程。
 
 #### `OnGameFailed()`
 

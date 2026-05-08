@@ -27,6 +27,7 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
@@ -41,6 +42,7 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
@@ -55,6 +57,7 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
@@ -69,6 +72,7 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
@@ -83,6 +87,7 @@ MonoBehaviour:
     target2: 120
     target3: 40
     target4: 23
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
@@ -97,6 +102,7 @@ MonoBehaviour:
     target2: 120
     target3: 40
     target4: 24
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
@@ -111,6 +117,7 @@ MonoBehaviour:
     target2: 120
     target3: 40
     target4: 25
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
@@ -125,6 +132,7 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 26
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -139,6 +147,7 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 27
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -153,6 +162,7 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 28
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -167,6 +177,7 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 29
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -181,6 +192,7 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 30
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -195,6 +207,7 @@ MonoBehaviour:
     target2: 29
     target3: 30
     target4: 31
+    targetCharm: 420
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -209,6 +222,7 @@ MonoBehaviour:
     target2: 30
     target3: 31
     target4: 32
+    targetCharm: 435
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -223,6 +237,7 @@ MonoBehaviour:
     target2: 31
     target3: 32
     target4: 33
+    targetCharm: 450
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -237,6 +252,7 @@ MonoBehaviour:
     target2: 32
     target3: 33
     target4: 34
+    targetCharm: 465
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
@@ -251,3 +267,4 @@ MonoBehaviour:
     target2: 33
     target3: 34
     target4: 35
+    targetCharm: 480

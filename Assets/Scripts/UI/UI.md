@@ -72,11 +72,28 @@
 
 #### `BuildNextCheckDetailLine(int targetType)`
 
-遍历 `DayManager.daySO.dayDatas`，找到当前天数之后（含当天）最近的一条有 `failedDialog` 的 `DayData`，计算距该天的剩余天数和对应目标值（通过 `targetType` 映射 `target1~4`），组成格式字符串返回。
+遍历 `DayManager.daySO.dayDatas`，找到当前天数之后（含当天）最近的一条有 `failedDialog` 的 `DayData`，计算距该天的剩余天数、对应目标值（通过 `targetType` 映射 `target1~4`）以及魅力目标值（`targetCharm`），组成格式字符串返回，例如 `距离下次检定：3天，目标值：50，魅力目标：30`。
 
 #### `UpdateSliderVisual(Slider, Image, Color, float)`
 
 将属性值归一化后写入 `Slider.normalizedValue`。属性值 ≤ 100 时最大量程为 100，超过 100 时量程改为 1000 并将填充色改为红色以作视觉警示。
+
+---
+
+## UpdateMoney.cs
+
+挂载在显示金钱数量的 `TextMeshProUGUI` 节点上，与文字组件共存于同一 GameObject，通过 `GetComponent<TextMeshProUGUI>()` 在 `Awake` 时自动关联，无需 Inspector 拖拽。
+
+### 数值更新时机
+
+| 触发方 | 方式 |
+|--------|------|
+| `OnEnable`（自身） | GameObject 激活时自动刷新，适合商店面板重新打开时同步 |
+| `ShopController.RefreshMoneyUI()`（静态方法） | 购买/出售完成后，用 `FindObjectsOfType<UpdateMoney>(true)` 找到场景中所有实例并逐一调用 `UpdateText()` |
+
+### 脚本关联方式
+
+脚本直接挂在文字节点上，`GetComponent` 取同节点的 `TextMeshProUGUI`，无需任何 Inspector 引用。因此只要将 `UpdateMoney` 组件添加到任意金钱显示文字物体，即可自动接入更新流程。
 
 ---
 
@@ -86,4 +103,5 @@
 |------|---------|
 | `DialogueUIAudio` | `TransitionManager` 在过渡开始时调用其 `PlayChangeSceneAudio()` |
 | `DayManager` | `PropertiesShow` 订阅 `OnDayAdvanced` 事件；`InitializeRandomTargetByEvent` 写入 `TargetType`；`BuildNextCheckDetailLine` 读取 `daySO` 和 `GetDayNumber()` |
-| `DataManager` | `UpdatePropertiesShow` 读取 `nature1/2/3` 和 `GetCharm()` |
+| `DataManager` | `UpdatePropertiesShow` 读取 `nature1/2/3` 和 `GetCharm()`；`UpdateMoney` 读取 `MoneyNum` |
+| `ShopController` | 调用 `UpdateMoney.UpdateText()` 刷新金钱显示 |

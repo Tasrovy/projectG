@@ -19,6 +19,7 @@ public class DayData
     public int target2;
     public int target3;
     public int target4;
+    public int targetCharm;
 }
 
 public class DayDataSO : ScriptableObject

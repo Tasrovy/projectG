@@ -217,6 +217,9 @@ public class DialogueHandler : MonoBehaviour
 
         if (playerValue >= targetValue) return false; // 属性达标，无事发生
 
+        // 魅力值满足 targetCharm 也视为通过检定
+        if (today.targetCharm > 0 && DataManager.Instance.GetCharm() >= today.targetCharm) return false;
+
         failedNode = today.failedDialog;
         return true;
     }

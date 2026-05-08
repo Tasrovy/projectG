@@ -212,7 +212,7 @@ public class PropertiesShow : MonoBehaviour
         };
 
         string detailLine = BuildNextCheckDetailLine(targetType);
-        targetText.text = $"<size=18>攻略目标：{targetName}</size>\n<size=12>{detailLine}</size>";
+        targetText.text = $"<size=24>攻略目标：{targetName}</size>\n<size=14>{detailLine}</size>";
     }
 
     private string BuildNextCheckDetailLine(int targetType)
@@ -241,8 +241,9 @@ public class PropertiesShow : MonoBehaviour
 
         int daysUntilCheck = nextCheck.day - currentDay;
         int targetValue = GetTargetValueByType(nextCheck, targetType);
-        Debug.Log($"[PropertiesShow] 距离下次检定：{daysUntilCheck}天，目标值：{targetValue}");
-        return $"距离下次检定：{daysUntilCheck}天，目标值：{targetValue}";
+        int targetCharmValue = nextCheck.targetCharm;
+        Debug.Log($"[PropertiesShow] 距离下次检定：{daysUntilCheck}天，目标值：{targetValue}，魅力目标：{targetCharmValue}");
+        return $"距离下次检定：{daysUntilCheck}天\n目标值：{targetValue}，魅力目标：{targetCharmValue}";
     }
 
     private int GetTargetValueByType(DayData dayData, int targetType)
