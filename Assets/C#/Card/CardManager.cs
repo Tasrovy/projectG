@@ -6,9 +6,11 @@ public class CardManager : Singleton<CardManager>
 {
     public List<CardData> cardDatas = new List<CardData>();
     public List<CardData> giftCards = new List<CardData>();
+    public List<CardData> eventCards = new List<CardData>();
     public List<Card> cardSet = new List<Card>();
     public List<Card> cardInHand = new List<Card>();
     [HideInInspector] public int consecutiveNonGiftCount = 0; // 礼物牌保底计数：连续未抽到礼物牌的次数
+    [HideInInspector] public int consecutiveNonEventCount = 0; // 事件牌保底计数：连续未抽到事件牌的次数
 
     protected override bool IsPersistent => true;
 
@@ -42,6 +44,7 @@ public class CardManager : Singleton<CardManager>
 
         LoadAllCards();
         FilterGiftCards();
+        FilterEventCards();
         ImplementCardSet();
         ApplyInitialHandFromExcel();
     }
@@ -118,6 +121,22 @@ public class CardManager : Singleton<CardManager>
             }
         }
         Debug.Log($"[CardManager] FilterGiftCards 完成，共筛选到 {giftCards.Count} 张礼物卡。");
+    }
+
+    /// <summary>
+    /// 从 cardDatas 中筛选 ID 最高位（万位）为 3 的卡牌到 eventCards 列表
+    /// </summary>
+    private void FilterEventCards()
+    {
+        eventCards.Clear();
+        foreach (var data in cardDatas)
+        {
+            if (data.id / 10000 == 3)
+            {
+                eventCards.Add(data);
+            }
+        }
+        Debug.Log($"[CardManager] FilterEventCards 完成，共筛选到 {eventCards.Count} 张事件卡。");
     }
 
     public void LoadAllCards()
