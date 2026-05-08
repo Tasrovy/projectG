@@ -17,175 +17,175 @@ MonoBehaviour:
     probRarity2: 0.2
     probRarity3: 0
     day: 1
-    profit: 100
-    drawNum: 10
+    profit: 60
+    drawNum: 4
     getCardNum: 2
     dailyDialog: cardFirstEnd
     specialDialog: 
     failedDialog: 
-    target1: 10
-    target2: 11
-    target3: 12
+    target1: 20
+    target2: 24
+    target3: 18
     target4: 13
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 2
-    profit: 100
+    profit: 60
     drawNum: 4
     getCardNum: 2
     dailyDialog: normalEnd1_2
     specialDialog: 
     failedDialog: 
-    target1: 10
-    target2: 11
-    target3: 12
+    target1: 20
+    target2: 24
+    target3: 18
     target4: 13
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 3
-    profit: 100
+    profit: 60
     drawNum: 4
     getCardNum: 2
     dailyDialog: simpleEnd1_1
     specialDialog: special1_1
     failedDialog: 
-    target1: 10
-    target2: 11
-    target3: 12
+    target1: 20
+    target2: 24
+    target3: 18
     target4: 13
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 4
-    profit: 160
+    profit: 60
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_2
     specialDialog: 
     failedDialog: failed1_1
-    target1: 10
-    target2: 11
-    target3: 12
+    target1: 20
+    target2: 24
+    target3: 18
     target4: 13
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 5
-    profit: 160
+    profit: 100
     drawNum: 4
     getCardNum: 1
     dailyDialog: normalEnd1_3
     specialDialog: 
     failedDialog: 
-    target1: 20
-    target2: 21
-    target3: 22
+    target1: 80
+    target2: 120
+    target3: 40
     target4: 23
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 6
-    profit: 160
+    profit: 100
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_4
     specialDialog: special1_2
     failedDialog: 
-    target1: 21
-    target2: 22
-    target3: 23
+    target1: 80
+    target2: 120
+    target3: 40
     target4: 24
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 7
-    profit: 160
+    profit: 100
     drawNum: 4
     getCardNum: 1
     dailyDialog: normalEnd1_4
     specialDialog: 
     failedDialog: failed1_2
-    target1: 22
-    target2: 23
-    target3: 24
+    target1: 80
+    target2: 120
+    target3: 40
     target4: 25
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 8
-    profit: 160
+    profit: 100
     drawNum: 4
     getCardNum: 1
     dailyDialog: normalEnd1_5
     specialDialog: 
     failedDialog: 
-    target1: 23
-    target2: 24
-    target3: 25
+    target1: 120
+    target2: 160
+    target3: 120
     target4: 26
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 9
-    profit: 300
+    profit: 100
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_5
     specialDialog: special1_3
     failedDialog: 
-    target1: 24
-    target2: 25
-    target3: 26
+    target1: 120
+    target2: 160
+    target3: 120
     target4: 27
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 10
-    profit: 300
+    profit: 100
     drawNum: 4
     getCardNum: 1
     dailyDialog: normalEnd1_6
     specialDialog: 
     failedDialog: 
-    target1: 25
-    target2: 26
-    target3: 27
+    target1: 120
+    target2: 160
+    target3: 120
     target4: 28
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 11
-    profit: 300
+    profit: 200
     drawNum: 4
     getCardNum: 1
     dailyDialog: normalEnd1_7
     specialDialog: 
     failedDialog: failed1_3
-    target1: 26
-    target2: 27
-    target3: 28
+    target1: 120
+    target2: 160
+    target3: 120
     target4: 29
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 12
-    profit: 300
+    profit: 200
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_8
     specialDialog: special1_4
     failedDialog: 
-    target1: 27
-    target2: 28
-    target3: 29
+    target1: 120
+    target2: 160
+    target3: 120
     target4: 30
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 13
-    profit: 300
+    profit: 200
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_2
@@ -199,7 +199,7 @@ MonoBehaviour:
     probRarity2: 0.4
     probRarity3: 0.2
     day: 14
-    profit: 300
+    profit: 200
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_3
@@ -213,7 +213,7 @@ MonoBehaviour:
     probRarity2: 0.4
     probRarity3: 0.2
     day: 15
-    profit: 300
+    profit: 200
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_4
@@ -227,7 +227,7 @@ MonoBehaviour:
     probRarity2: 0.4
     probRarity3: 0.2
     day: 16
-    profit: 300
+    profit: 200
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_5
@@ -241,7 +241,7 @@ MonoBehaviour:
     probRarity2: 0.4
     probRarity3: 0.2
     day: 17
-    profit: 300
+    profit: 200
     drawNum: 4
     getCardNum: 1
     dailyDialog: simpleEnd1_6

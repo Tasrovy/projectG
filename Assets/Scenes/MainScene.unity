@@ -4590,6 +4590,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 508756392}
     m_Modifications:
+    - target: {fileID: 678628108447517659, guid: 80ca17053b30dfc4298d4375509cee18, type: 3}
+      propertyPath: eventPityThreshold
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 1988407862545681170, guid: 80ca17053b30dfc4298d4375509cee18, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5014,12 +5018,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573210548}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e1265c0d1492334ea3297264e737ed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardId: 0
+  cardId: 21007
   posX: 0
   posY: 0
   multiple: 0
@@ -5061,10 +5065,10 @@ MonoBehaviour:
     value: 4
   - target: {fileID: 1382389158}
     fieldName: eventPityThreshold
-    value: 4
+    value: 9
   - target: {fileID: 693238217}
     fieldName: slotsPerPage
-    value: 6
+    value: 4
   floatEntries:
   - target: {fileID: 693238217}
     fieldName: sellPriceRatio
@@ -5077,10 +5081,10 @@ MonoBehaviour:
     value: 2
   - target: {fileID: 1350448911}
     fieldName: portraitSizeType2Scale
-    value: 1.5
+    value: 1.8
   - target: {fileID: 1350448911}
     fieldName: portraitSizeType3Scale
-    value: 2
+    value: 2.6
   - target: {fileID: 1350448910}
     fieldName: waveAmplitude
     value: 5
@@ -7882,11 +7886,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6142992529401377470, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: portraitSizeType2Scale
-      value: 1.8
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6142992529401377470, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: portraitSizeType3Scale
-      value: 2.6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7293114627776184083, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_Name
@@ -8037,6 +8041,22 @@ PrefabInstance:
     - target: {fileID: 1998982659299980096, guid: a9f366fec9524654abc1b5799a896207, type: 3}
       propertyPath: startDay
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307400695131737614, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: charmCoefficient1
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307400695131737614, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: charmCoefficient2
+      value: 1.667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307400695131737614, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: charmCoefficient3
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5307400695131737614, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: charmMoneyCoefficient
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6515135111267380439, guid: a9f366fec9524654abc1b5799a896207, type: 3}
       propertyPath: m_LocalPosition.x
