@@ -76,25 +76,40 @@ public class DrawService
             return;
         }
 
+        HashSet<int> usedCardIDs = new HashSet<int>();
+
         for (int i = 0; i < num; i++)
         {
             List<Card> validCardsInSet = _cardSet.Where(c =>
                 (type == 0 || CardIdUtility.GetCardType(c.id) == type) &&
-                CardIdUtility.GetCardRarity(c.id) == level
+                CardIdUtility.GetCardRarity(c.id) == level &&
+                !usedCardIDs.Contains(c.id)
             ).ToList();
 
             if (validCardsInSet.Count > 0)
             {
                 int randomIndex = _rng.Next(validCardsInSet.Count);
                 Card selectedCard = validCardsInSet[randomIndex];
+                usedCardIDs.Add(selectedCard.id);
                 _cardSet.Remove(selectedCard);
                 _cardInHand.Add(selectedCard);
                 Debug.Log($"[DrawService] 从牌堆随机抽取了: {selectedCard.name} (ID:{selectedCard.id}) 加入手牌。");
             }
             else
             {
-                int randomIndex = _rng.Next(validDataPool.Count);
-                CardData selectedData = validDataPool[randomIndex];
+                List<CardData> remainingPool = validDataPool
+                    .Where(d => !usedCardIDs.Contains(d.id))
+                    .ToList();
+
+                if (remainingPool.Count == 0)
+                {
+                    Debug.LogWarning($"[DrawService] 该类型/稀有度的卡已全部给完，无法继续添加第 {i + 1} 张。");
+                    break;
+                }
+
+                int randomIndex = _rng.Next(remainingPool.Count);
+                CardData selectedData = remainingPool[randomIndex];
+                usedCardIDs.Add(selectedData.id);
 
                 Card newCard = new Card();
                 newCard.InitCard(selectedData);
