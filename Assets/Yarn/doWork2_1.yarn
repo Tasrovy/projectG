@@ -5,7 +5,7 @@ title: doWork2_1
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_sprite {$MY_NAME} peace_1>>
-
+<<add_property 4 100>>
 
 （{$MY_NAME}今天在花店打工了）
 店主: {$MY_NAME}，今天帮忙处理这些玫瑰的刺。
@@ -24,7 +24,7 @@ title: doWork2_1
 店主: 你意外地很认真啊。
 <<set_character_sprite {$MY_NAME} "peace_1">>
 {$MY_NAME}: ……因为停下来就不想再开始了。
-<<add_property 4 50>>
+
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 
 //#sfx_Character_Player_好的

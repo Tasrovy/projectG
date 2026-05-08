@@ -19,7 +19,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u521D\u59CB\u793C\u72691"
-    sale: 1
+    sale: 10
     made: 
     broken: 
     added: 
@@ -35,7 +35,7 @@ MonoBehaviour:
     nature2: 6
     nature3: 0
     name: "\u521D\u59CB\u793C\u72692"
-    sale: 1
+    sale: 10
     made: 
     broken: 
     added: 
@@ -51,7 +51,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u53EF\u4E50"
-    sale: 10
+    sale: 20
     made: 
     broken: 
     added: 
@@ -67,7 +67,7 @@ MonoBehaviour:
     nature2: 12
     nature3: 0
     name: "\u67F3\u836B\u4E0D\u7720"
-    sale: 10
+    sale: 20
     made: 
     broken: 
     added: 
@@ -83,7 +83,7 @@ MonoBehaviour:
     nature2: 4
     nature3: 0
     name: "\u6839\u72B6\u830E"
-    sale: 10
+    sale: 20
     made: 
     broken: 
     added: 
@@ -99,7 +99,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 16
     name: "\u96EA\u8389\u724C\u624B\u69A8\u82F9\u679C\u6C41"
-    sale: 10
+    sale: 20
     made: 
     broken: 
     added: 
@@ -115,7 +115,7 @@ MonoBehaviour:
     nature2: -6
     nature3: 0
     name: "\u8BFA\u4E9A\u724C\u6CE1\u817E\u7247"
-    sale: 10
+    sale: 20
     made: 
     broken: 
     added: 
@@ -131,7 +131,7 @@ MonoBehaviour:
     nature2: 1
     nature3: 0
     name: "\u91D1\u5706\u5238"
-    sale: 40
+    sale: 60
     made: 
     broken: 
     added: 
@@ -147,7 +147,7 @@ MonoBehaviour:
     nature2: 2
     nature3: 2
     name: "\u68C9\u82B1\u5A03\u5A03"
-    sale: 20
+    sale: 40
     made: 
     broken: 
     added: 
@@ -163,7 +163,7 @@ MonoBehaviour:
     nature2: 6
     nature3: 0
     name: "\u53F6\u7F18\u5FAE\u5149"
-    sale: 20
+    sale: 40
     made: 
     broken: 
     added: 
@@ -179,7 +179,7 @@ MonoBehaviour:
     nature2: 24
     nature3: 0
     name: "\u4E0D\u8001\u5E74\u8F6E"
-    sale: 20
+    sale: 40
     made: 
     broken: 
     added: 
@@ -195,7 +195,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u65E0\u5FC3\u4E4B\u67F3"
-    sale: 20
+    sale: 40
     made: 
     broken: 
     added: 
@@ -211,13 +211,13 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u4E0D\u7720\u7CBE\u7075"
-    sale: 20
+    sale: 40
     made: 
-    broken: noConsumed()
+    broken: 
     added: 
     description: "<color=blue><b>\u7F55\u89C1</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E00{nature1}\u70B9\uFF0C\u5F53\u6B64\u724C\u88AB\u526A\u679D\u65F6\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
     buff: 
-    trigger: 
+    trigger: noConsumed()
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
     prompt: 4
@@ -227,7 +227,7 @@ MonoBehaviour:
     nature2: 16
     nature3: 0
     name: "\u6C38\u751F\u5C71\u6768"
-    sale: 20
+    sale: 40
     made: addCard(12006,1)
     broken: 
     added: 
@@ -240,15 +240,14 @@ MonoBehaviour:
   - id: 12007
     dialog: 1
     nature1: 0
-    nature2: 14
+    nature2: 18
     nature3: 0
     name: "\u67F3\u6210\u836B"
-    sale: 20
+    sale: 40
     made: 
     broken: 
     added: addNature(10,2)
-    description: "<color=blue><b>\u7F55\u89C1</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u88AB\u751F\u679D\u65F6\uFF0C<color=blue><b>\u7F55\u89C1</b></color>
-      \u63D0\u5347\u5361\u724C\u7684\u5C5E\u6027\u4E8C10\u70B9"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u88AB\u751F\u679D\u65F6\uFF0C\u63D0\u5347\u5361\u724C\u7684\u5C5E\u6027\u4E8C10\u70B9"
     buff: 
     trigger: 
     nextTurn: 
@@ -260,7 +259,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u6625\u6E56\u5012\u5F71"
-    sale: 20
+    sale: 40
     made: 
     broken: 
     added: addMoney(40)
@@ -276,7 +275,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u67AF\u8363\u4EE4"
-    sale: 20
+    sale: 40
     made: 
     broken: 
     added: 
@@ -292,7 +291,7 @@ MonoBehaviour:
     nature2: 20
     nature3: 0
     name: "\u6668\u9732\u53F6"
-    sale: 20
+    sale: 40
     made: 
     broken: addNatureAtSum(12,3)
     added: 
@@ -309,7 +308,7 @@ MonoBehaviour:
     nature2: 8
     nature3: 0
     name: "\u6B63\u5348\u67F3"
-    sale: 20
+    sale: 40
     made: beAdded(2,1)
     broken: 
     added: 
@@ -326,7 +325,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u65E0\u5FC3\u4E4B\u5F71"
-    sale: 100
+    sale: 80
     made: 
     broken: 
     added: 
@@ -342,7 +341,7 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u5C0F\u624B\u529E"
-    sale: 0
+    sale: 80
     made: addMoney(40)
     broken: 
     added: 
@@ -358,13 +357,13 @@ MonoBehaviour:
     nature2: 42
     nature3: 0
     name: "\u5927\u53F7\u68C9\u82B1\u5A03\u5A03"
-    sale: 0
+    sale: 80
     made: 
-    broken: noConsumed()
+    broken: 
     added: 
     description: "<color=yellow><b>\u73CD\u8D35</b></color> \u63D0\u5347\u8482\u5A1C\u7684\u5C5E\u6027\u4E8C{nature2}\u70B9\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
     buff: 
-    trigger: 
+    trigger: noConsumed()
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
     prompt: 
@@ -374,7 +373,7 @@ MonoBehaviour:
     nature2: 10
     nature3: 1
     name: "\u5C0F\u94A2\u7B14"
-    sale: 0
+    sale: 80
     made: 
     broken: 
     added: addNature(20,2);addNature(20,1);addNature(20,3);
@@ -390,11 +389,11 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u5F6D\u683C\u5217\u6212\u6307"
-    sale: 0
+    sale: 80
     made: 
     broken: addNatureAtSum(40,3);addNatureAtSum(40,1);addNatureAtSum(60,2)
     added: 
-    description: "\u88AB\u62C6\u5378\u65F6\uFF0C\u63D0\u5347\u5C5E\u6027\u4E0040\u70B9\uFF0C\u5C5E\u6027\u4E8C60\u70B9\uFF0C\u5C5E\u6027\u4E0940\u70B9"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color> \u88AB\u62C6\u5378\u65F6\uFF0C\u63D0\u5347\u5C5E\u6027\u4E0040\u70B9\uFF0C\u5C5E\u6027\u4E8C60\u70B9\uFF0C\u5C5E\u6027\u4E0940\u70B9"
     buff: 
     trigger: 
     nextTurn: 
