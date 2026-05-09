@@ -36,16 +36,16 @@ public sealed class CardRuntime
 
         List<EffectCommand> triggerExecutionPlan = new List<EffectCommand>();
 
-        if (_plan.triggerMadeEffects != null && _plan.triggerMadeEffects.Count > 0)
-        {
-            Debug.Log("[Card] OnTrigger: 加入前置条件 [Made(数字配置)]");
-            triggerExecutionPlan.AddRange(_plan.triggerMadeEffects);
-        }
-
         if (_plan.triggerBrokenEffects != null && _plan.triggerBrokenEffects.Count > 0)
         {
             Debug.Log("[Card] OnTrigger: 加入前置条件 [Broken(数字配置)]");
             triggerExecutionPlan.AddRange(_plan.triggerBrokenEffects);
+        }
+
+        if (_plan.triggerMadeEffects != null && _plan.triggerMadeEffects.Count > 0)
+        {
+            Debug.Log("[Card] OnTrigger: 加入前置条件 [Made(数字配置)]");
+            triggerExecutionPlan.AddRange(_plan.triggerMadeEffects);
         }
 
         if (_plan.triggerAddedEffects != null && _plan.triggerAddedEffects.Count > 0)
