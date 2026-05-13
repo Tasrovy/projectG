@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,6 +21,7 @@ public static class DayExcelChecker
         }
 
         int issueCount = 0;
+        var reportSB = new StringBuilder();
 
         foreach (DayData data in daySO.dayDatas)
         {
@@ -45,17 +48,21 @@ public static class DayExcelChecker
             if (!hasDailyDialog && !hasSpecialDialog && !hasFailedDialog) continue;
 
             issueCount++;
-            var sb = new System.Text.StringBuilder();
-            sb.Append($"[DayExcelChecker] ⚠ day={data.day}（{data.date} {dowName}）有非空 Dialog：");
+            var sb = new StringBuilder();
+            sb.Append($"day={data.day} ({data.date} {dowName}) :");
             if (hasDailyDialog)   sb.Append($"  dailyDialog=\"{data.dailyDialog}\"");
             if (hasSpecialDialog) sb.Append($"  specialDialog=\"{data.specialDialog}\"");
             if (hasFailedDialog)  sb.Append($"  failedDialog=\"{data.failedDialog}\"");
-            Debug.LogWarning(sb.ToString());
+            reportSB.AppendLine(sb.ToString());
         }
 
-        if (issueCount == 0)
-            Debug.Log("[DayExcelChecker] ✓ day 表检查通过，无周六/周日存在非空 Dialog 的行。");
-        else
-            Debug.LogWarning($"[DayExcelChecker] 共发现 {issueCount} 行在周末配置了 Dialog，详见上方警告。");
+        string header = issueCount == 0
+            ? "[DayExcelChecker] ✓ day 表检查通过，无周六/周日存在非空 Dialog 的行。"
+            : $"[DayExcelChecker] 共发现 {issueCount} 行在周末配置了 Dialog，请查看下方清单：";
+
+        // 输出到 Unity Console（便于复制）
+        Debug.Log(header);
+        if (reportSB.Length > 0)
+            Debug.LogWarning(reportSB.ToString());
     }
 }
