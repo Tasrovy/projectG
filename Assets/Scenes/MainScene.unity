@@ -3792,7 +3792,7 @@ MonoBehaviour:
     value: 4
   - target: {fileID: 2542129772233452114}
     fieldName: slotsPerPage
-    value: 4
+    value: 6
   floatEntries:
   - target: {fileID: 2542129772233452114}
     fieldName: sellPriceRatio

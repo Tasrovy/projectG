@@ -2068,7 +2068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMode: 0
   sellPriceRatio: 0.5
-  slotsPerPage: 4
+  slotsPerPage: 6
   buyModeButton: {fileID: 4132038938004691769}
   sellModeButton: {fileID: 8832281610591768428}
   confirmButton: {fileID: 1511988495753341590}
