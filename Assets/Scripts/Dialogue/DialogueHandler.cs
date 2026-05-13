@@ -35,6 +35,11 @@ public class DialogueHandler : MonoBehaviour
     // 延迟失败检定：记录本次过天流程应当在前置对话结束后触发的失败节点
     private string _deferredFailureNode = null;
 
+    // 过天流程中，改为在 dailyDialog 结束后再真正执行 NextDay
+    private string _pendingEndOfDayDailyNode = null;
+    private bool _isPlayingEndOfDayDailyDialog = false;
+    private bool _shouldAdvanceDayAfterDailyDialog = false;
+
     private Coroutine StartManagedCoroutine(IEnumerator routine)
     {
         if (routine == null)
@@ -144,9 +149,9 @@ public class DialogueHandler : MonoBehaviour
                 {
                     lastCheckedDay = currentDay;
                     var daySO = DayManager.Instance.daySO;
-                    if (daySO != null && currentDay - 2 < daySO.dayDatas.Count)
+                    if (daySO != null && currentDay - 1 < daySO.dayDatas.Count)
                     {
-                        string morningNode = daySO.dayDatas[currentDay - 2].dailyDialog;
+                        string morningNode = daySO.dayDatas[currentDay - 1].dailyDialog;
                         if (!string.IsNullOrEmpty(morningNode))
                         {
                             // 触发当天早晨固定对话
@@ -366,42 +371,42 @@ public class DialogueHandler : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// 内部检索函数：获取当前天数下可用的 special 对话节点名。
-    /// 每段 special 对话每三天可推进一步，i更小的系列优先。
+    /// 内部检索函数：仅获取“当前天”在 day 表上配置的 special 对话节点名。
+    /// 不做跨天补播，避免周末跳天后串播到已跳过日期的 special。
     /// </summary>
     private string GetAvailableSpecialDialogue()
     {
         Debug.Log($"[DialogueHandler] 获取可用 special 对话。当前天数为 {DayManager.Instance?.GetDayNumber()}。");
 
-        if (DayManager.Instance == null || dialogueRunner == null) return null;
-        
+        if (DayManager.Instance == null || dialogueRunner == null || DayManager.Instance.daySO == null) return null;
+
         int currentDay = DayManager.Instance.GetDayNumber();
-        
-        // 遍历 special 系列的 i。设定一个安全上限 20（或100），找不到节点就不找了
-        for (int i = 1; i <= 20; i++)
-        {
-            if (!_specialProgress.ContainsKey(i)) _specialProgress[i] = 1;
-            int j = _specialProgress[i];
-            string yarnNode = $"special{i}_{j}";
-            
-            // 如果存在第 i 系列的第 j 段对话
-            if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
-            {
-                // special序列的判断条件：每三天触发一个（进度 j 对应第 j*3 天或以后才能触发）
-                if (currentDay >= j * 3)
-                {
-                    Debug.Log($"[DialogueHandler] 睡前优先劫持！发现满足触发条件的 special 对话: {yarnNode} (系列 {i}，进度 {j})");
-                    _specialProgress[i] = j + 1;
-                    return yarnNode;
-                }
-            }
-            else if (j == 1)
-            {
-                break;
-            }
-        }
-        
+        int currentIndex = currentDay - 1;
+        if (currentIndex < 0 || currentIndex >= DayManager.Instance.daySO.dayDatas.Count)
+            return null;
+
+        string specialNode = DayManager.Instance.daySO.dayDatas[currentIndex].specialDialog;
+        if (string.IsNullOrEmpty(specialNode))
+            return null;
+
+        if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(specialNode))
+            return specialNode;
+
+        Debug.LogWarning($"[DialogueHandler] day 表配置的 special 节点不存在于 YarnProject：{specialNode}");
         return null;
+    }
+
+    private string GetCurrentDayDailyDialogueNode()
+    {
+        if (DayManager.Instance == null || DayManager.Instance.daySO == null)
+            return null;
+
+        int currentDayNumber = DayManager.Instance.GetDayNumber();
+        int currentIndex = currentDayNumber - 1;
+        if (currentIndex < 0 || currentIndex >= DayManager.Instance.daySO.dayDatas.Count)
+            return null;
+
+        return DayManager.Instance.daySO.dayDatas[currentIndex].dailyDialog;
     }
 
     private IEnumerator StartDialogueRoutine(string yarnScript)
@@ -512,6 +517,19 @@ public class DialogueHandler : MonoBehaviour
             yield break;
         }
 
+        // 过天流程中的 dailyDialog 播放完毕：此刻才真正推进 NextDay
+        if (_isPlayingEndOfDayDailyDialog)
+        {
+            _isPlayingEndOfDayDailyDialog = false;
+            if (_shouldAdvanceDayAfterDailyDialog && DayManager.Instance != null)
+            {
+                DayManager.Instance.NextDay();
+                // 已手动播过 dailyDialog，避免 Update 因天数变化再次自动补播
+                lastCheckedDay = DayManager.Instance.GetDayNumber();
+            }
+            _shouldAdvanceDayAfterDailyDialog = false;
+        }
+
         // 延迟失败检定处理：在本次前置对话（打工/商店/约会）结束后，插入失败对话
         if (!string.IsNullOrEmpty(_deferredFailureNode))
         {
@@ -545,10 +563,20 @@ public class DialogueHandler : MonoBehaviour
             }
             else
             {
-                // 没有 Special 对话了，那就彻彻底底地进行跨天运算！
-                if (DayManager.Instance != null)
+                // 没有 Special 后，先进入“当前天”的 dailyDialog，等其结束再执行 NextDay
+                string currentDailyNode = GetCurrentDayDailyDialogueNode();
+                if (!string.IsNullOrEmpty(currentDailyNode))
                 {
+                    pendingDialogues.Enqueue(currentDailyNode);
+                    _pendingEndOfDayDailyNode = currentDailyNode;
+                    _shouldAdvanceDayAfterDailyDialog = true;
+                    SetNextSceneType("Select");
+                }
+                else if (DayManager.Instance != null)
+                {
+                    // 若下一工作日未配置 dailyDialog，则保持原行为直接过天
                     DayManager.Instance.NextDay();
+                    lastCheckedDay = DayManager.Instance.GetDayNumber();
                 }
                 
                 // 结算安全完毕，复位标志位
@@ -561,10 +589,19 @@ public class DialogueHandler : MonoBehaviour
         if (pendingDialogues.Count > 0)
         {
             string nextScript = pendingDialogues.Dequeue();
+            bool isEndOfDayDailyScript = !string.IsNullOrEmpty(_pendingEndOfDayDailyNode) && nextScript == _pendingEndOfDayDailyNode;
+
+            if (isEndOfDayDailyScript)
+            {
+                _isPlayingEndOfDayDailyDialog = true;
+                _pendingEndOfDayDailyNode = null;
+            }
 
             // 接下来要播 special/deal，此次 willSwitchScene 的目标交由 special 结束后的下一轮 EndDialogueRoutine 来执行
             // 所以这里先清掉，防止 StartDialogueRoutine 里的"主动补切 Talk"和后续真正的场景切换冲突
-            willSwitchScene = false;
+            // 对于“过天链路里的 dailyDialog”，需要保留 willSwitchScene，以便其结束后继续切到下一场景。
+            if (!isEndOfDayDailyScript)
+                willSwitchScene = false;
 
             // 此时 isHandlingDialogueSequence 仍为 true，StartDialogue 会把节点再次入队而非执行，造成死锁。
             // 直接启动 StartDialogueRoutine 协程，保持锁的持有状态，无缝衔接下一段对话。

@@ -66,6 +66,45 @@ public class DayManager : Singleton<DayManager>
         }
     }
 
+    /// <summary>
+    /// 预览下一次 NextDay() 实际会落到的工作日编号（已包含周末跳过逻辑）。
+    /// </summary>
+    public int GetPreviewNextDayNumber()
+    {
+        int candidate = dayNumber + 1;
+        for (int i = 0; i < 7; i++)
+        {
+            DayOfWeek dow = GetDayOfWeekByDayNumber(candidate);
+            if (dow != DayOfWeek.Saturday && dow != DayOfWeek.Sunday)
+                break;
+            candidate++;
+        }
+        return candidate;
+    }
+
+    public DayOfWeek GetDayOfWeekByDayNumber(int targetDayNumber)
+    {
+        DateTime date = GetDateByDayNumber(targetDayNumber);
+        return date.DayOfWeek;
+    }
+
+    public DateTime GetDateByDayNumber(int targetDayNumber)
+    {
+        if (targetDayNumber > 0 && daySO != null && targetDayNumber - 1 < daySO.dayDatas.Count)
+        {
+            string dateStr = daySO.dayDatas[targetDayNumber - 1].date;
+            if (!string.IsNullOrEmpty(dateStr))
+            {
+                string[] parts = dateStr.Split('_');
+                if (parts.Length == 2 && int.TryParse(parts[0], out int month) && int.TryParse(parts[1], out int day))
+                {
+                    return new DateTime(2026, month, day);
+                }
+            }
+        }
+        return DateTime.Now;
+    }
+
     public void UpdateDayText()
     {
         if (dayText == null) return;
@@ -125,19 +164,7 @@ public class DayManager : Singleton<DayManager>
     /// </summary>
     public DateTime GetCurrentDate()
     {
-        if (dayNumber > 0 && daySO != null && dayNumber - 1 < daySO.dayDatas.Count)
-        {
-            string dateStr = daySO.dayDatas[dayNumber - 1].date;
-            if (!string.IsNullOrEmpty(dateStr))
-            {
-                string[] parts = dateStr.Split('_');
-                if (parts.Length == 2 && int.TryParse(parts[0], out int month) && int.TryParse(parts[1], out int day))
-                {
-                    return new DateTime(DateTime.Now.Year, month, day);
-                }
-            }
-        }
-        return DateTime.Now;
+        return GetDateByDayNumber(dayNumber);
     }
 
 
