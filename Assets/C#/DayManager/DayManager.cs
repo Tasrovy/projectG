@@ -15,10 +15,6 @@ public class DayManager : Singleton<DayManager>
     public int TargetType { get; private set; }
     public DayDataSO daySO;
     [SerializeField] private TMP_Text dayText;
-    [Header("起始日期")]
-    [SerializeField] private int startYear = 2026;
-    [SerializeField] private int startMonth = 5;
-    [SerializeField] private int startDay = 17;
 
     protected override bool IsPersistent => true;
     protected override void Awake()
@@ -53,12 +49,32 @@ public class DayManager : Singleton<DayManager>
         OnDayAdvanced?.Invoke();
     }
 
+    /// <summary>
+    /// 从 daySO 第一行读取起始月日，按游戏天数推算当前日历日期（年份固定2026）。
+    /// 若当天是周五则跳过周末，直接跳到下周一（+3天）。
+    /// </summary>
+    private DateTime ComputeCurrentDate()
+    {
+        if (daySO == null || daySO.dayDatas.Count == 0) return new DateTime(2026, 1, 1);
+        var startData = daySO.dayDatas[0];
+        var parts = startData.date?.Split('_');
+        int m = (parts != null && parts.Length == 2 && int.TryParse(parts[0], out int pm)) ? pm : 1;
+        int d = (parts != null && parts.Length == 2 && int.TryParse(parts[1], out int pd)) ? pd : 1;
+        DateTime date = new DateTime(2026, m, d);
+        int n = dayNumber - 1;
+        for (int i = 0; i < n; i++)
+        {
+            date = date.AddDays(1);
+            if (date.DayOfWeek == DayOfWeek.Saturday)      date = date.AddDays(2);
+            else if (date.DayOfWeek == DayOfWeek.Sunday)   date = date.AddDays(1);
+        }
+        return date;
+    }
+
     private void UpdateDayText()
     {
         if (dayText == null) return;
-
-        DateTime startDate = new DateTime(startYear, startMonth, startDay);
-        DateTime currentDate = startDate.AddDays(dayNumber - 1);
+        DateTime currentDate = ComputeCurrentDate();
         dayText.text = $"{currentDate.Month}.{currentDate.Day}";
     }
 
@@ -100,6 +116,14 @@ public class DayManager : Singleton<DayManager>
         DataManager.Instance.SetNature3Effect(0);
     }
 
-    public DateTime GetStartDate() => new DateTime(startYear, startMonth, startDay);
-    public DateTime GetCurrentDate() => GetStartDate().AddDays(dayNumber - 1);
+    public DateTime GetStartDate()
+    {
+        if (daySO == null || daySO.dayDatas.Count == 0) return new DateTime(2026, 1, 1);
+        var startData = daySO.dayDatas[0];
+        var parts = startData.date?.Split('_');
+        int m = (parts != null && parts.Length == 2 && int.TryParse(parts[0], out int pm)) ? pm : 1;
+        int d = (parts != null && parts.Length == 2 && int.TryParse(parts[1], out int pd)) ? pd : 1;
+        return new DateTime(2026, m, d);
+    }
+    public DateTime GetCurrentDate() => ComputeCurrentDate();
 }

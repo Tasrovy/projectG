@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -21,7 +21,9 @@ public class DialogueHandler : MonoBehaviour
     // 对话队列管理
     private Queue<string> pendingDialogues = new Queue<string>();
     private bool isHandlingDialogueSequence = false;
-    private int lastCheckedDay = 1;
+
+    // 过天流程中是否还需要播放当天 dailyDialog
+    private bool _needsDailyDialogue = false;
 
     // deal/special/doWork 对话进度（内存存储，每次启动重置）
     private Dictionary<int, int> _dealProgress = new Dictionary<int, int>();
@@ -132,34 +134,6 @@ public class DialogueHandler : MonoBehaviour
             return;
         }
 
-        // 检测天数是否发生变化，并自动加入队列
-        if (DayManager.Instance != null)
-        {
-            int currentDay = DayManager.Instance.GetDayNumber();
-            if (currentDay > 0 && currentDay != lastCheckedDay) // 防止默认0天时无意义判定
-            {
-                // 【锁】：必须要在 talk 能检测到时才能试图开始天数事件检测，否则等待（不更新 lastCheckedDay）
-                GameObject talkObj = ResolveTalkObject();
-                if (talkObj != null && talkObj.activeInHierarchy)
-                {
-                    lastCheckedDay = currentDay;
-                    var daySO = DayManager.Instance.daySO;
-                    if (daySO != null && currentDay - 2 < daySO.dayDatas.Count)
-                    {
-                        string morningNode = daySO.dayDatas[currentDay - 2].dailyDialog;
-                        if (!string.IsNullOrEmpty(morningNode))
-                        {
-                            // 触发当天早晨固定对话
-                            StartDialogue(morningNode);
-
-                            // 对话结束后自动转入 Select 场景
-                            SetNextSceneType("Select");
-                        }
-                    }
-                }
-            }
-        }
-
         bool isDialogueRunning = dialogueRunner.IsDialogueRunning;
         
         // 状态转为结束：当YarnSpinner内部真正结束时执行离场
@@ -259,7 +233,7 @@ public class DialogueHandler : MonoBehaviour
         // 先设好一定会过天以及目的场景
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
-
+        _needsDailyDialogue = true;
         if (DayManager.Instance == null || dialogueRunner == null) 
         {
             StartManagedCoroutine(EndDialogueRoutine());
@@ -360,6 +334,7 @@ public class DialogueHandler : MonoBehaviour
 
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
+        _needsDailyDialogue = true;
         StartDialogue(eventNodeName);
     }
 
@@ -507,6 +482,7 @@ public class DialogueHandler : MonoBehaviour
         if (_isPlayingFailedDialogue)
         {
             _isPlayingFailedDialogue = false;
+            _needsDailyDialogue = false;
             isHandlingDialogueSequence = false;
             OnGameFailed();
             yield break;
@@ -518,6 +494,7 @@ public class DialogueHandler : MonoBehaviour
             string failedNode = _deferredFailureNode;
             _deferredFailureNode = null;
             _isPlayingFailedDialogue = true;
+            _needsDailyDialogue = false;
             // 取消过天（失败结局不应该过天）
             if (characterHighlightManager != null)
                 characterHighlightManager.shouldAdvanceDayAfterDialogue = false;
@@ -527,32 +504,46 @@ public class DialogueHandler : MonoBehaviour
             Debug.Log($"[DialogueHandler] 前置对话结束，延迟失败检定触发，即将播放失败对话: {failedNode}");
         }
 
-        // =================== 修改点：拦截过天与 Special 对话 ===================
-        // 【重要】：在此时趁着转场完全黑屏的时刻，我们才来判定这一天是否要“跨向第二天”！
-        // 如果是过天的流程，必须在结算这一天之前先拽出来晚间的 special 对话进入待办队列！
+        // =================== 拦截过天与 Special/Daily 对话 ===================
+        // 顺序：special（若有）→ 当天 dailyDialog（若有）→ NextDay() → 切场景
         if (characterHighlightManager != null && characterHighlightManager.shouldAdvanceDayAfterDialogue)
         {
-            string specialNode = GetAvailableSpecialDialogue(); // 去找今天有没有彩蛋对话
+            string specialNode = GetAvailableSpecialDialogue();
             if (!string.IsNullOrEmpty(specialNode))
             {
-                // **这就是正巧碰上了有 special 的日子！**
-                // 如果发现 special 节点，我们将它硬塞入待办最前面（或尾部）。
+                // 有 special：入队，等它结束后再次进入此流程
                 pendingDialogues.Enqueue(specialNode);
-                
-                // 【绝不能在这里做 DayManager.NextDay()】
-                // 而是直接略过：让 shouldAdvanceDayAfterDialogue 保持为 true！
-                // 等这段 Special 对话完全结束了，系统会再次发起黑屏转场，再进入到这层判断。
+            }
+            else if (_needsDailyDialogue)
+            {
+                // 播放当天（第N天）的收尾 dailyDialog，NextDay 在其结束后才调用。
+                // 索引 curDay-1 = 第N天数据（dayDatas[0]=第1天），这是"当天"而非"上一天"。
+                _needsDailyDialogue = false;
+                int curDay = DayManager.Instance.GetDayNumber();
+                var daySO = DayManager.Instance.daySO;
+                string dailyNode = (daySO != null && curDay >= 1 && curDay - 1 < daySO.dayDatas.Count)
+                    ? daySO.dayDatas[curDay - 1].dailyDialog
+                    : null;
+                if (!string.IsNullOrEmpty(dailyNode))
+                {
+                    Debug.Log($"[DialogueHandler] 播放第 {curDay} 天的 dailyDialog: {dailyNode}");
+                    pendingDialogues.Enqueue(dailyNode);
+                    // dailyDialog 结束后再次进入此流程：_needsDailyDialogue=false → 直接 NextDay
+                }
+                if (pendingDialogues.Count == 0)
+                {
+                    // dailyDialog 不存在，直接过天
+                    if (DayManager.Instance != null) DayManager.Instance.NextDay();
+                    characterHighlightManager.shouldAdvanceDayAfterDialogue = false;
+                    willSwitchScene = true;
+                }
             }
             else
             {
-                // 没有 Special 对话了，那就彻彻底底地进行跨天运算！
-                if (DayManager.Instance != null)
-                {
-                    DayManager.Instance.NextDay();
-                }
-                
-                // 结算安全完毕，复位标志位
-                characterHighlightManager.shouldAdvanceDayAfterDialogue = false; 
+                // special 和 dailyDialog 均已处理完毕，执行 NextDay
+                if (DayManager.Instance != null) DayManager.Instance.NextDay();
+                characterHighlightManager.shouldAdvanceDayAfterDialogue = false;
+                willSwitchScene = true;
             }
         }
         // ====================================================================
@@ -651,6 +642,7 @@ public class DialogueHandler : MonoBehaviour
         // 勾上过天的标记并排入要切换的后置场景
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
+        _needsDailyDialogue = true;
         
         // 然后，人为触发一次清场与过天检测漏斗
         StartManagedCoroutine(EndDialogueRoutine());
