@@ -189,6 +189,11 @@ public class PropertiesShow : MonoBehaviour
         string n4Str = FormatValue(n4);
         if (numText4_TMP != null) numText4_TMP.text = n4Str;
         if (numText4_Legacy != null) numText4_Legacy.text = n4Str;
+
+        // 同步更新场景内所有金钱数值显示
+        UpdateMoney[] moneyUpdaters = FindObjectsOfType<UpdateMoney>(true);
+        foreach (UpdateMoney updater in moneyUpdaters)
+            updater.UpdateText();
     }
 
     private void RefreshTargetText()

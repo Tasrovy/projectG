@@ -9,7 +9,7 @@ public class DayData
     public float probRarity2;
     public float probRarity3;
     public int day;
-    public string date; // 格式 MM_DD，如 05_18
+    public string date;
     public int profit;
     public int drawNum;
     public int getCardNum;

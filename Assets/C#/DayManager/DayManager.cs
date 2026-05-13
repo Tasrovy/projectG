@@ -16,6 +16,7 @@ public class DayManager : Singleton<DayManager>
     public DayDataSO daySO;
     [SerializeField] private TMP_Text dayText;
 
+
     protected override bool IsPersistent => true;
     protected override void Awake()
     {
@@ -38,6 +39,7 @@ public class DayManager : Singleton<DayManager>
     {
         OnDayEnd();
         dayNumber++;
+        SkipWeekendDays();
         Debug.Log($"<color=#FFD700>========== [DayManager 检测器] 天数改变，当前是第 {dayNumber} 天 ==========</color>");
         CardManager.Instance.SetProbRarity1(daySO.dayDatas[dayNumber].probRarity1);
         CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
@@ -45,37 +47,38 @@ public class DayManager : Singleton<DayManager>
         CardManager.Instance.DrawCard(daySO.dayDatas[dayNumber].drawNum);
         Debug.Log($"[DayManager] {daySO.dayDatas[dayNumber].drawNum}");
         if(dayEvents.ContainsKey(dayNumber)) dayEvents[dayNumber]?.Invoke();
-        UpdateDayText();
         OnDayAdvanced?.Invoke();
     }
 
     /// <summary>
-    /// 从 daySO 第一行读取起始月日，按游戏天数推算当前日历日期（年份固定2026）。
-    /// 若当天是周五则跳过周末，直接跳到下周一（+3天）。
+    /// 若当前 dayNumber 对应周六或周日，持续递增直到落在工作日（下周一）。
+    /// 也处理意外进入周末的情况。最多跳过 7 天防止死循环。
     /// </summary>
-    private DateTime ComputeCurrentDate()
+    private void SkipWeekendDays()
     {
-        if (daySO == null || daySO.dayDatas.Count == 0) return new DateTime(2026, 1, 1);
-        var startData = daySO.dayDatas[0];
-        var parts = startData.date?.Split('_');
-        int m = (parts != null && parts.Length == 2 && int.TryParse(parts[0], out int pm)) ? pm : 1;
-        int d = (parts != null && parts.Length == 2 && int.TryParse(parts[1], out int pd)) ? pd : 1;
-        DateTime date = new DateTime(2026, m, d);
-        int n = dayNumber - 1;
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < 7; i++)
         {
-            date = date.AddDays(1);
-            if (date.DayOfWeek == DayOfWeek.Saturday)      date = date.AddDays(2);
-            else if (date.DayOfWeek == DayOfWeek.Sunday)   date = date.AddDays(1);
+            DayOfWeek dow = GetCurrentDate().DayOfWeek;
+            if (dow != DayOfWeek.Saturday && dow != DayOfWeek.Sunday)
+                break;
+            dayNumber++;
+            Debug.Log($"[DayManager] 跳过周末，dayNumber 推进至 {dayNumber}（{GetCurrentDate().DayOfWeek}）");
         }
-        return date;
     }
 
-    private void UpdateDayText()
+    public void UpdateDayText()
     {
         if (dayText == null) return;
-        DateTime currentDate = ComputeCurrentDate();
-        dayText.text = $"{currentDate.Month}.{currentDate.Day}";
+        if (dayNumber <= 0 || daySO == null || dayNumber - 1 >= daySO.dayDatas.Count) return;
+
+        string dateStr = daySO.dayDatas[dayNumber - 1].date;
+        if (string.IsNullOrEmpty(dateStr)) return;
+
+        string[] parts = dateStr.Split('_');
+        if (parts.Length == 2 && int.TryParse(parts[0], out int month) && int.TryParse(parts[1], out int day))
+        {
+            dayText.text = $"{month}.{day}";
+        }
     }
 
     public UnityEvent GetNextDayEvent()
@@ -116,14 +119,26 @@ public class DayManager : Singleton<DayManager>
         DataManager.Instance.SetNature3Effect(0);
     }
 
-    public DateTime GetStartDate()
+    /// <summary>
+    /// 从 day 表的 date 字段（格式如 05_16）解析当前游戏日期。
+    /// 年份取系统当前年，月日来自表格。
+    /// </summary>
+    public DateTime GetCurrentDate()
     {
-        if (daySO == null || daySO.dayDatas.Count == 0) return new DateTime(2026, 1, 1);
-        var startData = daySO.dayDatas[0];
-        var parts = startData.date?.Split('_');
-        int m = (parts != null && parts.Length == 2 && int.TryParse(parts[0], out int pm)) ? pm : 1;
-        int d = (parts != null && parts.Length == 2 && int.TryParse(parts[1], out int pd)) ? pd : 1;
-        return new DateTime(2026, m, d);
+        if (dayNumber > 0 && daySO != null && dayNumber - 1 < daySO.dayDatas.Count)
+        {
+            string dateStr = daySO.dayDatas[dayNumber - 1].date;
+            if (!string.IsNullOrEmpty(dateStr))
+            {
+                string[] parts = dateStr.Split('_');
+                if (parts.Length == 2 && int.TryParse(parts[0], out int month) && int.TryParse(parts[1], out int day))
+                {
+                    return new DateTime(DateTime.Now.Year, month, day);
+                }
+            }
+        }
+        return DateTime.Now;
     }
-    public DateTime GetCurrentDate() => ComputeCurrentDate();
+
+
 }
