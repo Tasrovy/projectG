@@ -93,6 +93,8 @@ public class ShopController : MonoBehaviour
             return;
         }
 
+        UnpinDetail();
+
         Card selectedCard = _selectedCardObject.card;
         int price = _transactionService.GetBuyPrice(selectedCard);
         if (DataManager.Instance == null)
@@ -131,6 +133,8 @@ public class ShopController : MonoBehaviour
             Debug.LogWarning("[ShopController] 尚未选中可出售的卡牌。");
             return;
         }
+
+        UnpinDetail();
 
         Card selectedCard = _selectedCardObject.card;
         if (!_transactionService.TrySell(selectedCard))
@@ -199,6 +203,7 @@ public class ShopController : MonoBehaviour
 
     public void CloseShop()
     {
+        UnpinDetail();
         ClearVisibleCards();
         ResetSelection();
         DialogueHandler.Instance.TriggerEndDayWithDeal();
@@ -482,6 +487,12 @@ public class ShopController : MonoBehaviour
     private bool HasValidSelection()
     {
         return _selectedCardObject != null && _selectedCardObject.card != null;
+    }
+
+    private void UnpinDetail()
+    {
+        if (_selectedCardObject != null)
+            _selectedCardObject.UnpinDetail();
     }
 
     private int GetSellPageCount()

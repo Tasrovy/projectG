@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardObject : MonoBehaviour, IPointerClickHandler
+public class CardObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Card card;
 
@@ -9,13 +9,14 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
     private CardChoosing _choosingManager;
     private ShopController _shoppingManager;
     private CardUIObject _uiObject;
+    private bool _isPinned;
 
     private void Awake()
     {
         _originalScale = transform.localScale;
-        
+
         // 缓存组件
-        _choosingManager = GetComponentInParent<CardChoosing>(); 
+        _choosingManager = GetComponentInParent<CardChoosing>();
         _shoppingManager = GetComponentInParent<ShopController>();
         _uiObject = GetComponent<CardUIObject>();
     }
@@ -26,7 +27,7 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
     public void SetCard(Card newCard)
     {
         card = newCard;
-        
+
         // 刷新 UI 显示
         if (_uiObject != null)
         {
@@ -37,36 +38,68 @@ public class CardObject : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    // ================= 商店 hover/pin 交互 =================
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_shoppingManager == null) return;
+
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Show(card);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (_shoppingManager == null) return;
+        if (_isPinned) return;
+
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null && (card == null || detailUI.CurrentCard == card))
+            detailUI.Hide();
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        // 1. 如果当前正处于 CardSelector 的“激活模式”（即战斗中选牌触发效果）
-        // 则逻辑交给 CardUIObject 处理，这里可以直接跳过或配合执行
-        if (_uiObject != null && _uiObject.IsValidToSelect && CardSelector.Instance != null)
-        {
-            // 注意：CardUIObject 已经实现了 OnPointerClick，
-            // 如果两个脚本挂在同个物体，Unity 会同时调用两个 OnPointerClick。
-            // 这里我们主要处理非战斗模式（商店/选牌）的逻辑。
-        }
-
-        // 2. 如果在 CardChoosing 界面中（例如开局三选一）
+        // 1. 如果在 CardChoosing 界面中（例如开局三选一）
         if (_choosingManager != null)
         {
             _choosingManager.SelectCard(this);
-            return; // 拦截，不进入后续逻辑
+            return;
         }
 
-        // 3. 如果在 CardShopping 界面中（商店买牌）
+        // 2. 如果在商店中
         if (_shoppingManager != null)
         {
             _shoppingManager.SelectCard(this);
-            return; // 拦截
+            PinDetail();
+            return;
         }
-        
-        // 4. 其他通用点击逻辑可以在这里扩展
+
+        // 3. 如果在 CardSelector 激活模式下，交给 CardUIObject 处理
+        // CardUIObject 的 OnPointerClick 会自动触发
+    }
+
+    private void PinDetail()
+    {
+        _isPinned = true;
+
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Show(card);
+    }
+
+    public void UnpinDetail()
+    {
+        _isPinned = false;
+
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Hide();
     }
 
     // --- 快捷获取卡牌数据（保持不变，增加 null 检查） ---
-    
+
     public void Effect()
     {
         Debug.Log($"[CardObject][Effect] frame={Time.frameCount}, time={Time.time:F3}, cardRef={(card != null ? card.GetHashCode() : 0)}, id={card?.id}, name={card?.name}");

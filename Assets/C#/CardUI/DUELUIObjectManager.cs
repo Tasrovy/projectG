@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
 {
     private GameObject _duelUI;
     private CardDetailUI _cardDetailUI;
+    private Canvas _canvas;
+    private GameObject _canvasObj;
 
     /// <summary>
     /// 对外公开的 DUELUI 引用。
@@ -25,70 +27,66 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     protected override void Awake()
     {
         base.Awake();
-        // 尝试在自己的 Awake 中初始化
         InitializeUI();
     }
 
     /// <summary>
-    /// 核心初始化逻辑：加载资源、寻找/创建画布、实例化
+    /// 共享的 Canvas 获取/创建逻辑
     /// </summary>
-private void InitializeUI()
-{
-    // 如果已经实例化过了，直接返回
-    if (_duelUI != null) return;
-
-    // 1. 加载 Prefab
-    GameObject prefab = Resources.Load<GameObject>("Prefabs/DUELUI");
-    if (prefab == null)
+    private Canvas GetOrCreateCanvas()
     {
-        Debug.LogError("DUELUIObjectManager: 未能在 Resources/Prefabs/ 路径下找到 DUELUI 预制体！");
-        return;
-    }
+        if (_canvas != null) return _canvas;
 
-    // --- 修正：提前声明变量，确保全方法可见 ---
-    Canvas canvas = null;
-    GameObject canvasObj = null;
-
-    // 2. 寻找场景中挂载了 CardUICanvas 脚本的物体
-    CardUICanvas cardUIScript = Object.FindAnyObjectByType<CardUICanvas>(); 
-
-    if (cardUIScript != null) 
-    {
-        canvas = cardUIScript.GetComponent<Canvas>();
-        if (canvas != null) {
-            canvasObj = canvas.gameObject;
-            Debug.Log("找到了 Canvas: " + canvasObj.name);
+        CardUICanvas cardUIScript = Object.FindAnyObjectByType<CardUICanvas>();
+        if (cardUIScript != null)
+        {
+            _canvas = cardUIScript.GetComponent<Canvas>();
+            if (_canvas != null)
+            {
+                _canvasObj = _canvas.gameObject;
+                Debug.Log("找到了 Canvas: " + _canvasObj.name);
+                return _canvas;
+            }
         }
-    }
 
-    // 3. 如果场景里没有找到 Canvas，则自动创建一个
-    if (canvas == null)
-    {
-        canvasObj = new GameObject("Canvas");
-        canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        
-        // 关键补丁：必须配置 CanvasScaler，否则打包后 UI 会因为分辨率问题导致点击范围偏移
-        CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
+        _canvasObj = new GameObject("Canvas");
+        _canvas = _canvasObj.AddComponent<Canvas>();
+        _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        CanvasScaler scaler = _canvasObj.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1920, 1080); // 设置为你开发时的基准分辨率
+        scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.matchWidthOrHeight = 0.5f;
 
-        canvasObj.AddComponent<GraphicRaycaster>();
-        canvasObj.layer = LayerMask.NameToLayer("UI");
+        _canvasObj.AddComponent<GraphicRaycaster>();
+        _canvasObj.layer = LayerMask.NameToLayer("UI");
         Debug.LogWarning("场景中未发现 CardUICanvas，已自动创建并配置。");
+
+        return _canvas;
     }
 
-    // 4. 实例化并设置为 Canvas 的子物体
-    _duelUI = Instantiate(prefab, canvas.transform);
-    _duelUI.name = "DUELUI";
-}
+    /// <summary>
+    /// 核心初始化逻辑：加载资源、获取共享 Canvas、实例化
+    /// </summary>
+    private void InitializeUI()
+    {
+        if (_duelUI != null) return;
+
+        GameObject prefab = Resources.Load<GameObject>("Prefabs/DUELUI");
+        if (prefab == null)
+        {
+            Debug.LogError("DUELUIObjectManager: 未能在 Resources/Prefabs/ 路径下找到 DUELUI 预制体！");
+            return;
+        }
+
+        _duelUI = Instantiate(prefab, GetOrCreateCanvas().transform);
+        _duelUI.name = "DUELUI";
+    }
 
     private void InitializeCardDetailUI()
     {
         if (_cardDetailUI != null) return;
 
-        // 1. 加载 Prefab
         GameObject prefab = Resources.Load<GameObject>("Prefabs/CardDetailUI");
         if (prefab == null)
         {
@@ -96,25 +94,7 @@ private void InitializeUI()
             return;
         }
 
-        // 2. 寻找场景中的 Canvas
-        Canvas canvas = null;
-        CardUICanvas cardUIScript = Object.FindAnyObjectByType<CardUICanvas>();
-        if (cardUIScript != null)
-            canvas = cardUIScript.GetComponent<Canvas>();
-
-        // 3. 没有则创建
-        if (canvas == null)
-        {
-            GameObject canvasObj = new GameObject("Canvas");
-            canvas = canvasObj.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasObj.AddComponent<CanvasScaler>();
-            canvasObj.AddComponent<GraphicRaycaster>();
-            canvasObj.layer = LayerMask.NameToLayer("UI");
-        }
-
-        // 4. 实例化并设为 Canvas 的子物体
-        GameObject go = Instantiate(prefab, canvas.transform);
+        GameObject go = Instantiate(prefab, GetOrCreateCanvas().transform);
         go.name = "CardDetailUI";
         _cardDetailUI = go.GetComponent<CardDetailUI>();
         if (_cardDetailUI == null)
@@ -170,7 +150,6 @@ private void InitializeUI()
     /// </summary>
     public Button GetEndFightButton()
     {
-        // 路径依据你的结构图：EndFlightButton
         return DUELUI.transform.Find("EndFlightButton").GetComponent<Button>();
     }
 
@@ -179,7 +158,6 @@ private void InitializeUI()
     /// </summary>
     public Transform GetCardZoneTransform()
     {
-        // 路径依据你的结构图拼写：CradZone
         return DUELUI.transform.Find("CradZone");
     }
 

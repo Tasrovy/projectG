@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 272370444}
   - component: {fileID: 272370443}
   - component: {fileID: 272370442}
+  - component: {fileID: 272370446}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -361,6 +362,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &272370446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272370441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c51b104e5f72c4caf1d50ec67a36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &480504752
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,9 +484,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardDatas: []
   giftCards: []
+  eventCards: []
   cardSet: []
   cardInHand: []
   consecutiveNonGiftCount: 0
+  consecutiveNonEventCount: 0
   probRarity1: 0.7
   probRarity2: 0.2
   probRarity3: 0.1
@@ -632,6 +647,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fdcaa81e62e427cb2318c06eca0db46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jianZhiString: "\u526A\u679D"
+  shengZhiString: "\u751F\u679D"
+  shengZhangString: "\u751F\u957F"
+  shengZhangToString: "\u751F\u957F"
+  addNatureString: "\u6761\u4EF6\u52A0\u5C5E\u6027"
+  addCardSaleString: "\u63D0\u4EF7"
 --- !u!114 &542249197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,6 +741,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardId: 11101
+  posX: 0
+  posY: 0
+  multiple: 0
+  lastTime: 0
+  objectName: 
+  size: 0
+  Ypoint: 0
+  chaLastTime: 0
 --- !u!4 &1083252781
 Transform:
   m_ObjectHideFlags: 0

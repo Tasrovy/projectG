@@ -21,7 +21,15 @@ public class CardDetailUI : MonoBehaviour
     [SerializeField] private Transform promptContent;
 
     public Card CurrentCard { get; private set; }
-    public bool IsVisible => panelRoot != null && panelRoot.activeSelf;
+    public bool IsVisible
+    {
+        get
+        {
+            if (panelRoot == null || !panelRoot.activeSelf) return false;
+            CanvasGroup group = panelRoot.GetComponent<CanvasGroup>();
+            return group == null || group.alpha > 0;
+        }
+    }
 
     private PromptItemSO _promptItemSO;
     private bool _promptLoaded;
@@ -31,6 +39,12 @@ public class CardDetailUI : MonoBehaviour
         EnsurePromptLoaded();
         if (panelRoot == null)
             panelRoot = gameObject;
+
+        // 使用 CanvasGroup 控制显隐，避免 SetActive 导致 EventSystem
+        // 重新评估鼠标下方对象，引发 CardObject 的 OnPointerEnter/Exit 闪烁
+        CanvasGroup group = panelRoot.GetComponent<CanvasGroup>();
+        if (group == null) group = panelRoot.AddComponent<CanvasGroup>();
+        group.blocksRaycasts = false;
 
         if (closeButton != null)
             closeButton.onClick.AddListener(Hide);
@@ -98,8 +112,15 @@ public class CardDetailUI : MonoBehaviour
 
     private void SetVisible(bool visible)
     {
-        if (panelRoot != null)
+        CanvasGroup group = panelRoot.GetComponent<CanvasGroup>();
+        if (group != null)
+        {
+            group.alpha = visible ? 1 : 0;
+        }
+        else if (panelRoot != null)
+        {
             panelRoot.SetActive(visible);
+        }
     }
 
     private static void SetText(Text target, string value)

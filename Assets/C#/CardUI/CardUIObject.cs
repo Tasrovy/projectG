@@ -159,6 +159,8 @@ public class CardUIObject : MonoBehaviour,
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
 
+        if (!_isActiveMode) return;
+
         // 按下时关闭卡牌详情
         var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
         if (detailUI != null)
