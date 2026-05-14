@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -167,6 +168,15 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     public GameObject GetCardSetGameObject()
     {
         return DUELUI.transform.Find("CardSet").gameObject;
+    }
+
+    /// <summary>
+    /// 获取卡组数量文本：DUELUI -> CardSet -> Num
+    /// </summary>
+    public TMP_Text GetCardSetNumText()
+    {
+        Transform t = DUELUI.transform.Find("CardSet/Num");
+        return t != null ? t.GetComponent<TMP_Text>() : null;
     }
 
     /// <summary>

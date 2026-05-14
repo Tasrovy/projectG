@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -126,6 +127,13 @@ public class DUEL : Singleton<DUEL>
         activeObjects = newActiveObjects;
 
         Debug.Log($"[DUEL] 卡牌物体更新完成: 手牌{currentHandCards.Count}张，物体{activeObjects.Count}个");
+
+        // 6. 更新卡组数量显示
+        TMP_Text numText = DUELUIObjectManager.Instance.GetCardSetNumText();
+        if (numText != null)
+        {
+            numText.text = CardManager.Instance.cardSet.Count.ToString();
+        }
     }
 
     public void DestroyCardObject()
