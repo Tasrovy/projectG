@@ -3,7 +3,15 @@ using UnityEngine.Events;
 
 public class CardSubmitHelper : Singleton<CardSubmitHelper>
 {
-    private int _targetNum; 
+    [Header("按钮文字配置")]
+    public string jianZhiString = "剪枝";
+    public string shengZhiString = "生枝";
+    public string shengZhangString = "生长";
+    public string shengZhangToString = "生长";
+    public string addNatureString = "条件加属性";
+    public string addCardSaleString = "提价";
+
+    private int _targetNum;
     
 
     public void SetNum(int num)
@@ -15,31 +23,32 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
     {
         // 【修改点】：调用 CardActionResolver
         CardActionResolver.Instance.StartEffectSelection(
-            onConfirm: (selectedCard) => 
+            onConfirm: (selectedCard) =>
             {
                 selectedCard.OnMade();
                 Card templateSnapshot = new Card();
                 templateSnapshot.InitCard(selectedCard);
-                int copyNum = _targetNum; 
+                int copyNum = _targetNum;
 
-                DayManager.Instance.GetNextDayEvent().AddListener(() => 
+                DayManager.Instance.GetNextDayEvent().AddListener(() =>
                 {
                     for (int i = 0; i < copyNum; i++)
                     {
                         Card newCard = new Card();
-                        newCard.InitCard(templateSnapshot); 
-                        CardManager.Instance.AddCardInHand(newCard); 
+                        newCard.InitCard(templateSnapshot);
+                        CardManager.Instance.AddCardInHand(newCard);
                     }
                 });
-                
+
                 CardActionResolver.Instance.CompletePendingPlayedCard(true);
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
             },
-            onCancel: () => 
+            onCancel: () =>
             {
-                RestoreCallerCard(); 
+                RestoreCallerCard();
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
-            }
+            },
+            buttonText: shengZhiString
         );
     }
 
@@ -58,7 +67,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
     private void JianZhi(int timesLeft)
     {
         CardActionResolver.Instance.StartEffectSelection(
-            onConfirm: (selectedCard) => 
+            onConfirm: (selectedCard) =>
             {
                 selectedCard.OnBroken();
                 CardManager.Instance.BreakCard(selectedCard);
@@ -74,11 +83,12 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                     if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
                 }
             },
-            onCancel: () => 
+            onCancel: () =>
             {
-                RestoreCallerCard(); 
+                RestoreCallerCard();
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
-            }
+            },
+            buttonText: jianZhiString
         );
     }
 
@@ -88,7 +98,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
 
         // 【修改点】：调用 CardActionResolver
         CardActionResolver.Instance.StartEffectSelection(
-            onConfirm: (selectedCard) => 
+            onConfirm: (selectedCard) =>
             {
                 ApplyShengZhang(selectedCard, amount);
 
@@ -97,7 +107,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                 {
                     Debug.Log($"[Helper] 还有 {remaining} 次机会，再次唤起选牌UI...");
                     // 递归调用，Resolver 中的状态保存机制完美支持这种做法
-                    ShengZhang(amount, remaining); 
+                    ShengZhang(amount, remaining);
                 }
                 else
                 {
@@ -106,12 +116,13 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                     if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
                 }
             },
-            onCancel: () => 
+            onCancel: () =>
             {
                 Debug.Log("[Helper] 生长被取消，准备退回打出的卡牌。");
-                RestoreCallerCard(); 
+                RestoreCallerCard();
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
-            }
+            },
+            buttonText: shengZhangString
         );
     }
 
@@ -171,7 +182,8 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                 Debug.Log("[Helper] 生长至被取消，准备退回打出的卡牌。");
                 RestoreCallerCard();
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
-            }
+            },
+            buttonText: shengZhangToString
         );
     }
 
@@ -196,7 +208,32 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                 Debug.Log("[Helper] 条件加属性被取消，准备退回打出的卡牌。");
                 RestoreCallerCard();
                 if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
-            }
+            },
+            buttonText: addNatureString
+        );
+    }
+
+    public void AddCardSale(int num)
+    {
+        Debug.Log($"[Helper] 发起提价选牌，增加售价: {num}");
+
+        CardActionResolver.Instance.StartEffectSelection(
+            onConfirm: (selectedCard) =>
+            {
+                selectedCard.sale += num;
+                CardManager.Instance.NotifyDeckOrHandChanged();
+                DUEL.Instance.UpdateCardData();
+
+                CardActionResolver.Instance.CompletePendingPlayedCard(true);
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            },
+            onCancel: () =>
+            {
+                Debug.Log("[Helper] 提价被取消，准备退回打出的卡牌。");
+                RestoreCallerCard();
+                if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
+            },
+            buttonText: addCardSaleString
         );
     }
 

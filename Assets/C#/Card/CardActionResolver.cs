@@ -60,7 +60,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
     /// <summary>
     /// 供各种 Helper 调用的特殊选牌接口
     /// </summary>
-    public void StartEffectSelection(Action<Card> onConfirm, Action onCancel)
+    public void StartEffectSelection(Action<Card> onConfirm, Action onCancel, string buttonText = "提交")
     {
         currentMode = CardPlayMode.EffectSelect;
         _onEffectConfirm = onConfirm;
@@ -68,7 +68,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
 
         if (CardSelector.Instance != null)
         {
-            CardSelector.Instance.SetSubmitButtonText("提交");
+            CardSelector.Instance.SetSubmitButtonText(buttonText);
             CardSelector.Instance.DeselectCurrent(); // 强制取消玩家当前正捏着的牌
             // 确保场上卡牌处于可点击状态
             CardSelector.Instance.SetAllCardsInteractable(true);

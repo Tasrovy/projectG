@@ -77,6 +77,12 @@ public sealed class CardEffectLibrary
         CardSubmitHelper.Instance.AddNatureAtSumIf(type1, type2, num);
     }
 
+    public void addCardSale(int num)
+    {
+        if (_owner.CallerCard == null || num == 0) return;
+        CardSubmitHelper.Instance.AddCardSale(num);
+    }
+
     public void addNatureByOther(int type1, int type2)
     {
         int addValue = DataManager.Instance.GetNatureById(type1) / 2;
@@ -151,6 +157,11 @@ public sealed class CardEffectLibrary
         DataManager.Instance.Add(1, _owner.CallerCard.nature1);
         DataManager.Instance.Add(2, _owner.CallerCard.nature2);
         DataManager.Instance.Add(3, _owner.CallerCard.nature3);
+    }
+
+    public void addCharm(int num)
+    {
+        DataManager.Instance.Add(5,num);
     }
 
     public void _beMadeDirect(int num)

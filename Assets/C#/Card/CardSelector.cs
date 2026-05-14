@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 /// <summary>
 /// 卡牌UI选择器 - 仅负责卡牌的点击变现、按钮显示，以及广播玩家的操作
@@ -13,7 +14,7 @@ public class CardSelector : Singleton<CardSelector>
 
     [Header("UI引用")]
     [SerializeField] private Button submitButton;
-    [SerializeField] private Text submitButtonText;
+    [SerializeField] private TMP_Text submitButtonText;
     [SerializeField] private Button cancelButton;
 
     [Header("区域设置")]
@@ -35,9 +36,8 @@ public class CardSelector : Singleton<CardSelector>
         if (submitButton != null) submitButton.onClick.AddListener(OnSubmitClicked);
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
         
-        if (submitButton != null && submitButtonText == null)
-            submitButtonText = submitButton.GetComponentInChildren<Text>();
-
+        submitButtonText = submitButton.GetComponentInChildren<TMP_Text>();
+        
         DeselectCurrent();
     }
 
@@ -46,7 +46,7 @@ public class CardSelector : Singleton<CardSelector>
     /// </summary>
     public void SetSubmitButtonText(string text)
     {
-        if (submitButtonText != null) submitButtonText.text = text;
+        submitButtonText.text = text;
     }
 
     /// <summary>
