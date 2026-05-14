@@ -485,6 +485,12 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator EndDialogueRoutine()
     {
+        // 尝试更新 UI 属性条
+        if (PropertiesShow.Instance != null)
+        {
+            PropertiesShow.Instance.UpdatePropertiesShow();
+        }
+
         // 1. 先播放离场转场动画，并在屏幕完全黑掉的瞬间去清除立绘和背景
         yield return TransitionManager.Instance.PlayTransition(() => 
         {
@@ -603,9 +609,17 @@ public class DialogueHandler : MonoBehaviour
             DataManager.Instance.extraCharm = 0;
         }
 
-        // 清空手牌堆
+        // 清空手牌堆并重置保底计数
         if (CardManager.Instance != null)
+        {
             CardManager.Instance.ClearAllCards();
+            CardManager.Instance.consecutiveNonGiftCount = 0;
+            CardManager.Instance.consecutiveNonEventCount = 0;
+        }
+
+        // 重置天数与目标类型（DayManager 是 DontDestroyOnLoad，必须手动重置）
+        if (DayManager.Instance != null)
+            DayManager.Instance.ResetToStart();
 
         // 跳转回 Begin 场景
         if (UISceneManager.Instance != null)

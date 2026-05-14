@@ -5,6 +5,7 @@ title: doWork1_3
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>
 <<set_character_sprite {$MY_NAME} peace_1>>
+<<add_property 4 60>>
 （今天在便利店打工）
 店长: 今天只有你一个人。可以吗？
 <<set_character_sprite {$MY_NAME} "peace_2">>
@@ -22,6 +23,7 @@ title: doWork1_3
 {$MY_NAME}: 谢谢光临。
 （客人走出去。门关起来。又安静了。）
 {$MY_NAME}: （一个人的店，稍微有点寂寞呢）
+
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy
 //#sfx_Character_Player_好的
 ===

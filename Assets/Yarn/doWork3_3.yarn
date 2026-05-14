@@ -22,6 +22,7 @@ title: doWork3_3
 {$MY_NAME}: 没事。#sfx_Character_Player_好好
 （把杯子端起来，走去厨房。）
 {$MY_NAME}: （只是觉得，今天的光很漂亮。）
+<<add_property 4 50>>
 （拿到了工资）#sfx_cookRougSound_buySth
 
 //#sfx_Character_Player_好的

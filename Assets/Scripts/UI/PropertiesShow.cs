@@ -6,6 +6,8 @@ using TMPro;
 
 public class PropertiesShow : MonoBehaviour
 {
+    public static PropertiesShow Instance { get; private set; }
+
 #region propIcons
     private Slider slider1;
     private Slider slider2;
@@ -40,6 +42,10 @@ public class PropertiesShow : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+            Destroy(gameObject);
+        Instance = this;
+
         InitializeReferences();
         InitializeTargetTextReference();
     }
@@ -138,13 +144,20 @@ public class PropertiesShow : MonoBehaviour
     private void OnEnable()
     {
         if (DayManager.Instance != null)
+        {
             DayManager.OnDayAdvanced += RefreshTargetText;
+            DayManager.OnDayAdvanced += UpdatePropertiesShow;
+        }
         UpdatePropertiesShow();
     }
 
     private void OnDisable()
     {
-        DayManager.OnDayAdvanced -= RefreshTargetText;
+        if (DayManager.Instance != null)
+        {
+            DayManager.OnDayAdvanced -= RefreshTargetText;
+            DayManager.OnDayAdvanced -= UpdatePropertiesShow;
+        }
     }
 
     public void UpdatePropertiesShow()
@@ -154,8 +167,7 @@ public class PropertiesShow : MonoBehaviour
         int n1 = DataManager.Instance.nature1;
         int n2 = DataManager.Instance.nature2;
         int n3 = DataManager.Instance.nature3;
-        int money = DataManager.Instance.MoneyNum;
-        float n4 = money;
+        float n4 = DataManager.Instance.GetCharm();
 
         UpdateSliderVisual(slider1, fillImage1, defaultFillColor1, n1);
         UpdateSliderVisual(slider2, fillImage2, defaultFillColor2, n2);
