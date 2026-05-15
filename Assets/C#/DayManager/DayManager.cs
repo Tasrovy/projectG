@@ -15,6 +15,7 @@ public class DayManager : Singleton<DayManager>
     public int TargetType { get; private set; }
     public DayDataSO daySO;
     [SerializeField] private TMP_Text dayText;
+    [SerializeField] private TMP_Text weekText;
 
 
     protected override bool IsPersistent => true;
@@ -107,7 +108,6 @@ public class DayManager : Singleton<DayManager>
 
     public void UpdateDayText()
     {
-        if (dayText == null) return;
         if (dayNumber <= 0 || daySO == null || dayNumber - 1 >= daySO.dayDatas.Count) return;
 
         string dateStr = daySO.dayDatas[dayNumber - 1].date;
@@ -116,7 +116,32 @@ public class DayManager : Singleton<DayManager>
         string[] parts = dateStr.Split('_');
         if (parts.Length == 2 && int.TryParse(parts[0], out int month) && int.TryParse(parts[1], out int day))
         {
-            dayText.text = $"{month}.{day}";
+            if (dayText != null)
+                dayText.text = $"{month}/{day}";
+
+            if (weekText != null)
+                weekText.text = GetWeekdayAbbreviation(new DateTime(2026, month, day).DayOfWeek);
+        }
+    }
+
+    private string GetWeekdayAbbreviation(DayOfWeek dayOfWeek)
+    {
+        switch (dayOfWeek)
+        {
+            case DayOfWeek.Monday:
+                return "MON";
+            case DayOfWeek.Tuesday:
+                return "TUE";
+            case DayOfWeek.Wednesday:
+                return "WED";
+            case DayOfWeek.Thursday:
+                return "THU";
+            case DayOfWeek.Friday:
+                return "FRI";
+            case DayOfWeek.Saturday:
+                return "SAT";
+            default:
+                return "SUN";
         }
     }
 
@@ -166,6 +191,4 @@ public class DayManager : Singleton<DayManager>
     {
         return GetDateByDayNumber(dayNumber);
     }
-
-
 }

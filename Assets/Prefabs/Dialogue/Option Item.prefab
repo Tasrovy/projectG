@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1683704561, guid: 937c5608e4f7fbf46877c7d76b3d14f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3bd6438e1490734d8d8a415812baccf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option Text
+  m_text: "\u5206\u652F\u9009\u9879"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d10736be5e68a96459481ef6da011b66, type: 2}
   m_sharedMaterial: {fileID: 1401233545187032980, guid: d10736be5e68a96459481ef6da011b66, type: 2}
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 30, y: 0, z: 0, w: 0}
+  m_margin: {x: 30, y: -12.5, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -361,10 +361,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
-    m_PressedSprite: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
-    m_SelectedSprite: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
-    m_DisabledSprite: {fileID: -1683704561, guid: 937c5608e4f7fbf46877c7d76b3d14f2, type: 3}
+    m_HighlightedSprite: {fileID: 21300000, guid: 8881a06ec7215a24399b17625f08d512, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 8881a06ec7215a24399b17625f08d512, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 8881a06ec7215a24399b17625f08d512, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: b3bd6438e1490734d8d8a415812baccf, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -376,14 +376,14 @@ MonoBehaviour:
   text: {fileID: 5304106805916645415}
   selectionImage: {fileID: 56614174357966607}
   normal:
-    sprite: {fileID: -1683704561, guid: 937c5608e4f7fbf46877c7d76b3d14f2, type: 3}
-    colour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    sprite: {fileID: 21300000, guid: b3bd6438e1490734d8d8a415812baccf, type: 3}
+    colour: {r: 1, g: 1, b: 1, a: 1}
   selected:
-    sprite: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+    sprite: {fileID: 21300000, guid: 8881a06ec7215a24399b17625f08d512, type: 3}
     colour: {r: 1, g: 1, b: 1, a: 1}
   disabled:
     sprite: {fileID: 0}
-    colour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    colour: {r: 1, g: 1, b: 1, a: 1}
   disabledStrikeThrough: 1
 --- !u!114 &7476589106664679526
 MonoBehaviour:
