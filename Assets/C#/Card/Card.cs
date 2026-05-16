@@ -19,6 +19,7 @@ public class CardData
     public int nature3;
     public string name;
     public int sale;
+    public int sell;
     public string made;
     public string broken;
     public string added;
@@ -41,6 +42,7 @@ public class Card
     public int nature3;
     public string name;
     public int sale;
+    public int sell;
     public string made;
     public string broken;
     public string added;
@@ -77,6 +79,7 @@ public class Card
         name = cardData.name;
         description = cardData.description;
         sale = cardData.sale;
+        sell = cardData.sell;
         made = cardData.made;
         broken = cardData.broken;
         added = cardData.added;
@@ -99,6 +102,7 @@ public class Card
         name = cardData.name;
         description = cardData.description;
         sale = cardData.sale;
+        sell = cardData.sell;
         made = cardData.made;
         broken = cardData.broken;
         added = cardData.added;

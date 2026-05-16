@@ -31,6 +31,7 @@ public sealed class CardDescriptionFormatter
             case "nature3": return card.nature3.ToString();
             case "name": return card.name ?? string.Empty;
             case "sale": return card.sale.ToString();
+            case "sell": return card.sell.ToString();
             case "made": return card.made ?? string.Empty;
             case "broken": return card.broken ?? string.Empty;
             case "added": return card.added ?? string.Empty;

@@ -94,7 +94,21 @@ public class CardSelector : Singleton<CardSelector>
             _selectedCardObject.ForceDeselect();
 
         _selectedCardObject = uiObject;
-        
+
+        // 根据卡牌类型动态更新提交按钮文字（仅在 NormalPlay 模式）
+        if (CardActionResolver.Instance != null && CardActionResolver.Instance.currentMode == CardPlayMode.NormalPlay)
+        {
+            int cardType = CardIdUtility.GetCardType(uiObject.Card.id);
+            string text = cardType switch
+            {
+                1 => "送出",
+                2 => "使用",
+                3 => "邀请",
+                _ => "打出"
+            };
+            SetSubmitButtonText(text);
+        }
+
         // 显示按钮
         if (submitButton != null) { submitButton.gameObject.SetActive(true); submitButton.interactable = true; }
         if (cancelButton != null) cancelButton.gameObject.SetActive(true);

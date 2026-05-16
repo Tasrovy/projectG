@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ShopController : MonoBehaviour
 {
     [SerializeField] protected ShopMode startMode = ShopMode.Buy;
-    [SerializeField] protected float sellPriceRatio = 0.5f;
     [SerializeField] protected int slotsPerPage = 6;
     [Header("Buttons")]
     [SerializeField] private Button buyModeButton;
@@ -46,7 +45,7 @@ public class ShopController : MonoBehaviour
     protected virtual void Awake()
     {
         _inventoryGenerator = new ShopInventoryGenerator();
-        _transactionService = new ShopTransactionService(sellPriceRatio);
+        _transactionService = new ShopTransactionService();
         EnsureOverlay();
         CacheSlots();
         ResolveButtonTexts();
@@ -61,7 +60,7 @@ public class ShopController : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        _transactionService = new ShopTransactionService(sellPriceRatio);
+        _transactionService = new ShopTransactionService();
         ResetSelection();
         GenerateBuyInventory();
         SwitchMode(startMode);
