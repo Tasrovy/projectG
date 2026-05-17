@@ -103,7 +103,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 562336008, guid: 68b2abecce6c8f94b8c7ce15075303cc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 257c66def82a74d438f4f03109fa00c8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -253,6 +253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   card:
     id: 0
+    dialog: 0
     nature1: 0
     nature2: 0
     nature3: 0
@@ -265,6 +266,8 @@ MonoBehaviour:
     trigger: 
     description: 
     nextTurn: 
+    text: 
+    prompt: 
 --- !u!114 &424440497266335026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,10 +283,10 @@ MonoBehaviour:
   baseImage: {fileID: 5231690871979963547}
   nameText: {fileID: 7703323483342826625}
   descriptionText: {fileID: 5090995709800849666}
-  commonSprite: {fileID: 2127906941, guid: f47eabea96d6ff14a9f0e2b02ea66877, type: 3}
-  ShengZhi: {fileID: -1906565844, guid: 23f17b6a583307b4aa12714d3b9eb453, type: 3}
-  JianZhi: {fileID: 858556806, guid: 57f5c81e5a9feba4fa8cd0884d6d674d, type: 3}
-  ShengZhang: {fileID: 562336008, guid: 68b2abecce6c8f94b8c7ce15075303cc, type: 3}
+  commonSprite: {fileID: 21300000, guid: 257c66def82a74d438f4f03109fa00c8, type: 3}
+  ShengZhi: {fileID: 21300000, guid: 257c66def82a74d438f4f03109fa00c8, type: 3}
+  JianZhi: {fileID: 21300000, guid: 257c66def82a74d438f4f03109fa00c8, type: 3}
+  ShengZhang: {fileID: 21300000, guid: 257c66def82a74d438f4f03109fa00c8, type: 3}
 --- !u!1 &4987363396496264968
 GameObject:
   m_ObjectHideFlags: 0

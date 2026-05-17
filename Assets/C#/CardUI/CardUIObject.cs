@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -19,6 +20,7 @@ public class CardUIObject : MonoBehaviour,
     public Image baseImage;
     public Text nameText;
     public Text descriptionText;
+    public GameObject HighlightImage;
 
     [Header("重要：动画容器")] 
     public RectTransform visualContainer;
@@ -31,7 +33,7 @@ public class CardUIObject : MonoBehaviour,
 
     [Header("视觉反馈颜色")] 
     [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color selectedColor = Color.green;
+    //[SerializeField] private Color selectedColor = Color.green;
     [SerializeField] private Color disabledColor = Color.gray;
 
     [Header("动画设置 (点击与悬浮)")]
@@ -59,6 +61,7 @@ public class CardUIObject : MonoBehaviour,
     private Transform _dragCanvasParent; 
 
     public bool IsSelected => _isSelected;
+    public bool IsDragging => _isDragging;
     public Card Card => _cardObject != null ? _cardObject.card : null;
     public bool IsValidToSelect => Card != null&&Card.id.ToString().StartsWith("1");
 
@@ -192,7 +195,10 @@ public class CardUIObject : MonoBehaviour,
         if (!_isActiveMode || (!IsValidToSelect&&_isSelectMode)) return;
     
         _isDragging = true;
-        _isHovering = false; 
+        _isHovering = false;
+
+        // 拖拽时旋转归零
+        transform.localRotation = Quaternion.identity;
 
         if (baseImage != null) baseImage.raycastTarget = false;
 
@@ -227,7 +233,7 @@ public class CardUIObject : MonoBehaviour,
             for (int i = 0; i < parentZone.childCount; i++)
             {
                 Transform sibling = parentZone.GetChild(i);
-                if (sibling == transform) continue; 
+                if (sibling == transform) continue;
 
                 // 如果鼠标的 X 坐标大于某张牌的 X 坐标，说明我们应该排在它右边
                 if (localPointerPos.x > sibling.localPosition.x)
@@ -241,10 +247,13 @@ public class CardUIObject : MonoBehaviour,
             if (currentIndex != newIndex)
             {
                 transform.SetSiblingIndex(newIndex);
-                // 注意：一旦这里改变了 SiblingIndex，LayoutGroup 会瞬间移动其他兄弟节点。
-                // 但由于我们在 Update 里写了“反向位移补偿”，其他卡牌会非常丝滑地闪避让位！
+                // 通知弧线布局管理器重新计算位置
+                GetComponentInParent<ArcCardLayoutManager>()?.Refresh();
             }
         }
+
+        // 拖动时保持竖直（旋转归零）
+        transform.localRotation = Quaternion.identity;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -267,11 +276,23 @@ public class CardUIObject : MonoBehaviour,
         UpdateVisual();
 
         // ==========================================
-        // 【重要】：在这里同步后端数据！
-        // 视觉上排好序了，你需要告诉后端管理器重新排列 List<Card>
-        // 例如：
-        // CardManager.Instance.ReorderHandCard(this.Card, transform.GetSiblingIndex());
+        // 同步后端数据：按当前视觉顺序重排 cardInHand
         // ==========================================
+        Transform parent = transform.parent;
+        if (parent != null && CardManager.Instance != null)
+        {
+            List<Card> reordered = new List<Card>();
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var cardUI = parent.GetChild(i).GetComponent<CardUIObject>();
+                if (cardUI != null && cardUI.Card != null)
+                    reordered.Add(cardUI.Card);
+            }
+            if (reordered.Count == CardManager.Instance.cardInHand.Count)
+            {
+                CardManager.Instance.cardInHand = reordered;
+            }
+        }
     }
 
     // ================= 状态管理 =================
@@ -320,10 +341,10 @@ public class CardUIObject : MonoBehaviour,
         _targetScale = new Vector3(currentScale, currentScale, currentScale);
         
         if (baseImage == null) return;
-
+        HighlightImage.SetActive(false);
         if (!_isActiveMode) { baseImage.color = normalColor; return; }
         if (!IsValidToSelect&&_isSelectMode) baseImage.color = disabledColor;
-        else if (_isSelected) baseImage.color = selectedColor;
+        else if (_isSelected) HighlightImage.SetActive(true);
         else baseImage.color = normalColor;
     }
 

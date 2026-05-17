@@ -997,15 +997,15 @@ PrefabInstance:
     - target: {fileID: 5271158701277154627, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SpriteState.m_PressedSprite
       value: 
-      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+      objectReference: {fileID: 21300000, guid: d5990e366fd263a48b1573c2f478317f, type: 3}
     - target: {fileID: 5271158701277154627, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SpriteState.m_SelectedSprite
       value: 
-      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+      objectReference: {fileID: 21300000, guid: d5990e366fd263a48b1573c2f478317f, type: 3}
     - target: {fileID: 5271158701277154627, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SpriteState.m_HighlightedSprite
       value: 
-      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+      objectReference: {fileID: 21300000, guid: d5990e366fd263a48b1573c2f478317f, type: 3}
     - target: {fileID: 5629687855209593721, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SizeDelta.x
       value: 144.9627
@@ -1053,15 +1053,15 @@ PrefabInstance:
     - target: {fileID: 8154165311478946447, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SpriteState.m_PressedSprite
       value: 
-      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+      objectReference: {fileID: 21300000, guid: 1d1b16e456cdb354daa80867fc4c83b1, type: 3}
     - target: {fileID: 8154165311478946447, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SpriteState.m_SelectedSprite
       value: 
-      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+      objectReference: {fileID: 21300000, guid: 1d1b16e456cdb354daa80867fc4c83b1, type: 3}
     - target: {fileID: 8154165311478946447, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_SpriteState.m_HighlightedSprite
       value: 
-      objectReference: {fileID: 57193221, guid: bc936b9c0a7e6724abd5ec6e3f0ad017, type: 3}
+      objectReference: {fileID: 21300000, guid: 1d1b16e456cdb354daa80867fc4c83b1, type: 3}
     - target: {fileID: 8548526662330448394, guid: fedbcc10314bec347b148ba0c9d34882, type: 3}
       propertyPath: m_fontSize
       value: 23.51

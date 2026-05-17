@@ -23,7 +23,6 @@ public class ArcCardLayoutManager : MonoBehaviour, IScrollHandler
     public bool showArcGizmo = true;             // 在 Scene 视图中显示圆弧
 
     private float _scrollOffset = 0f;
-    private int _lastChildCount = -1;
 
     private void Start()
     {
@@ -32,12 +31,7 @@ public class ArcCardLayoutManager : MonoBehaviour, IScrollHandler
 
     private void Update()
     {
-        int currentCount = transform.childCount;
-        if (currentCount != _lastChildCount)
-        {
-            _lastChildCount = currentCount;
-            LayoutCards();
-        }
+        LayoutCards();
     }
 
 #if UNITY_EDITOR
@@ -142,8 +136,12 @@ public class ArcCardLayoutManager : MonoBehaviour, IScrollHandler
                 center.y + Mathf.Cos(rad) * arcRadius
             );
 
-            // 旋转: 卡牌顶部向外散开，底部汇聚
-            rt.localRotation = Quaternion.Euler(0, 0, -angle);
+            // 获取该卡片的 CardUIObject 组件，判断是否正在拖拽
+            CardUIObject cardUI = child.GetComponent<CardUIObject>();
+            bool isDragging = cardUI != null && cardUI.IsDragging;
+
+            // 旋转: 卡牌顶部向外散开，底部汇聚（拖拽中的卡牌保持竖直）
+            rt.localRotation = isDragging ? Quaternion.identity : Quaternion.Euler(0, 0, -angle);
         }
     }
 }

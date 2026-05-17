@@ -220,7 +220,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) =>
             {
-                selectedCard.sale += num;
+                selectedCard.sell += num;
                 CardManager.Instance.NotifyDeckOrHandChanged();
                 DUEL.Instance.UpdateCardData();
 

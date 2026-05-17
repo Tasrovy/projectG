@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000073433, y: 33.650036}
-  m_SizeDelta: {x: 200, y: 32.7}
+  m_AnchoredPosition: {x: 0.0000076293945, y: 86.574}
+  m_SizeDelta: {x: 700, y: 76.852}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4446309883621222138
 CanvasRenderer:
@@ -67,11 +67,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 10
+    m_FontSize: 56
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 56
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -108,7 +108,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 589128705545135567}
   - {fileID: 593671517102223582}
@@ -116,8 +116,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 368.7478, y: 48}
-  m_SizeDelta: {x: 200, y: 100}
+  m_AnchoredPosition: {x: 569.2981, y: -54.528107}
+  m_SizeDelta: {x: 700, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5229384749619080808
 CanvasRenderer:
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -205,8 +205,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000048637, y: -16.35}
-  m_SizeDelta: {x: 200, y: 67.3}
+  m_AnchoredPosition: {x: -0.27996, y: -38.427}
+  m_SizeDelta: {x: 700.56, y: 173.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1710589568040772830
 CanvasRenderer:
@@ -238,11 +238,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 10
+    m_FontSize: 56
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 56
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1

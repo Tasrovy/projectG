@@ -2,11 +2,8 @@ using UnityEngine;
 
 public sealed class ShopTransactionService
 {
-    private readonly float _sellRatio;
-
-    public ShopTransactionService(float sellRatio)
+    public ShopTransactionService()
     {
-        _sellRatio = Mathf.Max(0f, sellRatio);
     }
 
     public int GetBuyPrice(Card card)
@@ -16,12 +13,7 @@ public sealed class ShopTransactionService
 
     public int GetSellPrice(Card card)
     {
-        if (card == null)
-        {
-            return 0;
-        }
-
-        return Mathf.Max(0, Mathf.RoundToInt(card.sale * _sellRatio));
+        return card != null ? Mathf.Max(0, card.sell) : 0;
     }
 
     public bool TryBuy(Card sourceCard)
