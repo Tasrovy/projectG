@@ -17,6 +17,7 @@ MonoBehaviour:
     probRarity2: 0.2
     probRarity3: 0
     day: 1
+    date: 05_14
     profit: 60
     drawNum: 4
     getCardNum: 2
@@ -27,10 +28,12 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 2
+    date: 05_15
     profit: 60
     drawNum: 4
     getCardNum: 2
@@ -41,10 +44,12 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 3
+    date: 05_16
     profit: 60
     drawNum: 4
     getCardNum: 2
@@ -55,10 +60,12 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 4
+    date: 05_17
     profit: 60
     drawNum: 4
     getCardNum: 1
@@ -69,10 +76,12 @@ MonoBehaviour:
     target2: 24
     target3: 18
     target4: 13
+    targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 5
+    date: 05_18
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -83,10 +92,12 @@ MonoBehaviour:
     target2: 120
     target3: 40
     target4: 23
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 6
+    date: 05_19
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -97,10 +108,12 @@ MonoBehaviour:
     target2: 120
     target3: 40
     target4: 24
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 7
+    date: 05_20
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -111,10 +124,12 @@ MonoBehaviour:
     target2: 120
     target3: 40
     target4: 25
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 8
+    date: 05_21
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -125,10 +140,12 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 26
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 9
+    date: 05_22
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -139,10 +156,12 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 27
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 10
+    date: 05_23
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -153,10 +172,12 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 28
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 11
+    date: 05_24
     profit: 200
     drawNum: 4
     getCardNum: 1
@@ -167,10 +188,12 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 29
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 12
+    date: 05_25
     profit: 200
     drawNum: 4
     getCardNum: 1
@@ -181,10 +204,12 @@ MonoBehaviour:
     target2: 160
     target3: 120
     target4: 30
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 13
+    date: 05_26
     profit: 200
     drawNum: 4
     getCardNum: 1
@@ -195,10 +220,12 @@ MonoBehaviour:
     target2: 29
     target3: 30
     target4: 31
+    targetCharm: 420
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 14
+    date: 05_27
     profit: 200
     drawNum: 4
     getCardNum: 1
@@ -209,10 +236,12 @@ MonoBehaviour:
     target2: 30
     target3: 31
     target4: 32
+    targetCharm: 435
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 15
+    date: 05_28
     profit: 200
     drawNum: 4
     getCardNum: 1
@@ -223,10 +252,12 @@ MonoBehaviour:
     target2: 31
     target3: 32
     target4: 33
+    targetCharm: 450
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 16
+    date: 05_29
     profit: 200
     drawNum: 4
     getCardNum: 1
@@ -237,10 +268,12 @@ MonoBehaviour:
     target2: 32
     target3: 33
     target4: 34
+    targetCharm: 465
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 17
+    date: 05_30
     profit: 200
     drawNum: 4
     getCardNum: 1
@@ -251,3 +284,4 @@ MonoBehaviour:
     target2: 33
     target3: 34
     target4: 35
+    targetCharm: 480

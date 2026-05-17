@@ -9,6 +9,7 @@ public class DayData
     public float probRarity2;
     public float probRarity3;
     public int day;
+    public string date;
     public int profit;
     public int drawNum;
     public int getCardNum;
@@ -19,6 +20,7 @@ public class DayData
     public int target2;
     public int target3;
     public int target4;
+    public int targetCharm;
 }
 
 public class DayDataSO : ScriptableObject

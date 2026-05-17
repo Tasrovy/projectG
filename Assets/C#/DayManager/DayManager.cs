@@ -15,10 +15,8 @@ public class DayManager : Singleton<DayManager>
     public int TargetType { get; private set; }
     public DayDataSO daySO;
     [SerializeField] private TMP_Text dayText;
-    [Header("起始日期")]
-    [SerializeField] private int startYear = 2026;
-    [SerializeField] private int startMonth = 5;
-    [SerializeField] private int startDay = 17;
+    [SerializeField] private TMP_Text weekText;
+
 
     protected override bool IsPersistent => true;
     protected override void Awake()
@@ -42,6 +40,7 @@ public class DayManager : Singleton<DayManager>
     {
         OnDayEnd();
         dayNumber++;
+        SkipWeekendDays();
         Debug.Log($"<color=#FFD700>========== [DayManager 检测器] 天数改变，当前是第 {dayNumber} 天 ==========</color>");
         CardManager.Instance.SetProbRarity1(daySO.dayDatas[dayNumber].probRarity1);
         CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
@@ -49,17 +48,101 @@ public class DayManager : Singleton<DayManager>
         CardManager.Instance.DrawCard(daySO.dayDatas[dayNumber].drawNum);
         Debug.Log($"[DayManager] {daySO.dayDatas[dayNumber].drawNum}");
         if(dayEvents.ContainsKey(dayNumber)) dayEvents[dayNumber]?.Invoke();
-        UpdateDayText();
         OnDayAdvanced?.Invoke();
     }
 
-    private void UpdateDayText()
+    /// <summary>
+    /// 若当前 dayNumber 对应周六或周日，持续递增直到落在工作日（下周一）。
+    /// 也处理意外进入周末的情况。最多跳过 7 天防止死循环。
+    /// </summary>
+    private void SkipWeekendDays()
     {
-        if (dayText == null) return;
+        for (int i = 0; i < 7; i++)
+        {
+            DayOfWeek dow = GetCurrentDate().DayOfWeek;
+            if (dow != DayOfWeek.Saturday && dow != DayOfWeek.Sunday)
+                break;
+            dayNumber++;
+            Debug.Log($"[DayManager] 跳过周末，dayNumber 推进至 {dayNumber}（{GetCurrentDate().DayOfWeek}）");
+        }
+    }
 
-        DateTime startDate = new DateTime(startYear, startMonth, startDay);
-        DateTime currentDate = startDate.AddDays(dayNumber - 1);
-        dayText.text = $"{currentDate.Month}.{currentDate.Day}";
+    /// <summary>
+    /// 预览下一次 NextDay() 实际会落到的工作日编号（已包含周末跳过逻辑）。
+    /// </summary>
+    public int GetPreviewNextDayNumber()
+    {
+        int candidate = dayNumber + 1;
+        for (int i = 0; i < 7; i++)
+        {
+            DayOfWeek dow = GetDayOfWeekByDayNumber(candidate);
+            if (dow != DayOfWeek.Saturday && dow != DayOfWeek.Sunday)
+                break;
+            candidate++;
+        }
+        return candidate;
+    }
+
+    public DayOfWeek GetDayOfWeekByDayNumber(int targetDayNumber)
+    {
+        DateTime date = GetDateByDayNumber(targetDayNumber);
+        return date.DayOfWeek;
+    }
+
+    public DateTime GetDateByDayNumber(int targetDayNumber)
+    {
+        if (targetDayNumber > 0 && daySO != null && targetDayNumber - 1 < daySO.dayDatas.Count)
+        {
+            string dateStr = daySO.dayDatas[targetDayNumber - 1].date;
+            if (!string.IsNullOrEmpty(dateStr))
+            {
+                string[] parts = dateStr.Split('_');
+                if (parts.Length == 2 && int.TryParse(parts[0], out int month) && int.TryParse(parts[1], out int day))
+                {
+                    return new DateTime(2026, month, day);
+                }
+            }
+        }
+        return DateTime.Now;
+    }
+
+    public void UpdateDayText()
+    {
+        if (dayNumber <= 0 || daySO == null || dayNumber - 1 >= daySO.dayDatas.Count) return;
+
+        string dateStr = daySO.dayDatas[dayNumber - 1].date;
+        if (string.IsNullOrEmpty(dateStr)) return;
+
+        string[] parts = dateStr.Split('_');
+        if (parts.Length == 2 && int.TryParse(parts[0], out int month) && int.TryParse(parts[1], out int day))
+        {
+            if (dayText != null)
+                dayText.text = $"{month}/{day}";
+
+            if (weekText != null)
+                weekText.text = GetWeekdayAbbreviation(new DateTime(2026, month, day).DayOfWeek);
+        }
+    }
+
+    private string GetWeekdayAbbreviation(DayOfWeek dayOfWeek)
+    {
+        switch (dayOfWeek)
+        {
+            case DayOfWeek.Monday:
+                return "MON";
+            case DayOfWeek.Tuesday:
+                return "TUE";
+            case DayOfWeek.Wednesday:
+                return "WED";
+            case DayOfWeek.Thursday:
+                return "THU";
+            case DayOfWeek.Friday:
+                return "FRI";
+            case DayOfWeek.Saturday:
+                return "SAT";
+            default:
+                return "SUN";
+        }
     }
 
     public UnityEvent GetNextDayEvent()
@@ -100,6 +183,12 @@ public class DayManager : Singleton<DayManager>
         DataManager.Instance.SetNature3Effect(0);
     }
 
-    public DateTime GetStartDate() => new DateTime(startYear, startMonth, startDay);
-    public DateTime GetCurrentDate() => GetStartDate().AddDays(dayNumber - 1);
+    /// <summary>
+    /// 从 day 表的 date 字段（格式如 05_16）解析当前游戏日期。
+    /// 年份取系统当前年，月日来自表格。
+    /// </summary>
+    public DateTime GetCurrentDate()
+    {
+        return GetDateByDayNumber(dayNumber);
+    }
 }
