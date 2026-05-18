@@ -159,9 +159,16 @@ public class ConfigHubEditor : Editor
         // 第四行：选择字段
         _addFieldIdx = EditorGUILayout.Popup("选择字段", _addFieldIdx, _addFieldOptions);
 
+        string selectedField = _addFieldOptions[_addFieldIdx];
+        bool alreadyExists = HasEntry(_addTypeIdx, _addTarget, selectedField);
+        if (alreadyExists)
+        {
+            EditorGUILayout.HelpBox($"字段已存在：{_addTarget.GetType().Name}.{selectedField}（{TypeLabels[_addTypeIdx]}）。", MessageType.Warning);
+        }
+
         if (GUILayout.Button("添加"))
         {
-            AddEntry(_addTypeIdx, _addTarget, _addFieldOptions[_addFieldIdx]);
+            AddEntry(_addTypeIdx, _addTarget, selectedField);
             serializedObject.Update();
         }
     }
@@ -207,6 +214,12 @@ public class ConfigHubEditor : Editor
 
     private void AddEntry(int typeIdx, Component target, string fieldName)
     {
+        if (HasEntry(typeIdx, target, fieldName))
+        {
+            Debug.LogWarning($"[ConfigHub] 拒绝添加重复字段：{target.GetType().Name}.{fieldName} ({TypeLabels[typeIdx]})");
+            return;
+        }
+
         Undo.RecordObject(_hub, "ConfigHub AddEntry");
 
         FieldInfo fi = target.GetType().GetField(fieldName, Flags);
@@ -236,6 +249,25 @@ public class ConfigHubEditor : Editor
                 break;
         }
         EditorUtility.SetDirty(_hub);
+    }
+
+    private bool HasEntry(int typeIdx, Component target, string fieldName)
+    {
+        if (target == null || string.IsNullOrEmpty(fieldName)) return false;
+
+        switch (typeIdx)
+        {
+            case 0:
+                return _hub.intEntries.Exists(e => e.target == target && e.fieldName == fieldName);
+            case 1:
+                return _hub.floatEntries.Exists(e => e.target == target && e.fieldName == fieldName);
+            case 2:
+                return _hub.boolEntries.Exists(e => e.target == target && e.fieldName == fieldName);
+            case 3:
+                return _hub.stringEntries.Exists(e => e.target == target && e.fieldName == fieldName);
+            default:
+                return false;
+        }
     }
 
     /// <summary>

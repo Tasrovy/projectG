@@ -25,13 +25,13 @@ public class CardChoosing : MonoBehaviour
     {
         // 动态创建并设置最底层的半透明黑幕
         blackOverlay = new GameObject("BackgroundOverlay");
-        blackOverlay.layer = LayerMask.NameToLayer("UI"); // 必须设置所在层级为 UI 才能在 Canvas 内部渲染出来
+        blackOverlay.layer = LayerMask.NameToLayer("UI");   // 必须设置所在层级为 UI 才能在 Canvas 内部渲染出来
         blackOverlay.transform.SetParent(this.transform, false);
-        blackOverlay.transform.SetAsFirstSibling(); // 移动到子节点的第一位，即渲染最底层
+        blackOverlay.transform.SetAsFirstSibling();         // 移动到子节点的第一位，即渲染最底层
         
         Image img = blackOverlay.AddComponent<Image>();
-        img.color = new Color(0f, 0f, 0f, 0.7f); // 半透明黑幕
-        img.raycastTarget = true; // 取消射线拦截，防止遮挡按钮的点击事件
+        img.color = new Color(0f, 0f, 0f, 0.7f);            // 半透明黑幕
+        img.raycastTarget = true;                           // 取消射线拦截，防止遮挡按钮的点击事件
         
         RectTransform rect = blackOverlay.GetComponent<RectTransform>();
         // 强制设置超大尺寸居中，以防当前挂载物体锚点为0导致无法覆盖全屏
@@ -58,15 +58,6 @@ public class CardChoosing : MonoBehaviour
     private void OnEnable()
     {
         selectedCard = null; // 每次打开界面时，重置之前选中的状态
-
-        /* 暂时假设 cardUISum 恒定保持 true，保留代码备用
-        // 当脚本被启用时，也要确保兄弟卡牌组合激活以显示内容
-        Transform cardUISum = transform.parent != null ? transform.parent.Find("cardUISum") : null;
-        if (cardUISum != null)
-        {
-            cardUISum.gameObject.SetActive(true);
-        }
-        */
 
         LoadRandomCards();
         StartCoroutine(PlaySlideAnimation());
@@ -262,6 +253,8 @@ public class CardChoosing : MonoBehaviour
 
             CardDisplayUI displayUI = cardTransform.GetComponent<CardDisplayUI>();
             if (displayUI != null) displayUI.Setup(cardObj.card);
+
+            ApplyRarityVisual(cardTransform, cardObj.card.id);
             
             Debug.Log($"[AssignCardTo] 给物体 {cardTransform.name} 赋予了卡牌: {cardObj.card.name} / ID: {cardObj.card.id}");
         }
@@ -269,6 +262,39 @@ public class CardChoosing : MonoBehaviour
         {
             Debug.LogError($"[AssignCardTo] 物体 {cardTransform.name} 身上没找到 CardObject 脚本！请检查组件挂载。");
         }
+    }
+
+    private void ApplyRarityVisual(Transform cardTransform, int cardId)
+    {
+        Transform rareTransform = cardTransform.Find("rare");
+        if (rareTransform == null)
+        {
+            return;
+        }
+
+        int rarity = (cardId / 1000) % 10;
+        Sprite rareSprite = Resources.Load<Sprite>($"UI/Shop/{rarity}");
+        if (rareSprite == null)
+        {
+            Debug.LogWarning($"[CardChoosing] 未找到稀有度资源 UI/Shop/{rarity}。");
+            return;
+        }
+
+        Image rareImage = rareTransform.GetComponent<Image>();
+        if (rareImage != null)
+        {
+            rareImage.sprite = rareSprite;
+            return;
+        }
+
+        SpriteRenderer spriteRenderer = rareTransform.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sprite = rareSprite;
+            return;
+        }
+
+        Debug.LogWarning($"[CardChoosing] {cardTransform.name}/rare 缺少 Image 或 SpriteRenderer 组件。");
     }
 
     private CardData PopRandom(List<CardData> pool)
