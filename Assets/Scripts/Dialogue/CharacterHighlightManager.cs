@@ -350,6 +350,12 @@ public class CharacterHighlightManager : DialoguePresenterBase
         // 核心属性结算和环境清理保持，视觉清理移交到转场黑屏进行
         ApplyDialogueCompleteProperties();
 
+        var charControl = GetComponent<CharacterControl>();
+        if (charControl != null)
+        {
+            charControl.ResetPortraitPositionsAfterDialogue();
+        }
+
         currentSpeaker = "";
 
         // 在转场之前，关闭对应的背景音乐和白噪音

@@ -53,6 +53,31 @@ Yarn Spinner 命令扩展模块。通过 `[YarnCommand]` 特性将 C# 方法注�
 
 ---
 
+#### `set_character_move`
+
+```yarn
+<<set_character_move objectName axis distance duration>>
+```
+
+**功能**：将指定立绘槽位沿单轴移动一段距离。`axis` 使用单字符方向：`x`=水平移动，`y`=竖直移动。`duration` 可省略，默认为 `0`（瞬时移动）。
+
+| 参数 | 类型 | 说明 |
+|------|------|------|
+| `objectName` | string | 槽位名，只能是 `"Player"` 或 `"Character"` |
+| `axis` | char/string | 方向字符，`x` 或 `y`（大小写不敏感，仅取首字符） |
+| `distance` | float | 移动距离，正负值均可 |
+| `duration` | float | 过渡时间（秒），可省略，默认 `0` |
+
+**示例**：
+```yarn
+<<set_character_move Character x 120 0.25>>
+<<set_character_move Player y -60>>
+```
+
+**备注**：每次对话结束时，`Player` 与 `Character` 会自动恢复到游戏启动时记录的初始位置。
+
+---
+
 #### `set_character_sprite`
 
 ```yarn
@@ -287,4 +312,5 @@ Yarn 每行对话可附加 `#sfx_...` 标签，由 `DialogueHandler`（Dialogue 
 | `DialogueHandler` 调用 `PlayAudioFromTag` | `DialogueHandler` 在 Yarn 逐行展示时，将行上的标签逐一传入 `CharacterControl.PlayAudioFromTag()`，实现台词同步音效 |
 | `set_background` 依赖 `TransitionManager` | 此命令通过 `TransitionManager.Instance.PlayTransition()` 实现黑幕过渡，与 `DialogueHandler` 驱动的场景切换流程共用同一过渡动画系统 |
 | `CharacterHighlightManager` 角色配置 | `set_character_person` / `set_character_sprite` 从 `CharacterHighlightManager`（挂载在 Dialogue 相关 UI 节点）读取角色名、差分列表等配置数据 |
+| `CharacterHighlightManager` 对话结束回调 | 在 `OnDialogueCompleteAsync` 中调用 `CharacterControl.ResetPortraitPositionsAfterDialogue()`，将 `Player` 与 `Character` 立绘位置恢复到初始值 |
 | `add_property` 写入 `DataManager` | 剧情中通过此命令修改属性后，`DialogueHandler` 在检定节点读取 `DataManager` 判定成败，两者构成「对话触发数值变化→检定读取结果」的完整链路 |

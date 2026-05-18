@@ -210,6 +210,7 @@ Character
 #### `OnDialogueCompleteAsync`
 
 - 调用 `ApplyDialogueCompleteProperties()` 将积累的属性增减写入 `DataManager`
+- 调用 `CharacterControl.ResetPortraitPositionsAfterDialogue()`，将 `Player` / `Character` 立绘恢复到游戏启动时记录的初始位置
 - 停止 BGM 和白噪音
 - 注意：视觉清场（隐藏背景/立绘）已移交给 `ClearVisualsOnTransitionMidpoint`，此处不做视觉操作
 
@@ -339,7 +340,7 @@ Character
 | `DialogueHandler` | `CharacterHighlightManager` | 转发属性设置、过天标志；在黑屏中点调用 `ClearVisualsOnTransitionMidpoint` |
 | `CharacterHighlightManager` | `DataManager` | `ApplyDialogueCompleteProperties` 写入属性增减 |
 | `CharacterHighlightManager` | `AudioManager` | `OnDialogueCompleteAsync` 停止 BGM 和白噪音 |
-| `CharacterHighlightManager` | `CharacterControl`（YarnCommand） | `RunLineAsync` 中将行标签转发给 `PlayAudioFromTag`；`ClearVisualsOnTransitionMidpoint` 清空 `objectToCharacterMap` |
+| `CharacterHighlightManager` | `CharacterControl`（YarnCommand） | `RunLineAsync` 中将行标签转发给 `PlayAudioFromTag`；`OnDialogueCompleteAsync` 触发立绘位置复位；`ClearVisualsOnTransitionMidpoint` 清空 `objectToCharacterMap` |
 | `CharacterHighlightManager` | `InMemoryVariableStorage` | `SyncPlayerName` 读取 `$MY_NAME` |
 | `DialogueUIAudio` | `SfxTrigger` | 所有音效最终通过 `SfxTrigger.PlaySingle` 播放 |
 | `DialogueUIAudio` | `TransitionManager`（被调用） | `PlayChangeSceneAudio` 在 `TransitionManager.PlayTransition` 开头被调用 |

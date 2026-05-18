@@ -26,6 +26,11 @@ public class CharacterControl : MonoBehaviour
     private readonly Dictionary<string, PortraitSizeState> portraitSizeStates = new Dictionary<string, PortraitSizeState>();
     private readonly Dictionary<string, Coroutine> activePortraitSizeCoroutines = new Dictionary<string, Coroutine>();
 
+    #region 立绘移动状态
+    private readonly Dictionary<string, Vector2> initialPortraitAnchoredPositions = new Dictionary<string, Vector2>();
+    private readonly Dictionary<string, Coroutine> activePortraitMoveCoroutines = new Dictionary<string, Coroutine>();
+    #endregion
+
     private static void HidePortraitImage(Image image)
     {
         if (image == null) return;
@@ -71,6 +76,11 @@ public class CharacterControl : MonoBehaviour
     // 新增：保存当前物体上挂载的角色名称字典
     public Dictionary<string, string> objectToCharacterMap = new Dictionary<string, string>();
 
+    private void Start()
+    {
+        CacheInitialPortraitPositions();
+    }
+
     private static Transform FindAncestorByName(Transform start, string name)
     {
         Transform current = start;
@@ -97,11 +107,11 @@ public class CharacterControl : MonoBehaviour
     }
 
     // 辅助方法：从指定的 talk 节点下获取对应名字的子物体，而不是全局寻找
-    private GameObject GetCharacterObjectUnderTalk(string objName)
+    private GameObject GetCharacterObjectUnderTalk(string objName, bool requireTalkActive = true)
     {
         GameObject talkObj = ResolveTalkObject();
         Debug.Log(talkObj != null ? $"[CharacterControl] 成功找到 'talk' 对象，准备在其下寻找 '{objName}'。" : "[CharacterControl] 未找到 'talk' 对象，无法在其下寻找角色物体！");
-        if (talkObj != null && talkObj.activeInHierarchy)
+        if (talkObj != null && (!requireTalkActive || talkObj.activeInHierarchy))
         {
             Transform child = talkObj.transform.Find(objName);
             if (child != null)
@@ -338,6 +348,177 @@ public class CharacterControl : MonoBehaviour
         {
             Debug.LogWarning($"[CharacterControl] 清除立绘失败：场景中不存在名为 '{objectName}' 的物体！");
         }
+    }
+    #endregion
+
+    #region 立绘移动命令
+    [YarnCommand("set_character_move")]
+    public static void SetCharacterMoveStatic(string objectName, string axis, float distance, float duration = 0f)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null)
+        {
+            control.SetCharacterMove(objectName, axis, distance, duration);
+        }
+    }
+
+    public void SetCharacterMove(string objectName, string axis, float distance, float duration = 0f)
+    {
+        string normalizedObjectName = NormalizePortraitObjectName(objectName);
+        if (string.IsNullOrEmpty(normalizedObjectName))
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘移动失败：objectName 必须是 'Player' 或 'Character'，当前为: {objectName}");
+            return;
+        }
+
+        char axisChar = ParseMoveAxis(axis);
+        if (axisChar == '\0')
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘移动失败：axis 仅支持 x 或 y，当前为: {axis}");
+            return;
+        }
+
+        if (!TryGetPortraitRect(normalizedObjectName, out RectTransform targetRect))
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘移动失败：未找到对象 {normalizedObjectName} 或其 RectTransform");
+            return;
+        }
+
+        CacheInitialPortraitPositions();
+        if (!initialPortraitAnchoredPositions.ContainsKey(normalizedObjectName))
+        {
+            initialPortraitAnchoredPositions[normalizedObjectName] = targetRect.anchoredPosition;
+        }
+
+        Vector2 delta = axisChar == 'x' ? new Vector2(distance, 0f) : new Vector2(0f, distance);
+        Vector2 targetPos = targetRect.anchoredPosition + delta;
+        float clampedDuration = Mathf.Max(0f, duration);
+
+        if (activePortraitMoveCoroutines.TryGetValue(normalizedObjectName, out Coroutine running) && running != null)
+        {
+            StopCoroutine(running);
+        }
+
+        if (clampedDuration <= 0f)
+        {
+            targetRect.anchoredPosition = targetPos;
+            activePortraitMoveCoroutines.Remove(normalizedObjectName);
+            return;
+        }
+
+        activePortraitMoveCoroutines[normalizedObjectName] = StartCoroutine(
+            AnimatePortraitMove(normalizedObjectName, targetRect, targetPos, clampedDuration)
+        );
+    }
+    #endregion
+
+    #region 立绘位置复位
+    public void ResetPortraitPositionsAfterDialogue(float duration = 0f)
+    {
+        CacheInitialPortraitPositions();
+        ResetPortraitPosition("Player", duration);
+        ResetPortraitPosition("Character", duration);
+    }
+
+    private void ResetPortraitPosition(string objectName, float duration)
+    {
+        if (!initialPortraitAnchoredPositions.TryGetValue(objectName, out Vector2 initialPos))
+        {
+            return;
+        }
+
+        if (!TryGetPortraitRect(objectName, out RectTransform targetRect))
+        {
+            return;
+        }
+
+        if (activePortraitMoveCoroutines.TryGetValue(objectName, out Coroutine running) && running != null)
+        {
+            StopCoroutine(running);
+        }
+
+        float clampedDuration = Mathf.Max(0f, duration);
+        if (clampedDuration <= 0f)
+        {
+            targetRect.anchoredPosition = initialPos;
+            activePortraitMoveCoroutines.Remove(objectName);
+            return;
+        }
+
+        activePortraitMoveCoroutines[objectName] = StartCoroutine(
+            AnimatePortraitMove(objectName, targetRect, initialPos, clampedDuration)
+        );
+    }
+    #endregion
+
+    #region 立绘移动内部工具
+    private IEnumerator AnimatePortraitMove(string objectName, RectTransform targetRect, Vector2 targetPos, float duration)
+    {
+        Vector2 startPos = targetRect.anchoredPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
+            targetRect.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
+            yield return null;
+        }
+
+        targetRect.anchoredPosition = targetPos;
+        activePortraitMoveCoroutines.Remove(objectName);
+    }
+
+    private void CacheInitialPortraitPositions()
+    {
+        CacheInitialPortraitPositionFor("Player");
+        CacheInitialPortraitPositionFor("Character");
+    }
+
+    private void CacheInitialPortraitPositionFor(string objectName)
+    {
+        if (initialPortraitAnchoredPositions.ContainsKey(objectName))
+        {
+            return;
+        }
+
+        GameObject targetObj = GetCharacterObjectUnderTalk(objectName, false);
+        if (targetObj == null)
+        {
+            return;
+        }
+
+        RectTransform targetRect = targetObj.GetComponent<RectTransform>();
+        if (targetRect == null)
+        {
+            return;
+        }
+
+        initialPortraitAnchoredPositions[objectName] = targetRect.anchoredPosition;
+    }
+
+    private bool TryGetPortraitRect(string objectName, out RectTransform rectTransform)
+    {
+        rectTransform = null;
+        GameObject targetObj = GetCharacterObjectUnderTalk(objectName);
+        if (targetObj == null)
+        {
+            return false;
+        }
+
+        rectTransform = targetObj.GetComponent<RectTransform>();
+        return rectTransform != null;
+    }
+
+    private static char ParseMoveAxis(string axis)
+    {
+        if (string.IsNullOrEmpty(axis))
+        {
+            return '\0';
+        }
+
+        char axisChar = char.ToLowerInvariant(axis[0]);
+        return axisChar == 'x' || axisChar == 'y' ? axisChar : '\0';
     }
     #endregion
 
