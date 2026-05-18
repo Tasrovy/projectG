@@ -20,6 +20,7 @@ MonoBehaviour:
     nature3: 18
     name: "\u4E00\u8D77\u6253\u4E52\u4E53\u7403\u5427"
     sale: 30
+    sell: 24
     made: 
     broken: 
     added: 
@@ -36,6 +37,7 @@ MonoBehaviour:
     nature3: 20
     name: "\u4E50\u961Fjam"
     sale: 60
+    sell: 48
     made: 
     broken: 
     added: 
@@ -52,6 +54,7 @@ MonoBehaviour:
     nature3: 28
     name: "\u8F85\u5BFC\u4F5C\u4E1A"
     sale: 60
+    sell: 48
     made: 
     broken: 
     added: 
@@ -68,6 +71,7 @@ MonoBehaviour:
     nature3: 0
     name: livehouse
     sale: 120
+    sell: 96
     made: 
     broken: 
     added: 

@@ -20,6 +20,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u521D\u59CB\u793C\u72691"
     sale: 10
+    sell: 8
     made: 
     broken: 
     added: 
@@ -36,6 +37,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u521D\u59CB\u793C\u72692"
     sale: 10
+    sell: 8
     made: 
     broken: 
     added: 
@@ -52,6 +54,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u53EF\u4E50"
     sale: 20
+    sell: 16
     made: 
     broken: 
     added: 
@@ -68,6 +71,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u67F3\u836B\u4E0D\u7720"
     sale: 20
+    sell: 16
     made: 
     broken: 
     added: 
@@ -84,6 +88,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6839\u72B6\u830E"
     sale: 20
+    sell: 16
     made: 
     broken: 
     added: 
@@ -100,6 +105,7 @@ MonoBehaviour:
     nature3: 16
     name: "\u96EA\u8389\u724C\u624B\u69A8\u82F9\u679C\u6C41"
     sale: 20
+    sell: 16
     made: 
     broken: 
     added: 
@@ -116,6 +122,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u8BFA\u4E9A\u724C\u6CE1\u817E\u7247"
     sale: 20
+    sell: 16
     made: 
     broken: 
     added: 
@@ -132,6 +139,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u91D1\u5706\u5238"
     sale: 60
+    sell: 60
     made: 
     broken: 
     added: 
@@ -148,6 +156,7 @@ MonoBehaviour:
     nature3: 2
     name: "\u68C9\u82B1\u5A03\u5A03"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: 
@@ -164,6 +173,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u53F6\u7F18\u5FAE\u5149"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: 
@@ -180,6 +190,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u4E0D\u8001\u5E74\u8F6E"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: 
@@ -196,6 +207,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u65E0\u5FC3\u4E4B\u67F3"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: 
@@ -212,6 +224,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u4E0D\u7720\u7CBE\u7075"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: 
@@ -228,6 +241,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6C38\u751F\u5C71\u6768"
     sale: 40
+    sell: 32
     made: addCard(12006,1)
     broken: 
     added: 
@@ -244,6 +258,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u67F3\u6210\u836B"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: addNature(10,2)
@@ -260,6 +275,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6625\u6E56\u5012\u5F71"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: addMoney(40)
@@ -276,6 +292,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u67AF\u8363\u4EE4"
     sale: 40
+    sell: 32
     made: 
     broken: 
     added: 
@@ -292,6 +309,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6668\u9732\u53F6"
     sale: 40
+    sell: 32
     made: 
     broken: addNatureAtSum(12,3)
     added: 
@@ -309,6 +327,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6B63\u5348\u67F3"
     sale: 40
+    sell: 32
     made: beAdded(2,1)
     broken: 
     added: 
@@ -326,6 +345,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u65E0\u5FC3\u4E4B\u5F71"
     sale: 80
+    sell: 64
     made: 
     broken: 
     added: 
@@ -342,6 +362,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5C0F\u624B\u529E"
     sale: 80
+    sell: 64
     made: addMoney(40)
     broken: 
     added: 
@@ -358,6 +379,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5927\u53F7\u68C9\u82B1\u5A03\u5A03"
     sale: 80
+    sell: 64
     made: 
     broken: 
     added: 
@@ -374,6 +396,7 @@ MonoBehaviour:
     nature3: 1
     name: "\u5C0F\u94A2\u7B14"
     sale: 80
+    sell: 64
     made: 
     broken: 
     added: addNature(20,2);addNature(20,1);addNature(20,3);
@@ -390,6 +413,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5F6D\u683C\u5217\u6212\u6307"
     sale: 80
+    sell: 64
     made: 
     broken: addNatureAtSum(40,3);addNatureAtSum(40,1);addNatureAtSum(60,2)
     added: 
