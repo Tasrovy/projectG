@@ -242,8 +242,8 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         CardEffect effect = CardEffect.Instance;
         Card caller = effect != null ? effect.CallerCard : null;
 
-        CardActionResolver.Instance.CompletePendingPlayedCard(false);
-
+        // 不再需要 CompletePendingPlayedCard(false)，
+        // 快照在 BreakCard 之前拍摄，回滚时自动恢复打出的牌
         if (effect != null && caller != null)
         {
             effect.MarkConditionFailed(caller);

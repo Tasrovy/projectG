@@ -226,6 +226,7 @@ public class CardEffect : Singleton<CardEffect>
     }
 
     public void SetCallerCard(Card card) => CallerCard = card;
+    public void TakeSnapshot() { EnsureComponents(); _executor.TakeSnapshot(true); }
     public bool IsWaitingForAsync => _executor != null && _executor.IsWaitingForAsync;
     public bool IsConditionFailed(Card card) => card != null && conditionFailedCards.Contains(card);
     public void MarkConditionFailed(Card card)

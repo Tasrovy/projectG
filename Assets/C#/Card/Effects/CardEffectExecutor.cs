@@ -13,6 +13,20 @@ public sealed class CardEffectExecutor
     private int _currentEffectIndex;
     private bool _waitingForAsync = false;
 
+    // ===================== Snapshot / Rollback =====================
+
+    private struct StateSnapshot
+    {
+        public List<Card> handCards;
+        public List<Card> deckCards;
+        public int dataNature1, dataNature2, dataNature3;
+        public int dataMoney, dataExtraCharm;
+        public float dataEffect1, dataEffect2, dataEffect3;
+    }
+
+    private bool _hasSnapshot;
+    private StateSnapshot _snapshot;
+
     public CardEffectExecutor(CardEffect owner)
     {
         _owner = owner;
@@ -28,6 +42,10 @@ public sealed class CardEffectExecutor
 
         if (!_isExecutingChain)
         {
+            if (!_hasSnapshot)
+            {
+                TakeSnapshot();
+            }
             StartExecutingNextChain();
         }
     }
@@ -42,12 +60,105 @@ public sealed class CardEffectExecutor
         }
     }
 
+    // ===================== Snapshot =====================
+
+    public void TakeSnapshot(bool force = false)
+    {
+        if (_hasSnapshot)
+        {
+            if (!force)
+            {
+                Debug.Log("[Snapshot] 已有快照，跳过重复拍摄");
+                return;
+            }
+            Debug.Log("[Snapshot] 强制覆盖快照");
+        }
+
+        _hasSnapshot = true;
+
+        // 手牌深拷贝
+        _snapshot.handCards = new List<Card>();
+        foreach (var card in CardManager.Instance.cardInHand)
+        {
+            var copy = new Card();
+            copy.InitCard(card);
+            _snapshot.handCards.Add(copy);
+        }
+
+        // 牌堆深拷贝
+        _snapshot.deckCards = new List<Card>();
+        foreach (var card in CardManager.Instance.cardSet)
+        {
+            var copy = new Card();
+            copy.InitCard(card);
+            _snapshot.deckCards.Add(copy);
+        }
+
+        // DataManager 值拷贝
+        var dm = DataManager.Instance;
+        _snapshot.dataNature1 = dm.nature1;
+        _snapshot.dataNature2 = dm.nature2;
+        _snapshot.dataNature3 = dm.nature3;
+        _snapshot.dataMoney = dm.MoneyNum;
+        _snapshot.dataExtraCharm = dm.extraCharm;
+        _snapshot.dataEffect1 = dm.currNature1Effect;
+        _snapshot.dataEffect2 = dm.currNature2Effect;
+        _snapshot.dataEffect3 = dm.currNature3Effect;
+
+        Debug.Log($"[Snapshot] 已记录快照: 手牌{_snapshot.handCards.Count}张, 牌堆{_snapshot.deckCards.Count}张");
+    }
+
+    private void RestoreSnapshot()
+    {
+        if (!_hasSnapshot) return;
+
+        Debug.Log("[Snapshot] 回滚快照...");
+
+        // 恢复手牌
+        CardManager.Instance.cardInHand.Clear();
+        foreach (var card in _snapshot.handCards)
+        {
+            var restored = new Card();
+            restored.InitCard(card);
+            CardManager.Instance.cardInHand.Add(restored);
+        }
+
+        // 恢复牌堆
+        CardManager.Instance.cardSet.Clear();
+        foreach (var card in _snapshot.deckCards)
+        {
+            var restored = new Card();
+            restored.InitCard(card);
+            CardManager.Instance.cardSet.Add(restored);
+        }
+
+        // 恢复 DataManager
+        var dm = DataManager.Instance;
+        dm.nature1 = _snapshot.dataNature1;
+        dm.nature2 = _snapshot.dataNature2;
+        dm.nature3 = _snapshot.dataNature3;
+        dm.MoneyNum = _snapshot.dataMoney;
+        dm.extraCharm = _snapshot.dataExtraCharm;
+        dm.currNature1Effect = _snapshot.dataEffect1;
+        dm.currNature2Effect = _snapshot.dataEffect2;
+        dm.currNature3Effect = _snapshot.dataEffect3;
+
+        _hasSnapshot = false;
+
+        CardManager.Instance.NotifyDeckOrHandChanged();
+        if (PropertiesShow.Instance != null)
+            PropertiesShow.Instance.UpdatePropertiesShow();
+    }
+
+    // ===================== Chain Execution =====================
+
     private void StartExecutingNextChain()
     {
         if (_effectChainQueue.Count == 0)
         {
             _isExecutingChain = false;
-            
+            _hasSnapshot = false;
+
             if (PropertiesShow.Instance != null)
             {
                 PropertiesShow.Instance.UpdatePropertiesShow();
@@ -69,9 +180,26 @@ public sealed class CardEffectExecutor
     {
         if (_waitingForAsync) return;
 
+        // === 条件失败 → 回滚快照 ===
         if (_currentChainCard != null && _owner.IsConditionFailed(_currentChainCard))
         {
-            StartExecutingNextChain();
+            Debug.Log("[CardEffect] 检测到条件失败，执行回滚...");
+
+            // 快照在 BreakCard 之前拍摄，回滚自然恢复所有手牌和牌堆
+            RestoreSnapshot();
+
+            // 清空尚未执行的子效果链（如被拆卸牌的 OnBroken 效果）
+            _effectChainQueue.Clear();
+            _isExecutingChain = false;
+            _waitingForAsync = false;
+            _currentChainCard = null;
+            _currentChainEffects = null;
+            _currentEffectIndex = 0;
+
+            if (PropertiesShow.Instance != null)
+            {
+                PropertiesShow.Instance.UpdatePropertiesShow();
+            }
             return;
         }
 

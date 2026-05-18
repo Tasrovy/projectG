@@ -100,6 +100,12 @@ public class CardActionResolver : Singleton<CardActionResolver>
                 _pendingShouldAddToSet = false;
             }
 
+            // 快照必须在 BreakCard 之前，回滚时快照才能包含这张牌
+            if (CardEffect.Instance != null)
+            {
+                CardEffect.Instance.TakeSnapshot();
+            }
+
             CardManager.Instance.BreakCard(selectedCard);
             selectedCard.OnTrigger();
 

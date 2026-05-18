@@ -20,6 +20,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u521D\u59CB\u529F\u80FD\u724C"
     sale: 10
+    sell: 8
     made: 0
     broken: 0
     added: 2
@@ -36,6 +37,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u840C\u53D1\u65B0\u82BD"
     sale: 20
+    sell: 16
     made: 1
     broken: 0
     added: 0
@@ -52,6 +54,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u4E1B\u751F\u4E4B\u6001"
     sale: 20
+    sell: 16
     made: 0
     broken: 0
     added: 6
@@ -68,6 +71,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u53BB\u829C\u5B58\u83C1"
     sale: 20
+    sell: 16
     made: 0
     broken: 1
     added: 0
@@ -84,6 +88,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5208\u9664\u4FA7\u8513"
     sale: 20
+    sell: 16
     made: 0
     broken: 1
     added: 0
@@ -100,6 +105,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u4FEE\u679D\u6574\u5F62"
     sale: 20
+    sell: 16
     made: 0
     broken: 2
     added: 0
@@ -116,6 +122,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5149\u5408\u79EF\u7D2F"
     sale: 20
+    sell: 16
     made: 0
     broken: 0
     added: 0
@@ -132,6 +139,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u66F4\u65B0\u5DE5\u5177"
     sale: 0
+    sell: 0
     made: 2
     broken: 1
     added: 
@@ -149,6 +157,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u679D\u6761\u5206\u53C9"
     sale: 40
+    sell: 32
     made: 3
     broken: 0
     added: 0
@@ -165,6 +174,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5E7C\u679D\u521D\u5C55"
     sale: 40
+    sell: 32
     made: 2
     broken: 0
     added: 0
@@ -181,6 +191,7 @@ MonoBehaviour:
     nature3: 60
     name: "\u622A\u5E72\u84C4\u52BF"
     sale: 40
+    sell: 32
     made: 0
     broken: 5
     added: 0
@@ -197,6 +208,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u62D4\u8282\u6709\u58F0"
     sale: 40
+    sell: 32
     made: 0
     broken: 0
     added: 0
@@ -213,6 +225,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u51ED\u7A7A"
     sale: 40
+    sell: 32
     made: 0
     broken: 0
     added: 0
@@ -229,6 +242,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6625\u6765\u53D1\u679D"
     sale: 40
+    sell: 32
     made: 0
     broken: 0
     added: 10
@@ -245,6 +259,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6574\u51A0\u622A\u9876"
     sale: 40
+    sell: 32
     made: 0
     broken: 1
     added: 0
@@ -261,6 +276,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u4E00\u53F6\u77E5\u79CB"
     sale: 40
+    sell: 32
     made: 0
     broken: 0
     added: 0
@@ -277,6 +293,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u63D0\u53D6"
     sale: 80
+    sell: 64
     made: 
     broken: 
     added: 
@@ -293,6 +310,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u79FB\u82B1\u63A5\u6728"
     sale: 80
+    sell: 64
     made: 0
     broken: 0
     added: 0
@@ -309,6 +327,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u6293\u53D6"
     sale: 80
+    sell: 64
     made: 0
     broken: 0
     added: 0
@@ -325,6 +344,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5927\u5305\u88C5"
     sale: 80
+    sell: 64
     made: 
     broken: 
     added: 28
@@ -341,6 +361,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u9884\u652F\u672A\u6765"
     sale: 80
+    sell: 64
     made: 
     broken: 
     added: 
@@ -357,6 +378,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u8D85\u7EA7\u62FC\u88C5"
     sale: 80
+    sell: 64
     made: 6
     broken: 
     added: 
@@ -373,6 +395,7 @@ MonoBehaviour:
     nature3: 0
     name: "\u5927\u76F2\u76D2"
     sale: 80
+    sell: 64
     made: 
     broken: 
     added: 
@@ -381,4 +404,21 @@ MonoBehaviour:
     trigger: addRandomCard(1,2,3)
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    prompt: 
+  - id: 22222
+    dialog: 0
+    nature1: 0
+    nature2: 0
+    nature3: 0
+    name: 
+    sale: 0
+    sell: 0
+    made: 2
+    broken: 2
+    added: 
+    description: 
+    buff: 
+    trigger: 
+    nextTurn: 
+    text: 
     prompt: 
