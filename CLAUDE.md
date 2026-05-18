@@ -69,6 +69,25 @@ CardData (ScriptableObject from Excel)
 
 `ExcelLoader` uses `#if UNITY_EDITOR` to switch between Editor sync and runtime loading.
 
+### Planned: Save System
+
+Architecture decision (not yet implemented). Save system should use this structure:
+
+```
+[System.Serializable] SaveData (pure C# class, fields only)
+    ↑ DataManager holds instance internally, keeps existing Add()/Get() interface
+    ↑ Save() = JsonUtility.ToJson → File.WriteAllText to persistentDataPath
+    ↑ Load() = File.ReadAllText → JsonUtility.FromJson
+    ↑ Optional DefaultDataSO (ScriptableObject) for new-game initial values
+```
+
+**Key rules:**
+- `SaveData` is a plain `[System.Serializable]` class — no MonoBehaviour, no SO inheritance
+- `DataManager` stays as the intermediary; existing `DataManager.Instance.Add(id, num)` callers don't change
+- Save files go to `Application.persistentDataPath`, not project assets
+- `DefaultDataSO` (if created) only provides initial values on first-time / new game
+- Do NOT write runtime state directly to .asset files — they are read-only at runtime
+
 ## Current Branch: `tasrovy`
 
 Feature branch merging changes from `main` and `alpleateauh`. Current in-progress work adds `CardDetailUI` (long-press card detail) and `PromptItem`/`PromptItemSO` (tooltip system).

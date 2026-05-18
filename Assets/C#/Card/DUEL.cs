@@ -42,6 +42,7 @@ public class DUEL : Singleton<DUEL>
         endButton.gameObject.SetActive(true);
         Debug.Log("准备开始决斗");
         OnBeginDUEL?.Invoke();
+        CardManager.Instance.DrawCard(DayManager.Instance.daySO.dayDatas[DayManager.Instance.dayNumber].drawNum);
     }
 
     public void End()
