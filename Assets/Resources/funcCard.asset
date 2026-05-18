@@ -405,20 +405,3 @@ MonoBehaviour:
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
     prompt: 
-  - id: 22222
-    dialog: 0
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: 
-    sale: 0
-    sell: 0
-    made: 2
-    broken: 2
-    added: 
-    description: 
-    buff: 
-    trigger: 
-    nextTurn: 
-    text: 
-    prompt: 

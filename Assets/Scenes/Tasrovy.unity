@@ -485,10 +485,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardDatas: []
   giftCards: []
+  funcCards: []
   eventCards: []
   cardSet: []
   cardInHand: []
   consecutiveNonGiftCount: 0
+  consecutiveNonFuncCount: 0
   consecutiveNonEventCount: 0
   probRarity1: 0.7
   probRarity2: 0.2
@@ -580,9 +582,7 @@ MonoBehaviour:
   dayNumber: 0
   daySO: {fileID: 0}
   dayText: {fileID: 0}
-  startYear: 2026
-  startMonth: 5
-  startDay: 17
+  weekText: {fileID: 0}
 --- !u!114 &542249194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,6 +627,7 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 0
+    sell: 0
     made: 
     broken: 
     added: 
@@ -816,7 +817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1265c0d1492334ea3297264e737ed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardId: 11101
+  cardId: 22222
   posX: 0
   posY: 0
   multiple: 0
