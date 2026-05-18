@@ -37,7 +37,10 @@ public class PropertiesShow : MonoBehaviour
     private Text numText4_Legacy;
 #endregion
 
-    private TMP_Text targetText;
+    private TMP_Text selectTargetText;
+    private TMP_Text selectNumText;
+    private TMP_Text charmNumText;
+    private TMP_Text dayTimeText;
     private int selectedTargetType = 1;
 
     private void Awake()
@@ -52,10 +55,23 @@ public class PropertiesShow : MonoBehaviour
 
     private void InitializeTargetTextReference()
     {
-        Transform targetTransform = FindChildRecursive(transform, "target");
-        if (targetTransform == null) return;
+        Transform uiRoot = transform.parent != null ? transform.parent : transform;
 
-        targetText = targetTransform.GetComponent<TMP_Text>();
+        Transform selectTargetTransform = FindChildRecursive(uiRoot, "selectTarget");
+        if (selectTargetTransform != null)
+            selectTargetText = selectTargetTransform.GetComponent<TMP_Text>();
+
+        Transform selectNumTransform = FindChildRecursive(uiRoot, "selectNum");
+        if (selectNumTransform != null)
+            selectNumText = selectNumTransform.GetComponent<TMP_Text>();
+
+        Transform charmNumTransform = FindChildRecursive(uiRoot, "charmNum");
+        if (charmNumTransform != null)
+            charmNumText = charmNumTransform.GetComponent<TMP_Text>();
+
+        Transform dayTimeTransform = FindChildRecursive(uiRoot, "dayTime");
+        if (dayTimeTransform != null)
+            dayTimeText = dayTimeTransform.GetComponent<TMP_Text>();
     }
 
     /// <summary>
@@ -63,7 +79,7 @@ public class PropertiesShow : MonoBehaviour
     /// </summary>
     public void InitializeRandomTargetByEvent()
     {
-        if (targetText == null)
+        if (selectTargetText == null || selectNumText == null || charmNumText == null || dayTimeText == null)
         {
             InitializeTargetTextReference();
         }
@@ -125,8 +141,8 @@ public class PropertiesShow : MonoBehaviour
             }
         }
 
-        // 4. 获取 propIcon_4 下的元素
-        Transform prop4 = transform.Find("propIcon_4");
+        // 4. 获取 propIcon_4 下的元素（兼容其迁移到上级节点下的 money_charm 分支）
+        Transform prop4 = ResolveProp4Transform();
         if (prop4 != null)
         {
             slider4 = prop4.GetComponentInChildren<Slider>(true);
@@ -139,6 +155,34 @@ public class PropertiesShow : MonoBehaviour
                 numText4_Legacy = numTransform.GetComponent<Text>();
             }
         }
+        else
+        {
+            Debug.LogWarning("[PropertiesShow] 未找到 propIcon_4，请检查 UI 层级与命名。");
+        }
+    }
+
+    private Transform ResolveProp4Transform()
+    {
+        // 旧层级：脚本挂载节点的直接子物体
+        Transform prop4 = transform.Find("propIcon_4");
+        if (prop4 != null) return prop4;
+
+        // 新层级：脚本挂载节点的父节点 -> money_charm -> propIcon_4
+        if (transform.parent != null)
+        {
+            Transform moneyCharm = transform.parent.Find("money_charm");
+            if (moneyCharm != null)
+            {
+                prop4 = moneyCharm.Find("propIcon_4");
+                if (prop4 != null) return prop4;
+
+                prop4 = FindChildRecursive(moneyCharm, "propIcon_4");
+                if (prop4 != null) return prop4;
+            }
+        }
+
+        // 兜底：在当前节点下递归查找
+        return FindChildRecursive(transform, "propIcon_4");
     }
 
     private void OnEnable()
@@ -189,11 +233,19 @@ public class PropertiesShow : MonoBehaviour
         string n4Str = FormatValue(n4);
         if (numText4_TMP != null) numText4_TMP.text = n4Str;
         if (numText4_Legacy != null) numText4_Legacy.text = n4Str;
+
+        // 同步更新场景内所有金钱数值显示
+        UpdateMoney[] moneyUpdaters = FindObjectsOfType<UpdateMoney>(true);
+        foreach (UpdateMoney updater in moneyUpdaters)
+            updater.UpdateText();
     }
 
     private void RefreshTargetText()
     {
-        if (targetText == null) return;
+        if (selectTargetText == null || selectNumText == null || charmNumText == null || dayTimeText == null)
+        {
+            InitializeTargetTextReference();
+        }
 
         int targetType = selectedTargetType;
         if (DayManager.Instance != null && DayManager.Instance.TargetType >= 1 && DayManager.Instance.TargetType <= 4)
@@ -211,15 +263,36 @@ public class PropertiesShow : MonoBehaviour
             _ => "友情羁绊"
         };
 
-        string detailLine = BuildNextCheckDetailLine(targetType);
-        targetText.text = $"<size=18>攻略目标：{targetName}</size>\n<size=12>{detailLine}</size>";
+        if (selectTargetText != null)
+            selectTargetText.text = targetName;
+
+        int daysUntilCheck;
+        int targetValue;
+        int targetCharmValue;
+        if (TryGetNextCheckData(targetType, out daysUntilCheck, out targetValue, out targetCharmValue))
+        {
+            if (selectNumText != null) selectNumText.text = targetValue.ToString();
+            if (charmNumText != null) charmNumText.text = targetCharmValue.ToString();
+            if (dayTimeText != null) dayTimeText.text = $"下次检定：{daysUntilCheck}天";
+            Debug.Log($"[PropertiesShow] 距离下次检定：{daysUntilCheck}天，目标值：{targetValue}，魅力目标：{targetCharmValue}");
+        }
+        else
+        {
+            if (selectNumText != null) selectNumText.text = "--";
+            if (charmNumText != null) charmNumText.text = "--";
+            if (dayTimeText != null) dayTimeText.text = "下次检定：--天";
+        }
     }
 
-    private string BuildNextCheckDetailLine(int targetType)
+    private bool TryGetNextCheckData(int targetType, out int daysUntilCheck, out int targetValue, out int targetCharmValue)
     {
+        daysUntilCheck = 0;
+        targetValue = 0;
+        targetCharmValue = 0;
+
         if (DayManager.Instance == null || DayManager.Instance.daySO == null || DayManager.Instance.daySO.dayDatas == null)
         {
-            return "距离下次检定：--天，目标值：--";
+            return false;
         }
 
         List<DayData> dayDatas = DayManager.Instance.daySO.dayDatas;
@@ -237,12 +310,12 @@ public class PropertiesShow : MonoBehaviour
         }
 
         if (nextCheck == null)
-            return "距离下次检定：--天，目标值：--";
+            return false;
 
-        int daysUntilCheck = nextCheck.day - currentDay;
-        int targetValue = GetTargetValueByType(nextCheck, targetType);
-        Debug.Log($"[PropertiesShow] 距离下次检定：{daysUntilCheck}天，目标值：{targetValue}");
-        return $"距离下次检定：{daysUntilCheck}天，目标值：{targetValue}";
+        daysUntilCheck = nextCheck.day - currentDay;
+        targetValue = GetTargetValueByType(nextCheck, targetType);
+        targetCharmValue = nextCheck.targetCharm;
+        return true;
     }
 
     private int GetTargetValueByType(DayData dayData, int targetType)
