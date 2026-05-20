@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -145, y: 397}
+  m_AnchoredPosition: {x: -148, y: 402}
   m_SizeDelta: {x: 110, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3052338637599993147
@@ -109,7 +109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -145, y: 397}
+  m_AnchoredPosition: {x: -148, y: 402}
   m_SizeDelta: {x: 110, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &739653587419085220
@@ -608,7 +608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -145, y: 397}
+  m_AnchoredPosition: {x: -148, y: 402}
   m_SizeDelta: {x: 110, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7221208339991715350
@@ -879,13 +879,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: card_1
       objectReference: {fileID: 0}
+    - target: {fileID: 5231690871979963547, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1507301720, guid: 4812983a727a32d4187a80edcdcd8b00, type: 3}
     - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 418
       objectReference: {fileID: 0}
     - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 833
+      value: 720
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7703323483342826625, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_Text
@@ -1057,13 +1065,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: card_3
       objectReference: {fileID: 0}
+    - target: {fileID: 5231690871979963547, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1507301720, guid: 4812983a727a32d4187a80edcdcd8b00, type: 3}
     - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 418
       objectReference: {fileID: 0}
     - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 833
+      value: 720
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7703323483342826625, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_Text
@@ -1235,13 +1251,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: card_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5231690871979963547, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1507301720, guid: 4812983a727a32d4187a80edcdcd8b00, type: 3}
     - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 418
       objectReference: {fileID: 0}
     - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 833
+      value: 720
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759134466762139582, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7703323483342826625, guid: c5bfacc6ee2aacf4ca6a971f93b9494c, type: 3}
       propertyPath: m_Text

@@ -2307,7 +2307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &508756392
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3870,7 +3870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1080659265
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7331,10 +7331,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1080659265}
     m_Modifications:
-    - target: {fileID: 45766968597095232, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -32.999992
-      objectReference: {fileID: 0}
     - target: {fileID: 132780274660445156, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7415,77 +7411,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 514847483513031705, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -464
-      objectReference: {fileID: 0}
-    - target: {fileID: 874615555061778079, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 656.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 983248674472116859, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 417
-      objectReference: {fileID: 0}
-    - target: {fileID: 1272216026822864033, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 497
-      objectReference: {fileID: 0}
     - target: {fileID: 1511988495753341590, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 651184605}
-    - target: {fileID: 1829745812226456809, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 214
-      objectReference: {fileID: 0}
-    - target: {fileID: 3460738659799510543, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 642
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128998551984607386, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -32.999992
-      objectReference: {fileID: 0}
-    - target: {fileID: 4412588395617057195, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 417
-      objectReference: {fileID: 0}
     - target: {fileID: 4773816073194357808, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 651184605}
-    - target: {fileID: 5246920911636225277, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 301
-      objectReference: {fileID: 0}
     - target: {fileID: 5451335089492388709, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
       propertyPath: m_Name
       value: CardShop
-      objectReference: {fileID: 0}
-    - target: {fileID: 5878598454976489020, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 303.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6119778312532937174, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 642
-      objectReference: {fileID: 0}
-    - target: {fileID: 6242146638206868366, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -42.999992
-      objectReference: {fileID: 0}
-    - target: {fileID: 6934247936102296695, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 192
-      objectReference: {fileID: 0}
-    - target: {fileID: 7963566029800555379, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 192
-      objectReference: {fileID: 0}
-    - target: {fileID: 8882761665286219820, guid: fbcee97864a4b4f4c86eb292f52632c5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -61.299988
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
