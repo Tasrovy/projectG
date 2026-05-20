@@ -215,6 +215,49 @@ public class UIComponentExporter : EditorWindow
             sb.AppendLine($"{indent}  Interactable: {slider.interactable}");
         }
 
+        // ScrollRect (ScrollView 核心组件)
+        var scrollRect = obj.GetComponent<ScrollRect>();
+        if (scrollRect != null)
+        {
+            sb.AppendLine($"{indent}- ScrollRect:");
+            sb.AppendLine($"{indent}  Horizontal: {scrollRect.horizontal}  Vertical: {scrollRect.vertical}");
+            sb.AppendLine($"{indent}  Movement Type: {scrollRect.movementType}  Inertia: {scrollRect.inertia}");
+            sb.AppendLine($"{indent}  Elasticity: {scrollRect.elasticity}  Deceleration Rate: {scrollRect.decelerationRate}");
+            sb.AppendLine($"{indent}  Scroll Sensitivity: {scrollRect.scrollSensitivity}");
+            sb.AppendLine($"{indent}  Content: {(scrollRect.content != null ? scrollRect.content.gameObject.name : "None")}");
+            sb.AppendLine($"{indent}  Viewport: {(scrollRect.viewport != null ? scrollRect.viewport.gameObject.name : "None")}");
+            sb.AppendLine($"{indent}  Horizontal Scrollbar: {(scrollRect.horizontalScrollbar != null ? scrollRect.horizontalScrollbar.gameObject.name : "None")}");
+            sb.AppendLine($"{indent}  Vertical Scrollbar: {(scrollRect.verticalScrollbar != null ? scrollRect.verticalScrollbar.gameObject.name : "None")}");
+        }
+
+        // Scrollbar
+        var scrollbar = obj.GetComponent<Scrollbar>();
+        if (scrollbar != null)
+        {
+            sb.AppendLine($"{indent}- Scrollbar:");
+            sb.AppendLine($"{indent}  Direction: {scrollbar.direction}");
+            sb.AppendLine($"{indent}  Value: {scrollbar.value}  Size: {scrollbar.size}  Steps: {scrollbar.numberOfSteps}");
+            sb.AppendLine($"{indent}  Interactable: {scrollbar.interactable}");
+            sb.AppendLine($"{indent}  Handle Rect: {(scrollbar.handleRect != null ? scrollbar.handleRect.gameObject.name : "None")}");
+        }
+
+        // Mask
+        var mask = obj.GetComponent<Mask>();
+        if (mask != null)
+        {
+            sb.AppendLine($"{indent}- Mask:");
+            sb.AppendLine($"{indent}  Show Mask Graphic: {mask.showMaskGraphic}");
+        }
+
+        // RectMask2D
+        var rectMask2D = obj.GetComponent<RectMask2D>();
+        if (rectMask2D != null)
+        {
+            sb.AppendLine($"{indent}- RectMask2D:");
+            sb.AppendLine($"{indent}  Padding: {rectMask2D.padding}");
+            sb.AppendLine($"{indent}  Softness: {rectMask2D.softness}");
+        }
+
         // Layout Groups
         var horizontal = obj.GetComponent<HorizontalLayoutGroup>();
         if (horizontal != null) sb.AppendLine($"{indent}- HorizontalLayoutGroup: Spacing={horizontal.spacing}");
@@ -231,6 +274,16 @@ public class UIComponentExporter : EditorWindow
         {
             sb.AppendLine($"{indent}- ContentSizeFitter:");
             sb.AppendLine($"{indent}  Horizontal Fit: {contentSizeFitter.horizontalFit}  Vertical Fit: {contentSizeFitter.verticalFit}");
+        }
+
+        // LayoutElement
+        var layoutElement = obj.GetComponent<LayoutElement>();
+        if (layoutElement != null)
+        {
+            sb.AppendLine($"{indent}- LayoutElement:");
+            sb.AppendLine($"{indent}  Ignore Layout: {layoutElement.ignoreLayout}");
+            sb.AppendLine($"{indent}  Min: ({layoutElement.minWidth}, {layoutElement.minHeight})  Preferred: ({layoutElement.preferredWidth}, {layoutElement.preferredHeight})");
+            sb.AppendLine($"{indent}  Flexible: ({layoutElement.flexibleWidth}, {layoutElement.flexibleHeight})");
         }
 
         return sb.ToString();
