@@ -1,8 +1,6 @@
 ﻿title: start0_1
 ---
-
 <<play_bgm "littleSad_黄昏分岔口">>
-<<play_whitenoise "bgNew_fan2">>
 <<set_background "家-夜晚">>
 
 //<<set_character_person Character "蒂娜" normal>>
@@ -12,8 +10,11 @@
 就像被时间描黑的画纸一样，你不知道上面曾经画过什么，时间描的越久，你就越不能和曾经的自己共情。"
 但这次我想要记住，我想要明白，我想要再次摸到那可能早已随着无意识地抛弃而一同离我远去的东西。
 "或许这也是我开始写日记的理由，我想把以前我注意到，却没抓住的东西......"
+<<stop_bgm>>
 <<set_background "纯黑">>
 "重新捡回来......"
+<<play_bgm "daily_日常微风3">>
+<<play_whitenoise "bgNew_fan2">>
 <<set_background "家-白天">>
 <<set_character_person Player {$MY_NAME} normal>>
 {$MY_NAME}:"嗯......哈啊——"
@@ -21,7 +22,7 @@
 "随着林奈伸懒腰的一声哈欠，床头的闹钟也紧跟着开始大喊大叫，然后被落下来的手敲晕过去"
 
 "即便对于林奈来说，今天也算是比较特别的日子。"
-<<set_character_size Player 2 0.28 0.2>>
+<<set_character_size Player 2 0.28 0.6>>
 
 {$MY_NAME}:"呼....哼......嗯~"
 
@@ -30,7 +31,7 @@
 {$MY_NAME}:"已经是早上了啊......"
 
 "望着挂在衣架上的校服，林奈轻轻地笑了一下，睡衣的扣子随后被解开，崭新的校园生活就要从今天开始了。"
-<<set_character_person Player {$MY_NAME} happy>>
+<<set_character_sprite {$MY_NAME} happy>>
 {$MY_NAME}:"嘿~咻！嗯......都准备好了。"
 
 {$MY_NAME}:"不知道，新学校会是什么样的。"
@@ -40,13 +41,13 @@
 "爸爸走之前说，开学第一天，要展现出自己最青春最活泼最热情的一面......"
 
 "用林奈那天晚上的总结来回答的话，那就只有三个字。"
-<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"糟透了！"
-<<set_character_person Player {$MY_NAME} dislike>>
+<<set_character_sprite {$MY_NAME} dislike>>
 {$MY_NAME}:"为什么我非要戴着这个东西啊......看着好傻......"
 
 "即便如此，林奈还是一边梳理头发，很认真地去调整蝴蝶结的位置，好让这为数不多的装饰不那么像是受潮拖把长出来的蘑菇。"
-<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"嗯，准备好了。"
 
 "林奈放下梳子，最后打量了几遍镜子里的自己，终于对自己的状态放下心来，推门出去。"
@@ -64,7 +65,7 @@
 <<set_background "电车-内">>
 <<play_whitenoise "bgNew_trainOutside">>
 "这样想着，林奈走进了打开的电车门，看着空旷无人的电车，她找了一个最不引人注目的角落坐下，抬头望着窗外的城市。"
-<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"......"
 
 {$MY_NAME}:"和以前的上学路线不一样了呢。"
@@ -72,17 +73,17 @@
 "高中，也意味着以后上学路线的更改，一直以来的习惯让林奈略微有些恍惚，在看见窗外的站台名称之后，她下意识地想要站起来。"
 
 "但清醒的脑袋没有让她开始这个动作，她安稳地望了一眼打开的车门和走进来的其他人，等待电车的运作。"
-<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 <<set_character_size Player 2 0.28 0.2>>
 {$MY_NAME}:"......两个月前就已经和初中同学说过再见了呢。"
 
 "要说怀念她们，倒也没有，但如果说自己没有留恋和她们的生活，听起来就太假了。"
-<<set_character_person Player {$MY_NAME} saying>>
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"她们都去了哪里来着？"
 
 "很遗憾，林奈当时并没有过问，只从细枝末节的交谈里听到了个别人的意愿，直白来说，她根本不知道谁都去了哪里。"
-<<set_character_person Player {$MY_NAME} normal>>
-<<set_character_size Player 3 0.2 0.4>>
+<<set_character_sprite {$MY_NAME} normal>>
+<<set_character_size Player 3 0.24 0.4>>
 {$MY_NAME}:"算了，不重要了..."
 
 {$MY_NAME}:"反正和她们......也没有很要好。"
@@ -95,63 +96,63 @@
 
 "就这样各自安好吧，她现在只要安静地等待电车到下一站，然后去上学——至于父母对她'一定要交到朋友'的要求......暂时先搁置吧"
 
-<<set_character_person Character "蒂娜" normal>>
+
 蒂娜:"只不过事情没有那么顺利，我是说，安静地等待下一站。"
 
-<<set_character_person Player {$MY_NAME} doubt>>
+<<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}:"唉？"
 <<set_character_person Character "蒂娜" smile>>
 蒂娜:"呦，你好啊！"
 
 "随着电车关门继续前进，穿着同样校服的学生也出现在了这趟车上，这并不是什么特别的事情。"
-<<set_character_size Character 3 0.2 0.2>>
+<<set_character_size Character 3 0.24 0.2>>
 蒂娜:"但是，突然有女孩子上来搭话就很特别了，对吧~"
-<<set_character_person Player {$MY_NAME} doubt>>
+<<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}:"......你在，跟我说话吗？"
-<<set_character_person Character "蒂娜" happy>>
+<<set_character_sprite "蒂娜" saying>>
 <<set_character_size Character 2 0.3 0.5>>
 蒂娜:"啊！没错！你好，我是蒂娜，我们要去同一所学校对吧？"
-<<set_character_person Player {$MY_NAME} saying>>
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"从校服看是这样没错......"
-<<set_character_person Character "蒂娜" smile>>
-<<set_character_shake "蒂娜" uo_down>>
+<<set_character_sprite "蒂娜" smile>>
+<<set_character_shake "蒂娜" up_down>>
 蒂娜:"嗯哼！很高兴认识你！同学！再来一遍，我的名字是蒂娜！那么事不宜迟！"
-<<set_character_person Player {$MY_NAME} doubt>>
+<<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}:"事不宜迟？什么意思？"
 <<set_character_move Character x -20 0.4>>
 "随着一声'咔嚓'，相机拍下了比着剪刀手的蒂娜，和正一脸茫然看着她的林奈。"
-<<set_character_person Character "蒂娜" happy>>
+<<set_character_sprite "蒂娜" happy>>
 蒂娜:"嗯~看起来还不错！新学校第一次交朋友，成功！"
-<<set_character_size Character 3 0.2 0.6>>
+<<set_character_size Character 3 0.24 0.6>>
 {$MY_NAME}:"......"
 "单单用疑惑是没办法形容林奈此时的心情的，她只是呆呆地看着蒂娜，完全忘记了自己之前在思考什么。"
-<<set_character_person Character "蒂娜" normal>>
+<<set_character_sprite "蒂娜" normal>>
 蒂娜:"啊！抱歉，我忘了......你叫什么名字啊~"
-<<set_character_person Player {$MY_NAME} saying>>
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"我...我叫林奈，蒂娜同学你这是......"
-<<set_character_person Character "蒂娜" smile>>
+<<set_character_sprite "蒂娜" smile>>
 <<set_character_shake "蒂娜" left_right>>
 蒂娜:"哇哦！居然已经开始叫我蒂娜同学了吗？看来今天是我的幸运日呢！"
 
 "蒂娜说完，从口袋里拿出一块糖来,递给林奈。"
-<<set_character_person Character "蒂娜" happy>>
+<<set_character_sprite "蒂娜" happy>>
 <<set_character_size Character 2 0.3 0.5>>
 蒂娜:"蓝莓味的！希望我们在学校也能每天见面！"
 
 "林奈犹豫了一会儿，接过那一粒蓝色包装的糖。"
-<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"......谢谢？"
-<<set_character_person Character "蒂娜" doubt>>
+<<set_character_sprite "蒂娜" doubt>>
 蒂娜:"不用道谢啦~我还是第一次遇到......呃，你叫什么名字来着？"
-<<set_character_person Player {$MY_NAME} saying>>
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"......林奈......"
-<<set_character_person Character "蒂娜" smile>>
+<<set_character_sprite "蒂娜" smile>>
 蒂娜:"我还是第一次遇见林奈同学你这样安静的人呢！那，学校见啦！"
-<<set_character_person Player {$MY_NAME} doubt>>
+<<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}:"也没有......吧"
 
 "林奈的话还没说出口，蒂娜就已经朝着下一节车厢跑去了，她望着那个活泼热情的背影，陷入了沉默。"
-<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"爸爸说的就是蒂娜这样的人吧......"
 
 <<set_character_size Character 2 0.3 0.6>>
@@ -164,6 +165,9 @@
 
 "短暂的停留之后，林奈朝着学校的方向走去。"
 
-
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<stop_bgm>>
+<<jump start0_2>>
 
 ===

@@ -1,0 +1,233 @@
+﻿title: start1_1
+---
+<<play_bgm "daily_日常微风2">>
+<<set_background "教室-白天">>
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_person Character "蒂娜" smile>>
+
+"一切的源头都在今天，只有在事后想起才会这样觉得，"
+
+"'啊，就是从那天开始的'，产生了这样的想法，就会忍不住把过去的一切都蒙上一层独属于故事的色彩。"
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"林奈还真是安静呢~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"...怎么了？"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"没什么，只是大家都吵吵嚷嚷的，奈奈却一句话都不跟我说呢~"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......你很希望我跟你说话吗？"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"当然！我们可是同桌唉！其他人都在交流感情，奈奈亲却对我这么冷淡~"
+
+"蒂娜表现的相当悲伤......但是林奈能看见她脸上半滴泪都没有。"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"你真是个戏精...我不喜欢太吵，也不喜欢说那么多闲话，就是这样。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"奈奈亲还真是照顾我呢~"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......？什么意思？"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"奈奈亲没有不理我，而且很细致的解释原因，我感觉有被安慰到哦~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......"
+
+"真是完全理解不了的脑回路...她对别人也是这样的吗？"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"说起来除了看书，奈奈亲难道没有别的爱好吗？"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"乒乓球，不是告诉过你吗？"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"不是那种啦，是一些平时就会做就能做的小爱好，比如....随笔，画画什么的？"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"我觉得你的爱好就是没完没了地问乱七八糟的问题。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"呃......这样说也没错啦，那奈奈亲呢？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......"
+<<set_character_size Player 2 0.3 1>>
+{$MY_NAME}:"这个，给你。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"唉？"
+
+"一只小巧的千纸鹤被林奈递到蒂娜的手里，看起来又白又干净，摸起来也很光滑。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"就是这样，你不许告诉别人。"
+
+<<set_character_sprite "蒂娜" normal>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"这样......"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"明白了！"
+
+"林奈看见蒂娜笑的相当开心，嘴角也忍不住勾起一点，但随后又压了回去。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"毕竟并不是什么很有用的爱好......"
+
+"林奈喃喃自语，突然被戳了下胳膊。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"林奈？"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"啊！"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"我在它脖子上写了名字哦！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"...啊，以后它就是你的了。"
+
+"林奈还以为蒂娜听到了，但蒂娜只是给她看上面的名字，松了一口气。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"林奈喜欢的，应该不止折纸吧？"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......？那当然，你想说什么？"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"我之前也说过吧，我喜欢收集一些小玩意~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"嗯，我记得。"
+
+{$MY_NAME}:"所以你的意思是？"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"下次我也送给奈奈亲些东西吧！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......我就不必了，千纸鹤也不是什么贵重的东西......"
+<<set_character_size Character 3 0.24 1>>
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"才不是贵不贵的问题！......总之，林奈就等我的好消息吧~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"我真的不需要......"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"为什么？"
+<<set_character_size Player 3 0.24 0.6>>
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"......不要再问了！"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......你就当是我的秘密，明白了吗？"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"真遗憾呢......我还以为能立刻成为奈奈亲最好的朋友呢....."
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"如果按数量算，你是我迄今为止唯一一个朋友......"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" left_right>>
+蒂娜:"真的？！奈奈亲为了我甚至都不去交朋友了吗？！好感动~"
+
+<<set_character_sprite {$MY_NAME} angry>>
+{$MY_NAME}:"胡说什么呢！我才不是......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"既然这样的话，可不可以......再给我一只千纸鹤？"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"嗯？为什么？"
+
+<<set_character_sprite "蒂娜" cry>>
+蒂娜:"白纸还是有点脆弱...不是吗？"
+
+"随后，蒂娜把一个脖子被撕开口子的千纸鹤递了过来。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"可以是可以......."
+
+{$MY_NAME}:"但是很遗憾，纸已经用完了。"
+
+<<set_character_sprite "蒂娜" cry>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"唉？！不是吧！"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"嗯哼，我这次就只有那么两张，这张被你撕坏的话，那就没有了。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"那......那奈奈亲有什么办法吗？"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"我能有什么办法...千纸鹤而已，下次我再折给你不就行了？"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"真的吗奈奈亲？！"
+<<set_character_size Player 2 0.3 1>>
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"我保证......"
+
+<<set_character_sprite "蒂娜" normal>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"......但是，我还是想修好这只......"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"真拿你没办法......"
+
+"林奈本来打算把之前折的另一只千纸鹤拿出来，但听到蒂娜这句话之后又收了手，转而去口袋里拿了别的东西。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"奈奈亲？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"那就只能用这个了......"
+
+"林奈把一张创可贴打开，撕掉上面的纸，像是包扎伤口一样粘住千纸鹤的脖子。"
+
+"和常用的创可贴不太一样的是，这张是蓝色的，带着企鹅图案的创可贴。"
+<<set_character_sprite {$MY_NAME} saying>>
+<<set_character_size Player 3 0.24 0.6>>
+
+{$MY_NAME}:"用一张就少一张。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"呃......明白？"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"怎么突然哑巴了？"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"......因为"
+
+<<set_character_sprite "蒂娜" smile>>
+<<set_character_size Character 3 0.24 1>>
+蒂娜:"因为奈奈亲很可爱~"
+
+<<set_character_sprite {$MY_NAME} angry>>
+<<set_character_shake {$MY_NAME} up_down>>
+{$MY_NAME}:"说什么呢！"
+
+"不知道为什么，被她夸奖的时候背后会有一股恶寒，明明被夸奖应该感谢的，可她就是忍不住反驳。"
+
+"蒂娜的千纸鹤被修好了，所以她小心翼翼地收了起来，脸上不知怎的挂着幸福的微笑，林奈忍不住偷瞄了一眼，然后把那只没送出的千纸鹤藏得更深了。"
+
+<<stop_bgm>>
+<<jump start1_1>>
+===
+
