@@ -2563,7 +2563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &660583575
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7205,11 +7205,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5376814038218683473, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 7293114627776184083, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_Name
       value: talk
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293114627776184083, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7524850400334910501, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
