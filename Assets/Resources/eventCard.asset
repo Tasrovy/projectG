@@ -18,13 +18,13 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 18
-    name: "\u4E00\u8D77\u6253\u4E52\u4E53\u7403\u5427"
+    name: "\u4E52\u4E53\u7403\u521D\u7EA7\u8BAD\u7EC3"
     sale: 30
     sell: 24
     made: 
     broken: 
     added: 
-    description: "<color=grey><b>\u666E\u901A</b></color> \u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9"
+    description: "<color=grey><b>\u666E\u901A</b></color>  \u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9"
     buff: 
     trigger: addNatureAtSum(30,3);triggerEventDialogue(event001)
     nextTurn: 
@@ -35,13 +35,13 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 20
-    name: "\u4E50\u961Fjam"
+    name: "\u4E00\u8D77\u624B\u5DE5"
     sale: 60
     sell: 48
     made: 
     broken: 
     added: 
-    description: "<color=blue><b>\u7F55\u89C1</b></color> \u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u534750%"
     buff: 
     trigger: addNatureAtSum(30,3);changeProperty(1.5);triggerEventDialogue(event002)
     nextTurn: 
@@ -52,13 +52,13 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 28
-    name: "\u8F85\u5BFC\u4F5C\u4E1A"
+    name: "\u4E52\u4E53\u7403\u9AD8\u7EA7\u8BAD\u7EC3"
     sale: 60
     sell: 48
     made: 
     broken: 
     added: 
-    description: "<color=blue><b>\u7F55\u89C1</b></color> \u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u5C5E\u6027\u4E09\u63D0\u5347{nature3}\u70B9\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u529F\u80FD\u724C"
     buff: 
     trigger: addRandomCard(2,1,1);triggerEventDialogue(event001)
     nextTurn: 
@@ -69,15 +69,15 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: livehouse
+    name: "\u73A9\u97F3\u4E50"
     sale: 120
     sell: 96
     made: 
     broken: 
     added: 
-    description: "<color=yellow><b>\u73CD\u8D35</b></color> \u8482\u5A1C\u83B7\u5F97\u5C5E\u6027\u4E09\uFF08\u8482\u5A1C\u5C5E\u6027\u4E00/2\uFF09\u70B9"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color>  \u8482\u5A1C\u83B7\u5F97\u5C5E\u6027\u4E09\uFF08\u8482\u5A1C\u5C5E\u6027\u4E00/2\uFF09\u70B9"
     buff: 
-    trigger: addNatureByOther(3,1);triggerEventDialogue(event001)
+    trigger: addNatureByOther(1,3);triggerEventDialogue(event001)
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
     prompt: 4

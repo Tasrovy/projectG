@@ -4607,14 +4607,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardId: 21007
+  man: {fileID: 0}
   posX: 0
   posY: 0
   multiple: 0
   lastTime: 0
-  objectName: 
-  size: 0
+  objectName: Player
+  size: 1
   Ypoint: 0
   chaLastTime: 0
+  moveObjectName: Player
+  axis: x
+  moveDistance: 0
+  movetime: 0
 --- !u!4 &1573210550
 Transform:
   m_ObjectHideFlags: 0
@@ -4664,7 +4669,7 @@ MonoBehaviour:
     value: 2
   - target: {fileID: 1350448911}
     fieldName: portraitSizeType2Scale
-    value: 1.8
+    value: 2
   - target: {fileID: 1350448911}
     fieldName: portraitSizeType3Scale
     value: 2.6
@@ -7203,6 +7208,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[1].characterName
+      value: "\u8482\u5A1C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].characterName
+      value: "\u690D\u7269\u5B66\u5BB6"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3213edbc5ca70f449eaa9aad3752415, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3213edbc5ca70f449eaa9aad3752415, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3213edbc5ca70f449eaa9aad3752415, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3213edbc5ca70f449eaa9aad3752415, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3213edbc5ca70f449eaa9aad3752415, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[2].emotionSprites.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a3213edbc5ca70f449eaa9aad3752415, type: 3}
     - target: {fileID: 5376814038218683473, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -7211,10 +7256,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: talk
       objectReference: {fileID: 0}
+    - target: {fileID: 7346489942790606340, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7346489942790606340, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4
+      objectReference: {fileID: 0}
     - target: {fileID: 7524850400334910501, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 651184605}
+    - target: {fileID: 8779666436261372997, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779666436261372997, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

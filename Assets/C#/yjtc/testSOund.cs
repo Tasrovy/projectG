@@ -6,18 +6,25 @@ public class testSOund : MonoBehaviour
 {
 
     public int cardId;
+    public GameObject man;
 
-    [Header("测试摄像机放大功能")]
+    [Header("测试摄像机放大功能  点击z测试")]
     public float posX;
     public float posY;
     public float multiple;
     public float lastTime;
 
-    [Header("测试角色大小功能")]
+    [Header("测试角色大小功能 点击x测试")]
     public string objectName;
     public int size;
     public float Ypoint;
     public float chaLastTime;
+    [Header("测试角色移动功能 点击q测试")]
+    public string moveObjectName;
+    public string axis;
+    public float moveDistance;
+    public float movetime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +56,12 @@ public class testSOund : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.X))
         {
             CharacterControl.SetCharacterSizeStatic(objectName,size,Ypoint,chaLastTime);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+
+            CharacterControl.SetCharacterMoveStatic(moveObjectName, axis, moveDistance, movetime);
         }
     }
 }

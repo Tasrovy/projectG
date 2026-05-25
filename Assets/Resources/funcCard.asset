@@ -18,119 +18,119 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u521D\u59CB\u529F\u80FD\u724C"
+    name: "\u6F06\u7B14"
     sale: 10
     sell: 8
     made: 0
     broken: 0
     added: 2
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n\u7F8E\u5316{added}"
+    description: "<color=grey><b>\u666E\u901A</b></color> \u7F8E\u5316{added}"
     buff: 
     trigger: 
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u7ED8\u5236\u5DE5\u5177\uFF0C\u53EF\u4EE5\u8BA9\u7269\u54C1\u66F4\u7F8E\u89C2"
     prompt: 3
   - id: 21001
     dialog: 5
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u840C\u53D1\u65B0\u82BD"
+    name: "DIY\u5C0F\u5C4B\u96F6\u4EF6\u5207\u5272\u677F"
     sale: 20
     sell: 16
     made: 1
     broken: 0
     added: 0
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n \u5236\u9020{made}\uFF0C\u4E5F\u5C31\u662F\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u5236\u9020\u7684\u724C"
+    description: "<color=grey><b>\u666E\u901A</b></color>  \u5236\u9020{made}\uFF0C\u4E5F\u5C31\u662F\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u5236\u9020\u7684\u724C"
     buff: 
     trigger: shake(1,0.2)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u5370\u6709\u7CBE\u786E\u5230\u6BEB\u7C73\u7684\u7F51\u683C\u548C\u89D2\u5EA6\uFF0C\u677F\u4E0A\u7684\u5C0F\u6728\u6761\u518D\u4E5F\u4E0D\u4F1A\u5207\u6B6A\u4E86\u3002"
     prompt: 1
   - id: 21002
     dialog: 11
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u4E1B\u751F\u4E4B\u6001"
+    name: "\u8367\u5149\u591C\u5149\u6C99"
     sale: 20
     sell: 16
     made: 0
     broken: 0
     added: 6
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n \u7F8E\u5316{added}"
+    description: "<color=grey><b>\u666E\u901A</b></color>  \u7F8E\u5316{added}"
     buff: 
     trigger: 
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u53EF\u4EE5\u8BA9\u5904\u7406\u540E\u7684\u7269\u54C1\u95EA\u95EA\u53D1\u5149"
     prompt: 3
   - id: 21003
     dialog: 9
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u53BB\u829C\u5B58\u83C1"
+    name: "\u64AC\u7247\u5957\u88C5"
     sale: 20
     sell: 16
     made: 0
     broken: 1
     added: 0
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n \u62C6\u5378{broken}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u7F55\u89C1\u793C\u7269\u5361"
+    description: "<color=grey><b>\u666E\u901A</b></color>  \u62C6\u5378{broken}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u7F55\u89C1\u793C\u7269\u5361"
     buff: 
     trigger: addRandomCard(1,1,2);magnify(0.2)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u5851\u6599\u5236\u6210\u7684\u5404\u79CD\u8584\u7247\uFF0C\u53EF\u4EE5\u7528\u6765\u64AC\u52A8\u5404\u79CD\u7269\u54C1\u7684\u5916\u58F3"
     prompt: 2
   - id: 21004
     dialog: 8
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u5208\u9664\u4FA7\u8513"
+    name: "\u7BA1\u94B3\u6273\u624B"
     sale: 20
     sell: 16
     made: 0
     broken: 1
     added: 0
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n \u62C6\u5378{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E09\u63D0\u534734\u70B9"
+    description: "<color=grey><b>\u666E\u901A</b></color>  \u62C6\u5378{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E09\u63D0\u534734\u70B9"
     buff: 
     trigger: addNatureAtSum(34,2)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u5F62\u72B6\u5947\u7279\u7684\u6273\u624B\uFF0C\u66F4\u6613\u4E8E\u4F7F\u7528"
     prompt: 2
   - id: 21005
     dialog: 8
     nature1: 32
     nature2: 0
     nature3: 0
-    name: "\u4FEE\u679D\u6574\u5F62"
+    name: "\u70ED\u98CE\u67AA"
     sale: 20
     sell: 16
     made: 0
     broken: 2
     added: 0
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n \u62C6\u5378{broken}\uFF0C\u8482\u5A1C\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
+    description: "<color=grey><b>\u666E\u901A</b></color>  \u62C6\u5378{broken}\uFF0C\u8482\u5A1C\u7684\u7684\u5C5E\u6027\u4E00\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: 
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u80FD\u7CBE\u51C6\u5439\u51FA\u9AD8\u6E29\u6C14\u6D41\uFF0C\u8F6F\u5316\u710A\u70B9\u6216\u8BA9\u4E0D\u5E72\u80F6\u6807\u7B7E\u5B8C\u7F8E\u6495\u4E0B\u3002"
     prompt: 2
   - id: 21006
     dialog: 7
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u5149\u5408\u79EF\u7D2F"
+    name: "\u9A6C\u514B\u7B14"
     sale: 20
     sell: 16
     made: 0
     broken: 0
     added: 0
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n \u7F8E\u5316\uFF0C\u5C06\u5361\u4E2D\u6570\u503C\u4E0D\u8DB314\u7684\u90E8\u5206\u52A0\u6210\u523014"
+    description: "<color=grey><b>\u666E\u901A</b></color>  \u7F8E\u5316\uFF0C\u5C06\u5361\u4E2D\u6570\u503C\u4E0D\u8DB314\u7684\u90E8\u5206\u52A0\u6210\u523014"
     buff: 
     trigger: beAddedTo(14);shake(1,0.2)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u7ED8\u5236\u795E\u5668"
     prompt: 3
   - id: 21007
     dialog: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
     made: 2
     broken: 1
     added: 
-    description: "<color=grey><b>\u666E\u901A</b></color>\\n\u5236\u9020{made}\uFF0C
+    description: "<color=grey><b>\u666E\u901A</b></color> \u5236\u9020{made}\uFF0C
       \u62C6\u5378{broken}"
     buff: 
     trigger: 
@@ -155,69 +155,69 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u679D\u6761\u5206\u53C9"
+    name: "\u70ED\u7194\u80F6\u67AA"
     sale: 40
     sell: 32
     made: 3
     broken: 0
     added: 0
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n\u5236\u9020{made}\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u5236\u9020\u7684\u724C"
+    description: "<color=blue><b>\u7F55\u89C1</b></color> \u5236\u9020{made}\uFF0C\u4E0B\u56DE\u5408\u83B7\u5F97\u4F60\u5236\u9020\u7684\u724C"
     buff: 
     trigger: 
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u5FEB\u901F\u7C98\u5408\u5C0F\u7269\u4EF6\u7684\u795E\u5668"
     prompt: 1
   - id: 22002
     dialog: 6
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u5E7C\u679D\u521D\u5C55"
+    name: "\u91D1\u5C5E\u51B2\u538B\u6A21\u5177"
     sale: 40
     sell: 32
     made: 2
     broken: 0
     added: 0
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u5236\u9020{made}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u5C5E\u6027\u5361"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u5236\u9020{made}\uFF0C\u672C\u56DE\u5408\u968F\u673A\u83B7\u5F97\u4E00\u5F20\u666E\u901A\u5C5E\u6027\u5361"
     buff: 
     trigger: addRandomCard(1,1,1);shake(1,0.2)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u80FD\u628A\u8584\u91D1\u5C5E\u7247\u538B\u51FA\u82B1\u7EB9\u6216\u5B57\u6BCD\uFF0C\u6572\u6253\u7684\u58F0\u97F3\u5F88\u6709\u8282\u594F\u611F\u3002"
     prompt: 1
   - id: 22003
     dialog: 6
     nature1: 70
     nature2: 0
     nature3: 60
-    name: "\u622A\u5E72\u84C4\u52BF"
+    name: "\u7CBE\u5BC6\u954A\u5B50\u5957\u88C5"
     sale: 40
     sell: 32
     made: 0
     broken: 5
     added: 0
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u62C6\u5378{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u62C6\u5378{broken}\uFF0C\u8482\u5A1C\u7684\u5C5E\u6027\u4E00\uFF0C\u5C5E\u6027\u4E09\u63D0\u5347{nature1}\u70B9"
     buff: 
     trigger: shake(1,0.2)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
-    prompt: 4
+    text: "\u5F2F\u5934\u3001\u76F4\u5934\u3001\u5E73\u53E3\u3001\u5C16\u5634\u2026\u2026\u62C6\u89E3\u7EC6\u5FAE\u96F6\u4EF6\u65F6\u7EDD\u4E0D\u8BA9\u5B83\u5F39\u98DE\u3002"
+    prompt: 2
   - id: 22004
     dialog: 7
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u62D4\u8282\u6709\u58F0"
+    name: "\u5F69\u8272\u7535\u5316\u94DD\u70EB\u5370\u7B94"
     sale: 40
     sell: 32
     made: 0
     broken: 0
     added: 0
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u82E5\u5361\u7EC4\u4E2D\u6709\u4E09\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u7F8E\u531640\uFF0C\u5426\u5219\u7F8E\u53166"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u82E5\u5361\u7EC4\u4E2D\u6709\u4E09\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u7F8E\u531640\uFF0C\u5426\u5219\u7F8E\u53166"
     buff: 
     trigger: addWithSame(3,40,5);magnify(0.3)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
-    prompt: 4
+    text: "\u7528\u52A0\u70ED\u7684\u94DC\u7AE0\u538B\u4E00\u4E0B\uFF0C\u95EA\u4EAE\u7684\u956D\u5C04\u56FE\u6848\u5C31\u4F1A\u70D9\u5370\u4E0A\u53BB"
+    prompt: 3
   - id: 22005
     dialog: 12
     nature1: 0
@@ -229,11 +229,11 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u82E5\u624B\u4E2D\u6CA1\u6709\u793C\u7269\u724C\uFF0C\u5219\u968F\u673A\u83B7\u5F97\u4E24\u4E2A\u7F55\u89C1\u793C\u7269\u5361"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u82E5\u624B\u4E2D\u6CA1\u6709\u793C\u7269\u724C\uFF0C\u5219\u968F\u673A\u83B7\u5F97\u4E24\u4E2A\u7F55\u89C1\u793C\u7269\u5361"
     buff: 
     trigger: addRandomCardIfNot(1,2,2)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u4F3C\u4E4E\u662F\u53EF\u4EE5\u5236\u4F5C\u51FA\u4E00\u5207\u7684\u9B54\u6CD5\u9053\u5177"
     prompt: 4
   - id: 22006
     dialog: 3
@@ -246,29 +246,29 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 10
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u7F8E\u5316{added}\uFF0C\u6B64\u724C\u7F8E\u5316\u7684\u6570\u503C\u63D0\u53474"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u7F8E\u5316{added}\uFF0C\u6B64\u724C\u7F8E\u5316\u7684\u6570\u503C\u63D0\u53474"
     buff: 
     trigger: addAddNum(4);magnify(0.2)
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
-    prompt: 4
+    prompt: 3
   - id: 22007
     dialog: 9
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u6574\u51A0\u622A\u9876"
+    name: "\u8F74\u627F\u62C9\u9A6C"
     sale: 40
     sell: 32
     made: 0
     broken: 1
     added: 0
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u62C6\u5378{broken}\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u62C6\u5378{broken}\uFF0C\u82E5\u6B64\u793C\u7269\u5305\u542B\u5C5E\u6027\u4E00\u7684\u52A0\u6210\uFF0C\u63D0\u5347\u5C5E\u6027\u4E8C40\u70B9"
     buff: 
     trigger: addNatureAtSumIf(40,1);shake(1,0.3)
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
-    prompt: 4
+    text: "\u4E00\u4E2A\u5C0F\u5C0F\u7684\u4E09\u722A\u5DE5\u5177\uFF0C\u80FD\u628A\u5361\u6B7B\u5728\u8F74\u4E0A\u7684\u9F7F\u8F6E\u6216\u8F74\u627F\u5E73\u7A33\u62C9\u51FA\u6765\u3002"
+    prompt: 2
   - id: 22008
     dialog: 13
     nature1: 0
@@ -280,7 +280,7 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u5C06\u624B\u724C\u4E2D\u7684\u6240\u6709\u793C\u7269\u90FD\u53D8\u6210\u540C\u4E00\u4E2A\u968F\u673A\u793C\u7269"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u5C06\u624B\u724C\u4E2D\u7684\u6240\u6709\u793C\u7269\u90FD\u53D8\u6210\u540C\u4E00\u4E2A\u968F\u673A\u793C\u7269"
     buff: 
     trigger: changeHandGift()
     nextTurn: 
@@ -297,7 +297,7 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "<color=blue><b>\u7F55\u89C1</b></color>\\n \u4ECE\u5DE5\u5177\u888B\u4E2D\u53D6\u51FA2\u4E2A\u7269\u54C1"
+    description: "<color=blue><b>\u7F55\u89C1</b></color>  \u4ECE\u5DE5\u5177\u888B\u4E2D\u53D6\u51FA2\u4E2A\u7269\u54C1"
     buff: 
     trigger: drawCard(2)
     nextTurn: 
@@ -314,7 +314,7 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "<color=yellow><b>\u73CD\u8D35</b></color>\\n \u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u7F8E\u5316\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color>  \u82E5\u5361\u7EC4\u4E2D\u67096\u4E2A\u4EE5\u4E0A\u76F8\u540C\u7684\u793C\u7269\uFF0C\u7F8E\u5316\u6240\u6709\u76F8\u540C\u7684\u793C\u726980"
     buff: 
     trigger: addWIthSameTogether(6,80);magnify(0.5)
     nextTurn: 
@@ -331,7 +331,7 @@ MonoBehaviour:
     made: 0
     broken: 0
     added: 0
-    description: "<color=yellow><b>\u73CD\u8D35</b></color>\\n \u4ECE\u888B\u5B50\u91CC\u53D6\u51FA6\u4E2A\u7269\u54C1"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color>  \u4ECE\u888B\u5B50\u91CC\u53D6\u51FA6\u4E2A\u7269\u54C1"
     buff: 
     trigger: drawCard(6)
     nextTurn: 
@@ -348,7 +348,7 @@ MonoBehaviour:
     made: 
     broken: 
     added: 28
-    description: "<color=yellow><b>\u73CD\u8D35</b></color>\\n  \u7F8E\u5316{added}"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color>   \u7F8E\u5316{added}"
     buff: 
     trigger: 
     nextTurn: 
@@ -359,13 +359,13 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u9884\u652F\u672A\u6765"
+    name: "\u9884\u77E5\u672A\u6765"
     sale: 80
     sell: 64
     made: 
     broken: 
     added: 
-    description: "<color=yellow><b>\u73CD\u8D35</b></color>\\n \u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u5347\u52302\u500D"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color>  \u4E0B\u56DE\u5408\u5C5E\u6027\u52A0\u6210\u63D0\u5347\u52302\u500D"
     buff: 
     trigger: changeProperty(2)
     nextTurn: 
@@ -382,26 +382,9 @@ MonoBehaviour:
     made: 6
     broken: 
     added: 
-    description: "<color=yellow><b>\u73CD\u8D35</b></color>\\n \u5236\u9020{made}"
+    description: "<color=yellow><b>\u73CD\u8D35</b></color>  \u5236\u9020{made}"
     buff: 
     trigger: 
     nextTurn: 
     text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
     prompt: 1
-  - id: 23006
-    dialog: 0
-    nature1: 0
-    nature2: 0
-    nature3: 0
-    name: "\u5927\u76F2\u76D2"
-    sale: 80
-    sell: 64
-    made: 
-    broken: 
-    added: 
-    description: "<color=yellow><b>\u73CD\u8D35</b></color>\\n \u968F\u673A\u83B7\u5F973\u5F20\u7F55\u89C1\u793C\u7269\u724C"
-    buff: 
-    trigger: addRandomCard(1,2,3)
-    nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
-    prompt: 
