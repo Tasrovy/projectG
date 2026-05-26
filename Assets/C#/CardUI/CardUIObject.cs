@@ -21,15 +21,18 @@ public class CardUIObject : MonoBehaviour,
     public Text nameText;
     public Text descriptionText;
     public GameObject HighlightImage;
+    public Image rare;
 
     [Header("重要：动画容器")] 
     public RectTransform visualContainer;
 
     [Header("卡图资源")] 
-    public Sprite commonSprite;
-    public Sprite ShengZhi;
-    public Sprite JianZhi;
-    public Sprite ShengZhang;
+    public Sprite giftSprite;
+    public Sprite eventSprite;
+    public Sprite funcSprite;
+    public Sprite rare1;
+    public Sprite rare2;
+    public Sprite rare3;
 
     [Header("视觉反馈颜色")] 
     [SerializeField] private Color normalColor = Color.white;
@@ -354,14 +357,12 @@ public class CardUIObject : MonoBehaviour,
         nameText.text = card.name;
         descriptionText.text = card.GetParsedDescription();
 
-        int brokenValue = 0, addedValue = 0;
-        int.TryParse(card.broken, out brokenValue);
-        int.TryParse(card.added, out addedValue);
-
-        if (card.id.ToString()[0] == '1') baseImage.sprite = commonSprite;
-        else if (brokenValue > 0) baseImage.sprite = JianZhi;
-        else if (addedValue > 0) baseImage.sprite = ShengZhang;
-        else baseImage.sprite = ShengZhi;
+        if (card.id.ToString()[0] == '1') baseImage.sprite = giftSprite;
+        if (card.id.ToString()[0] == '2') baseImage.sprite = funcSprite;
+        if (card.id.ToString()[0] == '3') baseImage.sprite = eventSprite;
+        if (card.id.ToString()[1] == '1') rare.sprite = rare1;
+        if (card.id.ToString()[1] == '2') rare.sprite = rare2;
+        if (card.id.ToString()[1] == '3') rare.sprite = rare3;
     }
 
     public void ResetState()
