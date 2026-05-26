@@ -266,35 +266,6 @@ public class CardChoosing : MonoBehaviour
 
     private void ApplyRarityVisual(Transform cardTransform, int cardId)
     {
-        Transform rareTransform = cardTransform.Find("rare");
-        if (rareTransform == null)
-        {
-            return;
-        }
-
-        int rarity = (cardId / 1000) % 10;
-        Sprite rareSprite = Resources.Load<Sprite>($"UI/Shop/{rarity}");
-        if (rareSprite == null)
-        {
-            Debug.LogWarning($"[CardChoosing] 未找到稀有度资源 UI/Shop/{rarity}。");
-            return;
-        }
-
-        Image rareImage = rareTransform.GetComponent<Image>();
-        if (rareImage != null)
-        {
-            rareImage.sprite = rareSprite;
-            return;
-        }
-
-        SpriteRenderer spriteRenderer = rareTransform.GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.sprite = rareSprite;
-            return;
-        }
-
-        Debug.LogWarning($"[CardChoosing] {cardTransform.name}/rare 缺少 Image 或 SpriteRenderer 组件。");
     }
 
     private CardData PopRandom(List<CardData> pool)
