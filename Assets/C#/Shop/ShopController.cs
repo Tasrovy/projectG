@@ -433,30 +433,7 @@ public class ShopController : MonoBehaviour
                 priceText.text = price.ToString();
             }
         }
-
-        Transform rareTransform = slot.Find("rare");
-        if (rareTransform != null)
-        {
-            int rarity = (card.id / 1000) % 10;
-            Sprite rareSprite = Resources.Load<Sprite>($"UI/Shop/{rarity}");
-            if (rareSprite != null)
-            {
-                Image rareImage = rareTransform.GetComponent<Image>();
-                if (rareImage != null)
-                {
-                    rareImage.sprite = rareSprite;
-                }
-                else
-                {
-                    SpriteRenderer spriteRenderer = rareTransform.GetComponent<SpriteRenderer>();
-                    if (spriteRenderer != null)
-                    {
-                        spriteRenderer.sprite = rareSprite;
-                    }
-                }
-            }
-        }
-
+        
         slot.gameObject.SetActive(true);
     }
 
