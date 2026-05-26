@@ -17,7 +17,7 @@ public class ArcCardLayoutManager : MonoBehaviour, IScrollHandler
     public float maxArcSpan = 80f;               // 最大展开角度（度）
     public float cardSpacing = 18f;              // 卡牌间角度间隔（度）
     public Vector2 arcCenterOffset = Vector2.zero; // 圆心偏移: 圆心 = CardZone 位置 + 此偏移
-    public float scrollSpeed = 100f;             // 滚轮滚动速度
+    public float scrollSpeed = 3f;               // 滚轮滚动速度（每次滚轮事件移动的度数）
 
     [Header("调试")]
     public bool showArcGizmo = true;             // 在 Scene 视图中显示圆弧
@@ -91,7 +91,7 @@ public class ArcCardLayoutManager : MonoBehaviour, IScrollHandler
 
         float totalSpan = Mathf.Min(cardSpacing * (count - 1), maxArcSpan);
 
-        _scrollOffset += eventData.scrollDelta.y * scrollSpeed * Time.deltaTime;
+        _scrollOffset += Mathf.Sign(eventData.scrollDelta.y) * scrollSpeed;
 
         float halfSpan = totalSpan / 2f;
         _scrollOffset = Mathf.Clamp(_scrollOffset, -halfSpan, halfSpan);

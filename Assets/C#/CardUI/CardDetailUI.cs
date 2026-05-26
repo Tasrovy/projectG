@@ -9,7 +9,13 @@ public class CardDetailUI : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject panelRoot;
     [SerializeField] private Button closeButton;
-    [SerializeField] private bool hideOnAwake = true;
+    [SerializeField] private bool hideOnAwake = true;    
+    [Header("卡图资源")]
+    public Sprite giftSprite;
+    public Sprite eventSprite;
+    public Sprite funcSprite;
+    public Image Icon;
+    
 
     [Header("Main Display")]
     [SerializeField] private Text descriptionText;
@@ -105,7 +111,9 @@ public class CardDetailUI : MonoBehaviour
 
         SetText(descriptionText, CurrentCard.GetParsedDescription());
         SetText(textText, CurrentCard.text);
-        
+        if (CurrentCard.id.ToString()[0] == '1') Icon.sprite = giftSprite;
+        if (CurrentCard.id.ToString()[0] == '2') Icon.sprite = funcSprite;
+        if (CurrentCard.id.ToString()[0] == '3') Icon.sprite = eventSprite;
         BuildPromptItems(CurrentCard);
 
     }

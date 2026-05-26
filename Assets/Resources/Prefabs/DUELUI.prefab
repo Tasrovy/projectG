@@ -828,7 +828,7 @@ MonoBehaviour:
   maxArcSpan: 80
   cardSpacing: 18
   arcCenterOffset: {x: 0, y: -350}
-  scrollSpeed: 100
+  scrollSpeed: 3
   showArcGizmo: 1
 --- !u!1001 &4759035269381902178
 PrefabInstance:

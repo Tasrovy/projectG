@@ -210,6 +210,10 @@ MonoBehaviour:
   panelRoot: {fileID: 0}
   closeButton: {fileID: 0}
   hideOnAwake: 1
+  giftSprite: {fileID: 21300000, guid: ac9da1c7dd6b6c541941b2f5cc1bcc47, type: 3}
+  eventSprite: {fileID: 21300000, guid: db5613dc3ec5b94438e89cb9febea488, type: 3}
+  funcSprite: {fileID: 21300000, guid: f80f783c89a7f6a46847fd60875862f2, type: 3}
+  Icon: {fileID: 7368095974397299790}
   descriptionText: {fileID: 7274713383826357719}
   textText: {fileID: 3782482070280274102}
   promptItemPrefab: {fileID: 9195159553279194576, guid: 981b4b192d49cad4cb98341552f7a1bb, type: 3}
@@ -753,7 +757,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f4af9948b29057d409723422d5f4ce05, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ac9da1c7dd6b6c541941b2f5cc1bcc47, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
