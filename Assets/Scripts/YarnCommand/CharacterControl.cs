@@ -26,6 +26,39 @@ public class CharacterControl : MonoBehaviour
     private readonly Dictionary<string, PortraitSizeState> portraitSizeStates = new Dictionary<string, PortraitSizeState>();
     private readonly Dictionary<string, Coroutine> activePortraitSizeCoroutines = new Dictionary<string, Coroutine>();
 
+    #region 立绘操作互斥锁（淡入淡出期间排队）
+    private readonly HashSet<string> busyPortraitObjects = new HashSet<string>();
+    private readonly Dictionary<string, Queue<System.Action>> portraitActionQueues = new Dictionary<string, Queue<System.Action>>();
+
+    /// <summary>如果目标立绘正在淡入淡出切换中，则将操作入队；否则立即执行。</summary>
+    private void EnqueueOrExecutePortraitAction(string objectName, System.Action action)
+    {
+        if (busyPortraitObjects.Contains(objectName))
+        {
+            if (!portraitActionQueues.ContainsKey(objectName))
+                portraitActionQueues[objectName] = new Queue<System.Action>();
+            portraitActionQueues[objectName].Enqueue(action);
+        }
+        else
+        {
+            action();
+        }
+    }
+
+    /// <summary>释放立绘锁，并执行该 objectName 队列中的下一个操作。</summary>
+    private void ReleasePortraitLock(string objectName)
+    {
+        busyPortraitObjects.Remove(objectName);
+        if (portraitActionQueues.TryGetValue(objectName, out var queue) && queue.Count > 0)
+        {
+            var next = queue.Dequeue();
+            if (queue.Count == 0)
+                portraitActionQueues.Remove(objectName);
+            next();
+        }
+    }
+    #endregion
+
     #region 立绘移动状态
     private readonly Dictionary<string, Vector2> initialPortraitAnchoredPositions = new Dictionary<string, Vector2>();
     private readonly Dictionary<string, Coroutine> activePortraitMoveCoroutines = new Dictionary<string, Coroutine>();
@@ -371,6 +404,13 @@ public class CharacterControl : MonoBehaviour
             return;
         }
 
+        // 如果该立绘正在淡入淡出切换中，排队等待
+        if (busyPortraitObjects.Contains(normalizedObjectName))
+        {
+            EnqueueOrExecutePortraitAction(normalizedObjectName, () => SetCharacterMove(objectName, axis, distance, duration));
+            return;
+        }
+
         char axisChar = ParseMoveAxis(axis);
         if (axisChar == '\0')
         {
@@ -523,7 +563,7 @@ public class CharacterControl : MonoBehaviour
     #endregion
 
     #region 立绘大小切换
-    [YarnCommand("set_character_size")]
+    [YarnCommand("old_set_character_size")]
     public static void SetCharacterSizeStatic(string objectName, int sizeType, float yPoint, float duration = 0f)
     {
         var control = Object.FindAnyObjectByType<CharacterControl>();
@@ -539,6 +579,13 @@ public class CharacterControl : MonoBehaviour
         if (string.IsNullOrEmpty(normalizedObjectName))
         {
             Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：objectName 必须是 'Player' 或 'Character'，当前为: {objectName}");
+            return;
+        }
+
+        // 如果该立绘正在淡入淡出切换中，排队等待
+        if (busyPortraitObjects.Contains(normalizedObjectName))
+        {
+            EnqueueOrExecutePortraitAction(normalizedObjectName, () => SetCharacterSize(objectName, sizeType, yPoint, duration));
             return;
         }
 
@@ -671,6 +718,192 @@ public class CharacterControl : MonoBehaviour
         rect.localScale = targetScale;
         rect.anchoredPosition = targetAnchoredPos;
         activePortraitSizeCoroutines.Remove(objectName);
+    }
+    #endregion
+
+    #region 立绘大小切换（淡入淡出）
+    [YarnCommand("set_character_size")]
+    public static void SetCharacterSizeFadeStatic(string objectName, int sizeType, float yPoint, float duration = 0.5f)
+    {
+        var control = Object.FindAnyObjectByType<CharacterControl>();
+        if (control != null)
+        {
+            control.SetCharacterSizeFade(objectName, sizeType, yPoint, duration);
+        }
+    }
+
+    public void SetCharacterSizeFade(string objectName, int sizeType, float yPoint, float duration = 0.5f)
+    {
+        string normalizedObjectName = NormalizePortraitObjectNameFade(objectName);
+        if (string.IsNullOrEmpty(normalizedObjectName))
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：objectName 必须是 'Player' 或 'Character'，当前为: {objectName}");
+            return;
+        }
+
+        GameObject targetObj = GetCharacterObjectUnderTalk(normalizedObjectName);
+        if (targetObj == null)
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：未找到对象 {normalizedObjectName}");
+            return;
+        }
+
+        RectTransform targetRect = targetObj.GetComponent<RectTransform>();
+        if (targetRect == null)
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：对象 {normalizedObjectName} 缺少 RectTransform");
+            return;
+        }
+
+        Image targetImage = targetObj.GetComponent<Image>();
+        if (targetImage == null)
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：对象 {normalizedObjectName} 缺少 Image 组件，无法执行淡入淡出");
+            return;
+        }
+
+        EnsurePortraitSizeStateFade(normalizedObjectName, targetRect);
+        PortraitSizeState state = portraitSizeStates[normalizedObjectName];
+
+        float scaleFactor = GetScaleFactorByTypeFade(sizeType);
+        if (scaleFactor < 0f)
+        {
+            Debug.LogWarning($"[CharacterControl] 立绘大小切换失败：sizeType 仅支持 1/2/3，当前为: {sizeType}");
+            return;
+        }
+
+        Vector3 targetScale = new Vector3(
+            state.BaseScale.x * scaleFactor,
+            state.BaseScale.y * scaleFactor,
+            state.BaseScale.z
+        );
+
+        Vector2 targetAnchoredPos = GetTargetAnchoredPositionFade(state, targetRect, sizeType, Mathf.Clamp01(yPoint), scaleFactor);
+        float clampedDuration = Mathf.Max(0f, duration);
+
+        // 获取互斥锁，阻止其他指令同时操作该立绘
+        busyPortraitObjects.Add(normalizedObjectName);
+
+        if (activePortraitSizeCoroutines.TryGetValue(normalizedObjectName, out Coroutine running) && running != null)
+        {
+            StopCoroutine(running);
+        }
+
+        activePortraitSizeCoroutines[normalizedObjectName] = StartCoroutine(
+            AnimatePortraitSizeFade(normalizedObjectName, targetRect, targetImage, targetScale, targetAnchoredPos, clampedDuration)
+        );
+    }
+
+    private static string NormalizePortraitObjectNameFade(string objectName)
+    {
+        if (string.Equals(objectName, "Player", System.StringComparison.OrdinalIgnoreCase))
+        {
+            return "Player";
+        }
+        if (string.Equals(objectName, "Character", System.StringComparison.OrdinalIgnoreCase))
+        {
+            return "Character";
+        }
+        return string.Empty;
+    }
+
+    private void EnsurePortraitSizeStateFade(string objectName, RectTransform rect)
+    {
+        if (!portraitSizeStates.TryGetValue(objectName, out PortraitSizeState state) || state.Rect != rect)
+        {
+            portraitSizeStates[objectName] = new PortraitSizeState
+            {
+                Rect = rect,
+                BaseAnchoredPos = rect.anchoredPosition,
+                BaseScale = rect.localScale,
+            };
+        }
+    }
+
+    private float GetScaleFactorByTypeFade(int sizeType)
+    {
+        switch (sizeType)
+        {
+            case 1:
+                return 1f;
+            case 2:
+                return portraitSizeType2Scale;
+            case 3:
+                return portraitSizeType3Scale;
+            default:
+                return -1f;
+        }
+    }
+
+    private static Vector2 GetTargetAnchoredPositionFade(PortraitSizeState state, RectTransform rect, int sizeType, float yPoint01, float scaleFactor)
+    {
+        float currentX = rect.anchoredPosition.x;
+
+        if (sizeType == 1)
+        {
+            // 1档始终回到原始位置与原始大小
+            return new Vector2(currentX, state.BaseAnchoredPos.y);
+        }
+
+        // yPoint: 上=0 下=1, 基于图片中轴线
+        float localY = Mathf.Lerp(rect.rect.yMax, rect.rect.yMin, yPoint01);
+        float scaledOffsetY = localY * (state.BaseScale.y * scaleFactor);
+
+        // 让目标 y 点在放大结束后落到承载物体原始坐标点
+        float targetY = state.BaseAnchoredPos.y - scaledOffsetY;
+        return new Vector2(currentX, targetY);
+    }
+
+    private IEnumerator AnimatePortraitSizeFade(string objectName, RectTransform rect, Image image, Vector3 targetScale, Vector2 targetAnchoredPos, float duration)
+    {
+        float halfDuration = duration * 0.5f;
+
+        // 阶段1：淡出（alpha → 0）
+        if (halfDuration > 0f)
+        {
+            Color originalColor = image.color;
+            float elapsed = 0f;
+            while (elapsed < halfDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / halfDuration);
+                image.color = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(originalColor.a, 0f, t));
+                yield return null;
+            }
+            image.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        }
+        else
+        {
+            var c = image.color;
+            image.color = new Color(c.r, c.g, c.b, 0f);
+        }
+
+        // 阶段2：瞬间切换大小
+        rect.localScale = targetScale;
+        rect.anchoredPosition = targetAnchoredPos;
+
+        // 阶段3：淡入（alpha → 1）
+        if (halfDuration > 0f)
+        {
+            Color currentColor = image.color;
+            float elapsed = 0f;
+            while (elapsed < halfDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / halfDuration);
+                image.color = new Color(currentColor.r, currentColor.g, currentColor.b, Mathf.Lerp(0f, 1f, t));
+                yield return null;
+            }
+            image.color = new Color(currentColor.r, currentColor.g, currentColor.b, 1f);
+        }
+        else
+        {
+            var c = image.color;
+            image.color = new Color(c.r, c.g, c.b, 1f);
+        }
+
+        activePortraitSizeCoroutines.Remove(objectName);
+        ReleasePortraitLock(objectName);
     }
     #endregion
 

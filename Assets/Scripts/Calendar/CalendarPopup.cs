@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class CalendarPopup : MonoBehaviour
 {
     private GameObject todoList;
-
-    private Transform lookupRoot;
     private Transform gridParent;
     private TMP_Text titleText;
     private TMP_Text nowDayText;
@@ -95,81 +93,45 @@ public class CalendarPopup : MonoBehaviour
 
     private void ResolveReferences()
     {
-        if (lookupRoot == null)
-        {
-            lookupRoot = FindLookupRoot();
-        }
+        // 脚本挂载在 window 上，所有目标 UI 都是 window 的直接子物体
+        // 优先使用 [SerializeField] 已在 Inspector 中赋值的引用，未赋值时用 transform.Find() 兜底
 
         if (gridParent == null)
         {
-            gridParent = FindChildByNameRecursive(lookupRoot, "btnGrid");
+            gridParent = transform.Find("btnGrid");
         }
 
         if (titleText == null)
         {
-            Transform curMonth = FindChildByNameRecursive(lookupRoot, "curMonth");
+            Transform curMonth = transform.Find("curMonth");
             if (curMonth != null)
-            {
                 titleText = curMonth.GetComponent<TMP_Text>();
-            }
         }
 
         if (todoList == null)
         {
-            Transform todo = FindChildByNameRecursive(lookupRoot, "todoList");
+            Transform todo = transform.Find("todoList");
             if (todo != null)
-            {
                 todoList = todo.gameObject;
-            }
         }
 
         if (nowDayText == null || nowWeekText == null)
         {
-            Transform nowDay = FindChildByNameRecursive(lookupRoot, "nowDay");
+            Transform nowDay = transform.Find("nowDay");
             if (nowDay != null)
             {
-                Transform day = FindChildByNameRecursive(nowDay, "day");
-                Transform week = FindChildByNameRecursive(nowDay, "week");
-
-                if (day != null) nowDayText = day.GetComponent<TMP_Text>();
-                if (week != null) nowWeekText = week.GetComponent<TMP_Text>();
+                if (nowDayText == null)
+                {
+                    Transform day = nowDay.Find("day");
+                    if (day != null) nowDayText = day.GetComponent<TMP_Text>();
+                }
+                if (nowWeekText == null)
+                {
+                    Transform week = nowDay.Find("week");
+                    if (week != null) nowWeekText = week.GetComponent<TMP_Text>();
+                }
             }
         }
-    }
-
-    private Transform FindLookupRoot()
-    {
-        Transform cursor = transform;
-        while (cursor != null)
-        {
-            if (FindChildByNameRecursive(cursor, "btnGrid") != null)
-            {
-                return cursor;
-            }
-
-            cursor = cursor.parent;
-        }
-
-        return transform;
-    }
-
-    private static Transform FindChildByNameRecursive(Transform root, string targetName)
-    {
-        if (root == null || string.IsNullOrEmpty(targetName))
-        {
-            return null;
-        }
-
-        Transform[] all = root.GetComponentsInChildren<Transform>(true);
-        for (int i = 0; i < all.Length; i++)
-        {
-            if (all[i].name == targetName)
-            {
-                return all[i];
-            }
-        }
-
-        return null;
     }
 
     private static DateTime GetCurrentDateSafe()
