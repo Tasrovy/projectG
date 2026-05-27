@@ -1,17 +1,19 @@
 ﻿title: start1_1
 ---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
 <<play_bgm "daily_日常微风2">>
-<<set_background "教室-白天">>
-<<set_character_person Player {$MY_NAME} normal>>
-<<set_character_person Character "蒂娜" smile>>
+<<set_background "教室-傍晚">>
+
 
 "一切的源头都在今天，只有在事后想起才会这样觉得，"
 
 "'啊，就是从那天开始的'，产生了这样的想法，就会忍不住把过去的一切都蒙上一层独属于故事的色彩。"
-<<set_character_sprite "蒂娜" normal>>
+
+<<set_character_person Character "蒂娜" normal>>
 蒂娜:"林奈还真是安静呢~"
 
-<<set_character_sprite {$MY_NAME} normal>>
+<<set_character_person Player {$MY_NAME} normal>>
 {$MY_NAME}:"...怎么了？"
 
 <<set_character_sprite "蒂娜" saying>>
@@ -227,7 +229,8 @@
 
 "蒂娜的千纸鹤被修好了，所以她小心翼翼地收了起来，脸上不知怎的挂着幸福的微笑，林奈忍不住偷瞄了一眼，然后把那只没送出的千纸鹤藏得更深了。"
 
+（林奈可以在手工台给蒂娜送出礼物了）
 <<stop_bgm>>
-<<jump start1_1>>
+ <<jump day001>>
 ===
 

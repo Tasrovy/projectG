@@ -1,7 +1,7 @@
 
 title: main_start
 ---
- <<jump start0_1>>
+ <<jump day001>>
 <<declare $MY_NAME= string("林奈")>>
 <<declare $deal = int(1)>>
 <<declare $special = int(1)>>
