@@ -27,7 +27,7 @@ MonoBehaviour:
     target1: 20
     target2: 24
     target3: 18
-    target4: 13
+    target4: 50
     targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
@@ -43,13 +43,13 @@ MonoBehaviour:
     target1: 20
     target2: 24
     target3: 18
-    target4: 13
+    target4: 50
     targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 3
-    date: 05_16
+    date: 05_17
     profit: 60
     drawNum: 4
     getCardNum: 2
@@ -59,13 +59,13 @@ MonoBehaviour:
     target1: 20
     target2: 24
     target3: 18
-    target4: 13
+    target4: 50
     targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 4
-    date: 05_17
+    date: 05_18
     profit: 60
     drawNum: 4
     getCardNum: 1
@@ -75,13 +75,13 @@ MonoBehaviour:
     target1: 20
     target2: 24
     target3: 18
-    target4: 13
+    target4: 50
     targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 5
-    date: 05_18
+    date: 05_19
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -91,13 +91,13 @@ MonoBehaviour:
     target1: 80
     target2: 120
     target3: 40
-    target4: 23
+    target4: 200
     targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 6
-    date: 05_19
+    date: 05_20
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -107,13 +107,13 @@ MonoBehaviour:
     target1: 80
     target2: 120
     target3: 40
-    target4: 24
+    target4: 200
     targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 7
-    date: 05_20
+    date: 05_21
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -123,13 +123,13 @@ MonoBehaviour:
     target1: 80
     target2: 120
     target3: 40
-    target4: 25
+    target4: 200
     targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 8
-    date: 05_21
+    date: 05_22
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -139,13 +139,13 @@ MonoBehaviour:
     target1: 120
     target2: 160
     target3: 120
-    target4: 26
+    target4: 300
     targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 9
-    date: 05_22
+    date: 05_23
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -155,13 +155,13 @@ MonoBehaviour:
     target1: 120
     target2: 160
     target3: 120
-    target4: 27
+    target4: 300
     targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 10
-    date: 05_23
+    date: 05_24
     profit: 100
     drawNum: 4
     getCardNum: 1
@@ -171,7 +171,7 @@ MonoBehaviour:
     target1: 120
     target2: 160
     target3: 120
-    target4: 28
+    target4: 300
     targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
@@ -187,7 +187,7 @@ MonoBehaviour:
     target1: 120
     target2: 160
     target3: 120
-    target4: 29
+    target4: 300
     targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
@@ -203,7 +203,7 @@ MonoBehaviour:
     target1: 120
     target2: 160
     target3: 120
-    target4: 30
+    target4: 300
     targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4

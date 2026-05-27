@@ -1,0 +1,86 @@
+﻿title: start0_2
+---
+<<play_bgm "daily_日常微风3">>
+<<play_whitenoise "bgNew_school1">>
+<<set_background "教室-白天">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_size Player 1 0 0.6>>
+"说实话，我并没有料到她会和我同一个班级。"
+
+"但是事实就是这样，依靠着这种缘分，我和她甚至成了同桌。"
+
+"仅仅只是因为我选了最角落的一张桌子，而迟到的她没有其他位置可以坐。"
+<<set_character_person Player {$MY_NAME} saying>>
+<<set_character_person Character "蒂娜" normal>>
+{$MY_NAME}:"你是怎么迟到的？"
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"嘛......我在电车里乱跑，坐过站了~"
+<<set_character_sprite {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 0.6>>
+{$MY_NAME}:"你那样当然会坐过站...早点找个地方坐好不行吗？"
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"那当时林奈为什么不抓住我的手让我坐下来呢？"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......毕竟我不知道你和我是同班同学。"
+<<set_character_sprite "蒂娜" saying>>
+<<set_character_move Character x -2 0.4>>
+蒂娜:"但是光看校服，也知道是同学吧？"
+<<set_character_sprite {$MY_NAME} normal>>
+<<set_character_size Player 3 0.24 0.5>>
+{$MY_NAME}:"......可我根本不知道你会因此坐过站吧？"
+<<set_character_sprite "蒂娜" saying>>
+<<set_character_shake Character up_down>>
+蒂娜:"你一定知道！你绝对猜到了！"
+<<set_character_sprite "蒂娜" mouth>>
+<<set_character_size Character 2 0.3 0.6>>
+<<set_character_move Character x -2 0.4>>
+蒂娜:"我敢打赌，老师脸上露出疑惑神色的时候，你就在想，是不是那个'蒂娜'迟到了！"
+
+"蒂娜的眼睛直勾勾盯着林奈，像是小孩子生气一样鼓着嘴巴"
+<<set_character_sprite "蒂娜" smile>>
+<<set_character_move Character x -2 0.4>>
+"但随后又立刻勾起嘴角，充满了自信。"
+
+"总感觉她根本就不是在生气...反而对此有点自豪的样子......"
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_move Character x -6 0.4>>
+蒂娜:"哼，总之，很高兴和你成为同车同校同班同桌同学！"
+
+{$MY_NAME}:"我快要不认识同这个字了......"
+<<set_character_sprite "蒂娜" smile>>
+<<set_character_size Character 3 0.22 0.6>>
+蒂娜:"你会认识的！因为你就是~"
+<<set_character_sprite {$MY_NAME} dislike>>
+<<set_character_shake Player left_right>>
+{$MY_NAME}:"蛤？你在说什么？"
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"啊...没什么，只是这么多巧合，我忍不住想要发泄一下情绪而已~"
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"或者，我们的相遇本来就是命中注定的？或者一早被安排好的人生？又或者......"
+<<set_character_sprite {$MY_NAME} angry>>
+<<set_character_shake Player up_down>>
+{$MY_NAME}:"差不多适可而止！"
+
+"林奈打断了蒂娜莫名其妙的发言，脸上第一次露出不太高兴的表情。"
+<<set_character_sprite "蒂娜" normal>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"......"
+<<set_character_size Player 2 0.3 1>>
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......"
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"越说越大声，你是喇叭吗？"
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"知~道~了~"
+
+"蒂娜的声音变得又低又小，几乎已经没办法被听到了。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"也不用...这么小声......"
+
+蒂娜:"奈奈亲也有脾气大的一面呢~"
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"蛤？这是什么称呼？"
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"啊，说起来，刚刚大家都在看你哦~"
+===
