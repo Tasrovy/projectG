@@ -628,10 +628,12 @@ public class CharacterControl : MonoBehaviour
 
     private static Vector2 GetTargetAnchoredPosition(PortraitSizeState state, RectTransform rect, int sizeType, float yPoint01, float scaleFactor)
     {
+        float currentX = rect.anchoredPosition.x;
+
         if (sizeType == 1)
         {
             // 1档始终回到原始位置与原始大小
-            return state.BaseAnchoredPos;
+            return new Vector2(currentX, state.BaseAnchoredPos.y);
         }
 
         // yPoint: 上=0 下=1, 基于图片中轴线
@@ -639,7 +641,8 @@ public class CharacterControl : MonoBehaviour
         float scaledOffsetY = localY * (state.BaseScale.y * scaleFactor);
 
         // 让目标 y 点在放大结束后落到承载物体原始坐标点
-        return state.BaseAnchoredPos - new Vector2(0f, scaledOffsetY);
+        float targetY = state.BaseAnchoredPos.y - scaledOffsetY;
+        return new Vector2(currentX, targetY);
     }
 
     private IEnumerator AnimatePortraitSize(string objectName, RectTransform rect, Vector3 targetScale, Vector2 targetAnchoredPos, float duration)

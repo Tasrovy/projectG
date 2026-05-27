@@ -5,18 +5,22 @@ using UnityEngine.UI;
 
 public class CalendarDayCell : MonoBehaviour
 {
-    private static readonly Color ColorNormalBg   = Color.white;
+    private static readonly Color ColorTransparentBg = new Color(1f, 1f, 1f, 0f);
     private static readonly Color ColorNormalText = Color.black;
     private static readonly Color ColorTodayText  = Color.red;
-    private static readonly Color ColorSelectedBg = Color.black;
-    private static readonly Color ColorSelectedText = Color.white;
+    private static readonly Color ColorSelectedBgTint = Color.white;
+    private static readonly Color ColorSelectedText = Color.black;
 
     // 全局记录当前被选中的单元格
     private static CalendarDayCell currentSelected;
 
+    [Header("选中背景")]
+    [SerializeField] private Sprite selectedBackgroundSprite;
+
     private Button button;
     private TMP_Text label;
     private Image image;
+    private Sprite originalBackgroundSprite;
 
     private bool isToday;
     private bool isSelected;
@@ -26,6 +30,7 @@ public class CalendarDayCell : MonoBehaviour
         button = GetComponent<Button>();
         label = GetComponentInChildren<TMP_Text>();
         image = GetComponent<Image>();
+        if (image != null) originalBackgroundSprite = image.sprite;
     }
 
     public void Bind(DateTime date, bool active, Action<DateTime> clickAction)
@@ -81,19 +86,23 @@ public class CalendarDayCell : MonoBehaviour
     {
         if (isSelected)
         {
-            if (image != null) image.color = ColorSelectedBg;
+            if (image != null)
+            {
+                image.sprite = selectedBackgroundSprite != null ? selectedBackgroundSprite : originalBackgroundSprite;
+                image.color = ColorSelectedBgTint;
+            }
             // 今日被选中：背景黑色，但文字保持红色
             label.color = isToday ? ColorTodayText : ColorSelectedText;
         }
-        else if (isToday)
-        {
-            if (image != null) image.color = ColorNormalBg;
-            label.color = ColorTodayText;
-        }
         else
         {
-            if (image != null) image.color = ColorNormalBg;
-            label.color = ColorNormalText;
+            if (image != null)
+            {
+                image.sprite = originalBackgroundSprite;
+                image.color = ColorTransparentBg;
+            }
+
+            label.color = isToday ? ColorTodayText : ColorNormalText;
         }
     }
 }

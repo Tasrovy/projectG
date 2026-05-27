@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,9 +8,11 @@ public class CalendarPopup : MonoBehaviour
 {
     private GameObject todoList;
 
-    private GameObject popupRoot;
+    private Transform lookupRoot;
     private Transform gridParent;
     private TMP_Text titleText;
+    private TMP_Text nowDayText;
+    private TMP_Text nowWeekText;
     private GameObject dayCellPrefab;
 
     private int viewYear;
@@ -17,25 +20,25 @@ public class CalendarPopup : MonoBehaviour
 
     private void Awake()
     {
-        Transform t = transform.Find("todoList");
-        if (t != null) todoList = t.gameObject;
-        else Debug.LogError("[CalendarPopup] 未找到子物体 todoList！");
+        ResolveReferences();
     }
 
     private void OnEnable()
     {
-        if (popupRoot == null) popupRoot = transform.parent.gameObject;
-        if (gridParent == null) gridParent = transform.Find("btnGrid");
-        if (titleText == null) titleText = transform.Find("texts/curMonth").GetComponent<TMP_Text>();
+        ResolveReferences();
         if (dayCellPrefab == null) dayCellPrefab = Resources.Load<GameObject>("Prefabs/Calender/dayCell");
 
         if (gridParent == null) Debug.LogError("[CalendarPopup] 未找到子物体 btnGrid！");
-        if (titleText == null) Debug.LogError("[CalendarPopup] 未找到 texts/curMonth 上的 TMP_Text！");
+        if (titleText == null) Debug.LogError("[CalendarPopup] 未找到 curMonth 上的 TMP_Text！");
+        if (todoList == null) Debug.LogError("[CalendarPopup] 未找到子物体 todoList！");
+        if (nowDayText == null) Debug.LogError("[CalendarPopup] 未找到 nowDay/day 上的 TMP_Text！");
+        if (nowWeekText == null) Debug.LogError("[CalendarPopup] 未找到 nowDay/week 上的 TMP_Text！");
         if (dayCellPrefab == null) Debug.LogError("[CalendarPopup] 未能加载 Resources/Prefabs/Calender/dayCell！");
 
-        DateTime current = DayManager.Instance.GetCurrentDate();
+        DateTime current = GetCurrentDateSafe();
         viewYear = current.Year;
         viewMonth = current.Month;
+        UpdateNowDayDisplay(current);
         RebuildCalendar();
     }
 
@@ -88,5 +91,107 @@ public class CalendarPopup : MonoBehaviour
         if (todoList != null)
             todoList.SetActive(true);
         DateManager.Instance?.OnDateClicked(date);
+    }
+
+    private void ResolveReferences()
+    {
+        if (lookupRoot == null)
+        {
+            lookupRoot = FindLookupRoot();
+        }
+
+        if (gridParent == null)
+        {
+            gridParent = FindChildByNameRecursive(lookupRoot, "btnGrid");
+        }
+
+        if (titleText == null)
+        {
+            Transform curMonth = FindChildByNameRecursive(lookupRoot, "curMonth");
+            if (curMonth != null)
+            {
+                titleText = curMonth.GetComponent<TMP_Text>();
+            }
+        }
+
+        if (todoList == null)
+        {
+            Transform todo = FindChildByNameRecursive(lookupRoot, "todoList");
+            if (todo != null)
+            {
+                todoList = todo.gameObject;
+            }
+        }
+
+        if (nowDayText == null || nowWeekText == null)
+        {
+            Transform nowDay = FindChildByNameRecursive(lookupRoot, "nowDay");
+            if (nowDay != null)
+            {
+                Transform day = FindChildByNameRecursive(nowDay, "day");
+                Transform week = FindChildByNameRecursive(nowDay, "week");
+
+                if (day != null) nowDayText = day.GetComponent<TMP_Text>();
+                if (week != null) nowWeekText = week.GetComponent<TMP_Text>();
+            }
+        }
+    }
+
+    private Transform FindLookupRoot()
+    {
+        Transform cursor = transform;
+        while (cursor != null)
+        {
+            if (FindChildByNameRecursive(cursor, "btnGrid") != null)
+            {
+                return cursor;
+            }
+
+            cursor = cursor.parent;
+        }
+
+        return transform;
+    }
+
+    private static Transform FindChildByNameRecursive(Transform root, string targetName)
+    {
+        if (root == null || string.IsNullOrEmpty(targetName))
+        {
+            return null;
+        }
+
+        Transform[] all = root.GetComponentsInChildren<Transform>(true);
+        for (int i = 0; i < all.Length; i++)
+        {
+            if (all[i].name == targetName)
+            {
+                return all[i];
+            }
+        }
+
+        return null;
+    }
+
+    private static DateTime GetCurrentDateSafe()
+    {
+        if (DayManager.Instance != null)
+        {
+            return DayManager.Instance.GetCurrentDate();
+        }
+
+        return DateTime.Today;
+    }
+
+    private void UpdateNowDayDisplay(DateTime date)
+    {
+        if (nowDayText != null)
+        {
+            nowDayText.text = $"{date.Month}.{date.Day}";
+        }
+
+        if (nowWeekText != null)
+        {
+            nowWeekText.text = date.ToString("ddd", CultureInfo.InvariantCulture).ToUpperInvariant();
+        }
     }
 }
