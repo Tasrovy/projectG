@@ -148,7 +148,6 @@ public class BattleDialogController : Singleton<BattleDialogController>
 
         _portraitImage.sprite = portrait;
         _portraitImage.preserveAspect = true;
-        _portraitImage.color = Color.white;
         Debug.Log($"[BattleDialog] Portrait loaded: {portrait.name}");
     }
 
