@@ -4,7 +4,7 @@
 <<clear_character_person Character>>
 
 //<<play_whitenoise "bgNew_fan2">>
-<<set_background "教室-傍晚">>
+<<set_background "家-傍晚">>
 
 <<set_character_person Player {$MY_NAME} normal>>
 //<<set_character_person Character "蒂娜" normal>>
@@ -15,6 +15,7 @@
 
 "我是不是应该......算了，才认识三天而已。"
 <<set_character_sprite {$MY_NAME} saying>>
+<<set_character_size Player 2 0.3 1>>
 {$MY_NAME}:"明天周五了，开学第一周过得真快......"
 
 {$MY_NAME}:"周末要不要去乒乓球馆呢......"
@@ -29,13 +30,14 @@
 
 <<set_background "学校-白天">>
 <<set_character_person Character "蒂娜" happy>>
-
+<<set_character_shake "蒂娜" left_right>>
 蒂娜:"奈奈亲~早上好！"
 
 <<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"你今天怎么这么高兴？"
 
 <<set_character_sprite "蒂娜" smile>>
+<<set_character_size Character 2 0.3 1>>
 蒂娜:"因为明天就是周末了啊！奈奈亲周末有什么计划吗？"
 
 <<set_character_sprite {$MY_NAME} normal>>
@@ -57,10 +59,12 @@
 "蒂娜今天一整天都没有再问周末的事，这反而让我有点不自在。"
 
 "放学的时候，我注意到她的背影比平时安静了一些。"
-
+<<set_character_sprite {$MY_NAME} smile>>
 {$MY_NAME}:"......算了，先不想这些。"
 
-<<stop_bgm>>
+<<clear_character_person Character>>
+
+
 
 
 ===

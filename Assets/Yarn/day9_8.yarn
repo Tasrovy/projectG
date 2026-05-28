@@ -2,16 +2,60 @@
 ---
 <<clear_character_person Player>>
 <<clear_character_person Character>>
-<<play_bgm "daily_日常微风(1)">>
 //<<play_whitenoise "bgNew_fan2">>
-<<set_background "教室-傍晚">>
 
-<<set_character_person Player {$MY_NAME} normal>>
 //<<set_character_person Character "蒂娜" normal>>
 //<<set_character_sprite {$MY_NAME} saying>>
 //<<set_character_sprite "蒂娜" saying>>
 //#sfx_talkSound_school_chime
 
+<<play_bgm "daily_日常微风3">>
+<<set_background "家-夜晚">>
+<<set_character_person Player {$MY_NAME} normal>>
 
+<<set_character_sprite {$MY_NAME} smile>>
+<<set_character_size Player 2 0.3 1>>
+{$MY_NAME}:"终于做完了今天的事情"
+
+{$MY_NAME}:"明天也要按时到校。"
+
+<<stop_bgm>>
+<<set_background "家-白天">>
+<<play_bgm "daily_日常微风3">>
+
+"今天闹钟居然没响，还好生物钟让我及时醒了过来。"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"差点迟到......早饭就不吃了。"
+
+<<set_background "学校-白天">>
+<<set_character_person Character "蒂娜" doubt>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"奈奈亲今天怎么看起来有点匆忙？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"起晚了，差点没赶上车。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"没关系的，我们奈奈就算迟到也一定是班里最可爱的那个~"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"......能不能不要在这种时候说这种话。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"那要在什么时候说？"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......什么时候都不要说。"
+
+<<set_background "学校-傍晚">>
+
+"下午的体育课因为下雨改成了室内自习。"
+
+"蒂娜趴在桌子上，用圆珠笔在课本的空白处画了一朵小花，然后在旁边写了个'奈'字。"
+
+"被我发现之后她立刻用手盖住了。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"放学了，今天就先这样吧。"
+
+<<stop_bgm>>
 
 ===

@@ -11,7 +11,63 @@
 //<<set_character_sprite {$MY_NAME} saying>>
 //<<set_character_sprite "蒂娜" saying>>
 //#sfx_talkSound_school_chime
+<<play_bgm "daily_日常微风3">>
+<<set_background "家-夜晚">>
+<<set_character_person Player {$MY_NAME} normal>>
 
+"给蒂娜讲完题之后回到家，发现自己的作业其实还没做完。"
+
+"花了比平时多一倍的时间才把作业写完，但也不算后悔。"
+
+{$MY_NAME}:"至少她最后是弄懂了......大概。"
+
+{$MY_NAME}:"明天好像有体育课，希望不要下雨。"
+
+<<stop_bgm>>
+<<set_background "家-白天">>
+<<play_bgm "daily_日常微风3">>
+
+"今天果然放晴了，空气里带着雨后清新的味道。"
+
+{$MY_NAME}:"天气不错，适合运动。"
+
+<<set_background "学校-白天">>
+<<set_character_person Character "蒂娜" happy>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"今天有体育课哦！不知道会做什么项目~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"你看起来很高兴嘛。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"因为体育课不用坐在座位上，可以到处活动啊！"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"所以你只是不想坐着听课而已。"
+
+<<set_character_sprite "蒂娜" dislike>>
+蒂娜:"才、才不是！我是热爱运动！"
+
+"她说这话的时候眼神四处乱飘，完全没有说服力。"
+
+<<set_background "学校-傍晚">>
+
+"体育课跑了八百米，蒂娜瘫在操场上喘了十分钟。"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"你刚才不是说热爱运动吗？"
+
+<<set_character_sprite "蒂娜" sad>>
+蒂娜:"运动热爱的不是我......"
+
+{$MY_NAME}:"那叫体力不支。"
+
+<<set_character_sprite "蒂娜" cry>>
+蒂娜:"奈奈亲好过分！"
+
+"虽然嘴上这么说，但我还是伸手把她从地上拉了起来。"
+
+<<stop_bgm>>
 
 
 ===

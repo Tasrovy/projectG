@@ -4,7 +4,7 @@
 <<clear_character_person Character>>
 <<play_bgm "daily_日常微风(1)">>
 //<<play_whitenoise "bgNew_fan2">>
-<<set_background "教室-傍晚">>
+<<set_background "家-傍晚">>
 
 <<set_character_person Player {$MY_NAME} normal>>
 //<<set_character_person Character "蒂娜" normal>>
@@ -15,6 +15,7 @@
 
 {$MY_NAME}:"时候不早了，今天开学发生了那么多事，还遇到了个奇怪的同桌......"
 <<set_character_sprite {$MY_NAME} smile>>
+<<set_character_size Player 2 0.3 1>>
 {$MY_NAME}:"现在就好好休息吧。"
 
 <<stop_bgm>>
@@ -27,7 +28,7 @@
 
 <<set_background "教室-白天">>
 <<set_character_person Character "蒂娜" smile>>
-
+<<set_character_size Character 2 0.3 1>>
 蒂娜:"早上好啊林奈，你今天看起来挺有精神的啊~"
 
 {$MY_NAME}:"嗯，你今天倒是没有坐过站嘛。"

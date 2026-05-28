@@ -1,17 +1,82 @@
-﻿title: day9_2
+﻿title: day9_9
 ---
 <<clear_character_person Player>>
 <<clear_character_person Character>>
-<<play_bgm "daily_日常微风(1)">>
 //<<play_whitenoise "bgNew_fan2">>
-<<set_background "教室-傍晚">>
 
 <<set_character_person Player {$MY_NAME} normal>>
 //<<set_character_person Character "蒂娜" normal>>
 //<<set_character_sprite {$MY_NAME} saying>>
 //<<set_character_sprite "蒂娜" saying>>
 //#sfx_talkSound_school_chime
+<<play_bgm "daily_日常微风2">>
+<<set_background "家-夜晚">>
+<<set_character_person Player {$MY_NAME} normal>>
 
+"妈妈今天打电话来问我学校的情况。"
+
+"我说一切都好，交到了一个......算是朋友吧。"
+
+"她在电话那头欣慰地笑了，这让我想起开学前爸爸说的那些话。"
+<<set_character_sprite {$MY_NAME} saying>>
+<<set_character_size Player 2 0.3 1>>
+{$MY_NAME}:"至少，交朋友的指标算是勉强完成了吧。"
+
+{$MY_NAME}:"不过这话可不能让蒂娜听到......"
+
+<<stop_bgm>>
+<<set_background "家-白天">>
+<<play_bgm "daily_日常微风3">>
+
+"周三的早晨和往常一样，只是窗外的树开始落下几片叶子。"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"秋天快要来了啊......"
+
+{$MY_NAME}:"穿件薄外套吧。"
+
+<<set_background "学校-白天">>
+
+<<set_character_person Character "蒂娜" normal>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"奈奈亲今天怎么多穿了件外套？"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"早上有点凉，就顺手拿了一件。"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"啊！那我明天也穿一件，我们就可以搭配了！"
+
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"什么叫搭配......又不是情侣装。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嘿嘿，但我们是同桌呀~"
+
+"她总是能在三句话之内把话题带到一个奇怪的方向。"
+
+<<set_background "学校-傍晚">>
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"奈奈亲，今天数学老师布置的那道题，你听懂了吗？"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"嗯，还好。"
+
+<<set_character_sprite "蒂娜" sad>>
+蒂娜:"能不能......教教我？"
+
+{$MY_NAME}:"......可以是可以，但你得先保证认真听。"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"我保证！"
+
+"于是放学后我花了二十分钟给蒂娜讲完了那道题。"
+
+"虽然她大概只听懂了七成，但这种被需要的感觉，好像也不算太差。"
+
+<<stop_bgm>>
 
 
 ===

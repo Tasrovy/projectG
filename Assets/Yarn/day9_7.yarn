@@ -3,15 +3,99 @@
 <<clear_character_person Player>>
 <<clear_character_person Character>>
 <<play_bgm "daily_日常微风(1)">>
+
+
+<<set_background "家-傍晚">>
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"今天也不早了，先休息吧"
+<<set_background "家-白天">>
+
+"周末的第一天，我在家里待了一整天。"
+
+"看看书，折折纸，偶尔望望窗外——和以前的日子没什么不同。"
+
+"但不知道为什么，总觉得少了点什么。"
+
+<<set_background "家-傍晚">>
+<<set_character_sprite {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 1>>
+{$MY_NAME}:"......那个家伙现在在干什么呢。"
+
+{$MY_NAME}:"算了，明天去趟乒乓球馆吧。"
+
+
+<<set_background "家-白天">>
+"周日一早，我便从柜子里翻出了乒乓球拍。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"有点落灰了......擦一擦吧。"
+
+{$MY_NAME}:"今天就去乒乓球馆活动一下。"
+<<jump start1_2>>
+===
+title: day9_7_2
+---
+
 //<<play_whitenoise "bgNew_fan2">>
-<<set_background "教室-傍晚">>
+<<set_background "家-傍晚">>
 
 <<set_character_person Player {$MY_NAME} normal>>
 //<<set_character_person Character "蒂娜" normal>>
 //<<set_character_sprite {$MY_NAME} saying>>
 //<<set_character_sprite "蒂娜" saying>>
 //#sfx_talkSound_school_chime
+"今天在乒乓球馆居然碰到了蒂娜，这完全出乎我的意料。"
 
+"她比我想象中学得快，不过还是差得远。"
+
+"教练说让我们以后可以一起来练球......但我还没答应。"
+<<set_character_sprite {$MY_NAME} happy>>
+<<set_character_size Player 2 0.3 1>>
+{$MY_NAME}:"不过，打球的时候......还挺开心的。"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"明天又是周一了，该收收心了。"
+
+<<stop_bgm>>
+<<set_background "家-白天">>
+<<play_bgm "daily_日常微风3">>
+
+"周一早晨的电车比平时要挤一些。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"新的一周......希望这周能安稳一点。"
+
+<<set_background "学校-白天">>
+<<set_character_person Character "蒂娜" happy>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"奈奈亲！"
+
+"蒂娜从背后拍了拍我的肩膀，然后一屁股坐在旁边的座位上。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"你今天没迟到呢。"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" left_right>>
+蒂娜:"那当然！我周末可是好好反省过了——虽然第一天坐过站了，但我已经不是上周的我了！"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......就多过了一周而已。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"哼！奈奈亲你等着瞧吧，这周我每天都不会迟到！"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"那我很期待。"
+
+<<set_background "学校-傍晚">>
+
+"蒂娜今天确实没有迟到。"
+
+"但她在午休的时候因为太兴奋被纪律委员提醒了三次。"
+
+{$MY_NAME}:"......某种程度上也算进步吧。"
+
+"我收拾好书包，开始琢磨放学后要去哪里。"
+
+<<stop_bgm>>
 
 
 ===
