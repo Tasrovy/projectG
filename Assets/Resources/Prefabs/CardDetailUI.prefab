@@ -143,7 +143,7 @@ RectTransform:
   m_GameObject: {fileID: 2442681279745436541}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5541958963183736139}
@@ -210,6 +210,7 @@ MonoBehaviour:
   panelRoot: {fileID: 0}
   closeButton: {fileID: 0}
   hideOnAwake: 1
+  cardOffsetX: 20
   giftSprite: {fileID: 21300000, guid: ac9da1c7dd6b6c541941b2f5cc1bcc47, type: 3}
   eventSprite: {fileID: 21300000, guid: db5613dc3ec5b94438e89cb9febea488, type: 3}
   funcSprite: {fileID: 21300000, guid: f80f783c89a7f6a46847fd60875862f2, type: 3}
@@ -651,7 +652,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0003652199, y: -0.000061035156}
+  m_AnchoredPosition: {x: -0.00001368962, y: 0.00005865097}
   m_SizeDelta: {x: -775.995, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5988698644087990550

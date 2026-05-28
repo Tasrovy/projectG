@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 /// <summary>
 /// 纯展示用的卡牌UI脚本，没有拖拽和选中逻辑
@@ -11,6 +12,7 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
     public Text nameText;
     public Text descriptionText;
     public Image rare;
+    public TMP_Text rareText;
 
     private Vector3 _originalScale;
     private bool _isSelected = false;
@@ -58,7 +60,7 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
         var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
         if (detailUI != null)
-            detailUI.Show(_card);
+            detailUI.ShowAtCard(_card, baseImage != null ? baseImage.rectTransform : (RectTransform)transform);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -95,8 +97,20 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         if (card.id.ToString()[0] == '1') baseImage.sprite = giftSprite;
         if (card.id.ToString()[0] == '2') baseImage.sprite = funcSprite;
         if (card.id.ToString()[0] == '3') baseImage.sprite = eventSprite;
-        if (card.id.ToString()[1] == '1') rare.sprite = rare1;
-        if (card.id.ToString()[1] == '2') rare.sprite = rare2;
-        if (card.id.ToString()[1] == '3') rare.sprite = rare3;
+        if (card.id.ToString()[1] == '1')
+        {
+            rare.sprite = rare1;
+            rareText.text = "普通";
+        }
+        if (card.id.ToString()[1] == '2')
+        {
+            rare.sprite = rare2;
+            rareText.text = "罕见";
+        }
+        if (card.id.ToString()[1] == '3')
+        {
+            rare.sprite = rare3;
+            rareText.text = "珍贵";
+        }
     }
 }

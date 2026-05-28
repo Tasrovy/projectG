@@ -144,7 +144,7 @@ public class CardUIObject : MonoBehaviour,
         {
             var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
             if (detailUI != null)
-                detailUI.Show(Card);
+                detailUI.ShowFixed(Card);
         }
     }
 
