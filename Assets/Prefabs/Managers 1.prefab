@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6515135111267380439}
   - component: {fileID: 302833726001155160}
+  - component: {fileID: 9070557426827048834}
   - component: {fileID: 5902859069287843634}
   - component: {fileID: 1998982659299980096}
   - component: {fileID: 4577431768715865317}
@@ -24,7 +25,6 @@ GameObject:
   - component: {fileID: 7085140586571006721}
   - component: {fileID: 5844406895980773212}
   - component: {fileID: 4544418261533419066}
-  - component: {fileID: 9070557426827048834}
   m_Layer: 0
   m_Name: Managers 1
   m_TagString: Untagged
@@ -64,6 +64,20 @@ MonoBehaviour:
   whiteNoiseSource: {fileID: 0}
   minPitch: 0.8
   maxPitch: 1.2
+--- !u!114 &9070557426827048834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8579412430407369785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5187c2405ba80844f8795181e015e400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  excelFileName: date.xlsx
+  dateSO: {fileID: 11400000, guid: e75b6b39847cac14abb29151c777dd19, type: 2}
 --- !u!114 &5902859069287843634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,9 +105,7 @@ MonoBehaviour:
   dayNumber: 0
   daySO: {fileID: 11400000, guid: 25d7647c376de7744a0fa4822a2adfc2, type: 2}
   dayText: {fileID: 0}
-  startYear: 2026
-  startMonth: 5
-  startDay: 17
+  weekText: {fileID: 0}
 --- !u!114 &4577431768715865317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,9 +120,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardDatas: []
   giftCards: []
+  funcCards: []
+  eventCards: []
   cardSet: []
   cardInHand: []
   consecutiveNonGiftCount: 0
+  consecutiveNonFuncCount: 0
+  consecutiveNonEventCount: 0
   probRarity1: 0.7
   probRarity2: 0.2
   probRarity3: 0.1
@@ -171,6 +187,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fdcaa81e62e427cb2318c06eca0db46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jianZhiString: "\u526A\u679D"
+  shengZhiString: "\u751F\u679D"
+  shengZhangString: "\u751F\u957F"
+  shengZhangToString: "\u751F\u957F"
+  addNatureString: "\u6761\u4EF6\u52A0\u5C5E\u6027"
+  addCardSaleString: "\u63D0\u4EF7"
 --- !u!114 &5307400695131737614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,9 +209,14 @@ MonoBehaviour:
   nature2: 0
   nature3: 0
   MoneyNum: 0
+  extraCharm: 0
   currNature1Effect: 0
   currNature2Effect: 0
   currNature3Effect: 0
+  charmCoefficient1: 1
+  charmCoefficient2: 2
+  charmCoefficient3: 3
+  charmMoneyCoefficient: 0.1
 --- !u!114 &2778898904707891554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +237,7 @@ MonoBehaviour:
     nature3: 0
     name: 
     sale: 0
+    sell: 0
     made: 
     broken: 
     added: 
@@ -217,6 +245,8 @@ MonoBehaviour:
     trigger: 
     description: 
     nextTurn: 
+    text: 
+    prompt: 
 --- !u!114 &1432430541714426492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,17 +329,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7891edc4c725b40bb8e3f88b5aceec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9070557426827048834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8579412430407369785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5187c2405ba80844f8795181e015e400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  excelFileName: date.xlsx
-  dateSO: {fileID: 11400000, guid: e75b6b39847cac14abb29151c777dd19, type: 2}
