@@ -117,6 +117,7 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     /// </summary>
     public void ShowUI()
     {
+        Debug.Log($"[DUELUIObjectManager] ShowUI() → DUELUI.SetActive(true), DUELUI instance: {(_duelUI != null ? _duelUI.GetInstanceID().ToString() : "NULL")}, caller:\n{System.Environment.StackTrace}");
         DUELUI.SetActive(true);
     }
 
@@ -125,6 +126,7 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     /// </summary>
     public void HideUI()
     {
+        Debug.Log($"[DUELUIObjectManager] HideUI() → DUELUI.SetActive(false), DUELUI instance: {(_duelUI != null ? _duelUI.GetInstanceID().ToString() : "NULL")}, caller:\n{System.Environment.StackTrace}");
         DUELUI.SetActive(false);
     }
 

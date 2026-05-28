@@ -133,6 +133,7 @@ public class AudioManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
+            Debug.LogError($"[AudioManager] 检测到重复实例！\n  当前 this (GameObject: {gameObject.name})\n  已存在的 _instance (GameObject: {_instance.gameObject.name})\n  → 即将销毁 {gameObject.name}");
             Destroy(gameObject);
             return;
         }

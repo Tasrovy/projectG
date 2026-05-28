@@ -35,6 +35,7 @@ public class UISceneManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
+            Debug.LogError($"[UISceneManager] 检测到重复实例！\n  当前 this (GameObject: {gameObject.name})\n  已存在的 Instance (GameObject: {Instance.gameObject.name})\n  → 即将销毁 {gameObject.name}");
             Destroy(gameObject);
             return;
         }

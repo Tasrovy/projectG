@@ -23,13 +23,13 @@ public class ExcelLoader : Singleton<ExcelLoader>
         string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
 
 #if UNITY_EDITOR
-        // --- 编辑器逻辑：同步 Excel 到 SO ---
-        Debug.Log($"<color=green>[ExcelLoader]</color> 正在同步: {excelPath} -> Resources/{fileNameNoExt}.asset");
-        return SyncExcelToSO(excelPath, fileNameNoExt);
-#else
-        // --- 运行逻辑：直接加载 SO ---
-        return Resources.Load<CardDatabaseSO>(fileNameNoExt);
+        if (!Application.isPlaying)
+        {
+                Debug.Log($"<color=green>[ExcelLoader]</color> 正在同步: {excelPath} -> Resources/{fileNameNoExt}.asset");
+                return SyncExcelToSO(excelPath, fileNameNoExt);
+        }
 #endif
+        return Resources.Load<CardDatabaseSO>(fileNameNoExt);
     }
 
 #if UNITY_EDITOR
@@ -135,10 +135,10 @@ public class ExcelLoader : Singleton<ExcelLoader>
         string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
 
 #if UNITY_EDITOR
-        return SyncDayExcelToSO(excelPath, fileNameNoExt);
-#else
-        return Resources.Load<DayDataSO>(fileNameNoExt);
+        if (!Application.isPlaying)
+                return SyncDayExcelToSO(excelPath, fileNameNoExt);
 #endif
+        return Resources.Load<DayDataSO>(fileNameNoExt);
     }
 
 #if UNITY_EDITOR
@@ -230,10 +230,10 @@ public class ExcelLoader : Singleton<ExcelLoader>
         string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
 
 #if UNITY_EDITOR
-        return SyncDateExcelToSO(excelPath, fileNameNoExt);
-#else
-        return Resources.Load<DateDataSO>(fileNameNoExt);
+        if (!Application.isPlaying)
+                return SyncDateExcelToSO(excelPath, fileNameNoExt);
 #endif
+        return Resources.Load<DateDataSO>(fileNameNoExt);
     }
 
 #if UNITY_EDITOR
@@ -334,10 +334,10 @@ public class ExcelLoader : Singleton<ExcelLoader>
         string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
 
 #if UNITY_EDITOR
-        return SyncInitialHandExcelToSO(excelPath, fileNameNoExt);
-#else
-        return Resources.Load<InitialHandSO>(fileNameNoExt);
+        if (!Application.isPlaying)
+                return SyncInitialHandExcelToSO(excelPath, fileNameNoExt);
 #endif
+        return Resources.Load<InitialHandSO>(fileNameNoExt);
     }
 
 #if UNITY_EDITOR
@@ -431,10 +431,10 @@ public class ExcelLoader : Singleton<ExcelLoader>
         string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
 
 #if UNITY_EDITOR
-        return SyncDialogExcelToSO(excelPath, fileNameNoExt);
-#else
-        return Resources.Load<DialogSO>(fileNameNoExt);
+        if (!Application.isPlaying)
+                return SyncDialogExcelToSO(excelPath, fileNameNoExt);
 #endif
+        return Resources.Load<DialogSO>(fileNameNoExt);
     }
 
 #if UNITY_EDITOR
@@ -536,10 +536,10 @@ public class ExcelLoader : Singleton<ExcelLoader>
         string fileNameNoExt = Path.GetFileNameWithoutExtension(excelPath);
 
 #if UNITY_EDITOR
-        return SyncPromptExcelToSO(excelPath, fileNameNoExt);
-#else
-        return Resources.Load<PromptItemSO>(fileNameNoExt);
+        if (!Application.isPlaying)
+                return SyncPromptExcelToSO(excelPath, fileNameNoExt);
 #endif
+        return Resources.Load<PromptItemSO>(fileNameNoExt);
     }
 
 #if UNITY_EDITOR
