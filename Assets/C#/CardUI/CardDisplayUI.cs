@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// 纯展示用的卡牌UI脚本，没有拖拽和选中逻辑
 /// </summary>
-public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
+public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Image baseImage;
     public Text nameText;
@@ -45,6 +45,27 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler
                     sibling._isSelected = false;
             }
         }
+
+        // 点击时隐藏卡牌详情
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Hide();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_card == null) return;
+
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Show(_card);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null && detailUI.CurrentCard == _card)
+            detailUI.Hide();
     }
 
     [Header("卡图资源")]
