@@ -1,0 +1,60 @@
+﻿title: day9_2
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风(1)">>
+//<<play_whitenoise "bgNew_fan2">>
+<<set_background "教室-傍晚">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+//<<set_character_person Character "蒂娜" normal>>
+//<<set_character_sprite {$MY_NAME} saying>>
+//<<set_character_sprite "蒂娜" saying>>
+//#sfx_talkSound_school_chime
+"回顾今天，除了上午的课程，就只剩下蒂娜那张说个不停的脸了。"
+
+{$MY_NAME}:"时候不早了，今天开学发生了那么多事，还遇到了个奇怪的同桌......"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"现在就好好休息吧。"
+
+<<stop_bgm>>
+<<set_background "家-白天">>
+<<play_bgm "daily_日常微风(1)">>
+
+{$MY_NAME}:"今天也要好好上学。"
+
+{$MY_NAME}:"快点赶到学校吧。"
+
+<<set_background "教室-白天">>
+<<set_character_person Character "蒂娜" smile>>
+
+蒂娜:"早上好啊林奈，你今天看起来挺有精神的啊~"
+
+{$MY_NAME}:"嗯，你今天倒是没有坐过站嘛。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"嘻嘻，吸取了上次的教训，我这次可是格外注意站点信息的呢。"
+
+<<set_background "教室-傍晚">>
+
+"课程结束的铃声响过之后，蒂娜难得没有立刻窜出去，而是趴在桌子上看我整理笔记。"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"奈奈亲的字好工整呢~"
+
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"......你靠太近了。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"有什么关系嘛！对了，奈奈亲放学之后一般做什么？"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"看情况，今天的话......"
+
+"我合上笔记本，开始思考接下来的安排。"
+
+<<stop_bgm>>
+
+
+
+===

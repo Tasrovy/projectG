@@ -1,0 +1,79 @@
+﻿title: day9_3
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风(1)">>
+//<<play_whitenoise "bgNew_fan2">>
+<<set_background "教室-傍晚">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+//<<set_character_person Character "蒂娜" normal>>
+//<<set_character_sprite {$MY_NAME} saying>>
+//<<set_character_sprite "蒂娜" saying>>
+//#sfx_talkSound_school_chime
+"第二天放学后我只是在学校里逛了逛就回家了，算是熟悉了新环境。"
+
+"蒂娜本来想跟过来，被我用'你坐过站怎么办'劝退了。"
+
+{$MY_NAME}:"才开学两天，却感觉发生了不少事......"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"明天又会是什么样呢......睡觉吧。"
+
+<<stop_bgm>>
+<<set_background "家-白天">>
+<<play_bgm "daily_日常微风3">>
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"嗯......今天天气不错。"
+
+{$MY_NAME}:"早点出门吧，趁着电车人少。"
+
+<<set_background "教室-白天">>
+<<set_character_person Character "蒂娜" saying>>
+<<set_character_shake Character left_right>>
+蒂娜:"林奈！林奈！"
+
+"还没走到教室门口，蒂娜的声音就已经传了过来。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......你不用这么大声我也听得见。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"嘿嘿，我刚刚拍到一张超棒的照片！你看——"
+
+"蒂娜把相机凑到我面前，屏幕上是一只蹲在窗台上的橘猫。"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"......挺可爱的。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"对吧对吧！它经常来我们学校蹭吃蹭喝呢，我决定叫它小橘！"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"你不觉得这个名字太随便了吗......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"那你来取一个！"
+
+{$MY_NAME}:"......小橘挺好的。"
+
+<<set_background "教室-傍晚">>
+
+"今天的课比昨天多了一节自习，但对我来说差别不大。"
+
+"蒂娜在自习课上偷偷折了只纸飞机，被老师发现之后很不好意思地塞进了抽屉里。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"奈奈亲今天放学有空吗？"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"怎么了？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"没什么，就问一下~"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......先看看情况吧。"
+
+<<stop_bgm>>
+
+
+===

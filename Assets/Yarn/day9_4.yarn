@@ -1,0 +1,66 @@
+﻿title: day9_4
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+
+//<<play_whitenoise "bgNew_fan2">>
+<<set_background "教室-傍晚">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+//<<set_character_person Character "蒂娜" normal>>
+//<<set_character_sprite {$MY_NAME} saying>>
+//<<set_character_sprite "蒂娜" saying>>
+//#sfx_talkSound_school_chime
+"结果今天放学后我还是直接回家了，蒂娜看起来有点失望，但她什么也没说。"
+
+"我是不是应该......算了，才认识三天而已。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"明天周五了，开学第一周过得真快......"
+
+{$MY_NAME}:"周末要不要去乒乓球馆呢......"
+
+<<stop_bgm>>
+<<set_background "家-白天">>
+<<play_bgm "daily_日常微风(1)">>
+
+{$MY_NAME}:"周五了，再坚持一天。"
+
+{$MY_NAME}:"希望今天能安安静静地过完。"
+
+<<set_background "学校-白天">>
+<<set_character_person Character "蒂娜" happy>>
+
+蒂娜:"奈奈亲~早上好！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"你今天怎么这么高兴？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"因为明天就是周末了啊！奈奈亲周末有什么计划吗？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......还没想好。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"那要不要一起——"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"再说吧。"
+
+"我下意识打断了蒂娜的话，她的表情僵了一瞬，然后又迅速恢复成了平时的笑容。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嗯！那到时候再说~"
+
+<<set_background "学校-傍晚">>
+
+"蒂娜今天一整天都没有再问周末的事，这反而让我有点不自在。"
+
+"放学的时候，我注意到她的背影比平时安静了一些。"
+
+{$MY_NAME}:"......算了，先不想这些。"
+
+<<stop_bgm>>
+
+
+===

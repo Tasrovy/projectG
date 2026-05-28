@@ -1,0 +1,17 @@
+﻿title: day9_8
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风(1)">>
+//<<play_whitenoise "bgNew_fan2">>
+<<set_background "教室-傍晚">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+//<<set_character_person Character "蒂娜" normal>>
+//<<set_character_sprite {$MY_NAME} saying>>
+//<<set_character_sprite "蒂娜" saying>>
+//#sfx_talkSound_school_chime
+
+
+
+===
