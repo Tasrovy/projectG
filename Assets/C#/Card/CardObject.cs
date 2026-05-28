@@ -9,6 +9,7 @@ public class CardObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private CardChoosing _choosingManager;
     private ShopController _shoppingManager;
     private CardUIObject _uiObject;
+    private RectTransform _imageRect;
     private bool _isPinned;
 
     private void Awake()
@@ -19,6 +20,10 @@ public class CardObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         _choosingManager = GetComponentInParent<CardChoosing>();
         _shoppingManager = GetComponentInParent<ShopController>();
         _uiObject = GetComponent<CardUIObject>();
+
+        // 缓存卡牌Image的RectTransform (结构: card → Offset → Image)
+        Transform imageT = transform.Find("Offset/Image");
+        if (imageT != null) _imageRect = imageT.GetComponent<RectTransform>();
     }
 
     /// <summary>
@@ -42,16 +47,17 @@ public class CardObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_shoppingManager == null) return;
+        // 商店 / 三选一 时 hover 显示卡牌详情
+        if (_shoppingManager == null && _choosingManager == null) return;
 
         var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
         if (detailUI != null)
-            detailUI.Show(card);
+            detailUI.ShowAtCard(card, _imageRect);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_shoppingManager == null) return;
+        if (_shoppingManager == null && _choosingManager == null) return;
         if (_isPinned) return;
 
         var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
@@ -86,7 +92,7 @@ public class CardObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
         var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
         if (detailUI != null)
-            detailUI.Show(card);
+            detailUI.ShowAtCard(card, _imageRect);
     }
 
     public void UnpinDetail()
