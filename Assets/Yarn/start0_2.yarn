@@ -1,11 +1,14 @@
 ﻿title: start0_2
 ---
-<<play_bgm "daily_日常微风3">>
-<<play_whitenoise "bgNew_school1">>
 <<set_background "教室-白天">>
+<<play_whitenoise "bgNew_school1">>
+
+
+"就这样，林奈抵达了教室"
 
 <<set_character_person Player {$MY_NAME} normal>>
 <<set_character_size Player 1 0 0.6>>
+
 "说实话，我并没有料到她会和我同一个班级。"
 
 "但是事实就是这样，依靠着这种缘分，我和她甚至成了同桌。"
@@ -83,4 +86,10 @@
 {$MY_NAME}:"蛤？这是什么称呼？"
 <<set_character_sprite "蒂娜" smile>>
 蒂娜:"啊，说起来，刚刚大家都在看你哦~"
+
+(随着一阵铃声响起，上课了)#sfx_talkSound_school_chime
+铃声打断了林奈和蒂娜之间的对话，老师开始交代各种开学事宜
+
+（。。。。。。）
+过了好一阵，到了午休时间
 ===

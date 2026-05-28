@@ -427,14 +427,14 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u5927\u76F2\u76D2"
-    sale: 0
-    sell: 0
+    sale: 80
+    sell: 64
     made: 
     broken: 80
     added: 64
     description: "\u968F\u673A\u83B7\u5F973\u5F20\u7F55\u89C1\u793C\u7269\u724C"
     buff: 
-    trigger: 
+    trigger: addRandomCard(1,2,3)
     nextTurn: 
     text: "\u5546\u573A\u91CC\u552E\u5356\u7684\u76F2\u76D2\uFF0C\u4E0D\u77E5\u9053\u91CC\u9762\u4F1A\u5F00\u51FA\u4EC0\u4E48\u4E1C\u897F"
     prompt: 

@@ -1,6 +1,6 @@
 title: doWork2_1
 ---
-<<set_background "背景">>
+<<set_background "小卖部-傍晚">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
 <<set_character_person Player {$MY_NAME} peace_1>>

@@ -1,0 +1,260 @@
+﻿title: start1_2
+---
+<<play_bgm "daily_日常微风(1)">>
+<<set_background "乒乓球室-白天">>
+<<set_character_person Player {$MY_NAME} normal>>
+
+"我很喜欢乒乓球的声音，听起来就和它的名字一样，"
+
+"乒，然后乓。"
+
+"一声，两声，一声，两声，在桌子和拍子之间来回碰撞，迅捷而灵巧，规律而万变。"
+
+"明明只是围着一张稍微宽一些的桌子，明明只是一颗小小的空心的球，却在乒乓声中有了自己的位置，自己的灵魂，自己的力量。"
+
+"林奈抱着这样的想法，走进了她熟悉的那家乒乓球馆。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"有段时间没来过了呢......久违了，"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"在家里真的太无聊了，果然还是要运动运动。"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"也不知道能不能找到人和我一起......"
+
+"林奈走进馆内，手里捏着一对拍子，环顾馆内，并没有她熟悉的背影。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......算了，还是找教练打一会儿吧。"
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"教练，教练在......唉？"
+
+<<set_character_person Character "蒂娜" normal>>
+"当林奈的注意力集中起来之后，角落里某个人的身影突然没那么陌生了。"
+
+"那头粉色的长发在这种时候实在太扎眼了，林奈紧握着拍子，甚至攥出了些汗，"
+
+"她慢慢靠近那张桌子，教练还在认真地教那个女孩接球发球，而林奈在确认了对方的身份后，下意识地喊出了她的名字。"
+
+
+<<set_character_size Player 2 0.28 0.6>>
+{$MY_NAME}:"蒂娜？"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"？！"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"是奈奈！"
+<<set_character_size Character 2 0.3 1>>
+
+"于是，忘记了自己还在练球的蒂娜全然不顾飞过来的乒乓球，转身扑向就在她旁边的林奈。"
+<<set_character_move Character x -18 0.4>>
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"喂！等等——"
+
+"蒂娜毫不犹豫地抱住试图后退躲开的林奈，然后因为用力过猛压着林奈倒在了地上。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"啊......疼......"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_size Character 2 0.3 0.8>>
+蒂娜:"我等你好久了奈奈！我就知道一定能碰到你的！"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"你能不能先......起来......"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"啊...好的！"
+
+"蒂娜立刻爬起来，顺带搀扶着林奈站起身。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"抱歉奈奈，太激动了~"
+
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"哈......真倒霉...早知道不跟你打招呼了......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"唉不要嘛！奈奈下次也一定要打招呼哦！下下次也要哦！"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"停停停......你能不能冷静下？"
+
+"林奈把蒂娜推开，拽了拽衣角，顺手拍了拍上面的土。"
+
+"在两个人都短暂沉默的时候，一旁目睹了全程的教练插了句话。"
+<<clear_character_person Character>>
+<<set_character_move Character x 18 0.6>>
+<<set_character_person Character "npcMan" man>>
+教练:"你们两个认识吗？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"啊，教练......嗯，我和她是同班同学。"
+
+教练:"那行，你跟她练练吧，看看她会了多少。"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"呃，可以是可......嗯，我跟她打吧。"
+
+"原本想要推辞的林奈思考了一下，决定还是答应下来。"
+
+<<set_character_person Character "蒂娜" normal>>
+(......)
+<<set_character_shake "蒂娜" left_right>>
+蒂娜:"真的？！谢谢奈奈亲！"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"不要亲...不是，离我远点！"
+
+"林奈不知道自己哪根筋不对说出了这种话，然后立刻反应过来改了口。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"唉？奈奈亲你在说什么？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"没...没什么，给你拍子。"
+
+"两个人随后走到桌子两侧，蒂娜伸了伸懒腰，掂了掂手里的拍子，她像是得到宝藏在庆祝一样捧着球拍，左右抬腿晃荡着在地上乱踩，"
+
+"突然，蒂娜似乎注意到了什么，停下了躁动的身体，眼睛在拍子的一角上停了一会儿，嘴角轻轻勾起。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"发球已经会了吗？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嗯，已经学会了~"
+
+"带着那种还没散去的玩味表情，蒂娜做出了回应。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"好，你发给我。"
+
+"随着简单的准备和深呼吸，蒂娜捏准了拍子，摆好架势。"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"...挺像样的..."
+
+"随着球与拍子相撞，林奈也做好了接球的准备，她看准了蒂娜发球的动作和方向，准备在球砸在她桌子的瞬间就——"
+
+"哒——"
+
+"然后林奈就看见球就朝着远处飞了出去。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"啊......力气大了点......"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"...动作那么标准，怎么就打飞出去了......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嘛...我是从电视节目里学的啦~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"我算是明白为什么教练把你扔给我了......"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"唉...林奈不是教练吗~"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"啊？你在说什么梦话？"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"因为看你和教练很熟，而且很信任你还随口就把我交给你了~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......少胡思乱想，只是之前经常来打球而已，你先学发球，你应该知道至少在对方桌面弹一次才算打过去了吧？"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"嗯，这个知道，只是我还没成功过~"
+
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"你是不是还挺自豪的......"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"我才没有！我是在高兴奈奈亲自教我打球！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......说起来，你是不是说过，等我好久之类的话？"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" left_right>>
+蒂娜:"嗯嗯，因为奈奈亲说过喜欢打乒乓球，所以我就来这里了~"
+
+蒂娜:"没想到我才刚来就遇到奈奈了！真是太幸运了！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......总之，先熟悉球的运动，多发几次球，控制好力度，再来一次吧。"
+
+"林奈拿起另一颗球，往桌子上一扔，然后这颗球就精准无误地飞向了蒂娜。"
+
+"蒂娜连忙伸手去接，完全忘记了自己手里还捏着拍子，于是第二颗球也因为这个急躁的伸手动作被打飞了出去。"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"......"
+
+<<set_character_sprite "蒂娜" cry>>
+蒂娜:"......"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"至少说明你反应很快。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嘿嘿~"
+
+"......打乒乓球，是在维持一种秩序。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"如果球能永远在桌子上空弹跳，说明两个人拍子很好。"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......什么意思......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"没什么，林奈你的球拍很好用~"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"一定要打这么慢的话，我确实每次都能接住。"
+
+"乒乓球在桌子上弹跳，时左时右，林奈有时正手有时反手，去给这缓慢的节拍增加一些乐趣。"
+
+<<set_character_sprite "蒂娜" smile>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"上面画的蝴蝶结也很可爱~"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"？！"
+
+"蒂娜在刚到桌子前还细细端详了一会儿拍子上那个小标记，那就和写上名字一样，代表着球拍属于林奈。"
+
+"蒂娜的话让林奈恍了下神，她差点就没接住球，但就是这简单的偏转，让球飞得更偏了，于是......"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"唉？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"啊......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"林奈有点太自信了哦~"
+
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"......不算，重新来！"
+
+"球飞了出去，没什么特别的，只是一个小插曲而已。"
+
+"但林奈内心还是承认自己有些生气，她把速度和力量加快了一些，让球擦着蒂娜的拍子飞过去。"
+
+<<set_character_sprite "蒂娜" normal>>
+<<set_character_shake "蒂娜" left_right>>
+蒂娜:"林奈确实很会打乒乓球呢~"
+
+"林奈看着蒂娜脸上的笑容，沉默了一会儿，最后呼了口气。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......你进步很快。"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake "蒂娜" up_down>>
+蒂娜:"奈奈夸我了！"
+
+{$MY_NAME}:"......"
+
+<<stop_bgm>>
+===

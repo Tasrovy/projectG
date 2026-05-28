@@ -60,7 +60,7 @@
 
 "但林奈还是叼着煎蛋面包，朝着开往学校的电车赶过去——她想赶早上第一班电车，这班车是七点钟整出发的。"
 
-"而且，要比第二班第三班第四班的人都要少。"
+"而且，要比第二班第三班第四班的人都要少。"#sfx_talkSound_outside_trainPassing
 
 <<set_background "电车-内">>
 <<play_whitenoise "bgNew_trainOutside">>
@@ -150,7 +150,7 @@
 蒂娜:"我还是第一次遇见林奈同学你这样安静的人呢！那，学校见啦！"
 <<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}:"也没有......吧"
-
+<<set_character_move Character x 20 0.4>>
 "林奈的话还没说出口，蒂娜就已经朝着下一节车厢跑去了，她望着那个活泼热情的背影，陷入了沉默。"
 <<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"爸爸说的就是蒂娜这样的人吧......"
@@ -158,7 +158,8 @@
 <<set_character_size Character 2 0.3 0.6>>
 {$MY_NAME}:"啊！到站了......"
 
-
+<<set_character_size Player 1 0 1>>
+<<set_character_size Character 1 0 1>>
 "随着电车的播报，林奈从椅子上站起来，朝着打开的电车门出去，学校的模样已经能够眺望到。"
 
 {$MY_NAME}:"......嗯，准备好了。"
@@ -167,7 +168,6 @@
 
 <<clear_character_person Player>>
 <<clear_character_person Character>>
-<<stop_bgm>>
 <<jump start0_2>>
 
 ===
