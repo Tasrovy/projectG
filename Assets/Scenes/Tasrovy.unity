@@ -730,7 +730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &973505230
 RectTransform:
   m_ObjectHideFlags: 0
@@ -818,6 +818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardId: 22222
+  man: {fileID: 0}
   posX: 0
   posY: 0
   multiple: 0
@@ -826,6 +827,10 @@ MonoBehaviour:
   size: 0
   Ypoint: 0
   chaLastTime: 0
+  moveObjectName: 
+  axis: 
+  moveDistance: 0
+  movetime: 0
 --- !u!4 &1083252781
 Transform:
   m_ObjectHideFlags: 0
@@ -993,7 +998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2143668939
 RectTransform:
   m_ObjectHideFlags: 0

@@ -95,7 +95,6 @@ public class DeckViewerUI : Singleton<DeckViewerUI>
         {
             // 实例化预制体，并将其父节点设为 Content
             GameObject newCardObj = Instantiate(displayCardPrefab, contentParent);
-
             // 获取我们写的展示脚本，注入数据
             CardDisplayUI displayUI = newCardObj.GetComponent<CardDisplayUI>();
             if (displayUI != null)
@@ -113,5 +112,10 @@ public class DeckViewerUI : Singleton<DeckViewerUI>
         if (viewerPanel != null && viewerPanel.activeSelf)
             SfxTrigger.PlaySound(DeckCloseSfxPath);
         viewerPanel.SetActive(false);
+
+        // 关闭查看器时同时隐藏卡牌详情面板
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Hide();
     }
 }
