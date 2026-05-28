@@ -3227,6 +3227,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2034834527}
     m_Modifications:
+    - target: {fileID: 5091213793442527628, guid: cf8be57503812fc4d93fcd6240fda868, type: 3}
+      propertyPath: m_CellSize.x
+      value: 42.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091213793442527628, guid: cf8be57503812fc4d93fcd6240fda868, type: 3}
+      propertyPath: m_CellSize.y
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091213793442527628, guid: cf8be57503812fc4d93fcd6240fda868, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091213793442527628, guid: cf8be57503812fc4d93fcd6240fda868, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 132
+      objectReference: {fileID: 0}
     - target: {fileID: 8728509854077443028, guid: cf8be57503812fc4d93fcd6240fda868, type: 3}
       propertyPath: m_Name
       value: calendar
@@ -4952,6 +4968,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 651184605}
+    - target: {fileID: 8417648861961847724, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 754e2f13e23e41041837cb42845146dc, type: 3}
     - target: {fileID: 8779666436261372997, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 16
@@ -5334,8 +5354,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 588924484645409348, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

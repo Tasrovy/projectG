@@ -204,6 +204,22 @@ public class PropertiesShow : MonoBehaviour
         }
     }
 
+    public void RefreshAllUiTexts()
+    {
+        if (slider1 == null || slider2 == null || slider3 == null || slider4 == null)
+        {
+            InitializeReferences();
+        }
+
+        if (selectTargetText == null || selectNumText == null || charmNumText == null || dayTimeText == null)
+        {
+            InitializeTargetTextReference();
+        }
+
+        UpdatePropertiesShow();
+        RefreshTargetText();
+    }
+
     public void UpdatePropertiesShow()
     {
         if (DataManager.Instance == null) return;

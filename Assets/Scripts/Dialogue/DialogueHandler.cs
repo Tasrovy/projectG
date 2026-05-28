@@ -96,14 +96,7 @@ public class DialogueHandler : MonoBehaviour
         return GameObject.Find("talk");
     }
 
-        void Start()
-    {
-        Yarn.Unity.InMemoryVariableStorage storage = FindAnyObjectByType<Yarn.Unity.InMemoryVariableStorage>();
-        if (storage != null && PlayerPrefs.HasKey("PLAYER_CUSTOM_NAME"))
-        {
-            storage.SetValue("$MY_NAME", PlayerPrefs.GetString("PLAYER_CUSTOM_NAME"));
-        }
-    }
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -453,15 +446,7 @@ public class DialogueHandler : MonoBehaviour
         Debug.Log($"[DialogueHandler][StartDialogueRoutine] 找到 talk，准备启动节点: {yarnScript}");
 
         // =================强制劫持与数据同步点=================
-        // 不论这是第几个场景的 VariableStorage，我们都在它开启对话前强行修正！
-        if (PlayerPrefs.HasKey("PLAYER_CUSTOM_NAME"))
-        {
-            string savedName = PlayerPrefs.GetString("PLAYER_CUSTOM_NAME");
-            if (dialogueRunner != null && dialogueRunner.VariableStorage != null)
-            {
-                dialogueRunner.VariableStorage.SetValue("$MY_NAME", savedName);
-            }
-        }
+        // 玩家名仅由 Yarn 变量层维护，此处不再做本地偏好回写。
         // 向YarnSpinner发送开始指令。不再人为提前去抢状态或显示按钮
         // 接下来由Update自动完美捕捉起跑的瞬间！
         dialogueRunner.StartDialogue(yarnScript);
@@ -499,12 +484,6 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator EndDialogueRoutine()
     {
-        // 尝试更新 UI 属性条（含金钱）
-        if (PropertiesShow.Instance != null)
-        {
-            PropertiesShow.Instance.UpdatePropertiesShow();
-        }
-
         // 1. 先播放离场转场动画，并在屏幕完全黑掉的瞬间去清除立绘和背景
         yield return TransitionManager.Instance.PlayTransition(() => 
         {
@@ -615,9 +594,8 @@ public class DialogueHandler : MonoBehaviour
             yield break;
         }
 
-        // 所有对话均完成，此时才更新日期显示
-        if (DayManager.Instance != null)
-            DayManager.Instance.UpdateDayText();
+        // 所有对话均完成后，统一刷新日期/日历/属性区等 UI 文本。
+        RefreshCalendarAndUiTexts();
 
         // 3. 所有排备流程结束，此时若是需要换场景才会真正切换。
         if (willSwitchScene)
@@ -637,6 +615,30 @@ public class DialogueHandler : MonoBehaviour
 
         // 所有流程结束，释放锁
         isHandlingDialogueSequence = false;
+    }
+
+    private void RefreshCalendarAndUiTexts()
+    {
+        if (DayManager.Instance != null)
+        {
+            DayManager.Instance.UpdateDayText();
+        }
+
+        if (PropertiesShow.Instance != null)
+        {
+            PropertiesShow.Instance.RefreshAllUiTexts();
+        }
+
+        if (DateManager.Instance != null)
+        {
+            DateManager.Instance.RefreshCurrentDayData();
+        }
+
+        CalendarPopup[] popups = FindObjectsByType<CalendarPopup>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (CalendarPopup popup in popups)
+        {
+            popup.RefreshToCurrentDate();
+        }
     }
 
     #region 强制过天与数值属性设置
@@ -810,299 +812,5 @@ public class DialogueHandler : MonoBehaviour
 }
 
 /*
-=== UI组件详细信息 ===
-分析目标: Dialogue System
-
-    [✗] GameObject: Background
-        - RectTransform:
-          Position: (740.00, -10.00)  Size: (1920.00, 240.00)
-          Pivot: (0.50, 0.50)  Scale: (0.85, 1.70, 1.00)
-          Anchors: Min (0.00, 0.00), Max (1.00, 1.00)
-        - Image:
-          Sprite: 对话框_0
-          Color: FFFFFFFF
-          Raycast Target: True  Type: Simple
-        - LayoutElement:
-          Ignore Layout: True
-          Min: (-1, -1)  Preferred: (-1, -1)
-          Flexible: (-1, -1)
-
-    [✗] GameObject: Skip
-        - RectTransform:
-          Position: (1618.00, -145.00)  Size: (21.60, 12.00)
-          Pivot: (0.50, 0.50)  Scale: (8.00, 8.00, 1.00)
-          Anchors: Min (0.00, 1.00), Max (0.00, 1.00)
-        - Image:
-          Sprite: 跳过按钮_0
-          Color: FFFFFFFF
-          Raycast Target: True  Type: Simple
-        - Button:
-          Interactable: True
-          Target Graphic: Skip
-
-    [✗] GameObject: Log
-        - RectTransform:
-          Position: (1629.00, 72.00)  Size: (21.60, 12.00)
-          Pivot: (0.50, 0.50)  Scale: (8.00, 8.00, 1.00)
-          Anchors: Min (0.00, 1.00), Max (0.00, 1.00)
-        - Image:
-          Sprite: 退出商店1
-          Color: FFFFFFFF
-          Raycast Target: True  Type: Simple
-        - Button:
-          Interactable: True
-          Target Graphic: Log
-
-    [✓] GameObject: Line Presenter
-        - RectTransform:
-          Position: (760.00, -120.00)  Size: (1520.00, 183.48)
-          Pivot: (0.50, 0.00)  Scale: (1.00, 1.00, 1.00)
-          Anchors: Min (0.00, 0.00), Max (1.00, 0.00)
-        - CanvasGroup:
-          Alpha: 0  Interactable: True
-          Blocks Raycasts: True
-        - VerticalLayoutGroup: Spacing=24
-        - ContentSizeFitter:
-          Horizontal Fit: Unconstrained  Vertical Fit: PreferredSize
-
-        [✓] GameObject: Character Name
-            - RectTransform:
-              Position: (835.00, 68.00)  Size: (1440.00, 45.99)
-              Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.00, 1.00), Max (0.00, 1.00)
-            - TextMeshProUGUI:
-              Content: "Character Name"
-              Font Size: 32  Color: 000000FF
-              Alignment: TopLeft
-
-        [✓] GameObject: Text
-            - RectTransform:
-              Position: (845.00, -49.00)  Size: (1440.00, 57.49)
-              Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.00, 1.00), Max (0.00, 1.00)
-            - TextMeshProUGUI:
-              Content: "Here's a big long line of dialogue, ready to be shown to the player."
-              Font Size: 40  Color: 000000FF
-              Alignment: TopLeft
-
-        [✓] GameObject: Button Container
-            - RectTransform:
-              Position: (-20.00, 5.00)  Size: (0.00, 0.00)
-              Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.50, 0.00), Max (0.50, 0.00)
-            - LayoutElement:
-              Ignore Layout: True
-              Min: (-1, -1)  Preferred: (-1, -1)
-              Flexible: (-1, -1)
-
-            [✓] GameObject: Continue Button
-                - RectTransform:
-                  Position: (0.00, 247.00)  Size: (45.00, 32.00)
-                  Pivot: (0.50, 1.00)  Scale: (36.00, 10.00, 5.00)
-                  Anchors: Min (0.50, 0.00), Max (0.50, 0.00)
-                - Image:
-                  Sprite: CharacterBubble
-                  Color: FFFFFF00
-                  Raycast Target: True  Type: Sliced
-                - Button:
-                  Interactable: True
-                  Target Graphic: Continue Button
-
-    [✓] GameObject: Options Presenter
-        - RectTransform:
-          Position: (760.00, 400.00)  Size: (1520.00, 56.00)
-          Pivot: (0.50, 0.00)  Scale: (1.00, 1.00, 1.00)
-          Anchors: Min (0.00, 0.00), Max (1.00, 0.00)
-        - Canvas:
-          Render Mode: ScreenSpaceCamera  Pixel Perfect: False
-          Sorting Layer: Default  Order in Layer: 10
-        - GraphicRaycaster:
-          Ignore Reversed Graphics: True
-          Blocking Objects: None
-        - CanvasGroup:
-          Alpha: 0  Interactable: False
-          Blocks Raycasts: False
-        - VerticalLayoutGroup: Spacing=60
-        - ContentSizeFitter:
-          Horizontal Fit: Unconstrained  Vertical Fit: PreferredSize
-
-        [✓] GameObject: Background
-            - RectTransform:
-              Position: (0.00, 11.00)  Size: (-80.00, 86.00)
-              Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.00, 0.00), Max (1.00, 1.00)
-            - Image:
-              Sprite: 选择——未选中状态_0
-              Color: FFFFFF00
-              Raycast Target: True  Type: Simple
-            - LayoutElement:
-              Ignore Layout: True
-              Min: (-1, -1)  Preferred: (-1, -1)
-              Flexible: (-1, -1)
-
-        [✓] GameObject: Last Line
-            - RectTransform:
-              Position: (0.00, 0.00)  Size: (150.08, 0.00)
-              Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.00, 0.00), Max (0.00, 0.00)
-            - TextMeshProUGUI:
-              Content: "Last line"
-              Font Size: 32  Color: FFFFFFFF
-              Alignment: TopLeft
-            - LayoutElement:
-              Ignore Layout: True
-              Min: (-1, -1)  Preferred: (-1, -1)
-              Flexible: (-1, -1)
-
-    [✗] GameObject: LogHistory
-        - RectTransform:
-          Position: (780.00, 283.00)  Size: (1200.00, 750.00)
-          Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-          Anchors: Min (0.50, 0.50), Max (0.50, 0.50)
-        - Canvas:
-          Render Mode: WorldSpace  Pixel Perfect: False
-          Sorting Layer: Default  Order in Layer: 100
-        - Image:
-          Sprite: 背景图
-          Color: FFFFFFFF
-          Raycast Target: True  Type: Simple
-        - ScrollRect:
-          Horizontal: False  Vertical: True
-          Movement Type: Elastic  Inertia: True
-          Elasticity: 0.1  Deceleration Rate: 0.135
-          Scroll Sensitivity: 1
-          Content: Content
-          Viewport: Viewport
-          Horizontal Scrollbar: None
-          Vertical Scrollbar: Scrollbar Vertical
-
-        [✓] GameObject: scene
-            - RectTransform:
-              Position: (0.00, 0.00)  Size: (2000.00, 1200.00)
-              Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.50, 0.50), Max (0.50, 0.50)
-            - Canvas:
-              Render Mode: WorldSpace  Pixel Perfect: False
-              Sorting Layer: Default  Order in Layer: 99
-            - Image:
-              Sprite: None
-              Color: 00000080
-              Raycast Target: True  Type: Simple
-
-        [✓] GameObject: Viewport
-            - RectTransform:
-              Position: (0.00, 0.00)  Size: (-17.00, 0.00)
-              Pivot: (0.00, 1.00)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.00, 0.00), Max (1.00, 1.00)
-            - Image:
-              Sprite: UIMask
-              Color: FFFFFFFF
-              Raycast Target: True  Type: Sliced
-            - RectMask2D:
-              Padding: (0.00, 0.00, 0.00, 0.00)
-              Softness: (0, 0)
-
-            [✓] GameObject: Content
-                - RectTransform:
-                  Position: (0.00, 0.00)  Size: (0.00, 300.00)
-                  Pivot: (0.00, 1.00)  Scale: (1.00, 1.00, 1.00)
-                  Anchors: Min (0.00, 1.00), Max (1.00, 1.00)
-                - VerticalLayoutGroup: Spacing=0
-                - ContentSizeFitter:
-                  Horizontal Fit: Unconstrained  Vertical Fit: PreferredSize
-
-                [✓] GameObject: logNode
-                    - RectTransform:
-                      Position: (50.00, -50.00)  Size: (100.00, 100.00)
-                      Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-                      Anchors: Min (0.00, 1.00), Max (0.00, 1.00)
-                    - LayoutElement:
-                      Ignore Layout: False
-                      Min: (-1, -1)  Preferred: (-1, -1)
-                      Flexible: (-1, -1)
-
-                    [✓] GameObject: portrait
-                        - RectTransform:
-                          Position: (-300.00, 0.00)  Size: (100.00, 100.00)
-                          Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-                          Anchors: Min (0.50, 0.50), Max (0.50, 0.50)
-                        - Image:
-                          Sprite: None
-                          Color: FFFFFFFF
-                          Raycast Target: True  Type: Simple
-
-                    [✓] GameObject: name
-                        - RectTransform:
-                          Position: (-135.00, 40.00)  Size: (200.00, 50.00)
-                          Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-                          Anchors: Min (0.50, 0.50), Max (0.50, 0.50)
-                        - TextMeshProUGUI:
-                          Content: "林奈"
-                          Font Size: 24  Color: 000000FF
-                          Alignment: TopLeft
-
-                    [✓] GameObject: text
-                        - RectTransform:
-                          Position: (45.00, -25.00)  Size: (200.00, 50.00)
-                          Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-                          Anchors: Min (0.50, 0.50), Max (0.50, 0.50)
-                        - TextMeshProUGUI:
-                          Content: "饱饱快过来我扣死你"
-                          Font Size: 20  Color: 000000FF
-                          Alignment: TopLeft
-
-        [✓] GameObject: Scrollbar Vertical
-            - RectTransform:
-              Position: (0.00, 0.00)  Size: (20.00, 0.00)
-              Pivot: (1.00, 1.00)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (1.00, 0.00), Max (1.00, 1.00)
-            - Image:
-              Sprite: Background
-              Color: FFFFFFFF
-              Raycast Target: True  Type: Sliced
-            - Scrollbar:
-              Direction: BottomToTop
-              Value: 0  Size: 1  Steps: 0
-              Interactable: True
-              Handle Rect: Handle
-
-            [✓] GameObject: Sliding Area
-                - RectTransform:
-                  Position: (0.00, 0.00)  Size: (-20.00, -20.00)
-                  Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-                  Anchors: Min (0.00, 0.00), Max (1.00, 1.00)
-
-                [✓] GameObject: Handle
-                    - RectTransform:
-                      Position: (0.00, 0.00)  Size: (20.00, 20.00)
-                      Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-                      Anchors: Min (0.00, 0.00), Max (1.00, 1.00)
-                    - Image:
-                      Sprite: UISprite
-                      Color: FFFFFFFF
-                      Raycast Target: True  Type: Sliced
-
-        [✓] GameObject: close
-            - RectTransform:
-              Position: (624.00, 350.00)  Size: (50.00, 50.00)
-              Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-              Anchors: Min (0.50, 0.50), Max (0.50, 0.50)
-            - Image:
-              Sprite: UISprite
-              Color: FFFFFFFF
-              Raycast Target: True  Type: Sliced
-            - Button:
-              Interactable: True
-              Target Graphic: close
-
-            [✓] GameObject: Text (TMP)
-                - RectTransform:
-                  Position: (0.00, 0.00)  Size: (0.00, 0.00)
-                  Pivot: (0.50, 0.50)  Scale: (1.00, 1.00, 1.00)
-                  Anchors: Min (0.00, 0.00), Max (1.00, 1.00)
-                - TextMeshProUGUI:
-                  Content: "X"
-                  Font Size: 24  Color: 323232FF
-                  Alignment: Center
 以上是对话系统的ui结构和组件信息。你现在可以编写对话记录的脚本，要求实现以下要点：①对话历史节点logNode中，name记录说话人（若是旁白，即yarn对话没有对应说话人，则留空），text记录说话内容，portrait为头像，暂时保留；②每更新一句对话都需要更新对应对话节点，并确保对话节点竖直整齐排列，能够通过鼠标滚轮上下浏览；③每次对话结束后清空历史，历史仅记录该次对话内容；④
 */

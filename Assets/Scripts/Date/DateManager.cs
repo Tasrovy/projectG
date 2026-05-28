@@ -78,7 +78,7 @@ public class DateManager : Singleton<DateManager>
     private void Start()
     {
         // 初始显示当天数据
-        ShowCurrentDayData();
+        RefreshCurrentDayData();
     }
 
     /// <summary>
@@ -97,6 +97,15 @@ public class DateManager : Singleton<DateManager>
             SetTodoTexts(found.morning, found.afternoon, found.afterclass, found.text);
         else
             SetTodoTexts("", "", "", "");
+    }
+
+    /// <summary>
+    /// 对外刷新当前天的 todo 文本（包含引用兜底）。
+    /// </summary>
+    public void RefreshCurrentDayData()
+    {
+        ResolveReferences();
+        ShowCurrentDayData();
     }
 
     /// <summary>

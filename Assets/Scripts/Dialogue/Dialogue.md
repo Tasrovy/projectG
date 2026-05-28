@@ -11,7 +11,7 @@
 | `DialogueHandler` | 日程驱动核心；对话队列管理；失败检定；过天与场景切换协调 |
 | `CharacterHighlightManager` | Yarn Presenter 扩展；立绘高亮/隐藏；属性结算；视觉清场 |
 | `DialogueUIAudio` | 对话相关 UI 音效单例；统一封装各场景下的音效播放 |
-| `PlayerNameHandler` | 玩家自定义名字输入；写入 Yarn 变量与 PlayerPrefs |
+| `PlayerNameHandler` | 玩家自定义名字输入；写入 Yarn 变量 |
 | `TextSpecialEffect` | TMP 文字特效；解析 `<wave>` / `<shake>` 自定义标签并驱动顶点动画 |
 | `OptionSoundHelper` | 对话选项点击音效辅助；IPointerClickHandler + UnityEvent |
 
@@ -63,7 +63,7 @@
 
 1. 检测场景内是否已有激活的 `talk` 物体。若无，触发 `TransitionManager.PlayTransition`，在黑屏中点调用 `UISceneManager.SwitchToScene(SceneType.Talk)` 切换到对话场景。
 2. 逐帧等待 `talk` 物体被激活（防止 Yarn 在物体未就绪时执行立绘命令）。
-3. 从 `PlayerPrefs` 取出玩家自定名并写入 `DialogueRunner.VariableStorage`。
+3. 直接使用当前 `DialogueRunner.VariableStorage` 中的玩家名变量，不做额外持久化回写。
 4. 调用 `dialogueRunner.StartDialogue(yarnScript)` 正式启动 Yarn 节点。
 
 ---
@@ -287,9 +287,9 @@ Character
 供确认按钮 UnityEvent 调用：
 1. 取 `nameInputField.text`，为空则使用 `defaultName`
 2. 写入 `variableStorage` 的 `$MY_NAME` 变量
-3. 持久化到 `PlayerPrefs.SetString("PLAYER_CUSTOM_NAME", ...)`
+3. 不做本地偏好持久化，仅维持变量层状态
 
-`DialogueHandler.Start` 和 `StartDialogueRoutine` 在进入新对话前均会从 `PlayerPrefs` 读取并重新写入 `VariableStorage`，保证跨场景后名字不丢失。
+`DialogueHandler` 在进入对话前不再做本地偏好回填，玩家名统一以 `VariableStorage` 为单一数据源。
 
 ---
 
@@ -344,6 +344,5 @@ Character
 | `CharacterHighlightManager` | `InMemoryVariableStorage` | `SyncPlayerName` 读取 `$MY_NAME` |
 | `DialogueUIAudio` | `SfxTrigger` | 所有音效最终通过 `SfxTrigger.PlaySingle` 播放 |
 | `DialogueUIAudio` | `TransitionManager`（被调用） | `PlayChangeSceneAudio` 在 `TransitionManager.PlayTransition` 开头被调用 |
-| `PlayerNameHandler` | `VariableStorageBehaviour` | 写入 `$MY_NAME` |
-| `PlayerNameHandler` | `PlayerPrefs` | 持久化玩家名，供 `DialogueHandler` 跨场景恢复 |
+| `PlayerNameHandler` | `VariableStorageBehaviour` | 写入 `$MY_NAME` 作为玩家名唯一数据源 |
 | `OptionSoundHelper` | `DialogueUIAudio` | `SelectAudioPlay` → `PlayDialogueOptionClick` |

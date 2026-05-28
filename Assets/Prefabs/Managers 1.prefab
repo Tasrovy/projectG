@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5902859069287843634}
   - component: {fileID: 1998982659299980096}
   - component: {fileID: 4577431768715865317}
-  - component: {fileID: 588924484645409348}
   - component: {fileID: 6896678041870131636}
   - component: {fileID: 7321786664211421992}
   - component: {fileID: 5307400695131737614}
@@ -136,29 +135,6 @@ MonoBehaviour:
   - eventCard.xlsx
   useInitialHandFromExcel: 1
   initialHandExcelPath: initialHand.xlsx
---- !u!114 &588924484645409348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8579412430407369785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96fcdee3045345179627bd858523e69e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DUELUI: {fileID: 0}
-  cardPrefab: {fileID: 4322681682772895101, guid: b6ebbb5c0df5b37448a4e36111d181ae, type: 3}
-  cardParent: {fileID: 0}
-  OnBeginDUEL:
-    m_PersistentCalls:
-      m_Calls: []
-  OnEndDUEL:
-    m_PersistentCalls:
-      m_Calls: []
-  activeObjects: []
-  endButton: {fileID: 0}
 --- !u!114 &6896678041870131636
 MonoBehaviour:
   m_ObjectHideFlags: 0

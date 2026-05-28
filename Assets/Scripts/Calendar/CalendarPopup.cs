@@ -33,11 +33,23 @@ public class CalendarPopup : MonoBehaviour
         if (nowWeekText == null) Debug.LogError("[CalendarPopup] 未找到 nowDay/week 上的 TMP_Text！");
         if (dayCellPrefab == null) Debug.LogError("[CalendarPopup] 未能加载 Resources/Prefabs/Calender/dayCell！");
 
+        RefreshToCurrentDate();
+    }
+
+    public void RefreshToCurrentDate()
+    {
+        ResolveReferences();
+        if (dayCellPrefab == null) dayCellPrefab = Resources.Load<GameObject>("Prefabs/Calender/dayCell");
+
         DateTime current = GetCurrentDateSafe();
         viewYear = current.Year;
         viewMonth = current.Month;
         UpdateNowDayDisplay(current);
-        RebuildCalendar();
+
+        if (gridParent != null && titleText != null && dayCellPrefab != null)
+        {
+            RebuildCalendar();
+        }
     }
 
     public void ShowPreviousMonth()
