@@ -453,6 +453,13 @@ public class CharacterControl : MonoBehaviour
     #endregion
 
     #region 立绘位置复位
+    public void ResetPortraitTransformsForDialogueStart(float duration = 0f)
+    {
+        ResetPortraitPositionsAfterDialogue(duration);
+        ResetPortraitScaleToOne("Player");
+        ResetPortraitScaleToOne("Character");
+    }
+
     public void ResetPortraitPositionsAfterDialogue(float duration = 0f)
     {
         CacheInitialPortraitPositions();
@@ -488,6 +495,37 @@ public class CharacterControl : MonoBehaviour
         activePortraitMoveCoroutines[objectName] = StartCoroutine(
             AnimatePortraitMove(objectName, targetRect, initialPos, clampedDuration)
         );
+    }
+
+    private void ResetPortraitScaleToOne(string objectName)
+    {
+        if (!TryGetPortraitRect(objectName, out RectTransform targetRect))
+        {
+            return;
+        }
+
+        if (activePortraitSizeCoroutines.TryGetValue(objectName, out Coroutine running) && running != null)
+        {
+            StopCoroutine(running);
+            activePortraitSizeCoroutines.Remove(objectName);
+        }
+
+        targetRect.localScale = Vector3.one;
+
+        if (portraitSizeStates.TryGetValue(objectName, out PortraitSizeState state))
+        {
+            state.Rect = targetRect;
+            state.BaseScale = Vector3.one;
+        }
+        else
+        {
+            portraitSizeStates[objectName] = new PortraitSizeState
+            {
+                Rect = targetRect,
+                BaseAnchoredPos = targetRect.anchoredPosition,
+                BaseScale = Vector3.one,
+            };
+        }
     }
     #endregion
 

@@ -333,6 +333,12 @@ public class CharacterHighlightManager : DialoguePresenterBase
         if (dialogueBackground != null) dialogueBackground.SetActive(true);
         SetDialogueUIRaycasts(true);
 
+        var charControl = GetComponent<CharacterControl>();
+        if (charControl != null)
+        {
+            charControl.ResetPortraitTransformsForDialogueStart();
+        }
+
         // 对话开始时，仅显示名为 "Player" 和 "Character" 的立绘物体 (限定在talk下)
         GameObject playerObj = GetCharacterObjectUnderTalk("Player");
         GameObject characterObj = GetCharacterObjectUnderTalk("Character");
@@ -349,12 +355,6 @@ public class CharacterHighlightManager : DialoguePresenterBase
     {
         // 核心属性结算和环境清理保持，视觉清理移交到转场黑屏进行
         ApplyDialogueCompleteProperties();
-
-        var charControl = GetComponent<CharacterControl>();
-        if (charControl != null)
-        {
-            charControl.ResetPortraitPositionsAfterDialogue();
-        }
 
         currentSpeaker = "";
 
