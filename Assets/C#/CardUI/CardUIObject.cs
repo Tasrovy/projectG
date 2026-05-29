@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class CardUIObject : MonoBehaviour,
     IPointerClickHandler,
@@ -22,6 +23,7 @@ public class CardUIObject : MonoBehaviour,
     public Text descriptionText;
     public GameObject HighlightImage;
     public Image rare;
+    public TMP_Text rareText;
 
     [Header("重要：动画容器")] 
     public RectTransform visualContainer;
@@ -360,9 +362,21 @@ public class CardUIObject : MonoBehaviour,
         if (card.id.ToString()[0] == '1') baseImage.sprite = giftSprite;
         if (card.id.ToString()[0] == '2') baseImage.sprite = funcSprite;
         if (card.id.ToString()[0] == '3') baseImage.sprite = eventSprite;
-        if (card.id.ToString()[1] == '1') rare.sprite = rare1;
-        if (card.id.ToString()[1] == '2') rare.sprite = rare2;
-        if (card.id.ToString()[1] == '3') rare.sprite = rare3;
+        if (card.id.ToString()[1] == '1')
+        {
+            rare.sprite = rare1;
+            rareText.text = "普通";
+        }
+        if (card.id.ToString()[1] == '2')
+        {
+            rare.sprite = rare2;
+            rareText.text = "罕见";
+        }
+        if (card.id.ToString()[1] == '3')
+        {
+            rare.sprite = rare3;
+            rareText.text = "珍贵";
+        }
     }
 
     public void ResetState()

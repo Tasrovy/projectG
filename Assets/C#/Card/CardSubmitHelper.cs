@@ -21,6 +21,13 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
 
     public void ShengZhi()
     {
+        if (!HasSelectableCard())
+        {
+            Debug.Log("[Helper] 手牌无可选卡牌，跳过生枝。");
+            SkipAndRestoreCaller();
+            return;
+        }
+
         // 【修改点】：调用 CardActionResolver
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) =>
@@ -55,9 +62,10 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
     public void JianZhi()
     {
         int target = _targetNum;
-        if (target <= 0)
+        if (target <= 0 || !HasSelectableCard())
         {
-            if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+            Debug.Log($"[Helper] 跳过剪枝：target={target}，有可选卡牌={HasSelectableCard()}");
+            SkipAndRestoreCaller();
             return;
         }
 
@@ -66,6 +74,13 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
 
     private void JianZhi(int timesLeft)
     {
+        if (!HasSelectableCard())
+        {
+            Debug.Log("[Helper] 手牌无可选卡牌，提前结束剪枝。");
+            SkipAndRestoreCaller();
+            return;
+        }
+
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) =>
             {
@@ -95,6 +110,13 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
     public void ShengZhang(int amount, int timesLeft)
     {
         Debug.Log($"[Helper] 发起生长选牌，每次增加: {amount}，剩余次数: {timesLeft}");
+
+        if (!HasSelectableCard())
+        {
+            Debug.Log("[Helper] 手牌无可选卡牌，跳过生长。");
+            SkipAndRestoreCaller();
+            return;
+        }
 
         // 【修改点】：调用 CardActionResolver
         CardActionResolver.Instance.StartEffectSelection(
@@ -253,5 +275,27 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
     public void RestoreCallerCardOnInvalidTarget()
     {
         RestoreCallerCard();
+    }
+
+    private bool HasSelectableCard()
+    {
+        return CardManager.Instance != null
+            && CardManager.Instance.cardInHand != null
+            && CardManager.Instance.cardInHand.Exists(c => CardIdUtility.GetCardType(c.id) == 1);
+    }
+
+    private void CompleteWithSuccess()
+    {
+        CardActionResolver.Instance.CompletePendingPlayedCard(true);
+        if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(true);
+    }
+
+    /// <summary>
+    /// 手牌不够时跳过效果，退回打出的牌
+    /// </summary>
+    private void SkipAndRestoreCaller()
+    {
+        RestoreCallerCard();
+        if (CardEffect.Instance != null) CardEffect.Instance.OnSelectCardEnd(false);
     }
 }
