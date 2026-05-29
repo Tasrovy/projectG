@@ -150,6 +150,20 @@ public sealed class CardEffectExecutor
             PropertiesShow.Instance.UpdatePropertiesShow();
     }
 
+    /// <summary>
+    /// 立即回滚：检测到卡牌不足时直接恢复快照并清空效果链
+    /// </summary>
+    private void RollbackImmediate()
+    {
+        RestoreSnapshot();
+        _effectChainQueue.Clear();
+        _isExecutingChain = false;
+        _waitingForAsync = false;
+        _currentChainCard = null;
+        _currentChainEffects = null;
+        _currentEffectIndex = 0;
+    }
+
     // ===================== Chain Execution =====================
 
     private void StartExecutingNextChain()
@@ -223,8 +237,7 @@ public sealed class CardEffectExecutor
             if (CardManager.Instance.cardInHand.Count <= 0)
             {
                 Debug.Log($"{_currentChainCard.name} 技能发动失败：手牌中没有可供选择的牌。");
-                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
-                StartExecutingNextChain();
+                RollbackImmediate();
                 return;
             }
 
@@ -238,8 +251,7 @@ public sealed class CardEffectExecutor
             if (giftCardNum <= 0)
             {
                 Debug.Log($"{_currentChainCard.name} 技能发动失败：手牌中没有合法的目标牌可供选择！");
-                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
-                StartExecutingNextChain();
+                RollbackImmediate();
                 return;
             }
 
@@ -257,8 +269,7 @@ public sealed class CardEffectExecutor
             if (giftCardNum < threshold)
             {
                 Debug.Log($"{_currentChainCard.name} 消耗失败：礼品卡不足，停止执行当前效果链");
-                CardSubmitHelper.Instance.RestoreCallerCardOnInvalidTarget();
-                StartExecutingNextChain();
+                RollbackImmediate();
                 return;
             }
 
