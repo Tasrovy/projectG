@@ -6,33 +6,31 @@ using UnityEngine.UI;
 
 public class CardDetailUI : MonoBehaviour
 {
-    [Header("Panel")]
-    [SerializeField] private GameObject panelRoot;
+    [Header("Panel")] [SerializeField] private GameObject panelRoot;
     [SerializeField] private Button closeButton;
     [SerializeField] private bool hideOnAwake = true;
 
-    [Header("Position")]
-    [SerializeField] private float cardOffsetX = 20f;
+    [Header("Position")] [SerializeField] private float cardOffsetX = 20f;
 
     private RectTransform _rectTransform;
-    private Vector2 _initialAnchoredPosition;    
-    [Header("卡图资源")]
-    public Sprite giftSprite;
+    private Vector2 _initialAnchoredPosition;
+    private float _canvasScale = 1f;
+
+    [Header("卡图资源")] public Sprite giftSprite;
     public Sprite eventSprite;
     public Sprite funcSprite;
     public Image Icon;
-    
 
-    [Header("Main Display")]
+    [Header("Main Display")] 
     [SerializeField] private Text descriptionText;
     [SerializeField] private Text textText;
 
-
-    [Header("Prompt (ScrollView)")]
+    [Header("Prompt (ScrollView)")] 
     [SerializeField] private PromptItemUI promptItemPrefab;
     [SerializeField] private Transform promptContent;
 
     public Card CurrentCard { get; private set; }
+
     public bool IsVisible
     {
         get
@@ -56,16 +54,17 @@ public class CardDetailUI : MonoBehaviour
         if (_rectTransform != null)
             _initialAnchoredPosition = _rectTransform.anchoredPosition;
 
-        // 使用 CanvasGroup 控制显隐，避免 SetActive 导致 EventSystem
-        // 重新评估鼠标下方对象，引发 CardObject 的 OnPointerEnter/Exit 闪烁
+        Canvas c = GetComponentInParent<Canvas>();
+        if (c != null) _canvasScale = c.scaleFactor;
+
+        // 确保 CanvasGroup 存在
         CanvasGroup group = panelRoot.GetComponent<CanvasGroup>();
         if (group == null) group = panelRoot.AddComponent<CanvasGroup>();
-        group.blocksRaycasts = false;
 
         if (closeButton != null)
             closeButton.onClick.AddListener(Hide);
 
-        // 面板背景不拦截射线，避免挡住卡牌导致闪烁
+        // 面板背景不拦截射线
         Image panelImage = panelRoot.GetComponent<Image>();
         if (panelImage != null)
             panelImage.raycastTarget = false;
@@ -88,28 +87,134 @@ public class CardDetailUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 固定位置显示（战斗手牌用），恢复到 prefab 初始位置
+    /// 固定位置显示（战斗手牌用），恢复到 prefab 初始位置，开启交互
     /// </summary>
     public void ShowFixed(Card card)
     {
         ResetPosition();
         Show(card);
+
+        // 🌟 静态显示模式下，必须允许射线拦截，否则 closeButton 无法点击
+        CanvasGroup group = panelRoot.GetComponent<CanvasGroup>();
+        if (group != null)
+        {
+            group.blocksRaycasts = true;
+            group.interactable = true;
+        }
     }
 
     /// <summary>
-    /// 在目标卡牌Image右侧显示（抽牌堆/三选一/商店用）
+    /// 在目标卡牌右侧显示。悬停模式下关闭物理射线，防止闪烁。
     /// </summary>
     public void ShowAtCard(Card card, RectTransform imageRect)
     {
-        if (imageRect == null)
+        if (imageRect == null || _rectTransform == null)
         {
             ShowFixed(card);
             return;
         }
 
-        Vector2 targetPos = CalculateRightSidePosition(imageRect);
-        SetPosition(targetPos);
+        // 1. 先填充数据并显示
         Show(card);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTransform);
+
+        // 🌟 [核心修改 1]：悬停对齐模式下，强制关闭此面板的一切射线拦截！
+        // 这样鼠标指针会直接“穿透”该面板，永远聚焦在卡牌上，彻底根除因遮挡导致的闪烁。
+        CanvasGroup group = panelRoot.GetComponent<CanvasGroup>();
+        if (group != null)
+        {
+            group.blocksRaycasts = false; 
+            group.interactable = false; // 悬停时不需要与其交互
+        }
+
+        // =========================================================
+        // 第一步：获取两者所归属的 Canvas 和 渲染相机
+        // =========================================================
+        Canvas cardCanvas = imageRect.GetComponentInParent<Canvas>();
+        Camera cardCam = (cardCanvas != null && cardCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            ? cardCanvas.worldCamera
+            : null;
+
+        Canvas detailCanvas = _rectTransform.GetComponentInParent<Canvas>();
+        Camera detailCam = (detailCanvas != null && detailCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            ? detailCanvas.worldCamera
+            : null;
+
+        // =========================================================
+        // 第二步：将卡牌的世界边界 -> 统一投影到屏幕像素 (Screen Pixels)
+        // =========================================================
+        Vector3[] cardWorldCorners = new Vector3[4];
+        imageRect.GetWorldCorners(cardWorldCorners);
+
+        Vector2 cardScreenBL = RectTransformUtility.WorldToScreenPoint(cardCam, cardWorldCorners[0]);
+        Vector2 cardScreenTR = RectTransformUtility.WorldToScreenPoint(cardCam, cardWorldCorners[2]);
+
+        float cardLeft = cardScreenBL.x;
+        float cardRight = cardScreenTR.x;
+        float cardCenterY = (cardScreenBL.y + cardScreenTR.y) * 0.5f;
+
+        // =========================================================
+        // 第三步：将面板的世界边界 -> 投影到屏幕像素 (获取面板在屏幕上真实占据的像素宽高)
+        // =========================================================
+        Vector3[] detailWorldCorners = new Vector3[4];
+        _rectTransform.GetWorldCorners(detailWorldCorners);
+
+        Vector2 detailScreenBL = RectTransformUtility.WorldToScreenPoint(detailCam, detailWorldCorners[0]);
+        Vector2 detailScreenTR = RectTransformUtility.WorldToScreenPoint(detailCam, detailWorldCorners[2]);
+
+        float panelW = detailScreenTR.x - detailScreenBL.x;
+        float panelH = detailScreenTR.y - detailScreenBL.y;
+
+        // =========================================================
+        // 第四步：在统一的【屏幕坐标系】下进行排版计算
+        // =========================================================
+        float scaleFactor = detailCanvas != null ? detailCanvas.scaleFactor : 1f;
+        float gap = cardOffsetX * scaleFactor;
+
+        float px = _rectTransform.pivot.x;
+        float py = _rectTransform.pivot.y;
+
+        float pivotX_IfRight = cardRight + gap + px * panelW;
+
+        float sx;
+        // 判断右边界是否超屏
+        if (pivotX_IfRight + (1f - px) * panelW <= Screen.width)
+        {
+            sx = pivotX_IfRight;
+        }
+        else
+        {
+            // 🌟 [核心修改 2]：往左边翻转时，额外增加一小段安全边距（20像素），防止面板贴得太近碰到鼠标
+            float safetyMargin = 20f * scaleFactor;
+            sx = cardLeft - gap - safetyMargin - (1f - px) * panelW;
+        }
+
+        float sy = cardCenterY + (py - 0.5f) * panelH;
+
+        // 上下边界 Clamp
+        float top = sy + (1f - py) * panelH;
+        float bot = sy - py * panelH;
+        if (top > Screen.height) sy -= (top - Screen.height);
+        if (bot < 0) sy += (0 - bot);
+
+        // 计算出面板 Pivot 理想的屏幕像素坐标
+        Vector2 targetScreenPos = new Vector2(sx, sy);
+
+        // =========================================================
+        // 第五步：将算出的屏幕坐标，逆推回面板所属的真实的 3D 世界坐标
+        // =========================================================
+        RectTransform parentRect = _rectTransform.parent as RectTransform;
+        if (parentRect == null) parentRect = _rectTransform;
+
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(parentRect, targetScreenPos, detailCam,
+                out Vector3 targetWorldPos))
+        {
+            _rectTransform.position = targetWorldPos;
+        }
+        else
+        {
+            _rectTransform.position = new Vector3(targetScreenPos.x, targetScreenPos.y, 0);
+        }
     }
 
     // ---- CardObject / CardUIObject / CardDisplayUI 兼容重载 ----
@@ -147,11 +252,17 @@ public class CardDetailUI : MonoBehaviour
 
         SetText(descriptionText, CurrentCard.GetParsedDescription());
         SetText(textText, CurrentCard.text);
-        if (CurrentCard.id.ToString()[0] == '1') Icon.sprite = giftSprite;
-        if (CurrentCard.id.ToString()[0] == '2') Icon.sprite = funcSprite;
-        if (CurrentCard.id.ToString()[0] == '3') Icon.sprite = eventSprite;
-        BuildPromptItems(CurrentCard);
 
+        string idStr = Math.Abs(CurrentCard.id).ToString();
+        if (idStr.Length > 0)
+        {
+            char firstChar = idStr[0];
+            if (firstChar == '1') Icon.sprite = giftSprite;
+            else if (firstChar == '2') Icon.sprite = funcSprite;
+            else if (firstChar == '3') Icon.sprite = eventSprite;
+        }
+
+        BuildPromptItems(CurrentCard);
     }
 
     private void SetVisible(bool visible)
@@ -160,20 +271,14 @@ public class CardDetailUI : MonoBehaviour
         if (group != null)
         {
             group.alpha = visible ? 1 : 0;
+            // 🌟 默认可见时开启交互，但是在 ShowAtCard 中会根据悬停状态动态覆盖该值
+            group.interactable = visible;
+            group.blocksRaycasts = visible;
         }
         else if (panelRoot != null)
         {
             panelRoot.SetActive(visible);
         }
-    }
-
-    /// <summary>
-    /// 直接设置面板世界位置（ScreenSpaceOverlay 下 world = screen）
-    /// </summary>
-    public void SetPosition(Vector2 worldPosition)
-    {
-        if (_rectTransform != null)
-            _rectTransform.position = new Vector3(worldPosition.x, worldPosition.y, 0);
     }
 
     /// <summary>
@@ -183,83 +288,6 @@ public class CardDetailUI : MonoBehaviour
     {
         if (_rectTransform != null)
             _rectTransform.anchoredPosition = _initialAnchoredPosition;
-    }
-
-    /// <summary>
-    /// 计算在目标卡牌右侧、不重叠的世界坐标（ScreenSpaceOverlay 即屏幕坐标）
-    /// </summary>
-    private Vector2 CalculateRightSidePosition(RectTransform imageRect)
-    {
-        if (_rectTransform == null) return _initialAnchoredPosition;
-
-        // 卡牌所在的 Canvas 和 Camera (用于拿屏幕坐标)
-        Canvas targetCanvas = imageRect.GetComponentInParent<Canvas>();
-        Camera targetCam = targetCanvas != null && targetCanvas.renderMode == RenderMode.ScreenSpaceCamera
-            ? targetCanvas.worldCamera : null;
-
-        // DetailUI 自己的 Canvas 和 Camera (用于最后转回世界坐标和自身尺寸)
-        Canvas myCanvas = _rectTransform.GetComponentInParent<Canvas>();
-        if (myCanvas == null) return _initialAnchoredPosition;
-        Camera myCam = myCanvas.renderMode == RenderMode.ScreenSpaceCamera ? myCanvas.worldCamera : null;
-
-        // 两个 Canvas 各自的 scaleFactor (参考分辨率可能不同)
-        float targetScaleFactor = targetCanvas != null ? targetCanvas.scaleFactor : 1f;
-        float myScaleFactor = myCanvas.scaleFactor;
-
-        // 卡牌 Image 世界坐标 → 屏幕坐标
-        Vector3[] imgCorners = new Vector3[4];
-        imageRect.GetWorldCorners(imgCorners);
-        float imageRightX;
-        float imageCenterY;
-        float imageLeftX;
-        if (targetCam != null)
-        {
-            Vector3 bl = targetCam.WorldToScreenPoint(imgCorners[0]);
-            Vector3 tr = targetCam.WorldToScreenPoint(imgCorners[2]);
-            imageLeftX = bl.x;
-            imageRightX = tr.x;
-            imageCenterY = (bl.y + tr.y) * 0.5f;
-        }
-        else
-        {
-            imageLeftX = imgCorners[0].x;
-            imageRightX = imgCorners[2].x;
-            imageCenterY = (imgCorners[0].y + imgCorners[2].y) * 0.5f;
-        }
-
-        // DetailUI 屏幕尺寸: 用自己的 scaleFactor
-        float panelW = _rectTransform.rect.width * myScaleFactor;
-        float panelH = _rectTransform.rect.height * myScaleFactor;
-
-        // cardOffsetX 用卡牌所在 Canvas 的 scaleFactor, 保证间距与卡牌比例一致
-        float scaledOffsetX = cardOffsetX * targetScaleFactor;
-
-        // 屏幕空间计算
-        float screenX;
-        float screenY = imageCenterY + (_rectTransform.pivot.y - 0.5f) * panelH;
-
-        // 判断右侧是否放得下, 放不下就翻转到卡牌左侧
-        bool fitsRight = (imageRightX + scaledOffsetX + panelW <= Screen.width);
-        if (fitsRight)
-        {
-            screenX = imageRightX + scaledOffsetX + _rectTransform.pivot.x * panelW;
-        }
-        else
-        {
-            screenX = imageLeftX - scaledOffsetX - (1f - _rectTransform.pivot.x) * panelW;
-        }
-
-        // 上下边界 clamp
-        float panelTop = screenY + (1f - _rectTransform.pivot.y) * panelH;
-        float panelBottom = screenY - _rectTransform.pivot.y * panelH;
-        if (panelTop > Screen.height) screenY -= panelTop - Screen.height;
-        if (panelBottom < 0) screenY -= panelBottom;
-
-        // 用 DetailUI 自己的相机和 planeDistance 转回世界坐标
-        if (myCam != null)
-            return myCam.ScreenToWorldPoint(new Vector3(screenX, screenY, myCanvas.planeDistance));
-        else
-            return new Vector2(screenX, screenY);
     }
 
     private static void SetText(Text target, string value)

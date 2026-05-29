@@ -38,16 +38,13 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     {
         if (_canvas != null) return _canvas;
 
-        CardUICanvas cardUIScript = Object.FindAnyObjectByType<CardUICanvas>();
-        if (cardUIScript != null)
+        Canvas foundCanvas = Object.FindAnyObjectByType<Canvas>();
+        if (foundCanvas != null && foundCanvas.name == "Canvas")
         {
-            _canvas = cardUIScript.GetComponent<Canvas>();
-            if (_canvas != null)
-            {
-                _canvasObj = _canvas.gameObject;
-                Debug.Log("找到了 Canvas: " + _canvasObj.name);
-                return _canvas;
-            }
+            _canvas = foundCanvas;
+            _canvasObj = _canvas.gameObject;
+            Debug.Log("找到了 Canvas: " + _canvasObj.name);
+            return _canvas;
         }
 
         _canvasObj = new GameObject("Canvas");
@@ -61,7 +58,7 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
 
         _canvasObj.AddComponent<GraphicRaycaster>();
         _canvasObj.layer = LayerMask.NameToLayer("UI");
-        Debug.LogWarning("场景中未发现 CardUICanvas，已自动创建并配置。");
+        Debug.LogWarning("场景中未发现 Canvas，已自动创建并配置。");
 
         return _canvas;
     }
