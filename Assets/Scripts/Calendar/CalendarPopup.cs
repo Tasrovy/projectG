@@ -46,7 +46,8 @@ public class CalendarPopup : MonoBehaviour
         viewMonth = current.Month;
         UpdateNowDayDisplay(current);
 
-        if (gridParent != null && titleText != null && dayCellPrefab != null)
+        // 仅在弹窗激活时重建格子，避免隐藏层级下实例化造成单元格引用未就绪。
+        if (isActiveAndEnabled && gameObject.activeInHierarchy && gridParent != null && titleText != null && dayCellPrefab != null)
         {
             RebuildCalendar();
         }

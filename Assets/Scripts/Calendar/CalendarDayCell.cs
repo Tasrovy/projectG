@@ -28,13 +28,31 @@ public class CalendarDayCell : MonoBehaviour
     private void Awake()
     {
         button = GetComponent<Button>();
-        label = GetComponentInChildren<TMP_Text>();
+        label = GetComponentInChildren<TMP_Text>(true);
         image = GetComponent<Image>();
         if (image != null) originalBackgroundSprite = image.sprite;
     }
 
     public void Bind(DateTime date, bool active, Action<DateTime> clickAction)
     {
+        // 在隐藏层级下实例化时，确保引用已就绪。
+        if (button == null || label == null || image == null)
+        {
+            button = GetComponent<Button>();
+            label = GetComponentInChildren<TMP_Text>(true);
+            image = GetComponent<Image>();
+            if (image != null && originalBackgroundSprite == null)
+            {
+                originalBackgroundSprite = image.sprite;
+            }
+        }
+
+        if (button == null || label == null)
+        {
+            Debug.LogError("[CalendarDayCell] 缺少 Button 或 TMP_Text，无法绑定日期单元格。");
+            return;
+        }
+
         // 如果该格之前是选中状态，重用前先清除全局引用
         if (currentSelected == this) currentSelected = null;
         isSelected = false;
