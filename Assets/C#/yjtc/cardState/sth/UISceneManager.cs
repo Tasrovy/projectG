@@ -93,6 +93,12 @@ public class UISceneManager : MonoBehaviour
         // 隐藏所有的互斥场景节点
         DeactivateAllMutexRoots();
 
+        // 兜底：切到非 Talk 场景时，强制关闭所有名为 talk 的残留对象，避免对话 UI 持续拦截交互。
+        if (sceneType != SceneType.Talk)
+        {
+            ForceDeactivateTalkRoots();
+        }
+
         bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin && sceneType != SceneType.Naming);
         if (alwaysShowRoots != null)
         {
@@ -136,6 +142,25 @@ public class UISceneManager : MonoBehaviour
 
         // 处理场景切换后的 BGM 逻辑
         PlayBGMForScene(sceneType);
+    }
+
+    private void ForceDeactivateTalkRoots()
+    {
+        Transform[] allTransforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Transform t in allTransforms)
+        {
+            if (t == null) continue;
+            if (!string.Equals(t.name, "talk", System.StringComparison.OrdinalIgnoreCase)) continue;
+
+            GameObject go = t.gameObject;
+            if (go == null) continue;
+            if (go == talkRoot) continue; // talkRoot 已在 DeactivateAllMutexRoots 中关闭
+
+            if (go.activeSelf)
+            {
+                go.SetActive(false);
+            }
+        }
     }
 
     /// <summary>
