@@ -11,6 +11,7 @@ public class CardDetailUI : MonoBehaviour
     [SerializeField] private bool hideOnAwake = true;
 
     [Header("Position")] [SerializeField] private float cardOffsetX = 20f;
+    [SerializeField] private float offsetY = 0f;
 
     private RectTransform _rectTransform;
     private Vector2 _initialAnchoredPosition;
@@ -189,7 +190,7 @@ public class CardDetailUI : MonoBehaviour
             sx = cardLeft - gap - safetyMargin - (1f - px) * panelW;
         }
 
-        float sy = cardCenterY + (py - 0.5f) * panelH;
+        float sy = cardCenterY + (py - 0.5f) * panelH + offsetY * scaleFactor;
 
         // 上下边界 Clamp
         float top = sy + (1f - py) * panelH;
