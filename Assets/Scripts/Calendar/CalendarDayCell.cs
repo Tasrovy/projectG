@@ -25,12 +25,51 @@ public class CalendarDayCell : MonoBehaviour
     private bool isToday;
     private bool isSelected;
 
+    private RectTransform rectTransform;
+    private Transform calendarRoot;
+    private Action<DateTime> boundClickAction;
+    private DateTime boundDate;
+    private bool isBoundClickable;
+
+    private static readonly System.Collections.Generic.List<CalendarDayCell> RegisteredCells = new System.Collections.Generic.List<CalendarDayCell>();
+    private static CalendarDayCellInputRouter inputRouter;
+
+    private sealed class CalendarDayCellInputRouter : MonoBehaviour
+    {
+        private void Update()
+        {
+            ProcessManualClickGlobal();
+        }
+    }
+
     private void Awake()
     {
         button = GetComponent<Button>();
         label = GetComponentInChildren<TMP_Text>(true);
         image = GetComponent<Image>();
+        rectTransform = GetComponent<RectTransform>();
+        ResolveCalendarRoot();
+        EnsureInputRouter();
         if (image != null) originalBackgroundSprite = image.sprite;
+    }
+
+    private void OnEnable()
+    {
+        RegisterCell(this);
+    }
+
+    private void OnDisable()
+    {
+        UnregisterCell(this);
+    }
+
+    private void OnDestroy()
+    {
+        UnregisterCell(this);
+        if (currentSelected == this)
+        {
+            currentSelected = null;
+        }
     }
 
     public void Bind(DateTime date, bool active, Action<DateTime> clickAction)
@@ -41,6 +80,12 @@ public class CalendarDayCell : MonoBehaviour
             button = GetComponent<Button>();
             label = GetComponentInChildren<TMP_Text>(true);
             image = GetComponent<Image>();
+            if (rectTransform == null)
+            {
+                rectTransform = GetComponent<RectTransform>();
+            }
+            ResolveCalendarRoot();
+            EnsureInputRouter();
             if (image != null && originalBackgroundSprite == null)
             {
                 originalBackgroundSprite = image.sprite;
@@ -56,6 +101,9 @@ public class CalendarDayCell : MonoBehaviour
         // 如果该格之前是选中状态，重用前先清除全局引用
         if (currentSelected == this) currentSelected = null;
         isSelected = false;
+        boundClickAction = null;
+        boundDate = default;
+        isBoundClickable = false;
 
         if (!active)
         {
@@ -70,7 +118,10 @@ public class CalendarDayCell : MonoBehaviour
         label.enabled = true;
         if (image != null) image.enabled = true;
         label.text = date.Day.ToString();
-        button.interactable = true;
+        button.interactable = false; // 点击逻辑改由脚本手动判定
+        boundDate = date;
+        boundClickAction = clickAction;
+        isBoundClickable = (clickAction != null);
 
         // 判断是否为今日
         isToday = false;
@@ -81,23 +132,147 @@ public class CalendarDayCell : MonoBehaviour
         }
 
         ApplyVisual();
+    }
 
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() =>
+    private static void ProcessManualClickGlobal()
+    {
+        if (!Input.GetMouseButtonDown(0))
         {
-            // 恢复上一个选中格子的原始颜色
-            if (currentSelected != null && currentSelected != this)
+            return;
+        }
+
+        for (int i = RegisteredCells.Count - 1; i >= 0; i--)
+        {
+            CalendarDayCell cell = RegisteredCells[i];
+            if (cell == null)
             {
-                currentSelected.isSelected = false;
-                currentSelected.ApplyVisual();
+                RegisteredCells.RemoveAt(i);
+                continue;
             }
 
-            isSelected = true;
-            currentSelected = this;
-            ApplyVisual();
+            if (!cell.CanHandleManualClick())
+            {
+                continue;
+            }
 
-            clickAction?.Invoke(date);
-        });
+            if (cell.ContainsPointer(Input.mousePosition))
+            {
+                cell.HandleCellClicked();
+                break;
+            }
+        }
+    }
+
+    private bool CanHandleManualClick()
+    {
+        if (!isBoundClickable)
+        {
+            return false;
+        }
+
+        if (!isActiveAndEnabled || !gameObject.activeInHierarchy)
+        {
+            return false;
+        }
+
+        ResolveCalendarRoot();
+        if (calendarRoot == null || !calendarRoot.gameObject.activeInHierarchy)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool ContainsPointer(Vector3 screenPoint)
+    {
+        if (rectTransform == null)
+        {
+            rectTransform = GetComponent<RectTransform>();
+            if (rectTransform == null)
+            {
+                return false;
+            }
+        }
+
+        Canvas canvas = GetComponentInParent<Canvas>();
+        Camera eventCamera = null;
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        {
+            eventCamera = canvas.worldCamera;
+        }
+
+        return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPoint, eventCamera);
+    }
+
+    private void HandleCellClicked()
+    {
+        // 恢复上一个选中格子的原始颜色
+        if (currentSelected != null && currentSelected != this)
+        {
+            currentSelected.isSelected = false;
+            currentSelected.ApplyVisual();
+        }
+
+        isSelected = true;
+        currentSelected = this;
+        ApplyVisual();
+
+        boundClickAction?.Invoke(boundDate);
+    }
+
+    private void ResolveCalendarRoot()
+    {
+        if (calendarRoot != null)
+        {
+            return;
+        }
+
+        Transform current = transform;
+        while (current != null)
+        {
+            if (string.Equals(current.name, "calendar", StringComparison.OrdinalIgnoreCase))
+            {
+                calendarRoot = current;
+                return;
+            }
+            current = current.parent;
+        }
+    }
+
+    private static void EnsureInputRouter()
+    {
+        if (inputRouter != null)
+        {
+            return;
+        }
+
+        GameObject routerGo = new GameObject("CalendarDayCellInputRouter");
+        DontDestroyOnLoad(routerGo);
+        inputRouter = routerGo.AddComponent<CalendarDayCellInputRouter>();
+    }
+
+    private static void RegisterCell(CalendarDayCell cell)
+    {
+        if (cell == null)
+        {
+            return;
+        }
+
+        if (!RegisteredCells.Contains(cell))
+        {
+            RegisteredCells.Add(cell);
+        }
+    }
+
+    private static void UnregisterCell(CalendarDayCell cell)
+    {
+        if (cell == null)
+        {
+            return;
+        }
+
+        RegisteredCells.Remove(cell);
     }
 
     private void ApplyVisual()

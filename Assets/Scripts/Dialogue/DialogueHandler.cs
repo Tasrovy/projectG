@@ -27,6 +27,8 @@ public class DialogueHandler : MonoBehaviour
     // deal/special/doWork 对话进度（内存存储，每次启动重置）
     private Dictionary<int, int> _dealProgress = new Dictionary<int, int>();
     private Dictionary<int, int> _specialProgress = new Dictionary<int, int>();
+    private int _specialGuardDay = -1;
+    private bool _specialAlreadyQueuedForGuardDay = false;
     private int _doWorkI = 1;
     private int _doWorkJ = 1;
 
@@ -380,6 +382,18 @@ public class DialogueHandler : MonoBehaviour
         if (DayManager.Instance == null || dialogueRunner == null || DayManager.Instance.daySO == null) return null;
 
         int currentDay = DayManager.Instance.GetDayNumber();
+
+        // 同一天的 special 只允许入队一次：第一次返回 special，第二次（special 播完回到漏斗）转去 daily/过天。
+        if (_specialGuardDay != currentDay)
+        {
+            _specialGuardDay = currentDay;
+            _specialAlreadyQueuedForGuardDay = false;
+        }
+        else if (_specialAlreadyQueuedForGuardDay)
+        {
+            return null;
+        }
+
         int currentIndex = currentDay - 1;
         if (currentIndex < 0 || currentIndex >= DayManager.Instance.daySO.dayDatas.Count)
             return null;
@@ -389,7 +403,10 @@ public class DialogueHandler : MonoBehaviour
             return null;
 
         if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(specialNode))
+        {
+            _specialAlreadyQueuedForGuardDay = true;
             return specialNode;
+        }
 
         Debug.LogWarning($"[DialogueHandler] day 表配置的 special 节点不存在于 YarnProject：{specialNode}");
         return null;
@@ -650,6 +667,9 @@ public class DialogueHandler : MonoBehaviour
     public void OnGameFailed()
     {
         Debug.Log("[DialogueHandler] OnGameFailed 被触发，执行失败结算。");
+
+        _specialGuardDay = -1;
+        _specialAlreadyQueuedForGuardDay = false;
 
         // 数据清零
         if (DataManager.Instance != null)
