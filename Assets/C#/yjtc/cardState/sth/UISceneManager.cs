@@ -90,6 +90,9 @@ public class UISceneManager : MonoBehaviour
     /// </summary>
     public void SwitchToScene(SceneType sceneType)
     {
+        //隐藏卡牌详细UI
+        DUELUIObjectManager.Instance.GetCardDetailUI()?.Hide();
+        
         // 隐藏所有的互斥场景节点
         DeactivateAllMutexRoots();
 
