@@ -54,7 +54,7 @@ MonoBehaviour:
     drawNum: 4
     getCardNum: 2
     dailyDialog: day9_4
-    specialDialog: special1_1
+    specialDialog: 
     failedDialog: 
     target1: 20
     target2: 24
