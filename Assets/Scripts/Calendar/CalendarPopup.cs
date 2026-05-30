@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -99,6 +98,10 @@ public class CalendarPopup : MonoBehaviour
     private void OnDateClicked(DateTime date)
     {
         Debug.Log($"[Calendar] 点击了 {date:yyyy-MM-dd}");
+
+        // nowDay 区域改为显示当前点击的日期与星期（文本格式沿用原实现）
+        UpdateNowDayDisplay(date);
+
         if (todoList != null)
             todoList.SetActive(true);
         DateManager.Instance?.OnDateClicked(date);
@@ -166,7 +169,22 @@ public class CalendarPopup : MonoBehaviour
 
         if (nowWeekText != null)
         {
-            nowWeekText.text = date.ToString("ddd", CultureInfo.InvariantCulture).ToUpperInvariant();
+            nowWeekText.text = GetWeekShortName(date.DayOfWeek);
+        }
+    }
+
+    private static string GetWeekShortName(DayOfWeek dayOfWeek)
+    {
+        switch (dayOfWeek)
+        {
+            case DayOfWeek.Sunday: return "SUN";
+            case DayOfWeek.Monday: return "MON";
+            case DayOfWeek.Tuesday: return "TUES";
+            case DayOfWeek.Wednesday: return "WED";
+            case DayOfWeek.Thursday: return "THUR";
+            case DayOfWeek.Friday: return "FRI";
+            case DayOfWeek.Saturday: return "SAT";
+            default: return "";
         }
     }
 }
