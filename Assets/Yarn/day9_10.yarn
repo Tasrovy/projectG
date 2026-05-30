@@ -31,7 +31,7 @@
 
 {$MY_NAME}:"天气不错，适合运动。"
 
-<<set_background "学校-白天">>
+<<set_background "教室-白天">>
 <<set_character_person Character "蒂娜" happy>>
 <<set_character_size Character 2 0.3 1>>
 蒂娜:"今天有体育课哦！不知道会做什么项目~"
@@ -50,7 +50,7 @@
 
 "她说这话的时候眼神四处乱飘，完全没有说服力。"
 
-<<set_background "学校-傍晚">>
+<<set_background "教室-傍晚">>
 
 "体育课跑了八百米，蒂娜瘫在操场上喘了十分钟。"
 

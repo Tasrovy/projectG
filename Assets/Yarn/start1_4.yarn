@@ -1,0 +1,292 @@
+﻿title: start1_4
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+
+<<set_background "家-白天">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 1>>
+
+"我很讨厌她，我想。"
+
+"她的表情，她的言行举止，无处不在透露着一种轻松和自由。"
+
+"尽管我不知道她的家庭是什么样的，可我就是会忍不住猜疑，也许她来自于我触之不及的地方，所以才能如此不受拘束地在这个世界游荡。"
+
+"她的背后像是系着一条绳子，稍有误差，就会把她从这个地方带走。"
+
+"所以，我很讨厌她。"
+
+{$MY_NAME}:("......我一开始是这样认为的。")
+
+<<play_bgm "daily_日常微风3">>
+
+<<set_character_person Character "蒂娜" happy>>
+<<set_character_size Character 2 0.3 1>>
+蒂娜:"早上好！"
+
+"光是看见手机上蒂娜的消息，就已经能想象出她那灿烂的声音，就仿佛看见她出现在自己面前，在自己耳朵旁边大喊。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"早上好......"
+
+"我在短讯的末尾点上几个点，毕竟我知道现在已经是十点半了。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"难得的周末，林奈要不要去打球啊？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"不，今天不想打球......"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"那，要跟我一起去走走嘛？"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"也不是很想出门..."
+
+{$MY_NAME}:"我还有本书打算今天看完的，蒂娜难道已经写完作业了吗？"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"呃...晚点再说嘛！"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"今晚肯定会做完的！"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"你还挺自信，一个晚上真能写完吗？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"相信我嘛奈奈！实在不行...奈奈帮我做呗！"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"不可能，少说这种不着边际的话。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"你还是自己努力吧。"
+
+<<clear_character_person Character>>
+
+"与此同时，我的房门被推开了，妈妈看见我坐在桌子边看手机之后，第一句话就是——"
+
+<<set_character_person Character "npcWoman" youngWoman>>
+妈妈:"作业写完了吗？"
+
+{$MY_NAME}:"早就写完了。"
+
+妈妈:"那你还在家歇着？不出去走走？打会儿球之类的？我听说别人都去玩了，只有你还在家里。"
+
+{$MY_NAME}:"......"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"那我就出门了。"
+
+<<clear_character_person Character>>
+
+"我在手机上给蒂娜发去短信，随后不顾母亲的说教离开了房间，走出了家门。"
+
+<<set_background "街道-白天">>
+
+<<set_character_person Character "蒂娜" normal>>
+<<set_character_size Character 2 0.3 1>>
+
+{$MY_NAME}:"...计划有变，我要出门了。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"唉？要去打球了吗？"
+
+{$MY_NAME}:"不去...不过你去那等我吧，我们待会儿再讨论这个。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"好吧，那我收拾一下就准备过去，奈奈一定要等我哦~"
+
+"......"
+
+"事情到这里，都还算得上普通平常。但如果真就这么简单——"
+
+"故事也就没那么有趣了。"
+
+<<set_character_sprite "蒂娜" sad>>
+"虽然很对不住奈奈......"
+
+"蒂娜带上不成对的两只球拍，离开了家，朝着一个方向加速赶去——朝着她不该去的一个地方。"
+
+<<set_background "商业街-白天">>
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"蒂娜真慢......"
+
+{$MY_NAME}:"也联系不上...我也没有她的电话......"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"真是的...要不先回去？"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"不行，要是我走了她正好到那不就......嗯？"
+
+<<set_character_size Player 3 0.24 0.4>>
+
+{$MY_NAME}:"那个是......"
+
+"我在乒乓球馆附近转悠，注意到了一个身影——一个并不是朝着我赶来的身影。"
+
+{$MY_NAME}:"蒂娜？......蒂娜！"
+
+"但是对方并没有听见。事实上，我并没有喊很大声，就这样看着她骑着自行车朝更远的方向远去。我的心跳加快了不少，追了上去。"
+
+"越是追赶，就越是意识到对方的目的地。"
+
+{$MY_NAME}:"蒂娜这是...要去我家吗？"
+
+"她不应该知道的，我从没有说过自己住在哪。"
+
+{$MY_NAME}:"...她想做什么？"
+
+"蒂娜没有告诉她，也不会告诉她吧。"
+
+"就这样朝着家一路飞奔，直到看见那辆停在自己家楼下的自行车，我才终于断定——才终于相信了这个结果。"
+
+"我站在原地，看着空荡荡的楼道。沉默击碎了所有的声音，让我只专心于这一件事。"
+
+"头发，表情，身形。熟悉的人，和与她格外不相称的地方拼在一起。"
+
+<<set_background "街道-白天">>
+<<set_character_size Player 2 0.3 0.6>>
+
+<<set_character_sprite "蒂娜" sad>>
+蒂娜:"啊...奈奈......"
+
+{$MY_NAME}:"......"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"这是...我家......"
+
+<<set_character_sprite {$MY_NAME} angry>>
+{$MY_NAME}:"我说过的吧，不要到我家来......"
+
+{$MY_NAME}:"你是怎么知道这里的？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"这个嘛...秘密？"
+
+<<set_character_sprite {$MY_NAME} angry>>
+{$MY_NAME}:"蛤？"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"明明是林奈擅自回家的错吧，明明都约好了在球馆门口见面的。"
+
+<<set_character_sprite {$MY_NAME} angry>>
+{$MY_NAME}:"呵......"
+
+{$MY_NAME}:"我就是见到了你的面才追过来的！"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"为什么你会在我家？"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"原来如此~这里是奈奈的家...但是，奈奈不是说不想告诉我吗？"
+
+<<set_character_sprite {$MY_NAME} angry>>
+{$MY_NAME}:"你......"
+
+{$MY_NAME}:"......"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"奈奈有冷静一点吗？"
+
+蒂娜:"我只是想把借来的球拍还回去而已。"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"球拍？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嗯嗯~就是之前和奈奈打球用的拍子啦。"
+
+蒂娜:"是我婶婶借给我的，本来就打算先还回去，再去找奈奈的。"
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"......所以，你婶婶住在这里？"
+
+蒂娜:"不，但是拍子住在这里。"
+
+{$MY_NAME}:"拍子？住在这里？"
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"嗯嗯，奈奈估计也没有注意到吧，不然奈奈那么专心的性格，早就该跟我联系了。"
+
+蒂娜:"奈奈和我，拿错球拍了哦。"
+
+"......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嗯，这件事情就这么简单哦，没有后续了哦。"
+
+<<set_character_sprite {$MY_NAME} sad>>
+{$MY_NAME}:"你明明就可以告诉我......"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"明明是奈奈亲自己说不想听到的吧！"
+
+{$MY_NAME}:"我...但是别的时候我说的话你也不听啊......"
+
+蒂娜:"这次不一样——奈奈看起来相当认真的！"
+
+{$MY_NAME}:"......算了，还是说说你到底是怎么到这里来的吧。"
+
+蒂娜:"我和奈奈的妈妈联系了哦......"
+
+{$MY_NAME}:"......"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"怎么了？奈奈还在生气吗？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"没有了...倒不如说反而是好事——但是你还是不要到我家里去。"
+
+蒂娜:"好~那么接下来，奈奈跟我一起出去玩吧？"
+
+{$MY_NAME}:"走吧...等等......"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"嗯？什么什么？"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"你怎么知道我妈妈电话的？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"之前给奈奈递手机的时候背下来了。"
+
+{$MY_NAME}:"蛤？这都能记住？"
+
+蒂娜:"毕竟这个游戏的制作人根本没有严谨设计，除了开头的三个数字，剩下的就是一大排的333，然后就打通了......"
+
+{$MY_NAME}:"？"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"不...没什么，既然奈奈已经不再生气，那我们去哪里玩呢？"
+
+{$MY_NAME}:"...不知道，还有，我不是不生气了，我只是......"
+
+<<set_character_sprite {$MY_NAME} sad>>
+{$MY_NAME}:"顺从了......"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake Character up_down>>
+蒂娜:"真的？！奈奈已经从了我了吗？！那就快跟我去民政局......"
+
+<<set_character_sprite {$MY_NAME} angry>>
+<<set_character_shake Player left_right>>
+{$MY_NAME}:"你在说什么莫名其妙的话！！！"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"那就去吃点东西好了！顺便买点彩纸，奈奈不是说好了要给我折五彩斑斓的千纸鹤小星星吗？"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......那就出发吧，这次入侵我家我姑且蒙在鼓里。"
+
+{$MY_NAME}:"......毕竟再继续问下去只是给自己找麻烦而已......"
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<stop_bgm>>
+(.........)
+未完待续。。。。。。。
+
+===
+
