@@ -14,18 +14,35 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
     public Image rare;
     public TMP_Text rareText;
 
+    [Header("选中高亮")]
+    [SerializeField] private Image highlightImage;
+
     private Vector3 _originalScale;
     private bool _isSelected = false;
     private Card _card;
+    private bool _isUnderCardChoosing;
 
     void Awake()
     {
         _originalScale = transform.localScale;
+
+        if (highlightImage == null)
+        {
+            var offset = transform.Find("offset");
+            if (offset != null)
+                highlightImage = offset.Find("Highlight")?.GetComponent<Image>();
+        }
+    }
+
+    void Start()
+    {
+        _isUnderCardChoosing = GetComponentInParent<CardChoosing>() != null;
     }
 
     void OnEnable()
     {
         _isSelected = false;
+        UpdateHighlight();
     }
 
     void Update()
@@ -38,17 +55,20 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         if (eventData.button != PointerEventData.InputButton.Left) return;
         _isSelected = !_isSelected;
 
-        // 如果当前变为选中，取消同级所有其他 CardDisplayUI 的选中状态
         if (_isSelected && transform.parent != null)
         {
             foreach (var sibling in transform.parent.GetComponentsInChildren<CardDisplayUI>())
             {
                 if (sibling != this)
+                {
                     sibling._isSelected = false;
+                    sibling.UpdateHighlight();
+                }
             }
         }
 
-        // 点击时隐藏卡牌详情
+        UpdateHighlight();
+
         var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
         if (detailUI != null)
             detailUI.Hide();
@@ -112,5 +132,11 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
             rare.sprite = rare3;
             rareText.text = "珍贵";
         }
+    }
+
+    private void UpdateHighlight()
+    {
+        if (highlightImage != null)
+            highlightImage.gameObject.SetActive(_isUnderCardChoosing && _isSelected);
     }
 }

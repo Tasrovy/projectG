@@ -307,7 +307,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4ED9\u53F0\u540C\u5B66"
+  m_Text: "\u8482\u5A1C\u540C\u5B66"
 --- !u!1 &4460848195213686872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1606,25 +1606,37 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3007531137866316374, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007531137866316374, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 66.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_text
-      value: 
+      value: "\u56DE\u5BB6\u4F11\u606F"
       objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 43.2
       objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_margin.y
       value: 136.38695
       objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_fontColor.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_fontColor.g
-      value: 0.9170433
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_fontColor.r
@@ -1632,11 +1644,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_fontSizeBase
-      value: 32
+      value: 43.2
       objectReference: {fileID: 0}
     - target: {fileID: 3204866459270514474, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4278250239
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 5007807296407008989, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -1673,7 +1685,7 @@ PrefabInstance:
     - target: {fileID: 6969107931886610532, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 43b1195c1bee1f34c93433bd542ff81b, type: 3}
+      objectReference: {fileID: 21300000, guid: e60232d6e9e8e9b4b8fe6c50c16f6dfb, type: 3}
     - target: {fileID: 6969107931886610532, guid: 92b89ed66fe76bb4f8c7134fedfd6d60, type: 3}
       propertyPath: m_Color.a
       value: 1

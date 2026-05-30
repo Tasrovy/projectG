@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0e18955582242a541a593a9b0eaa025d
+guid: bef071a01dc794543af07d408ff7a3e8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,70 +121,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: L_4-2-0-0-0_35(4)_0026_0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5152b671417a15c43a91ecfbf751b61f
-      internalID: -1506006523
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: L_4-2-0-0-0_35(4)_0026_1
-      rect:
-        serializedVersion: 2
-        x: 101
-        y: 9
-        width: 27
-        height: 39
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 279b95a65d43c0a4bac94778a785f1d6
-      internalID: -1547062750
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: L_4-2-0-0-0_35(4)_0026_2
-      rect:
-        serializedVersion: 2
-        x: 132
-        y: 9
-        width: 28
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5f60fb557f5bbc046a71927d1906d013
-      internalID: 2032116057
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -195,10 +132,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      L_4-2-0-0-0_35(4)_0026_0: -1506006523
-      L_4-2-0-0-0_35(4)_0026_1: -1547062750
-      L_4-2-0-0-0_35(4)_0026_2: 2032116057
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
