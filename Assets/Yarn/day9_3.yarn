@@ -41,7 +41,7 @@
 <<set_character_sprite "蒂娜" happy>>
 <<set_character_size Character 2 0.3 1>>
 蒂娜:"嘿嘿，我刚刚拍到一张超棒的照片！你看——"
-
+<<set_character_move Character x -10 0.8>>
 "蒂娜把相机凑到我面前，屏幕上是一只蹲在窗台上的橘猫。"
 
 <<set_character_sprite {$MY_NAME} smile>>
