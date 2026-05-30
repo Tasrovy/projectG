@@ -3,18 +3,19 @@ title: doWork2_1
 <<set_background "小卖部-傍晚">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_sprite {$MY_NAME} peace_1>>
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 <<add_property 4 100>>
 
 （{$MY_NAME}今天在花店打工了）
+<<set_character_person Character "npcWoman" youngWoman>>
 店主: {$MY_NAME}，今天帮忙处理这些玫瑰的刺。
-<<set_character_sprite {$MY_NAME} "peace_1">>
+<<set_character_sprite {$MY_NAME} "normal">>
 {$MY_NAME}: 知道了。
 （戴上手套，拿起剪刀）
 {$MY_NAME}: （刺好多。为什么花要有刺。）
 店主: 小心手啊。
-<<set_character_sprite {$MY_NAME} "peace_2">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 哦，好的#sfx_Character_Player_好的
 （咔嚓。咔嚓。一朵。两朵。）
 {$MY_NAME}: （好像永远处理不完。）
@@ -22,7 +23,7 @@ title: doWork2_1
 <<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 不用。做完再休息。
 店主: 你意外地很认真啊。
-<<set_character_sprite {$MY_NAME} "peace_1">>
+<<set_character_sprite {$MY_NAME} "normal">>
 {$MY_NAME}: ……因为停下来就不想再开始了。
 
 （拿到了工资）#sfx_cookPougSound_UI_CoinCard_Buy

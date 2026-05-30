@@ -55,14 +55,14 @@ title: day9_7_2
 {$MY_NAME}:"明天又是周一了，该收收心了。"
 
 <<stop_bgm>>
-<<set_background "家-白天">>
-<<play_bgm "daily_日常微风3">>
+<<set_background "电车-内">>
+<<play_bgm "daily_日常微风">>
 
 "周一早晨的电车比平时要挤一些。"
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"新的一周......希望这周能安稳一点。"
 
-<<set_background "学校-白天">>
+<<set_background "教室-白天">>
 <<set_character_person Character "蒂娜" happy>>
 <<set_character_size Character 2 0.3 1>>
 蒂娜:"奈奈亲！"
@@ -85,7 +85,7 @@ title: day9_7_2
 <<set_character_sprite {$MY_NAME} smile>>
 {$MY_NAME}:"那我很期待。"
 
-<<set_background "学校-傍晚">>
+<<set_background "教室-傍晚">>
 
 "蒂娜今天确实没有迟到。"
 

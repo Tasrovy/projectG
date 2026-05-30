@@ -3,19 +3,19 @@ title: doWork2_3
 <<set_background "小卖部-傍晚">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_sprite {$MY_NAME} peace_1>>
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 <<add_property 4 100>>
 
 
 （{$MY_NAME}今天去也在花店打工了）
-
+<<set_character_person Character "npcWoman" youngWoman>>
 店主: 今天要做花篮。客人订的。
-<<set_character_sprite {$MY_NAME} "peace_1">>
+<<set_character_sprite {$MY_NAME} "normal">>
 {$MY_NAME}: 好。
 （看着店主示范一次）
 店主: 大概就是这样。你试试看。
-<<set_character_sprite {$MY_NAME} "peace_2">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: ……嗯。
 （把花泥放进篮子。开始插花。）
 {$MY_NAME}: （这朵放这里。那朵放那里。）

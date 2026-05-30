@@ -1,5 +1,6 @@
 ﻿title : special1_1
 ---
+<<jump special1_1_>>
 <<set_background "背景">>
 <<play_bgm daily_日常微风(1)>>
 <<play_whitenoise bgAir_atmosphereNoise2>>
@@ -23,4 +24,9 @@
 <<set_character_sprite "伊兰莉特" happy>>
 蒂娜:好耶！那我们开始吧！
 
+===
+
+title : special1_1_
+---
+........
 ===

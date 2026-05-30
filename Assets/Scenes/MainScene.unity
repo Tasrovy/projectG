@@ -4363,6 +4363,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7321786664211421992, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: jianZhiString
+      value: "\u62C6\u5378"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7321786664211421992, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: shengZhiString
+      value: "\u5236\u9020"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7321786664211421992, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: shengZhangString
+      value: "\u7F8E\u5316"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7321786664211421992, guid: a9f366fec9524654abc1b5799a896207, type: 3}
+      propertyPath: shengZhangToString
+      value: "\u7F8E\u5316"
+      objectReference: {fileID: 0}
     - target: {fileID: 8579412430407369785, guid: a9f366fec9524654abc1b5799a896207, type: 3}
       propertyPath: m_Name
       value: Managers

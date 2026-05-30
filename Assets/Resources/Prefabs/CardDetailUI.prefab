@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3336042794774904178}
   - component: {fileID: 7274713383826357719}
   m_Layer: 5
-  m_Name: Description
+  m_Name: story
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212,13 +212,14 @@ MonoBehaviour:
   panelRoot: {fileID: 0}
   closeButton: {fileID: 0}
   hideOnAwake: 1
-  cardOffsetX: 60
+  cardOffsetX: -40
+  offsetY: 200
   giftSprite: {fileID: 21300000, guid: ac9da1c7dd6b6c541941b2f5cc1bcc47, type: 3}
   eventSprite: {fileID: 21300000, guid: db5613dc3ec5b94438e89cb9febea488, type: 3}
   funcSprite: {fileID: 21300000, guid: f80f783c89a7f6a46847fd60875862f2, type: 3}
   Icon: {fileID: 7368095974397299790}
-  descriptionText: {fileID: 7274713383826357719}
-  textText: {fileID: 3782482070280274102}
+  descriptionText: {fileID: 3782482070280274102}
+  textText: {fileID: 7274713383826357719}
   promptItemPrefab: {fileID: 9195159553279194576, guid: 981b4b192d49cad4cb98341552f7a1bb, type: 3}
   promptContent: {fileID: 2506244561535539925}
 --- !u!1 &3141612415190249953
@@ -595,7 +596,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5361\u724C\u6545\u4E8B"
+  m_text: "\u7269\u54C1\u6545\u4E8B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d10736be5e68a96459481ef6da011b66, type: 2}
   m_sharedMaterial: {fileID: 1401233545187032980, guid: d10736be5e68a96459481ef6da011b66, type: 2}
@@ -916,7 +917,7 @@ GameObject:
   - component: {fileID: 2609013739228373398}
   - component: {fileID: 3782482070280274102}
   m_Layer: 5
-  m_Name: Text
+  m_Name: description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
