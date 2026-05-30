@@ -257,6 +257,6 @@
 {$MY_NAME}:"......"
 
 <<stop_bgm>>
-
+<<clear_character_person Character>>
 <<jump day9_7_2>>
 ===

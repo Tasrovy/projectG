@@ -1,17 +1,17 @@
 title: doWork3_2
 ---
-<<set_background "背景">>
+<<set_background "小卖部-傍晚">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_sprite {$MY_NAME} peace_1>>
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 <<add_property 4 100>>
 
 
 （{$MY_NAME}在便利店里）
-
+<<set_character_person Character "npcWoman" youngWoman>>
 店长: 今天只有你一个人。可以吗？
-<<set_character_sprite {$MY_NAME} "peace_2">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 嗯。可以。
 （站在柜台。店里没有客人。）
 {$MY_NAME}: （好安静。只有冰箱运转的声音。）
@@ -19,10 +19,10 @@ title: doWork3_2
 <<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 一共是四百二十圆。#sfx_Character_Player_呐呐
 顾客: （给钱。）
-<<set_character_sprite {$MY_NAME} "peace_1">>
+<<set_character_sprite {$MY_NAME} "normal">>
 {$MY_NAME}: 收您一千圆。找您五百八十圆。
 顾客: 谢谢。
-<<set_character_sprite {$MY_NAME} "peace_2">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: 谢谢光临。
 （客人走出去。门关起来。又安静了。）
 {$MY_NAME}: （一个人的店啊，要是蒂娜在这里就好了）

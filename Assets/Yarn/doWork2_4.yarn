@@ -3,22 +3,22 @@ title: doWork2_4
 <<set_background "小卖部-傍晚">>
 <<play_bgm daily_日常微风>>
 <<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_sprite {$MY_NAME} peace_1>>
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_sprite {$MY_NAME} normal>>
 <<add_property 4 100>>
 
 
 （{$MY_NAME}今天去快餐店打工了）
-
+<<set_character_person Character "npcWoman" youngWoman>>
 店主: 今天整理干燥花。把褪色的挑出来丢掉。
-<<set_character_sprite {$MY_NAME} "peace_1">>
+<<set_character_sprite {$MY_NAME} "normal">>
 {$MY_NAME}: 好。
 （坐在小椅子上，看着一整箱的干燥花）
 {$MY_NAME}: （这朵褪色了。丢掉。这朵也褪色了。丢掉。）
 （拿起一朵还保留着颜色的）
 {$MY_NAME}: （这朵还很好看。留着。）
 店主: 那朵很漂亮吧。是去年夏天做的。
-<<set_character_sprite {$MY_NAME} "peace_2">>
+<<set_character_sprite {$MY_NAME} "saying">>
 {$MY_NAME}: ……去年。
 店主: 干燥花可以把时间留下来。虽然颜色还是会慢慢褪掉。
 <<set_background "纯黑">>
