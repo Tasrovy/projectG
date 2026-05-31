@@ -13,6 +13,7 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
     public Text descriptionText;
     public Image rare;
     public TMP_Text rareText;
+    public Image Icon;
 
     [Header("选中高亮")]
     [SerializeField] private Image highlightImage;
@@ -131,6 +132,19 @@ public class CardDisplayUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         {
             rare.sprite = rare3;
             rareText.text = "珍贵";
+        }
+
+        if (Icon != null)
+        {
+            string exactPath = $"Card/Icon/{card.id}";
+            Sprite iconSprite = Resources.Load<Sprite>(exactPath);
+            if (iconSprite == null)
+            {
+                string fallbackPath = $"Card/Icon/{card.id.ToString()[0]}0000";
+                iconSprite = Resources.Load<Sprite>(fallbackPath);
+            }
+            if (iconSprite != null)
+                Icon.sprite = iconSprite;
         }
     }
 
