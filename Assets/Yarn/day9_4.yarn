@@ -28,7 +28,7 @@
 
 {$MY_NAME}:"希望今天能安安静静地过完。"
 
-<<set_background "学校-白天">>
+<<set_background "教室-白天">>
 <<set_character_person Character "蒂娜" happy>>
 <<set_character_shake "蒂娜" left_right>>
 蒂娜:"奈奈亲~早上好！"
@@ -54,7 +54,7 @@
 <<set_character_sprite "蒂娜" smile>>
 蒂娜:"嗯！那到时候再说~"
 
-<<set_background "学校-傍晚">>
+<<set_background "教室-傍晚">>
 
 "蒂娜今天一整天都没有再问周末的事，这反而让我有点不自在。"
 

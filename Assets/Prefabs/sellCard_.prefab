@@ -437,8 +437,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -204.99988, y: -782.5001}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -173, y: -814}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &331288873915282169
 CanvasRenderer:
@@ -461,14 +461,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1506006523, guid: b48ab996cdff2254dba00f05d936bc3f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -574,6 +574,7 @@ MonoBehaviour:
   descriptionText: {fileID: 572582106935365688}
   rare: {fileID: 2648180985890111926}
   rareText: {fileID: 3291918241371089834}
+  highlightImage: {fileID: 0}
   giftSprite: {fileID: 21300000, guid: e3cff02cce3794642839c6c28dac90ba, type: 3}
   eventSprite: {fileID: 21300000, guid: fe175206f1f7ed34a942c699f8884316, type: 3}
   funcSprite: {fileID: 21300000, guid: c5ab658048cc4184cae76f5b7f871c15, type: 3}

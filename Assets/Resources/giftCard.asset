@@ -28,7 +28,7 @@ MonoBehaviour:
     buff: 
     trigger: shake(1,0.2)
     nextTurn: 
-    text: 
+    text: "\u6797\u5948\u7B2C\u4E00\u6B21\u9001\u7ED9\u8482\u5A1C\u7684\u793C\u7269\uFF0C\u4F7F\u7528\u7684\u662F\u84DD\u8272\u6298\u7EB8"
     prompt: 4
   - id: 11602
     dialog: 1
@@ -45,7 +45,7 @@ MonoBehaviour:
     buff: 
     trigger: magnify(0.2)
     nextTurn: 
-    text: 
+    text: "\u6797\u5948\u7B2C\u4E00\u6B21\u9001\u7ED9\u8482\u5A1C\u7684\u793C\u7269\uFF0C\u4F7F\u7528\u7684\u662F\u9EC4\u8272\u6298\u7EB8"
     prompt: 4
   - id: 11001
     dialog: 2
@@ -219,7 +219,7 @@ MonoBehaviour:
     prompt: 4
   - id: 12005
     dialog: 13
-    nature1: 10
+    nature1: 16
     nature2: 0
     nature3: 0
     name: "\_\u84DD\u8393\u5DE7\u514B\u529B"
@@ -228,9 +228,9 @@ MonoBehaviour:
     made: 
     broken: 
     added: 
-    description: "\u63D0\u5347\u8482\u5A1C\u7684\u597D\u611F\u4E00{nature1}\u70B9\uFF0C\u5F53\u6B64\u724C\u88AB\u526A\u679D\u65F6\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
+    description: "\u63D0\u5347\u8482\u5A1C\u7684\u597D\u611F\u4E00{nature1}\u70B9"
     buff: 
-    trigger: noConsumed()
+    trigger: 
     nextTurn: 
     text: "\u6574\u9897\u51BB\u5E72\u84DD\u8393\u5916\u9762\u88F9\u7740\u767D\u5DE7\u514B\u529B\uFF0C\u9178\u751C\u878D\u5408\uFF0C\u8482\u5A1C\u80AF\u5B9A\u4F1A\u5F88\u559C\u6B22"
     prompt: 4
@@ -373,7 +373,7 @@ MonoBehaviour:
   - id: 13003
     dialog: 0
     nature1: 0
-    nature2: 42
+    nature2: 50
     nature3: 0
     name: "\u5927\u53F7\u68C9\u82B1\u5A03\u5A03"
     sale: 80
@@ -383,7 +383,7 @@ MonoBehaviour:
     added: 
     description: "\u63D0\u5347\u8482\u5A1C\u7684\u597D\u611F\u4E8C{nature2}\u70B9\uFF0C\u4E0D\u4F1A\u88AB\u6D88\u8017"
     buff: 
-    trigger: noConsumed()
+    trigger: 
     nextTurn: 
     text: "\u5927\u5C0F\u5F88\u5938\u5F20\u7684\u68C9\u82B1\u5A03\u5A03\uFF0C\u662F\u6B7B\u5FE0\u7C89\u624D\u4F1A\u60F3\u8981\u7684\u7269\u54C1"
     prompt: 

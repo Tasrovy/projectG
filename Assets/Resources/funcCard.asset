@@ -18,7 +18,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u6F06\u7B14"
+    name: "\u4F01\u9E45\u521B\u53E3\u8D34"
     sale: 10
     sell: 8
     made: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
-    text: "\u7ED8\u5236\u5DE5\u5177\uFF0C\u53EF\u4EE5\u8BA9\u7269\u54C1\u66F4\u7F8E\u89C2"
+    text: "\u5370\u6709\u4F01\u9E45\u56FE\u6848\u7684\u521B\u53E3\u8D34\uFF0C\u6DF1\u53D7\u81EA\u95ED\u75C7\u4EBA\u58EB\u559C\u6B22\uFF0C\u53EF\u4EE5\u8BA9\u7269\u54C1\u66F4\u7F8E\u89C2"
     prompt: 3
   - id: 21001
     dialog: 5

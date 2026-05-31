@@ -1,5 +1,51 @@
 ﻿title: firstEnterShop
+
 ---
-11
-(........)
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风3">>
+<<set_background "教室-傍晚">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 1>>
+
+"放学后，我犹豫了一下，还是朝小卖部走去。"
+
+<<set_background "小卖部-傍晚">>
+
+<<set_character_person Character "npcWoman" woman>>
+
+姑姑:"哎呀！奈奈来了！上次挑的东西还合用吗？今天想买点什么？随便看！"
+
+"姑姑指向身后的货架。三排架子整齐排列——左边<b><color=blue>'礼物'</color></b>：折纸、丝带、玩偶、手工材料。"
+"中间'<b><color=blue>工具</color></b>'：骨刀、胶水、彩笔、针线盒。右边'<b><color=blue>约会指南</color></b>'：几本封面花花绿绿的小册子。"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......<b><color=blue>约会指南</color></b>你也卖？"
+
+姑姑:"热销品！水族馆的、甜品店的、公园划船的都有！"
+
+姑姑:"<b><color=blue>总之呢——礼物买了就能送人，工具拿来加工礼物，约会指南嘛，照着做约人出去准没错。</color></b>三分料七分工，姑姑这里全齐！"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"所以你这里什么都能买到。"
+
+姑姑:"<b><color=blue>不止能买！还能卖！</color></b>"
+
+"姑姑从抽屉里翻出一个旧账本。"
+
+姑姑:"<b><color=blue>不想要的、做多了的手工都能拿来卖。收购价低一点——姑姑也要吃饭——但童叟无欺！</color></b>手头宽裕了，想买啥都方便！"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"确实很方便。"
+
+姑姑:"想买东西来找姑姑，想卖东西也来找姑姑。姑姑就是你在学校的百宝箱！"
+
+"她从柜台下递来一本价目表，页脚画着小小的笑脸。"
+
+姑姑:"拿着看看，姑姑会不定期更新货品，过几天再来又有新东西了哦。"
+
+{$MY_NAME}:"嗯，我会的。"
+
+"我把价目表收进书包。虽然姑姑的热情每次都让我招架不住，但有这么一个小卖部，计划清单确实多了不少可操作性。"
+
+<<stop_bgm>>
 ===

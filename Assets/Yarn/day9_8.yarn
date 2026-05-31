@@ -27,7 +27,7 @@
 <<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"差点迟到......早饭就不吃了。"
 
-<<set_background "学校-白天">>
+<<set_background "教室-白天">>
 <<set_character_person Character "蒂娜" doubt>>
 <<set_character_size Character 2 0.3 1>>
 蒂娜:"奈奈亲今天怎么看起来有点匆忙？"
@@ -46,7 +46,7 @@
 <<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"......什么时候都不要说。"
 
-<<set_background "学校-傍晚">>
+<<set_background "教室-傍晚">>
 
 "下午的体育课因为下雨改成了室内自习。"
 

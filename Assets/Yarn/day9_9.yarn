@@ -34,7 +34,7 @@
 
 {$MY_NAME}:"穿件薄外套吧。"
 
-<<set_background "学校-白天">>
+<<set_background "教室-白天">>
 
 <<set_character_person Character "蒂娜" normal>>
 <<set_character_size Character 2 0.3 1>>
@@ -55,7 +55,7 @@
 
 "她总是能在三句话之内把话题带到一个奇怪的方向。"
 
-<<set_background "学校-傍晚">>
+<<set_background "教室-傍晚">>
 
 <<set_character_sprite "蒂娜" normal>>
 蒂娜:"奈奈亲，今天数学老师布置的那道题，你听懂了吗？"

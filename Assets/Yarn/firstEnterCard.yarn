@@ -1,5 +1,347 @@
 ﻿title: firstEnterCard
 ---
-11
-(......)
+
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风3">>
+<<set_background "手工台-白天">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 1>>
+
+"放学后，我抱着手工盒推开了学校手工室的门。"
+
+"我本以为没人——但我错了。靠窗的工作台前，一个熟悉的粉色脑袋正趴着，面前摊着几张彩纸，画到一半却睡着了。"
+
+"我愣在门口，还没决定是退是留，蒂娜就迷迷糊糊撑起了脑袋。"
+
+<<set_character_person Character "蒂娜" normal>>
+
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"嗯......啊！奈奈亲？！"
+
+"她从半睡半醒瞬间跳到了满格电量。"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......你怎么在这里。"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake Character left_right>>
+蒂娜:"我才要问呢！奈奈亲怎么会来手工室！"
+
+{$MY_NAME}:"我来做东西。你又是怎么回事——"
+
+"我走近几步，她面前画了一半的纸上是一只千纸鹤的草图，旁边歪歪扭扭写着'奈奈亲的千纸鹤'。蒂娜注意到我的视线，手忙脚乱把纸翻了过去。"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"没、没什么！我只是在——呃——取材！对，摄影部的老师说可以拍拍手工室的活动照片，我就过来等着了！然后等着等着就——"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"就睡着了。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"......嗯。"
+
+"蒂娜的脸有点红，不知是刚睡醒还是因为被看到了那张画。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"既然你在这里，那正好。"
+
+"我把手工盒放在工作台上，把东西一样样拿出来。"
+
+<<set_character_size Character 2 0.3 1>>
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"奈奈亲要做手工吗？我来帮忙——不对，我来围观！"
+
+"蒂娜搬了椅子凑到对面，困意全消。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"哇，奈奈亲带了这么多东西！这些是什么？"
+
+"蒂娜盯着桌上铺开的东西，眼里闪着光。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"这是......做手工吗？奈奈亲上次的千纸鹤就是用这些东西做的？"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"差不多吧。不过不只是折纸。"
+
+"我把工具往她那边推了推。"
+
+{$MY_NAME}:"这些是<b><color=blue>工具</color></b>。他们对我们要处理的物品有不同的作用。比如这个骨刀，是用来压出折痕的。丝带和贴纸......就是装饰用的。"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:<b><color=blue>"点击工具卡牌就可以使用工具了哦"</color></b>
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"使用工具后，我们就要<b><color=blue>选择</color></b>需要处理的物品"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"原来做手工还有这么多门道！那这个呢——"
+
+"蒂娜指了指盒底压着的一本小册子，封面上还能隐隐约约看到指南二字。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"那个不是工具，唉你别管......"
+
+"我把桌上的东西分成两组。左边是<b><color=blue>礼物</color></b>——折纸、千纸鹤、手绘卡片。中间是工具——骨刀、丝带、胶水、彩笔。"
+
+{$MY_NAME}:"我可以把做好的手工制品送给你"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake Character up_down>>
+蒂娜:"真的吗，谢谢奈奈亲！<b><color=blue>会收到这些东西我好高兴！</color></b>
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"既然你也在这里，那我们就一起做吧。"
+
+"我从盒底翻出一包没拆封的棉花娃娃材料。"
+
+<<set_character_sprite "蒂娜" smile>>
+<<set_character_shake Character up_down>>
+蒂娜:"哇！棉花娃娃！奈奈亲还会缝娃娃？！"
+
+{$MY_NAME}:"......也不算会。只是买的时候觉得，总有一天会用上。"
+
+"蒂娜接过布料翻来覆去地看，眼睛亮得发光。"
+
+<<set_character_sprite "蒂娜" happy>>
+<<set_character_shake Character left_right>>
+蒂娜:"我要做！教我教我！"
+
+"我拿出针线剪刀，按说明书折好布料，示范了平针缝法。第一针穿过时，蒂娜屏住了呼吸。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"就这样一针一针地缝过去，保持间距差不多就行。开头不难。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"我试试！"
+
+"蒂娜接过针线，动作意外地稳，前几针走得又直又均匀。"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......你之前学过缝东西？"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"没有呀~但是奈奈亲教得仔细嘛！"
+
+"她缝的每一针间距几乎一模一样——这家伙的手其实很巧。很快，棉花娃娃圆滚滚的脑袋就有了雏形。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"看！我是不是很厉害！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"嗯，还不错。"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"只是'还不错'？"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"......很厉害。"
+
+"蒂娜得意地晃了晃脑袋，翻到说明书下一页——回针缝的弧线部分。她的笑容停了两秒。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"......这是什么。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"回针缝。比刚才的难一点。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"这不是难一点！这看起来像外星文字！"
+
+"蒂娜皱着眉戳了几针，线在布背面绕成一团乱麻。"
+
+<<set_character_sprite "蒂娜" cry>>
+蒂娜:"奈奈亲......它不听我的话。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"是你没看说明书。回针缝要倒着走，你现在是完全在乱戳。"
+
+<<set_character_sprite "蒂娜" angry>>
+蒂娜:"我已经很认真了！是它在反抗我！"
+
+{$MY_NAME}:"布料不会反抗任何人。"
+
+"我叹了口气，走到她身后。"
+<<set_character_sprite {$MY_NAME} say>>
+{$MY_NAME}:"手给我。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"......唉？"
+
+{$MY_NAME}:"手。拿针的那只手。"
+
+"蒂娜愣了一秒，慢慢把右手伸过来。我握住她的手背——她的手比我小，有点凉。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"从这里扎进去，然后往回走半针的距离，再往前一针——"
+
+"我带着她的手一针针走，布料上终于现出整齐的回针痕迹。但我的手心开始出汗了——靠得太近，她头发上的洗发水味一直往鼻子里飘。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+"针头偏了一下。"
+
+<<set_character_sprite "蒂娜" cry>>
+<<set_character_shake Character left_right>>
+蒂娜:"啊——！"
+
+"蒂娜缩回手，食指指尖冒出一颗血珠。"
+
+<<set_character_sprite {$MY_NAME} cry>>
+{$MY_NAME}:"对不起！我不是故意的——"
+
+<<set_character_sprite "蒂娜" cry>>
+蒂娜:"好痛......"
+
+"蒂娜把手指举到眼前，可怜巴巴地看着血珠变大，眼眶里有什么在打转。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"等一下，我包里有创口贴。"
+
+"我想起书包里那盒企鹅创口贴——之前给千纸鹤包扎脖子用的。翻出小盒子，空的。"
+
+<<set_character_sprite {$MY_NAME} cry>>
+{$MY_NAME}:"......用完了。"
+
+<<set_character_sprite "蒂娜" cry>>
+蒂娜:"怎么会！奈奈亲不是随身带创口贴的吗！"
+
+{$MY_NAME}:"上次给千纸鹤用掉了最后一张......之后就忘了补。"
+
+"蒂娜抿着嘴看着血珠，突然掏出手机单手飞速打字。"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"让我问问——"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"问什么？"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"逗饱大模型！它什么都懂！啊，有了——'手指被针扎了，没有创口贴怎么办'——"
+
+"蒂娜盯着屏幕扫过答案，表情变得微妙。"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"它说......'可以使用别人的唾液涂抹伤口，唾液中含有溶菌酶，具有天然的抗菌消炎作用'。"
+
+"我差点把手机抢过来。"
+
+<<set_character_sprite {$MY_NAME} angry>>
+<<set_character_shake Player left_right>>
+{$MY_NAME}:"纯纯在放屁。那是大模型出现幻觉了，唾液里的溶菌酶浓度根本达不到消毒的效果，随便涂抹别人的口水反而可能造成细菌感染，尤其是口腔里的链球菌和厌氧菌——"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"但是它说得很有道理呀！而且这是人工智能，肯定比奈奈亲懂得多！"
+
+<<set_character_sprite {$MY_NAME} angry>>
+{$MY_NAME}:"人工智能也会胡说八道。这叫AI幻觉，它只是在拼凑看起来合理的文字，不是在给你医学建议。"
+
+<<set_character_sprite "蒂娜" dislike>>
+蒂娜:"我不信。逗饱大模型从来没有骗过我。"
+
+"蒂娜鼓起脸，食指还在渗血，右手死死握着手机。"
+
+<<set_character_sprite "蒂娜" angry>>
+蒂娜:"反正我就是要试试！奈奈亲要是不帮我，我就自己来！"
+
+"她要自己舔手指。这个画面让我更不放心了。"
+
+<<set_character_sprite {$MY_NAME} angry>>
+{$MY_NAME}:"......你这个人怎么这么不讲道理。"
+
+<<set_character_sprite "蒂娜" angry>>
+蒂娜:"我就是不讲道理！奈奈亲第一天认识我吗！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"行。你赢了。"
+
+"我深吸一口气，抽了张纸巾。"
+
+{$MY_NAME}:"把手指伸过来。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"奈奈亲要帮我涂口水吗？"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"......你再废话我就把这张纸巾塞你嘴里。"
+
+"蒂娜乖乖伸过手指。我拿纸巾垫在她指尖下——"
+
+<<set_character_move Character x -20 0.3>>
+
+"还没低头，她的手指就直接戳进了我嘴里。"
+<<set_character_sprite {$MY_NAME} normal>>
+"大脑空白了三秒。她的食指压在我舌头上，带着一点铁锈味的血，温度比握她手时暖得多。"
+
+<<set_character_size Player 3 0.24 0.6>>
+<<set_character_size Character 3 0.24 1>>
+"我本能想推开，但舌尖碰到了那道针扎的小小伤口——然后，我停住了。"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:("她的手指在嘴里的感觉并不讨厌。她指尖的脉搏透过舌尖传过来，一下，两下，像在敲一扇很小的门。")
+
+"而她的表情——脸红得像被晚霞烧透，眼睛瞪得很大，嘴唇半张着，刚才无理取闹的架势彻底消失了。"
+
+"但她没有把手抽回去。我也没有松开。"
+
+{$MY_NAME}:("我的嘴唇含住了她的手指，舌尖轻轻舔过伤口周围。像给千纸鹤包扎脖子时一样，小心翼翼的。")
+
+"手工室里安静得只剩下风声，和我震耳欲聋的心跳。"
+
+"但我没有停下来。"
+
+"过了好久——也许只有十几秒——蒂娜终于把手指抽了出去。指尖沾着透明的痕迹，被温热的口腔泡得微微发红。"
+
+<<set_character_size Player 2 0.3 0.6>>
+<<set_character_size Character 2 0.3 0.6>>
+
+{$MY_NAME}:"......"
+
+"我舔了下嘴唇，强迫自己恢复平时的表情。"
+
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"这已经不能用越界来形容了。你知道吧。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"......"
+
+{$MY_NAME}:"正常人是不会把手指伸到别人嘴里去的。就算是涂口水，也是别人帮你涂，不是你主动戳。"
+
+蒂娜:"......"
+
+"蒂娜把发烫的手指藏到身后，低着头。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"对不起。"
+
+"她的道歉让我一肚子话全堵在喉咙里。"
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"......我不是故意的。就是，不知道怎么回事，手比脑子快。"
+
+"她顿了顿，偷偷抬眼看我，又迅速低下去。"
+
+
+蒂娜:"但是......奈奈亲也没有推开我。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+"这下轮到我哑口无言。百叶窗的影子在地板上慢慢移动，手工室里一切如旧——摊开的布料、绕成团的线、那根闯祸的针。但好像有一样东西和刚才不一样了。"
+
+"我别开视线，把纸巾揉成一团。"
+
+{$MY_NAME}:"......手指还疼吗。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"不疼了。"
+
+"蒂娜把食指举到眼前看了看，轻轻握住了它。"
+
+蒂娜:"......一点也不疼了。"
+
+"她说着，嘴角翘起一个很小的弧度，像在保护一个不能被我发现的小秘密。"
+
+<<stop_bgm>>
 ===
+
+
