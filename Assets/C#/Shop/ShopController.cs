@@ -178,8 +178,9 @@ public class ShopController : MonoBehaviour
         }
 
         _sellPageIndex++;
+        UnpinDetail();
+        ResetSelection();
         RefreshCurrentMode();
-        UpdateButtonStates();
     }
 
     public void PreviousSellPage()
@@ -190,8 +191,9 @@ public class ShopController : MonoBehaviour
         }
 
         _sellPageIndex--;
+        UnpinDetail();
+        ResetSelection();
         RefreshCurrentMode();
-        UpdateButtonStates();
     }
 
     public void RefreshCurrentMode()
@@ -211,6 +213,8 @@ public class ShopController : MonoBehaviour
     protected virtual void SwitchMode(ShopMode mode)
     {
         CurrentMode = mode;
+        _sellPageIndex = 0;
+        UnpinDetail();
         ResetSelection();
         RenderCurrentMode();
         UpdateButtonStates();
