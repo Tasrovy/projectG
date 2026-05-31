@@ -24,6 +24,7 @@ public class CardUIObject : MonoBehaviour,
     public GameObject HighlightImage;
     public Image rare;
     public TMP_Text rareText;
+    public Image Icon;
 
     [Header("重要：动画容器")] 
     public RectTransform visualContainer;
@@ -376,6 +377,20 @@ public class CardUIObject : MonoBehaviour,
         {
             rare.sprite = rare3;
             rareText.text = "珍贵";
+        }
+
+        // 加载卡牌图标：先尝试精确ID，失败则回退到首位+0000
+        if (Icon != null)
+        {
+            string exactPath = $"Card/Icon/{card.id}";
+            Sprite iconSprite = Resources.Load<Sprite>(exactPath);
+            if (iconSprite == null)
+            {
+                string fallbackPath = $"Card/Icon/{card.id.ToString()[0]}0000";
+                iconSprite = Resources.Load<Sprite>(fallbackPath);
+            }
+            if (iconSprite != null)
+                Icon.sprite = iconSprite;
         }
     }
 
