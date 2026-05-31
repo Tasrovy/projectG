@@ -1,16 +1,20 @@
 ﻿title: failed1_1
 ---
-<<set_background "黑夜素材">>
-<<play_bgm daily_日常微风>>
-<<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person Character "伊兰莉特" peace_2>>
-<<set_character_sprite {$MY_NAME} "peace_1">>
-<<set_character_sprite "伊兰莉特" "saying">>
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+
+//<<play_whitenoise "bgNew_fan2">>
+<<set_background "教室-夜晚开灯">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_person Character "蒂娜" normal>>
+//<<set_character_sprite {$MY_NAME} saying>>
+//<<set_character_sprite "蒂娜" saying>>
+//#sfx_talkSound_school_chime
 蒂娜: 林奈，和你在一起好累，我们以后还是别联系了吧
-<<set_character_sprite {$MY_NAME} "peace_2">>
+<<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}: ？！
 （。。。。。）
 （。。。。。）
-只是占坑的失败对话，后续会好好写的（
+
 ===
