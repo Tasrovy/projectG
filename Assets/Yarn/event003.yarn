@@ -1,12 +1,121 @@
 ﻿title: event003
 ---
-<<set_background "黑夜素材">>
-<<play_bgm daily_日常微风2>>
-<<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person Character "伊兰莉特" peace_2>>
-蒂娜 :光合作用也需要休息，今天就到这里吧 #sfx_Character_主角2_嗯
-{$MY_NAME}:嗯，时候也不早了我要入睡了。
-（躺在卧室的床上进入了梦乡）
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风3">>
+<<set_background "乒乓球室-白天">>
 
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 1>>
+
+"我在手工台前翻着那本乒乓球馆约会指南，决定拉着蒂娜一起出去"
+
+{$MY_NAME}:"今天要不要一起去打球？"
+
+<<set_character_person Character "蒂娜" happy>>
+<<set_character_size Character 2 0.3 1>>
+
+<<set_character_shake Character up_down>>
+蒂娜:"奈奈亲约我打球？！去去去！当然去！！"
+
+"......三个感叹号。这家伙到底有多兴奋。"
+
+"到了球馆，蒂娜已经站在门口等着了。她手里抱着上次那只不成对的球拍，看见我就拼命挥手。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......你来得也太早了。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"因为奈奈亲第一次主动约我嘛！当然要早点到！"
+
+"她说这句话的时候眼睛亮得有点过分，我只好别开脸，假装在检查球拍。"
+
+{$MY_NAME}:"之前教练教过你发球，还记得吗。"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"呃......大概？就是把球扔起来然后——"
+
+"蒂娜把球往上一抛，拍子一挥——球直接飞到了身后的墙上。"
+
+蒂娜:"......"
+
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}:"......完全没进步。"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"那是因为太久没练了！奈奈亲再教我一次嘛！"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"行吧。看好了。"
+
+"我做了一次标准的发球示范。球在桌面上弹了一下，稳稳落在蒂娜那半边。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"哇，奈奈亲好厉害——但是太快了没看清！"
+
+{$MY_NAME}:"......我就知道。"
+
+"我叹了口气，绕到蒂娜身后，握住了她拿拍子的手。"
+
+"她的肩膀明显僵了一下。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"手腕放松。抛球的时候眼睛看球，拍子倾斜大概四十五度——"
+
+"我带着她的手做了一遍慢动作，球勉强过了网。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"......"
+
+{$MY_NAME}:"记住了吗。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"......奈奈亲的手好暖和。"
+
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"......我是问你的发球记住了吗。"
+
+蒂娜:"都记住啦！"
+
+"她绝对没记住。她的耳朵都红了。"
+
+"又练了几轮之后，蒂娜终于成功发出一个标准球。球在桌面上清脆地弹了一下，划过一道弧线。"
+
+<<set_character_sprite "蒂娜" smile>>
+<<set_character_shake Character up_down>>
+蒂娜:"看到了吗看到了吗！我成功了！"
+
+"她兴奋得原地跳了起来，然后直接扑过来抱住了我的胳膊。"
+
+<<set_character_sprite {$MY_NAME} dislike>>
+{$MY_NAME}:"......你放手。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"不要！这是庆祝的抱抱！奈奈亲教的第一个标准发球诶！"
+
+"我挣了两下没挣开，干脆放弃了。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......一个发球就这么高兴，你还差得远呢。"
+
+蒂娜:"那奈奈亲的意思是——以后还会教我对吧？"
+
+"她仰着头看我，眼睛里的期待简直能实体化。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......看情况。"
+
+"我没有说'好'，但也没有说'不好'。蒂娜大概听出了区别，因为她的笑容比刚才更大了。"
+
+"然后她松开我的胳膊，重新站回球台对面，摆出了一个还算像样的准备姿势。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"再来一球！这次我要连续成功两次！"
+
+{$MY_NAME}:"......先把目标定在连续成功一次再说吧。"
+
+"不过，看着她那副干劲十足的样子，我发现自己并不介意再多教几轮。"
+
+<<stop_bgm>>
 ===
+

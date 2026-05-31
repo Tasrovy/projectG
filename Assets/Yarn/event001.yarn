@@ -1,12 +1,96 @@
 ﻿title: event001
 ---
-<<set_background "黑夜素材">>
-<<play_bgm daily_日常微风2>>
-<<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person Character "伊兰莉特" peace_2>>
-蒂娜 :光合作用也需要休息，今天就到这里吧 #sfx_Character_主角2_嗯
-{$MY_NAME}:嗯，时候也不早了我要入睡了。
-（躺在卧室的床上进入了梦乡）
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风2">>
+<<set_background "手工台-白天">>
 
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 1>>
+
+<<set_character_person Character "蒂娜" normal>>
+<<set_character_size Character 2 0.3 1>>
+
+"手工台上还摊着上次没用完的彩纸和材料。蒂娜坐在老位置上，正试着用一张粉色的纸折什么东西——看起来像一只被车轧过的青蛙。"
+
+{$MY_NAME}:"......那是什么。"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"是千纸鹤！"
+
+{$MY_NAME}:"......完全不像。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"呜——那奈奈亲教我折嘛！"
+
+"我从盒子里抽出一张蓝色的纸，在她对面坐下。"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"今天不教千纸鹤。今天折星星。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"星星？！就是那种一小颗一小颗的幸运星吗！"
+
+{$MY_NAME}:"嗯。你不是说想要五彩斑斓的千纸鹤小星星吗。"
+
+"蒂娜愣了一下，然后笑得比手里的彩纸还灿烂。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"奈奈亲居然记得！"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......你说了那么多次，想忘也忘不掉。"
+
+"我把纸条折成五边形，一步步示范。蒂娜跟着我的动作，但她的手指显然还没从上次的棉花娃娃事件里吸取教训——第三次折叠之后，星星的角就歪到了另一个次元。"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"......它为什么是扁的。"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"因为你把第三步和第五步搞反了。"
+
+"我伸手过去，把她手里那颗扁星星拆开，重新折了一遍。折好的星星放在她手心，蓝色的，五个角还挺对称。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"奈奈亲真的好厉害......"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"只是熟练而已。你再试一次。"
+
+"她又抽了一张黄色的纸，这次慢慢折，每一步都先看一眼我的手。终于——一颗虽然有点歪但勉强算是星星的东西诞生了。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"成功了！虽然不如奈奈亲的好看......"
+
+{$MY_NAME}:"第一次折成这样算不错了。"
+
+"我们又折了好几个。红的、蓝的、黄的、绿的——桌子上渐渐堆满了一颗颗小星星。蒂娜从中挑出最好看的一颗，放在我面前。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"这颗送给奈奈亲。"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"......为什么送我。"
+
+蒂娜:"因为是奈奈亲教我折的呀。最好的那颗当然要给老师。"
+
+"我拿起那颗橙色的星星。它的一个角微微有点扁，但放在掌心里刚好能握住。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......谢了。"
+
+"我把星星小心地放进口袋。回去之后，大概会把它放在日记本的第一页——谁知道呢。"
+
+<<set_character_sprite "蒂娜" saying>>
+蒂娜:"下次教我做手绳好不好？我昨天在网上看到一种编法——"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"先把千纸鹤折好再说。"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"哼！我回家就练！"
+
+"她鼓起脸的样子像只松鼠。我忍住笑，从盒子里又抽出一张纸。"
+
+{$MY_NAME}:"......算了，现在先教你千纸鹤吧。趁我还没反悔。"
+
+"蒂娜的眼睛瞬间亮了。手工室的窗外，夕阳正慢慢沉下去，但我们谁也不急着走。"
+
+<<stop_bgm>>
 ===

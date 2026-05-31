@@ -24,7 +24,7 @@
 
 <<set_character_person Character "蒂娜" happy>>
 <<set_character_size Character 2 0.3 1>>
-蒂娜:"早上好！"
+蒂娜（电话）:"早上好！"
 
 "光是看见手机上蒂娜的消息，就已经能想象出她那灿烂的声音，就仿佛看见她出现在自己面前，在自己耳朵旁边大喊。"
 
@@ -34,13 +34,13 @@
 "我在短讯的末尾点上几个点，毕竟我知道现在已经是十点半了。"
 
 <<set_character_sprite "蒂娜" smile>>
-蒂娜:"难得的周末，林奈要不要去打球啊？"
+蒂娜（电话）:"难得的周末，林奈要不要去打球啊？"
 
 <<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"不，今天不想打球......"
 
 <<set_character_sprite "蒂娜" saying>>
-蒂娜:"那，要跟我一起去走走嘛？"
+蒂娜（电话）:"那，要跟我一起去走走嘛？"
 
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"也不是很想出门..."
@@ -48,16 +48,16 @@
 {$MY_NAME}:"我还有本书打算今天看完的，蒂娜难道已经写完作业了吗？"
 
 <<set_character_sprite "蒂娜" mouth>>
-蒂娜:"呃...晚点再说嘛！"
+蒂娜（电话）:"呃...晚点再说嘛！"
 
 <<set_character_sprite "蒂娜" saying>>
-蒂娜:"今晚肯定会做完的！"
+蒂娜（电话）:"今晚肯定会做完的！"
 
 <<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"你还挺自信，一个晚上真能写完吗？"
 
 <<set_character_sprite "蒂娜" smile>>
-蒂娜:"相信我嘛奈奈！实在不行...奈奈帮我做呗！"
+蒂娜（电话）:"相信我嘛奈奈！实在不行...奈奈帮我做呗！"
 
 <<set_character_sprite {$MY_NAME} dislike>>
 {$MY_NAME}:"不可能，少说这种不着边际的话。"
@@ -92,26 +92,27 @@
 {$MY_NAME}:"...计划有变，我要出门了。"
 
 <<set_character_sprite "蒂娜" doubt>>
-蒂娜:"唉？要去打球了吗？"
+蒂娜（电话）:"唉？要去打球了吗？"
 
 {$MY_NAME}:"不去...不过你去那等我吧，我们待会儿再讨论这个。"
 
 <<set_character_sprite "蒂娜" happy>>
-蒂娜:"好吧，那我收拾一下就准备过去，奈奈一定要等我哦~"
+蒂娜（电话）:"好吧，那我收拾一下就准备过去，奈奈一定要等我哦~"
 
 "......"
-
+<<clear_character_person Player>>
 "事情到这里，都还算得上普通平常。但如果真就这么简单——"
 
 "故事也就没那么有趣了。"
 
-<<set_character_sprite "蒂娜" sad>>
+<<set_character_sprite "蒂娜" normal>>
 "虽然很对不住奈奈......"
 
 "蒂娜带上不成对的两只球拍，离开了家，朝着一个方向加速赶去——朝着她不该去的一个地方。"
 
 <<set_background "商业街-白天">>
-
+<<clear_character_person Character>>
+<<set_character_person Player {$MY_NAME} normal>>
 <<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}:"蒂娜真慢......"
 
@@ -128,13 +129,13 @@
 {$MY_NAME}:"那个是......"
 
 "我在乒乓球馆附近转悠，注意到了一个身影——一个并不是朝着我赶来的身影。"
-
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"蒂娜？......蒂娜！"
 
 "但是对方并没有听见。事实上，我并没有喊很大声，就这样看着她骑着自行车朝更远的方向远去。我的心跳加快了不少，追了上去。"
 
 "越是追赶，就越是意识到对方的目的地。"
-
+<<set_character_sprite {$MY_NAME} doubt>>
 {$MY_NAME}:"蒂娜这是...要去我家吗？"
 
 "她不应该知道的，我从没有说过自己住在哪。"
@@ -152,7 +153,7 @@
 <<set_background "街道-白天">>
 <<set_character_size Player 2 0.3 0.6>>
 
-<<set_character_sprite "蒂娜" sad>>
+<<set_character_person Character "蒂娜" doubt>>
 蒂娜:"啊...奈奈......"
 
 {$MY_NAME}:"......"
@@ -218,20 +219,20 @@
 <<set_character_sprite "蒂娜" smile>>
 蒂娜:"嗯，这件事情就这么简单哦，没有后续了哦。"
 
-<<set_character_sprite {$MY_NAME} sad>>
+<<set_character_sprite {$MY_NAME} angry>>
 {$MY_NAME}:"你明明就可以告诉我......"
 
 <<set_character_sprite "蒂娜" normal>>
 蒂娜:"明明是奈奈亲自己说不想听到的吧！"
-
+<<set_character_sprite {$MY_NAME} saying>>
 {$MY_NAME}:"我...但是别的时候我说的话你也不听啊......"
 
 蒂娜:"这次不一样——奈奈看起来相当认真的！"
-
+<<set_character_sprite {$MY_NAME} mouth>>s
 {$MY_NAME}:"......算了，还是说说你到底是怎么到这里来的吧。"
 
 蒂娜:"我和奈奈的妈妈联系了哦......"
-
+<<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"......"
 
 <<set_character_sprite "蒂娜" smile>>
@@ -264,7 +265,7 @@
 
 {$MY_NAME}:"...不知道，还有，我不是不生气了，我只是......"
 
-<<set_character_sprite {$MY_NAME} sad>>
+<<set_character_sprite {$MY_NAME} mouth>>
 {$MY_NAME}:"顺从了......"
 
 <<set_character_sprite "蒂娜" happy>>

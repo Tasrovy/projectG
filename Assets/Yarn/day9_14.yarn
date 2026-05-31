@@ -4,14 +4,23 @@
 <<clear_character_person Character>>
 <<play_bgm "daily_日常微风(1)">>
 //<<play_whitenoise "bgNew_fan2">>
-<<set_background "教室-傍晚">>
 
 <<set_character_person Player {$MY_NAME} normal>>
 //<<set_character_person Character "蒂娜" normal>>
 //<<set_character_sprite {$MY_NAME} saying>>
 //<<set_character_sprite "蒂娜" saying>>
 //#sfx_talkSound_school_chime
+<<set_background "家-夜晚">>
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"时候不早了，先睡吧"
+<<set_background "家-傍晚">>
+"周末第一天我去了家附近的一家书店，在那里待了一下午。"
 
+{$MY_NAME}:（"这种一个人安静读书的感觉，是让我最放松的状态。"）
 
+"不过我还是忍不住扫了一眼摄影相关的书架——虽然我根本不需要。"
+
+{$MY_NAME}:"明天又要做什么呢。"
+<<jump start1_4>>
 
 ===

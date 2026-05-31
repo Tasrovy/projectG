@@ -1,12 +1,153 @@
 ﻿title: event004
 ---
-<<set_background "黑夜素材">>
-<<play_bgm daily_日常微风2>>
-<<play_whitenoise bg1_bgWhiteNoise2>>
-<<set_character_person Player {$MY_NAME} peace_1>>
-<<set_character_person Character "伊兰莉特" peace_2>>
-蒂娜 :光合作用也需要休息，今天就到这里吧 #sfx_Character_主角2_嗯
-{$MY_NAME}:嗯，时候也不早了我要入睡了。
-（躺在卧室的床上进入了梦乡）
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<play_bgm "daily_日常微风">>
+<<set_background "乒乓球室-白天">>
 
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_size Player 2 0.3 1>>
+
+"约会指南的乒乓球页面往后翻，还有一页——'拉球技巧'。上面画着弧圈球的轨迹图，旁边是我自己做的笔记。"
+
+"蒂娜收到我的邀请后自然是立刻答应了，我已经习惯了。"
+
+"球馆里，我先把一筐球放在脚边。蒂娜在旁边拉伸，动作比上次协调了不少。"
+
+{$MY_NAME}:"......你最近自己来练过？"
+
+<<set_character_person Character "蒂娜" smile>>
+<<set_character_size Character 2 0.3 1>>
+
+蒂娜:"嗯！上周来了三次！"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"......怪不得。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"怪不得什么？"
+
+"我没有回答。总不能说'怪不得你今天拉伸的样子看起来没那么笨手笨脚了'。那也太不像我了。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"今天学拉球。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"拉球？就是把球拉出一个弧线那种？我看电视比赛里都有——"
+
+{$MY_NAME}:"对。和普通的推挡不一样，拉球需要摩擦球的表面，让球带上旋转，弧线会更弯，对手也更难接。"
+
+"我示范了一球。球在空中的弧线像一道被压弯的彩虹，落在对面桌角又弹了出去。"
+
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:"好帅——但是看起来好复杂......"
+
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"先学手上动作。过来。"
+<<set_character_move Character x -8 0.8>>
+"蒂娜走到我面前。我顿了一下。"
+
+{$MY_NAME}:"......不是站我对面。站我前面。"
+
+蒂娜:"......唉？"
+<<set_character_move Player x 8 0.8>>
+{$MY_NAME}:"手把手教比较快。转过去。"
+
+"蒂娜转了过去，背对着我。我站到她身后，伸出右手握住她拿拍子的手腕。"
+
+"她的手腕很细。而且她的后颈就在我面前，几缕头发从肩上垂下来。洗发水的味道和上次在手工室闻到的一样——蓝莓味的。"
+
+"......这家伙到底有多喜欢蓝莓。"
+
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"......听好了。拉球的重点是摩擦，不是撞击。拍子要这样——"
+
+"我握着她的手腕，带着她做了一遍慢动作。拍面从下往上，像要把球表面擦过去一样。"
+
+"她的背贴着我的胸口。大概只隔了一层校服的距离。"
+
+"我能感觉到她的体温透过布料传过来。球馆里空调明明开得不低，但我开始觉得热了。"
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"......这样对吗？"
+
+{$MY_NAME}:"......嗯。对。就是这样。"
+
+"我的声音听起来很冷静。但我的手心在出汗，握住她手腕的地方比刚才湿了一点。她应该也感觉到了。因为她没有问。"
+<<set_character_sprite {$MY_NAME} saying>>
+{$MY_NAME}:"然后身体要转——腰带动手臂，不是光用手腕。"
+
+"我把左手放在她的腰侧，轻轻推了一下示意转体的方向。她的腰很软，手指碰到的时候她整个人僵了一下。"
+
+"然后我意识到自己在做什么。"
+
+"我的右手握着她的手腕，左手放在她腰上，胸口几乎贴着她的后背——这个姿势如果被教练看到，大概会以为我们在做什么和乒乓球毫无关系的事。"
+
+<<set_character_size Player 3 0.24 0.4>>
+
+{$MY_NAME}:("脑子变得一片空白。刚才准备好的指导语全不见了，只剩下她后颈上那几缕头发，和蓝莓味，和体温。")
+
+<<set_character_sprite "蒂娜" normal>>
+蒂娜:"......奈奈亲？"
+
+"她的声音比平时低。好像在确认我还在不在。"
+
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......先这样。你试一次。"
+
+<<set_character_size Player 2 0.3 0.6>>
+
+"我松手退开了一步。冷空气灌进我们之间的距离，我的胸口突然觉得空荡荡的。"
+
+"蒂娜深吸了一口气。她照着刚才的动作挥了一拍——球碰到了，弧线虽然远不如我拉得弯，但确实带上了一点旋转。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"打中了！......但是好像没有奈奈亲那么弯？"
+<<set_character_sprite {$MY_NAME} happy>>
+{$MY_NAME}:"第一次拉成这样......已经不错了。"
+
+"我的声音有点干。蒂娜回过头看我，眼神里有种我说不清楚的东西。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"奈奈亲。再教一次好不好？"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......刚才不是教过了吗。"
+
+蒂娜:"我没记住。再教一次——"
+
+"她朝我走近了一步。"
+
+蒂娜:"——手把手的。"
+
+"她的眼睛里有得逞的笑意。我别开脸。"
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:"......就一次。"
+
+"我又站到了她身后。这次我刻意把距离拉开了一点——但她的手往后一伸，握住了我的手腕，把我拉近回去。"
+
+<<set_character_sprite "蒂娜" mouth>>
+蒂娜:"太远了奈奈亲教不清楚的。"
+<<set_character_sprite {$MY_NAME} mouth>>
+{$MY_NAME}:"......你这个人真是。"
+
+"但我的手掌还是重新覆上了她的手腕。她的体温重新透过布料传过来，从这个距离，从这个角度，比刚才更加清晰。"
+
+"我听到自己的心跳声。不知道她听到了没有。"
+
+"拉球的要领我大概讲了第三遍。但说实话，我也不太清楚自己讲了什么。"
+<<set_character_sprite {$MY_NAME} normal>>
+{$MY_NAME}:"......记住了吗。"
+
+<<set_character_sprite "蒂娜" smile>>
+蒂娜:"嗯。记住了。"
+
+"她说这句话的时候，手指在我的手背上轻轻点了一下。不是乒乓球的手势。就是——轻轻点了一下。"
+
+"然后她重新站回球台对面，拿起拍子，朝我笑了一下。"
+
+<<set_character_sprite "蒂娜" happy>>
+蒂娜:"那就再来一局吧，教练~"
+
+"我觉得我的脸一定很红。好在球馆的光线不算太亮。"
+
+<<stop_bgm>>
 ===
