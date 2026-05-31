@@ -1075,7 +1075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1496,8 +1496,8 @@ MonoBehaviour:
   buyModeButton: {fileID: 2517250299196167520}
   sellModeButton: {fileID: 4555254668600556791}
   confirmButton: {fileID: 5921919508854632032}
-  nextPageButton: {fileID: 2318282802532385005}
-  previousPageButton: {fileID: 920846601955779411}
+  nextPageButton: {fileID: 920846601955779411}
+  previousPageButton: {fileID: 2318282802532385005}
   closeButton: {fileID: 3444951560308347795}
   buyModeLabel: "\u8D2D\u4E70"
   sellModeLabel: "\u51FA\u552E"
