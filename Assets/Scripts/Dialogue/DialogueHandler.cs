@@ -42,6 +42,7 @@ public class DialogueHandler : MonoBehaviour
     private string _pendingEndOfDayDailyNode = null;
     private bool _isPlayingEndOfDayDailyDialog = false;
     private bool _shouldAdvanceDayAfterDailyDialog = false;
+    private bool _isGameFailedTransitionRunning = false;
 
     private Coroutine StartManagedCoroutine(IEnumerator routine)
     {
@@ -266,7 +267,10 @@ public class DialogueHandler : MonoBehaviour
         SetAdvanceDayAfterDialogue(true);
         SetNextSceneType(sceneTypeName);
 
-        if (DayManager.Instance == null || dialogueRunner == null) 
+        // 当前需求：跳过商店 deal 对话，直接进入“special -> daily -> 过天”漏斗。
+        // 下面保留旧逻辑（注释）以便未来快速恢复。
+        /*
+        if (DayManager.Instance == null || dialogueRunner == null)
         {
             StartManagedCoroutine(EndDialogueRoutine());
             return;
@@ -280,25 +284,29 @@ public class DialogueHandler : MonoBehaviour
             if (!_dealProgress.ContainsKey(i)) _dealProgress[i] = 1;
             int j = _dealProgress[i];
             string yarnNode = $"deal{i}_{j}";
-            
+
             if (dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(yarnNode))
             {
                 Debug.Log($"[DialogueHandler] 打工结束拦截并启动 deal 对话: {yarnNode}");
                 _dealProgress[i] = j + 1;
-                
+
                 // 【有deal时】：立刻播放！播完后Update函数会自动拉起EndDialogueRoutine去找special并过天。
                 StartDialogue(yarnNode);
                 foundDeal = true;
                 break;
             }
         }
-        
+
         if (!foundDeal)
         {
             // 【没deal时】：直接拉起黑屏，跑去检测今晚有没有special，都没有就安静切去第二天。
             Debug.Log($"[DialogueHandler] 今晚没有 deal，直接拉起过天与 special 检测。");
             StartManagedCoroutine(EndDialogueRoutine());
         }
+        */
+
+        Debug.Log("[DialogueHandler] 当前配置：跳过 deal，对话流程直接进入 special/daily/过天。");
+        StartManagedCoroutine(EndDialogueRoutine());
     }
 
     /// <summary>
@@ -501,6 +509,23 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator EndDialogueRoutine()
     {
+        bool shouldFinishLoopNow = _isPlayingEndOfDayDailyDialog
+                                   && _shouldAdvanceDayAfterDailyDialog
+                                   && DayManager.Instance != null
+                                   && DayManager.Instance.IsCurrentDayFinalDay;
+
+        if (_isPlayingFailedDialogue || shouldFinishLoopNow)
+        {
+            _isPlayingFailedDialogue = false;
+            _isPlayingEndOfDayDailyDialog = false;
+            _shouldAdvanceDayAfterDailyDialog = false;
+            _pendingEndOfDayDailyNode = null;
+
+            // 末日收官/失败都统一走带转场的结算，避免先过天再报错或黑屏突切。
+            yield return HandleGameFailedWithTransitionRoutine();
+            yield break;
+        }
+
         // 1. 先播放离场转场动画，并在屏幕完全黑掉的瞬间去清除立绘和背景
         yield return TransitionManager.Instance.PlayTransition(() => 
         {
@@ -509,15 +534,6 @@ public class DialogueHandler : MonoBehaviour
                 characterHighlightManager.ClearVisualsOnTransitionMidpoint();
             }
         });
-
-        // 失败对话流程结束：调用全局失败处理，跳过过天逻辑
-        if (_isPlayingFailedDialogue)
-        {
-            _isPlayingFailedDialogue = false;
-            isHandlingDialogueSequence = false;
-            OnGameFailed();
-            yield break;
-        }
 
         // 过天流程中的 dailyDialog 播放完毕：此刻才真正推进 NextDay
         if (_isPlayingEndOfDayDailyDialog)
@@ -666,6 +682,49 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     public void OnGameFailed()
     {
+        StartManagedCoroutine(HandleGameFailedWithTransitionRoutine());
+    }
+
+    private IEnumerator HandleGameFailedWithTransitionRoutine()
+    {
+        if (_isGameFailedTransitionRunning)
+        {
+            yield break;
+        }
+
+        _isGameFailedTransitionRunning = true;
+
+        // 终局结算时清空对话漏斗状态，避免残留队列影响下一周目。
+        pendingDialogues.Clear();
+        _deferredFailureNode = null;
+        _pendingEndOfDayDailyNode = null;
+        _isPlayingEndOfDayDailyDialog = false;
+        _shouldAdvanceDayAfterDailyDialog = false;
+        willSwitchScene = false;
+
+        if (TransitionManager.Instance != null)
+        {
+            yield return TransitionManager.Instance.PlayTransition(() =>
+            {
+                if (characterHighlightManager != null)
+                {
+                    characterHighlightManager.ClearVisualsOnTransitionMidpoint();
+                }
+
+                ApplyGameFailedStateAndSwitchToBegin();
+            });
+        }
+        else
+        {
+            ApplyGameFailedStateAndSwitchToBegin();
+        }
+
+        _isGameFailedTransitionRunning = false;
+        isHandlingDialogueSequence = false;
+    }
+
+    private void ApplyGameFailedStateAndSwitchToBegin()
+    {
         Debug.Log("[DialogueHandler] OnGameFailed 被触发，执行失败结算。");
 
         _specialGuardDay = -1;
@@ -692,7 +751,10 @@ public class DialogueHandler : MonoBehaviour
 
         // 重置天数与目标类型（DayManager 是 DontDestroyOnLoad，必须手动重置）
         if (DayManager.Instance != null)
+        {
             DayManager.Instance.ResetToStart();
+            lastCheckedDay = DayManager.Instance.GetDayNumber();
+        }
 
         // 跳转回 Begin 场景
         if (UISceneManager.Instance != null)

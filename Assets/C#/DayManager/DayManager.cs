@@ -13,6 +13,7 @@ public class DayManager : Singleton<DayManager>
     public Dictionary<int,UnityEvent> dayEvents = new Dictionary<int, UnityEvent>();
     public int dayNumber = 0;
     public int TargetType { get; private set; }
+    public bool IsCurrentDayFinalDay { get; private set; }
     public DayDataSO daySO;
     [SerializeField] private TMP_Text dayText;
     [SerializeField] private TMP_Text weekText;
@@ -41,11 +42,34 @@ public class DayManager : Singleton<DayManager>
         OnDayEnd();
         dayNumber++;
         SkipWeekendDays();
+
+        if (daySO == null || daySO.dayDatas == null || daySO.dayDatas.Count == 0)
+        {
+            Debug.LogError("[DayManager] daySO 或 dayDatas 为空，无法过天。");
+            return;
+        }
+
+        if (dayNumber <= 0 || dayNumber > daySO.dayDatas.Count)
+        {
+            Debug.LogWarning($"[DayManager] NextDay 超出 day 配置范围：dayNumber={dayNumber}, count={daySO.dayDatas.Count}。将停留在最后一天以避免越界。");
+            dayNumber = Mathf.Clamp(dayNumber, 1, daySO.dayDatas.Count);
+            UpdateFinalDayFlag();
+            OnDayAdvanced?.Invoke();
+            return;
+        }
+
+        UpdateFinalDayFlag();
+        int dayIndex = dayNumber - 1;
+        DayData currentDayData = daySO.dayDatas[dayIndex];
+
         Debug.Log($"<color=#FFD700>========== [DayManager 检测器] 天数改变，当前是第 {dayNumber} 天 ==========</color>");
-        CardManager.Instance.SetProbRarity1(daySO.dayDatas[dayNumber].probRarity1);
-        CardManager.Instance.SetProbRarity2(daySO.dayDatas[dayNumber].probRarity2);
-        CardManager.Instance.SetProbRarity3(daySO.dayDatas[dayNumber].probRarity3);
-        Debug.Log($"[DayManager] {daySO.dayDatas[dayNumber].drawNum}");
+        if (CardManager.Instance != null)
+        {
+            CardManager.Instance.SetProbRarity1(currentDayData.probRarity1);
+            CardManager.Instance.SetProbRarity2(currentDayData.probRarity2);
+            CardManager.Instance.SetProbRarity3(currentDayData.probRarity3);
+        }
+        Debug.Log($"[DayManager] drawNum={currentDayData.drawNum}, IsCurrentDayFinalDay={IsCurrentDayFinalDay}");
         if(dayEvents.ContainsKey(dayNumber)) dayEvents[dayNumber]?.Invoke();
         OnDayAdvanced?.Invoke();
     }
@@ -56,8 +80,14 @@ public class DayManager : Singleton<DayManager>
     /// </summary>
     private void SkipWeekendDays()
     {
+        if (daySO == null || daySO.dayDatas == null || daySO.dayDatas.Count == 0)
+            return;
+
         for (int i = 0; i < 7; i++)
         {
+            if (dayNumber <= 0 || dayNumber > daySO.dayDatas.Count)
+                break;
+
             DayOfWeek dow = GetCurrentDate().DayOfWeek;
             if (dow != DayOfWeek.Saturday && dow != DayOfWeek.Sunday)
                 break;
@@ -74,12 +104,27 @@ public class DayManager : Singleton<DayManager>
         int candidate = dayNumber + 1;
         for (int i = 0; i < 7; i++)
         {
+            if (daySO == null || daySO.dayDatas == null || candidate - 1 >= daySO.dayDatas.Count)
+                break;
+
             DayOfWeek dow = GetDayOfWeekByDayNumber(candidate);
             if (dow != DayOfWeek.Saturday && dow != DayOfWeek.Sunday)
                 break;
             candidate++;
         }
         return candidate;
+    }
+
+    private void UpdateFinalDayFlag()
+    {
+        if (daySO == null || daySO.dayDatas == null || daySO.dayDatas.Count == 0 || dayNumber <= 0)
+        {
+            IsCurrentDayFinalDay = false;
+            return;
+        }
+
+        int previewNext = GetPreviewNextDayNumber();
+        IsCurrentDayFinalDay = previewNext > daySO.dayDatas.Count;
     }
 
     public DayOfWeek GetDayOfWeekByDayNumber(int targetDayNumber)
@@ -171,6 +216,7 @@ public class DayManager : Singleton<DayManager>
     {
         dayNumber = 0;
         TargetType = 0;
+        IsCurrentDayFinalDay = false;
         dayEvents.Clear();
         Debug.Log("[DayManager] ResetToStart 完成，dayNumber 重置为 0。");
     }
