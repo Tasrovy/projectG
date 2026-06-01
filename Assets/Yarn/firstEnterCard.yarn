@@ -92,7 +92,12 @@
 <<set_character_sprite "蒂娜" happy>>
 <<set_character_shake Character up_down>>
 蒂娜:"真的吗，谢谢奈奈亲！<b><color=blue>会收到这些东西我好高兴！</color></b>
+<<set_character_sprite {$MY_NAME} smile>>
+{$MY_NAME}:（<b><color=blue>我可以根据约会指南的事项把蒂娜叫出去玩，但是那天就没办法再做手工了</color></b>）
+<<set_character_sprite "蒂娜" doubt>>
+蒂娜:奈奈亲你在发什么呆？
 
+{$MY_NAME}:没什么。。。
 <<set_character_sprite {$MY_NAME} normal>>
 {$MY_NAME}:"既然你也在这里，那我们就一起做吧。"
 

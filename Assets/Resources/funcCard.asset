@@ -35,7 +35,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "DIY\u5C0F\u5C4B\u96F6\u4EF6\u5207\u5272\u677F"
+    name: "\u5207\u5272\u677F"
     sale: 20
     sell: 16
     made: 1
@@ -45,14 +45,14 @@ MonoBehaviour:
     buff: 
     trigger: shake(1,0.2)
     nextTurn: 
-    text: "\u5370\u6709\u7CBE\u786E\u5230\u6BEB\u7C73\u7684\u7F51\u683C\u548C\u89D2\u5EA6\uFF0C\u677F\u4E0A\u7684\u5C0F\u6728\u6761\u518D\u4E5F\u4E0D\u4F1A\u5207\u6B6A\u4E86\u3002"
+    text: "\u5370\u6709\u7CBE\u786E\u5230\u6BEB\u7C73\u7684\u7F51\u683C\u548C\u89D2\u5EA6\uFF0C\u518D\u4E5F\u4E0D\u4F1A\u5207\u6B6A\u7269\u54C1\u4E86\u3002"
     prompt: 1
   - id: 21002
     dialog: 11
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u8367\u5149\u591C\u5149\u6C99"
+    name: "\u8D34\u7EB8"
     sale: 20
     sell: 16
     made: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
-    text: "\u53EF\u4EE5\u8BA9\u5904\u7406\u540E\u7684\u7269\u54C1\u95EA\u95EA\u53D1\u5149"
+    text: "\u53EF\u4EE5\u968F\u610F\u5730\u8D34\u5728\u7269\u54C1\u4E0A"
     prompt: 3
   - id: 21003
     dialog: 9
@@ -138,8 +138,8 @@ MonoBehaviour:
     nature2: 0
     nature3: 0
     name: "\u66F4\u65B0\u5DE5\u5177"
-    sale: 0
-    sell: 0
+    sale: 20
+    sell: 16
     made: 2
     broken: 1
     added: 
@@ -147,7 +147,7 @@ MonoBehaviour:
     buff: 
     trigger: 
     nextTurn: 
-    text: "\u5361\u724C\u4ECB\u7ECD\u5360\u5751"
+    text: "\u8D81\u624B\u7684\u751F\u4EA7\u5DE5\u5177\uFF0C\u4F46\u9700\u8981\u727A\u7272\u4E00\u70B9\u7269\u54C1"
     prompt: 1,2,6
   - id: 22001
     dialog: 7
@@ -171,7 +171,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u91D1\u5C5E\u51B2\u538B\u6A21\u5177"
+    name: "\u51B2\u538B\u6A21\u5177"
     sale: 40
     sell: 32
     made: 2
@@ -188,7 +188,7 @@ MonoBehaviour:
     nature1: 70
     nature2: 0
     nature3: 60
-    name: "\u7CBE\u5BC6\u954A\u5B50\u5957\u88C5"
+    name: "\u954A\u5B50\u5957\u88C5"
     sale: 40
     sell: 32
     made: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u5F69\u8272\u7535\u5316\u94DD\u70EB\u5370\u7B94"
+    name: "\u4E1D\u5E26"
     sale: 40
     sell: 32
     made: 0
@@ -215,14 +215,14 @@ MonoBehaviour:
     buff: 
     trigger: addWithSame(3,40,5);magnify(0.3)
     nextTurn: 
-    text: "\u7528\u52A0\u70ED\u7684\u94DC\u7AE0\u538B\u4E00\u4E0B\uFF0C\u95EA\u4EAE\u7684\u956D\u5C04\u56FE\u6848\u5C31\u4F1A\u70D9\u5370\u4E0A\u53BB"
+    text: "\u6253\u5305\u88C5\u597D\u7684\u793C\u7269\uFF0C\u53EF\u4EE5\u8BA9\u5176\u66F4\u52A0\u7F8E\u89C2"
     prompt: 3
   - id: 22005
     dialog: 12
     nature1: 0
     nature2: 0
     nature3: 0
-    name: "\u51ED\u7A7A"
+    name: "\u9AA8\u5200"
     sale: 40
     sell: 32
     made: 0
