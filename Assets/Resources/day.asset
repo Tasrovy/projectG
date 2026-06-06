@@ -119,7 +119,7 @@ MonoBehaviour:
     getCardNum: 1
     dailyDialog: day9_10
     specialDialog: 
-    failedDialog: failed1_2
+    failedDialog: failed1_1
     target1: 80
     target2: 120
     target3: 40
@@ -183,7 +183,7 @@ MonoBehaviour:
     getCardNum: 1
     dailyDialog: day9_16
     specialDialog: 
-    failedDialog: failed1_3
+    failedDialog: failed1_1
     target1: 120
     target2: 160
     target3: 120
