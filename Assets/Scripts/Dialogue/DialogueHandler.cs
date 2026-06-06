@@ -44,6 +44,23 @@ public class DialogueHandler : MonoBehaviour
     private bool _shouldAdvanceDayAfterDailyDialog = false;
     private bool _isGameFailedTransitionRunning = false;
 
+    private void TriggerGameFailedTransition()
+    {
+        if (_isGameFailedTransitionRunning)
+        {
+            return;
+        }
+
+        if (TransitionManager.Instance != null)
+        {
+            // 失败结算必须由常驻对象托管协程，避免切场景关闭 talk 后协程中断导致黑幕卡住。
+            TransitionManager.Instance.StartCoroutine(HandleGameFailedWithTransitionRoutine());
+            return;
+        }
+
+        StartManagedCoroutine(HandleGameFailedWithTransitionRoutine());
+    }
+
     private Coroutine StartManagedCoroutine(IEnumerator routine)
     {
         if (routine == null)
@@ -521,8 +538,8 @@ public class DialogueHandler : MonoBehaviour
             _shouldAdvanceDayAfterDailyDialog = false;
             _pendingEndOfDayDailyNode = null;
 
-            // 末日收官/失败都统一走带转场的结算，避免先过天再报错或黑屏突切。
-            yield return HandleGameFailedWithTransitionRoutine();
+            // 收官/失败都统一走带转场的结算，避免先过天再报错或黑屏突切。
+            TriggerGameFailedTransition();
             yield break;
         }
 
@@ -682,7 +699,7 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     public void OnGameFailed()
     {
-        StartManagedCoroutine(HandleGameFailedWithTransitionRoutine());
+        TriggerGameFailedTransition();
     }
 
     private IEnumerator HandleGameFailedWithTransitionRoutine()
