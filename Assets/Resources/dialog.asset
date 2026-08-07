@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entries:
   - id: 1
-    comment: "\u611F\u89C9\u73B0\u5728\u6D51\u8EAB\u5145\u6EE1\u4E86\u529B\u91CF\uFF01"
+    comment: "\u8FD9\u662F\u7ED9\u6211\u7684\u5417\uFF1F"
     showTime: 2
   - id: 2
-    comment: "\u6211\u53C8\u83B7\u5F97\u79EF\u5206\u5566(\u2605\u03C9\u2605)/"
+    comment: "\u8C22\u8C22\u5948\u5948\u4EB2\uFF01"
     showTime: 3
   - id: 3
-    comment: "\u662F\u6253\u724C\u9AD8\u624B\uFF01"
+    comment: "\u662F\u624B\u5DE5\u53F0\u9AD8\u624B\uFF01"
     showTime: 2
   - id: 4
-    comment: "\u79EF\u5206\u8D8A\u6765\u8D8A\u591A\u4E86\u0669(\u0E51\u275B\u1D17\u275B\u0E51)\u06F6"
+    comment: "\u5948\u5948\u4EB2\u6700\u597D\u4E86\uFF01"
     showTime: 2
   - id: 5
     comment: "\u8FD9\u662F\u4EC0\u4E48\u64CD\u4F5C\uFF1F"
@@ -32,7 +32,7 @@ MonoBehaviour:
     comment: "\u597D\u5389\u5BB3\u7684\u6280\u827A\uFF01"
     showTime: 2
   - id: 7
-    comment: "\u679D\u53F6\u5728\u6210\u957F(\uFF5E\uFFE3\u25BD\uFFE3)\uFF5E"
+    comment: "\u7269\u54C1\u53D8\u7F8E\u89C2\u4E86(\uFF5E\uFFE3\u25BD\uFFE3)\uFF5E"
     showTime: 4
   - id: 8
     comment: "\u5C45\u7136\u8981\u4E22\u6389\u8FD9\u4E2A\u5417"
@@ -47,7 +47,7 @@ MonoBehaviour:
     comment: "\u4E0D\u8981\u4EE5\u4E3A\u8FD9\u6837\u5C31\u8D62\u4E86"
     showTime: 2
   - id: 12
-    comment: "\u597D\u60F3\u5403\u677E\u997C\u3002\u3002\u3002"
+    comment: "\u597D\u9EBB\u70E6\u554A"
     showTime: 2
   - id: 12
     comment: "COS\uFF080\uFF09=1"

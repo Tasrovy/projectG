@@ -29,6 +29,9 @@ public class DUEL : Singleton<DUEL>
         endButton.onClick.AddListener(End);
         endButton.gameObject.SetActive(false);
 
+        DeckViewerUI.Instance.BindDeckButton(DUELUIObjectManager.Instance.GetCardSetGameObject());
+        DeckViewerUI.Instance.BindHandButton(DUELUIObjectManager.Instance.GetHandSetGameObject());
+
         DUELUIObjectManager.Instance.GetEndFightButton().onClick.AddListener(() =>
         {
             DialogueHandler.Instance.TriggerEndDayDirectly();
@@ -134,6 +137,12 @@ public class DUEL : Singleton<DUEL>
         if (numText != null)
         {
             numText.text = CardManager.Instance.cardSet.Count.ToString();
+        }
+
+        TMP_Text handNumText = DUELUIObjectManager.Instance.GetHandSetNumText();
+        if (handNumText != null)
+        {
+            handNumText.text = CardManager.Instance.cardInHand.Count.ToString();
         }
     }
 

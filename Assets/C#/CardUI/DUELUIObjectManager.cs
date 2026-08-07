@@ -179,6 +179,24 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     }
 
     /// <summary>
+    /// 获取手牌查看入口：DUELUI -> HandSet
+    /// </summary>
+    public GameObject GetHandSetGameObject()
+    {
+        Transform t = DUELUI.transform.Find("HandSet");
+        return t != null ? t.gameObject : null;
+    }
+
+    /// <summary>
+    /// 获取手牌数量文本：DUELUI -> HandSet -> Num
+    /// </summary>
+    public TMP_Text GetHandSetNumText()
+    {
+        Transform t = DUELUI.transform.Find("HandSet/Num");
+        return t != null ? t.GetComponent<TMP_Text>() : null;
+    }
+
+    /// <summary>
     /// 获取战斗对话根节点：DUELUI -> BattleDialog
     /// </summary>
     public RectTransform GetBattleDialogRoot()

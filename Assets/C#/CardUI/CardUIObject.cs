@@ -296,7 +296,11 @@ public class CardUIObject : MonoBehaviour,
             }
             if (reordered.Count == CardManager.Instance.cardInHand.Count)
             {
-                CardManager.Instance.cardInHand = reordered;
+                // HandService / DrawService keep the list reference created by CardManager.
+                // Replacing the list here makes later plays remove cards from that stale list,
+                // so reorder the existing list in place instead.
+                CardManager.Instance.cardInHand.Clear();
+                CardManager.Instance.cardInHand.AddRange(reordered);
             }
         }
     }
