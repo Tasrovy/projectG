@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -124,6 +124,12 @@ public class DialogueHandler : MonoBehaviour
             Destroy(gameObject); return;
         }
         Instance = this;
+        var reading = GetComponent<NovelReadingController>();
+        if (reading == null) reading = gameObject.AddComponent<NovelReadingController>();
+        reading.Initialize(dialogueRunner);
+        var skipping = GetComponent<NovelSkipController>();
+        if (skipping == null) skipping = gameObject.AddComponent<NovelSkipController>();
+        skipping.Initialize(dialogueRunner);
         
 
         characterHighlightManager = GetComponent<CharacterHighlightManager>();
@@ -857,32 +863,11 @@ public class DialogueHandler : MonoBehaviour
 
     #endregion
 
-    private async void HandleSkipDialogueClicked()
+    private void HandleSkipDialogueClicked()
     {
-        if (dialogueRunner == null || !dialogueRunner.IsDialogueRunning)
-        {
-            HideSkipButton();
-            return;
-        }
-
-        if (skipDialogueButton != null)
-        {
-            skipDialogueButton.interactable = false;
-        }
-
-        await dialogueRunner.Stop();
-
-        HideSkipButton();
-        if (skipDialogueButton != null)
-        {
-            skipDialogueButton.interactable = true;
-        }
-        wasDialogueRunning = false;
-
-        // 如果玩家因为跳过而人工强停对话结束，那么同样触发离场的转场
-        StartManagedCoroutine(EndDialogueRoutine());
+        if (dialogueRunner == null || !dialogueRunner.IsDialogueRunning) return;
+        GetComponent<NovelSkipController>()?.AskToSkip();
     }
-
     private void ShowSkipButton()
     {
         if (skipDialogueButton != null)

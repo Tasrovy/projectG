@@ -1796,6 +1796,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1113594165 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4690695534942371216, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+  m_PrefabInstance: {fileID: 2145744998381564243}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1149072793
 GameObject:
   m_ObjectHideFlags: 0
@@ -2293,7 +2298,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5336359656478553917, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
   m_PrefabInstance: {fileID: 2145744998381564243}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1113594165}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 446e1f498946c5a4b884de2a49309e8e, type: 3}
@@ -2304,7 +2309,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5910201430736565754, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
   m_PrefabInstance: {fileID: 2145744998381564243}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1113594165}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
@@ -2315,7 +2320,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
   m_PrefabInstance: {fileID: 2145744998381564243}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1113594165}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a375ca670c55c04aaba6ffcd26cf643, type: 3}
@@ -2326,7 +2331,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3894087777376778801, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
   m_PrefabInstance: {fileID: 2145744998381564243}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1113594165}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cb89e0987c087644b908906b78157bf, type: 3}
@@ -2337,12 +2342,41 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6142992529401377470, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
   m_PrefabInstance: {fileID: 2145744998381564243}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1113594165}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b3d169d687bc494b8205790515586a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1350448914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113594165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e6184e6407419ea433080d7cbe0164, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelSize: {x: 920, y: 540}
+  buttonSize: {x: 220, y: 65}
+  messagePosition: {x: 0, y: 65}
+  buttonOffset: {x: 145, y: -65}
+  panelColor: {r: 0.15, g: 0.13, b: 0.18, a: 1}
+  buttonColor: {r: 0.3613582, g: 0.5173691, b: 0.7610062, a: 1}
+  textColor: {r: 1, g: 1, b: 1, a: 1}
+  dimColor: {r: 0, g: 0, b: 0, a: 0.65}
+  message: "\u662F\u5426\u8DF3\u8FC7\u5F53\u524D\u5267\u60C5\uFF1F"
+  cancelText: "\u53D6\u6D88"
+  confirmText: "\u786E\u5B9A"
+  messageFontSize: 32
+  buttonFontSize: 28
+  fadeDuration: 0.25
+  minimumCoverTime: 0.5
+  coverColor: {r: 0.06, g: 0.04, b: 0.09, a: 1}
+  loadingText: "\u6B63\u5728\u8DF3\u8FC7\u5267\u60C5"
 --- !u!1001 &1382389156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4550,6 +4584,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5336359656478553917, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: dialogLogButton
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7293114627776184083, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: m_Name
       value: talk
@@ -4562,7 +4600,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 5567805242008201854, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4690695534942371216, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1350448914}
   m_SourcePrefab: {fileID: 100100000, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
 --- !u!224 &2387812373894783612
 RectTransform:

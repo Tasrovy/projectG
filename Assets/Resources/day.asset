@@ -21,6 +21,7 @@ MonoBehaviour:
     profit: 60
     drawNum: 4
     getCardNum: 2
+    skipBackground: 
     dailyDialog: day9_2
     specialDialog: 
     failedDialog: 
@@ -37,6 +38,7 @@ MonoBehaviour:
     profit: 60
     drawNum: 4
     getCardNum: 2
+    skipBackground: 
     dailyDialog: day9_3
     specialDialog: 
     failedDialog: 
@@ -53,6 +55,7 @@ MonoBehaviour:
     profit: 60
     drawNum: 4
     getCardNum: 2
+    skipBackground: 
     dailyDialog: day9_4
     specialDialog: 
     failedDialog: 
@@ -69,6 +72,7 @@ MonoBehaviour:
     profit: 60
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_7
     specialDialog: 
     failedDialog: failed1_1
@@ -85,6 +89,7 @@ MonoBehaviour:
     profit: 100
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_8
     specialDialog: 
     failedDialog: 
@@ -101,6 +106,7 @@ MonoBehaviour:
     profit: 100
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_9
     specialDialog: 
     failedDialog: 
@@ -117,6 +123,7 @@ MonoBehaviour:
     profit: 100
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_10
     specialDialog: 
     failedDialog: failed1_1
@@ -133,6 +140,7 @@ MonoBehaviour:
     profit: 100
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_11
     specialDialog: 
     failedDialog: 
@@ -149,6 +157,7 @@ MonoBehaviour:
     profit: 100
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_14
     specialDialog: 
     failedDialog: 
@@ -165,6 +174,7 @@ MonoBehaviour:
     profit: 100
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_13
     specialDialog: 
     failedDialog: 
@@ -181,6 +191,7 @@ MonoBehaviour:
     profit: 200
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: day9_16
     specialDialog: 
     failedDialog: failed1_1
@@ -197,6 +208,7 @@ MonoBehaviour:
     profit: 200
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: simpleEnd1_8
     specialDialog: special1_4
     failedDialog: 
@@ -213,6 +225,7 @@ MonoBehaviour:
     profit: 200
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: simpleEnd1_2
     specialDialog: 
     failedDialog: 
@@ -229,6 +242,7 @@ MonoBehaviour:
     profit: 200
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: simpleEnd1_3
     specialDialog: 
     failedDialog: 
@@ -245,6 +259,7 @@ MonoBehaviour:
     profit: 200
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: simpleEnd1_4
     specialDialog: 
     failedDialog: failed1_4
@@ -261,6 +276,7 @@ MonoBehaviour:
     profit: 200
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: simpleEnd1_5
     specialDialog: 
     failedDialog: 
@@ -277,6 +293,7 @@ MonoBehaviour:
     profit: 200
     drawNum: 4
     getCardNum: 1
+    skipBackground: 
     dailyDialog: simpleEnd1_6
     specialDialog: 
     failedDialog: 

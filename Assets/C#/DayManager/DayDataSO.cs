@@ -13,6 +13,7 @@ public class DayData
     public int profit;
     public int drawNum;
     public int getCardNum;
+    public string skipBackground; // Resources 中的跳过加载背景 Sprite 路径（不含扩展名）
     public string dailyDialog;
     public string specialDialog;
     public string failedDialog;

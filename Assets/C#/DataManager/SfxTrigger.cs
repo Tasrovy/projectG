@@ -13,7 +13,7 @@ public static class SfxTrigger
         }
 
         string resolvedPath = ResolveSoundPath(path);
-        AudioManager.Instance.PlaySound(resolvedPath, randomPitch);
+        AudioManager.Instance?.PlaySound(resolvedPath, randomPitch);
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public static class SfxTrigger
         }
 
         string resolvedPath = ResolveSoundPath(path);
-        AudioManager.Instance.PlaySingle(resolvedPath, randomPitch);
+        AudioManager.Instance?.PlaySingle(resolvedPath, randomPitch);
     }
 
     private static string ResolveSoundPath(string path)

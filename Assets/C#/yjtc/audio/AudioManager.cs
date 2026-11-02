@@ -6,10 +6,22 @@ public class AudioManager : MonoBehaviour
 {
     #region Singleton
     private static AudioManager _instance;
+    private static bool isQuitting;
+    public static AudioManager ExistingInstance => _instance;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        _instance = null;
+        isQuitting = false;
+    }
+
+    private void OnApplicationQuit() => isQuitting = true;
     public static AudioManager Instance
     {
         get
         {
+            if (isQuitting || !Application.isPlaying) return null;
             if (_instance == null)
             {
                 GameObject go = new("AudioManager");
@@ -447,6 +459,7 @@ public class AudioManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_instance == this) _instance = null;
         ClearPool();
     }
     #endregion

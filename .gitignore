@@ -116,3 +116,6 @@ ignore.conf
 
 # 忽略 WPS 产生的特定临时文件夹（如果有）
 .wps/
+Assets/Fonts/SourceHanSerifCN-Regular-1 SDF.asset
+Assets/Fonts/SourceHanSerifCN-Regular-1 SDF.asset
+Assets/Fonts/SourceHanSerifCN-Regular-1 SDF.asset

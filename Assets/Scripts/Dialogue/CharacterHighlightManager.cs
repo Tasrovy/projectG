@@ -359,10 +359,10 @@ public class CharacterHighlightManager : DialoguePresenterBase
         currentSpeaker = "";
 
         // 在转场之前，关闭对应的背景音乐和白噪音
-        if (AudioManager.Instance != null)
+        if (AudioManager.ExistingInstance != null)
         {
-            AudioManager.Instance.StopBGM();
-            AudioManager.Instance.StopWhiteNoise();
+            AudioManager.ExistingInstance.StopBGM();
+            AudioManager.ExistingInstance.StopWhiteNoise();
         }
 
         // 注意：已经将过天的逻辑（shouldAdvanceDayAfterDialogue判定）移交到了 DialogueHandler 内统一拦截！
