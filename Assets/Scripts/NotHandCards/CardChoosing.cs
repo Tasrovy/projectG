@@ -16,17 +16,22 @@ public class CardChoosing : MonoBehaviour
     private GameObject blackOverlay;
     private CardObject selectedCard;
 
+    [Header("保底配置")]
+    [SerializeField] private int giftPityThreshold  = 4; // 礼物牌保底所需连续未获得次数
+    [SerializeField] private int funcPityThreshold  = 4; // 功能牌保底所需连续未获得次数
+    [SerializeField] private int eventPityThreshold = 4; // 事件牌保底所需连续未获得次数
+
     private void Awake()
     {
         // 动态创建并设置最底层的半透明黑幕
         blackOverlay = new GameObject("BackgroundOverlay");
-        blackOverlay.layer = LayerMask.NameToLayer("UI"); // 必须设置所在层级为 UI 才能在 Canvas 内部渲染出来
+        blackOverlay.layer = LayerMask.NameToLayer("UI");   // 必须设置所在层级为 UI 才能在 Canvas 内部渲染出来
         blackOverlay.transform.SetParent(this.transform, false);
-        blackOverlay.transform.SetAsFirstSibling(); // 移动到子节点的第一位，即渲染最底层
+        blackOverlay.transform.SetAsFirstSibling();         // 移动到子节点的第一位，即渲染最底层
         
         Image img = blackOverlay.AddComponent<Image>();
-        img.color = new Color(0f, 0f, 0f, 0.7f); // 半透明黑幕
-        img.raycastTarget = true; // 取消射线拦截，防止遮挡按钮的点击事件
+        img.color = new Color(0f, 0f, 0f, 0.7f);            // 半透明黑幕
+        img.raycastTarget = true;                           // 取消射线拦截，防止遮挡按钮的点击事件
         
         RectTransform rect = blackOverlay.GetComponent<RectTransform>();
         // 强制设置超大尺寸居中，以防当前挂载物体锚点为0导致无法覆盖全屏
@@ -54,45 +59,181 @@ public class CardChoosing : MonoBehaviour
     {
         selectedCard = null; // 每次打开界面时，重置之前选中的状态
 
-        /* 暂时假设 cardUISum 恒定保持 true，保留代码备用
-        // 当脚本被启用时，也要确保兄弟卡牌组合激活以显示内容
-        Transform cardUISum = transform.parent != null ? transform.parent.Find("cardUISum") : null;
-        if (cardUISum != null)
-        {
-            cardUISum.gameObject.SetActive(true);
-        }
-        */
-
         LoadRandomCards();
         StartCoroutine(PlaySlideAnimation());
     }
 
     /// <summary>
-    /// 功能1：从 CardManager 随机加载三个不重复的数据到物体上
+    /// 功能1：从 CardManager 根据 DayManager 当天配置的稀有度概率加载三个不重复的数据到物体上
     /// </summary>
     private void LoadRandomCards()
     {
-        if (CardManager.Instance == null)
+        if (CardManager.Instance == null || CardManager.Instance.cardDatas == null || CardManager.Instance.cardDatas.Count < 3)
         {
-            Debug.LogError("[CardChoosing] CardManager.Instance 是空的！可能是执行顺序问题。");
-            return;
-        }
-        if (CardManager.Instance.cardDatas == null || CardManager.Instance.cardDatas.Count == 0)
-        {
-            Debug.LogError("[CardChoosing] CardManager.Instance.cardDatas 为空或为0！牌库没有加载成功。");
-            return;
-        }
-        
-        List<CardData> pool = new List<CardData>(CardManager.Instance.cardDatas);
-        if (pool.Count < 3)
-        {
-            Debug.LogWarning($"[CardChoosing] 牌库数据不足3张！当前数量: {pool.Count}");
+            Debug.LogError("[CardChoosing] 牌库数据异常或不足3张！");
             return;
         }
 
-        AssignCardTo(card1, PopRandom(pool));
-        AssignCardTo(card2, PopRandom(pool));
-        AssignCardTo(card3, PopRandom(pool));
+        // 获取当天的权重配置
+        int dayNum = DayManager.Instance.dayNumber;
+        var dayData = DayManager.Instance.daySO.dayDatas[dayNum];
+        float prob1 = dayData.probRarity1;
+        float prob2 = dayData.probRarity2;
+        float prob3 = dayData.probRarity3;
+
+        // 根据千位稀有度分类卡池
+        List<CardData> pool1 = new List<CardData>();
+        List<CardData> pool2 = new List<CardData>();
+        List<CardData> pool3 = new List<CardData>();
+
+        foreach (var data in CardManager.Instance.cardDatas)
+        {
+            int rarity = (data.id / 1000) % 10; // 解析5位数ID的千位
+            if (rarity == 1) pool1.Add(data);
+            else if (rarity == 2) pool2.Add(data);
+            else if (rarity == 3) pool3.Add(data);
+        }
+
+        // 保底机制：礼物牌（优先级1）—强制第一张卡位
+        bool pityActive = CardManager.Instance.consecutiveNonGiftCount >= giftPityThreshold;
+        CardData forcedGift = null;
+        if (pityActive && CardManager.Instance.giftCards != null && CardManager.Instance.giftCards.Count > 0)
+        {
+            int gIdx = Random.Range(0, CardManager.Instance.giftCards.Count);
+            forcedGift = CardManager.Instance.giftCards[gIdx];
+            pool1.RemoveAll(d => d.id == forcedGift.id);
+            pool2.RemoveAll(d => d.id == forcedGift.id);
+            pool3.RemoveAll(d => d.id == forcedGift.id);
+            Debug.Log($"[CardChoosing] 礼物牌保底触发！强制插入礼物牌: {forcedGift.name}");
+        }
+
+        // 保底机制：功能牌（优先级2）—强制第二张卡位
+        bool funcPityActive = CardManager.Instance.consecutiveNonFuncCount >= funcPityThreshold;
+        CardData forcedFunc = null;
+        if (funcPityActive && CardManager.Instance.funcCards != null && CardManager.Instance.funcCards.Count > 0)
+        {
+            var funcPool = new List<CardData>(CardManager.Instance.funcCards);
+            if (forcedGift != null) funcPool.RemoveAll(d => d.id == forcedGift.id);
+            if (funcPool.Count > 0)
+            {
+                int fIdx = Random.Range(0, funcPool.Count);
+                forcedFunc = funcPool[fIdx];
+                pool1.RemoveAll(d => d.id == forcedFunc.id);
+                pool2.RemoveAll(d => d.id == forcedFunc.id);
+                pool3.RemoveAll(d => d.id == forcedFunc.id);
+                Debug.Log($"[CardChoosing] 功能牌保底触发！强制插入功能牌: {forcedFunc.name}");
+            }
+        }
+
+        // 保底机制：事件牌（优先级3）—强制第三张卡位
+        bool eventPityActive = CardManager.Instance.consecutiveNonEventCount >= eventPityThreshold;
+        CardData forcedEvent = null;
+        if (eventPityActive && CardManager.Instance.eventCards != null && CardManager.Instance.eventCards.Count > 0)
+        {
+            var eventPool = new List<CardData>(CardManager.Instance.eventCards);
+            if (forcedGift != null) eventPool.RemoveAll(d => d.id == forcedGift.id);
+            if (forcedFunc != null) eventPool.RemoveAll(d => d.id == forcedFunc.id);
+            if (eventPool.Count > 0)
+            {
+                int eIdx = Random.Range(0, eventPool.Count);
+                forcedEvent = eventPool[eIdx];
+                pool1.RemoveAll(d => d.id == forcedEvent.id);
+                pool2.RemoveAll(d => d.id == forcedEvent.id);
+                pool3.RemoveAll(d => d.id == forcedEvent.id);
+                Debug.Log($"[CardChoosing] 事件牌保底触发！强制插入事件牌: {forcedEvent.name}");
+            }
+        }
+
+        CardData data1 = forcedGift ?? PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
+        if (forcedGift != null)
+        {
+            CardManager.Instance.consecutiveNonGiftCount = 0;
+            CardManager.Instance.consecutiveNonFuncCount++;
+            CardManager.Instance.consecutiveNonEventCount++;
+            Debug.Log("[CardChoosing] 保底礼物牌直接插入，礼物牌计数重置为0。");
+        }
+        CardData data2 = forcedFunc ?? PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
+        if (forcedFunc != null)
+        {
+            CardManager.Instance.consecutiveNonFuncCount = 0;
+            CardManager.Instance.consecutiveNonGiftCount++;
+            CardManager.Instance.consecutiveNonEventCount++;
+            Debug.Log("[CardChoosing] 保底功能牌直接插入，功能牌计数重置为0。");
+        }
+        CardData data3 = forcedEvent ?? PopWeightedRandom(pool1, pool2, pool3, prob1, prob2, prob3);
+        if (forcedEvent != null)
+        {
+            CardManager.Instance.consecutiveNonEventCount = 0;
+            CardManager.Instance.consecutiveNonGiftCount++;
+            CardManager.Instance.consecutiveNonFuncCount++;
+            Debug.Log("[CardChoosing] 保底事件牌直接插入，事件牌计数重置为0。");
+        }
+
+        AssignCardTo(card1, data1);
+        AssignCardTo(card2, data2);
+        AssignCardTo(card3, data3);
+        Debug.Log($"[CardChoosing] 本轮生成完毕，保底计数: {CardManager.Instance.consecutiveNonGiftCount}");
+    }
+
+    /// <summary>
+    /// 按权重随机从三个卡池中抽取一张卡并移除防止重复
+    /// </summary>
+    private CardData PopWeightedRandom(List<CardData> p1, List<CardData> p2, List<CardData> p3, float w1, float w2, float w3)
+    {
+        // 如果某个卡池空了，那么抽到它的实际概率直接降为0
+        float curW1 = p1.Count > 0 ? w1 : 0f;
+        float curW2 = p2.Count > 0 ? w2 : 0f;
+        float curW3 = p3.Count > 0 ? w3 : 0f;
+
+        float totalWeight = curW1 + curW2 + curW3;
+
+        if (totalWeight <= 0f)
+        {
+            Debug.LogError("[CardChoosing] 严重错误：符合条件的卡牌库存全空了！");
+            return null;
+        }
+
+        // 轮盘法进行权重随机
+        float randomVal = Random.Range(0f, totalWeight);
+        List<CardData> selectedPool = null;
+
+        if (randomVal < curW1)
+        {
+            selectedPool = p1;
+        }
+        else if (randomVal < curW1 + curW2)
+        {
+            selectedPool = p2;
+        }
+        else
+        {
+            selectedPool = p3;
+        }
+
+        // 从确定的池子中等概率随机抽取一张卡，并剔除
+        int index = Random.Range(0, selectedPool.Count);
+        CardData data = selectedPool[index];
+        selectedPool.RemoveAt(index);
+
+        // 无论何种原因抽到礼物牌都重置保底计数，否则+1
+        if (data.id / 10000 == 1)
+            CardManager.Instance.consecutiveNonGiftCount = 0;
+        else
+            CardManager.Instance.consecutiveNonGiftCount++;
+
+        // 无论何种原因抽到功能牌都重置保底计数，否则+1
+        if (data.id / 10000 == 2)
+            CardManager.Instance.consecutiveNonFuncCount = 0;
+        else
+            CardManager.Instance.consecutiveNonFuncCount++;
+
+        // 无论何种原因抽到事件牌都重置保底计数，否则+1
+        if (data.id / 10000 == 3)
+            CardManager.Instance.consecutiveNonEventCount = 0;
+        else
+            CardManager.Instance.consecutiveNonEventCount++;
+
+        return data;
     }
 
     private void AssignCardTo(Transform cardTransform, CardData data)
@@ -109,6 +250,11 @@ public class CardChoosing : MonoBehaviour
         {
             if (cardObj.card == null) cardObj.card = new Card();
             cardObj.card.InitCard(data);
+
+            CardDisplayUI displayUI = cardTransform.GetComponent<CardDisplayUI>();
+            if (displayUI != null) displayUI.Setup(cardObj.card);
+
+            ApplyRarityVisual(cardTransform, cardObj.card.id);
             
             Debug.Log($"[AssignCardTo] 给物体 {cardTransform.name} 赋予了卡牌: {cardObj.card.name} / ID: {cardObj.card.id}");
         }
@@ -116,6 +262,10 @@ public class CardChoosing : MonoBehaviour
         {
             Debug.LogError($"[AssignCardTo] 物体 {cardTransform.name} 身上没找到 CardObject 脚本！请检查组件挂载。");
         }
+    }
+
+    private void ApplyRarityVisual(Transform cardTransform, int cardId)
+    {
     }
 
     private CardData PopRandom(List<CardData> pool)
@@ -180,6 +330,7 @@ public class CardChoosing : MonoBehaviour
         selectedCard = cardObj;
         Debug.Log($"[CardChoosing] 当前选中了卡牌: {(cardObj != null && cardObj.card != null ? cardObj.card.name : "null")}");
         // 如果你需要做UI上的高亮描边显示特效等，可以在这里附加逻辑
+        DialogueUIAudio.Instance.PlayCardClickAudio();
     }
 
     /// <summary>

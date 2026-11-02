@@ -45,6 +45,8 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public IEnumerator PlayTransition(Action onMidPoint = null)
     {
+        DialogueUIAudio.Instance.PlayChangeSceneAudio();
+
         if (transitionGroup == null) Initialize();
 
         if (isTransitioning) 

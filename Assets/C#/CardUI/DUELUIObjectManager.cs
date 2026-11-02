@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
 {
     private GameObject _duelUI;
+    private CardDetailUI _cardDetailUI;
+    private Canvas _canvas;
+    private GameObject _canvasObj;
 
     /// <summary>
     /// 对外公开的 DUELUI 引用。
@@ -24,19 +28,48 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     protected override void Awake()
     {
         base.Awake();
-        // 尝试在自己的 Awake 中初始化
         InitializeUI();
     }
 
     /// <summary>
-    /// 核心初始化逻辑：加载资源、寻找/创建画布、实例化
+    /// 共享的 Canvas 获取/创建逻辑
+    /// </summary>
+    private Canvas GetOrCreateCanvas()
+    {
+        if (_canvas != null) return _canvas;
+
+        Canvas foundCanvas = Object.FindAnyObjectByType<Canvas>();
+        if (foundCanvas != null && foundCanvas.name == "Canvas")
+        {
+            _canvas = foundCanvas;
+            _canvasObj = _canvas.gameObject;
+            Debug.Log("找到了 Canvas: " + _canvasObj.name);
+            return _canvas;
+        }
+
+        _canvasObj = new GameObject("Canvas");
+        _canvas = _canvasObj.AddComponent<Canvas>();
+        _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        CanvasScaler scaler = _canvasObj.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920, 1080);
+        scaler.matchWidthOrHeight = 0.5f;
+
+        _canvasObj.AddComponent<GraphicRaycaster>();
+        _canvasObj.layer = LayerMask.NameToLayer("UI");
+        Debug.LogWarning("场景中未发现 Canvas，已自动创建并配置。");
+
+        return _canvas;
+    }
+
+    /// <summary>
+    /// 核心初始化逻辑：加载资源、获取共享 Canvas、实例化
     /// </summary>
     private void InitializeUI()
     {
-        // 如果已经实例化过了，直接返回
         if (_duelUI != null) return;
 
-        // 1. 加载 Prefab
         GameObject prefab = Resources.Load<GameObject>("Prefabs/DUELUI");
         if (prefab == null)
         {
@@ -44,26 +77,36 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
             return;
         }
 
-        // 2. 寻找场景中的 Canvas（画布）
-        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
-        
-        // 如果场景里没有 Canvas，则自动创建一个（保证 UI 能显示）
-        if (canvas == null)
+        _duelUI = Instantiate(prefab, GetOrCreateCanvas().transform);
+        _duelUI.name = "DUELUI";
+    }
+
+    private void InitializeCardDetailUI()
+    {
+        if (_cardDetailUI != null) return;
+
+        GameObject prefab = Resources.Load<GameObject>("Prefabs/CardDetailUI");
+        if (prefab == null)
         {
-            GameObject canvasObj = new GameObject("Canvas");
-            canvas = canvasObj.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasObj.AddComponent<CanvasScaler>();
-            canvasObj.AddComponent<GraphicRaycaster>();
-            canvasObj.layer = LayerMask.NameToLayer("UI");
-            Debug.LogWarning("场景中未发现 Canvas，已自动创建。");
+            Debug.LogError("DUELUIObjectManager: 未能在 Resources/Prefabs/ 路径下找到 CardDetailUI 预制体！");
+            return;
         }
 
-        // 3. 实例化并设置为 Canvas 的子物体
-        _duelUI = Instantiate(prefab, canvas.transform);
-        
-        // 4. 重构命名并重置 UI 布局坐标
-        _duelUI.name = "DUELUI";
+        GameObject go = Instantiate(prefab, GetOrCreateCanvas().transform);
+        go.name = "CardDetailUI";
+        _cardDetailUI = go.GetComponent<CardDetailUI>();
+        if (_cardDetailUI == null)
+            Debug.LogError("CardDetailUI 预制体上缺少 CardDetailUI 组件！");
+    }
+
+    /// <summary>
+    /// 获取 CardDetailUI 组件（懒加载）
+    /// </summary>
+    public CardDetailUI GetCardDetailUI()
+    {
+        if (_cardDetailUI == null)
+            InitializeCardDetailUI();
+        return _cardDetailUI;
     }
 
     /// <summary>
@@ -71,6 +114,7 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     /// </summary>
     public void ShowUI()
     {
+        Debug.Log($"[DUELUIObjectManager] ShowUI() → DUELUI.SetActive(true), DUELUI instance: {(_duelUI != null ? _duelUI.GetInstanceID().ToString() : "NULL")}, caller:\n{System.Environment.StackTrace}");
         DUELUI.SetActive(true);
     }
 
@@ -79,6 +123,7 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     /// </summary>
     public void HideUI()
     {
+        Debug.Log($"[DUELUIObjectManager] HideUI() → DUELUI.SetActive(false), DUELUI instance: {(_duelUI != null ? _duelUI.GetInstanceID().ToString() : "NULL")}, caller:\n{System.Environment.StackTrace}");
         DUELUI.SetActive(false);
     }
 
@@ -105,7 +150,6 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     /// </summary>
     public Button GetEndFightButton()
     {
-        // 路径依据你的结构图：EndFlightButton
         return DUELUI.transform.Find("EndFlightButton").GetComponent<Button>();
     }
 
@@ -114,7 +158,6 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     /// </summary>
     public Transform GetCardZoneTransform()
     {
-        // 路径依据你的结构图拼写：CradZone
         return DUELUI.transform.Find("CradZone");
     }
 
@@ -124,5 +167,81 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     public GameObject GetCardSetGameObject()
     {
         return DUELUI.transform.Find("CardSet").gameObject;
+    }
+
+    /// <summary>
+    /// 获取卡组数量文本：DUELUI -> CardSet -> Num
+    /// </summary>
+    public TMP_Text GetCardSetNumText()
+    {
+        Transform t = DUELUI.transform.Find("CardSet/Num");
+        return t != null ? t.GetComponent<TMP_Text>() : null;
+    }
+
+    /// <summary>
+    /// 获取手牌查看入口：DUELUI -> HandSet
+    /// </summary>
+    public GameObject GetHandSetGameObject()
+    {
+        Transform t = DUELUI.transform.Find("HandSet");
+        return t != null ? t.gameObject : null;
+    }
+
+    /// <summary>
+    /// 获取手牌数量文本：DUELUI -> HandSet -> Num
+    /// </summary>
+    public TMP_Text GetHandSetNumText()
+    {
+        Transform t = DUELUI.transform.Find("HandSet/Num");
+        return t != null ? t.GetComponent<TMP_Text>() : null;
+    }
+
+    /// <summary>
+    /// 获取战斗对话根节点：DUELUI -> BattleDialog
+    /// </summary>
+    public RectTransform GetBattleDialogRoot()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog");
+        return t != null ? t.GetComponent<RectTransform>() : null;
+    }
+
+    /// <summary>
+    /// 获取立绘 Image：DUELUI -> BattleDialog -> Portrait
+    /// </summary>
+    public Image GetBattlePortraitImage()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog/Portrait");
+        return t != null ? t.GetComponent<Image>() : null;
+    }
+
+    /// <summary>
+    /// 获取对话框根节点：DUELUI -> BattleDialog -> Bubble
+    /// </summary>
+    public GameObject GetBattleDialogBubble()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog/Bubble");
+        return t != null ? t.gameObject : null;
+    }
+
+    /// <summary>
+    /// 获取对话文本：DUELUI -> BattleDialog -> Bubble -> Text
+    /// </summary>
+    public Text GetBattleDialogText()
+    {
+        Transform t = DUELUI.transform.Find("BattleDialog/Bubble/Text");
+        return t != null ? t.GetComponent<Text>() : null;
+    }
+
+    /// <summary>
+    /// 获取对话框透明度组件（若缺失则自动补一个）
+    /// </summary>
+    public CanvasGroup GetBattleDialogCanvasGroup()
+    {
+        GameObject bubble = GetBattleDialogBubble();
+        if (bubble == null) return null;
+
+        CanvasGroup group = bubble.GetComponent<CanvasGroup>();
+        if (group == null) group = bubble.AddComponent<CanvasGroup>();
+        return group;
     }
 }

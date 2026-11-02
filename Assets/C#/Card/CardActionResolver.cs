@@ -17,6 +17,8 @@ public class CardActionResolver : Singleton<CardActionResolver>
     // 存储效果选牌的回调
     private Action<Card> _onEffectConfirm;
     private Action _onEffectCancel;
+    private Card _pendingPlayedCard;
+    private bool _pendingShouldAddToSet;
 
     private void Start()
     {
@@ -30,7 +32,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
         ResetToNormalMode();
     }
 
-    private void OnDestroy()
+    private void _OnDestroy()
     {
         if (CardSelector.Instance != null)
         {
@@ -58,7 +60,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
     /// <summary>
     /// 供各种 Helper 调用的特殊选牌接口
     /// </summary>
-    public void StartEffectSelection(Action<Card> onConfirm, Action onCancel)
+    public void StartEffectSelection(Action<Card> onConfirm, Action onCancel, string buttonText = "提交")
     {
         currentMode = CardPlayMode.EffectSelect;
         _onEffectConfirm = onConfirm;
@@ -66,7 +68,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
 
         if (CardSelector.Instance != null)
         {
-            CardSelector.Instance.SetSubmitButtonText("提交");
+            CardSelector.Instance.SetSubmitButtonText(buttonText);
             CardSelector.Instance.DeselectCurrent(); // 强制取消玩家当前正捏着的牌
             // 确保场上卡牌处于可点击状态
             CardSelector.Instance.SetAllCardsInteractable(true);
@@ -83,15 +85,39 @@ public class CardActionResolver : Singleton<CardActionResolver>
         if (currentMode == CardPlayMode.NormalPlay)
         {
             Debug.Log($"[Resolver] 💥 玩家正常打出了卡牌: {selectedCard?.name}");
-            
-            // --- 正常出牌逻辑 ---
-            selectedCard.OnTrigger();
+            Debug.Log($"[Resolver][Dialog] cardId={selectedCard?.id}, dialog={selectedCard?.dialog}");
+            BattleDialogController.Instance.TryShowByCard(selectedCard);
+
+            bool shouldReturnToDeck = selectedCard != null && CardIdUtility.GetCardType(selectedCard.id) == 2;
+            if (shouldReturnToDeck)
+            {
+                _pendingPlayedCard = selectedCard;
+                _pendingShouldAddToSet = true;
+            }
+            else
+            {
+                _pendingPlayedCard = null;
+                _pendingShouldAddToSet = false;
+            }
+
+            // 快照必须在 BreakCard 之前，回滚时快照才能包含这张牌
+            if (CardEffect.Instance != null)
+            {
+                CardEffect.Instance.TakeSnapshot();
+            }
+
             CardManager.Instance.BreakCard(selectedCard);
-            // 1. 从手牌数据中移除
-            ///CardManager.Instance.RemoveCardFromHand(selectedCard);
-            
-            // 2. 触发这张牌自身的效果
-            // selectedCard.OnTrigger(); 或者 CardEffect.Instance.Execute(selectedCard);
+            selectedCard.OnTrigger();
+
+            if (CardEffect.Instance != null && CardEffect.Instance.IsWaitingForAsync)
+            {
+                return;
+            }
+
+            if (shouldReturnToDeck)
+            {
+                CompletePendingPlayedCard(true);
+            }
         }
         else if (currentMode == CardPlayMode.EffectSelect)
         {
@@ -105,6 +131,29 @@ public class CardActionResolver : Singleton<CardActionResolver>
             ResetToNormalMode(); 
             
             confirmAction?.Invoke(selectedCard);
+        }
+    }
+
+    public void CompletePendingPlayedCard(bool shouldCommit)
+    {
+        if (_pendingPlayedCard == null) return;
+
+        Card pendingCard = _pendingPlayedCard;
+        bool shouldAddToSet = _pendingShouldAddToSet;
+
+        _pendingPlayedCard = null;
+        _pendingShouldAddToSet = false;
+
+        if (!shouldCommit)
+        {
+            CardManager.Instance.AddCardInHand(pendingCard);
+            return;
+        }
+
+        if (shouldAddToSet)
+        {
+            CardManager.Instance.AddCardToSet(pendingCard);
+            CardManager.Instance.NotifyDeckOrHandChanged();
         }
     }
 

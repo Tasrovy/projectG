@@ -14,9 +14,17 @@ public class UISceneManager : MonoBehaviour
     [SerializeField] private GameObject endRoot;       // 结束场景
     [SerializeField] private GameObject afterclassRoot;// 放学三选一场景    
     [SerializeField] private GameObject workRoot;      // 打工场景
+    [SerializeField] private GameObject namingRoot;    // 命名场景
 
     [Header("常驻显示节点 (一直显示)")]
     [SerializeField] private GameObject[] alwaysShowRoots; // 常驻显示的GameObjects
+
+    [Header("BGM 设置")]
+    [Tooltip("配置每个场景对应的BGM文件夹（资源需放在 Resources/Sound/bgm/ 下）")]
+    public List<SceneFolderConfig> sceneBGMConfigs = new List<SceneFolderConfig>();
+
+    private Dictionary<SceneType, string> bgmFolderDictionary = new Dictionary<SceneType, string>();
+    private Coroutine currentBgmCoroutine;
 
     public SceneType testChange;
 
@@ -27,11 +35,21 @@ public class UISceneManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
+            Debug.LogError($"[UISceneManager] 检测到重复实例！\n  当前 this (GameObject: {gameObject.name})\n  已存在的 Instance (GameObject: {Instance.gameObject.name})\n  → 即将销毁 {gameObject.name}");
             Destroy(gameObject);
             return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // 初始化字典
+        foreach (var config in sceneBGMConfigs)
+        {
+            if (!bgmFolderDictionary.ContainsKey(config.sceneType))
+            {
+                bgmFolderDictionary.Add(config.sceneType, config.folderName);
+            }
+        }
     }
 
     private void Start()
@@ -68,24 +86,23 @@ public class UISceneManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 专门为了给 UnityEvent（面板上）使用而增加的 int 类型重载！
-    /// 直接传入枚举对应的数字进行切换（比如 0=Begin, 1=Talk）
-    /// </summary>
-    public void SwitchToScene(int sceneIndex)
-    {
-        SwitchToScene((SceneType)sceneIndex);
-    }
-
-    /// <summary>
     /// 切换到指定的场景 (原本的 Enum 版本，供纯代码调用)
     /// </summary>
     public void SwitchToScene(SceneType sceneType)
     {
+        //隐藏卡牌详细UI
+        DUELUIObjectManager.Instance.GetCardDetailUI()?.Hide();
+        
         // 隐藏所有的互斥场景节点
         DeactivateAllMutexRoots();
 
-        // 动态处理“常驻显示节点”：只要不是Begin场景，就全部开启。如果是Begin，就全部隐藏。
-        bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin);
+        // 兜底：切到非 Talk 场景时，强制关闭所有名为 talk 的残留对象，避免对话 UI 持续拦截交互。
+        if (sceneType != SceneType.Talk)
+        {
+            ForceDeactivateTalkRoots();
+        }
+
+        bool shouldShowAlwaysRoots = (sceneType != SceneType.Begin && sceneType != SceneType.Naming);
         if (alwaysShowRoots != null)
         {
             foreach(var root in alwaysShowRoots)
@@ -121,6 +138,86 @@ public class UISceneManager : MonoBehaviour
             case SceneType.Work:
                 if (workRoot != null) workRoot.SetActive(true);
                 break;
+            case SceneType.Naming:
+                if (namingRoot != null) namingRoot.SetActive(true);
+                break;
+        }
+
+        // 处理场景切换后的 BGM 逻辑
+        PlayBGMForScene(sceneType);
+    }
+
+    private void ForceDeactivateTalkRoots()
+    {
+        Transform[] allTransforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Transform t in allTransforms)
+        {
+            if (t == null) continue;
+            if (!string.Equals(t.name, "talk", System.StringComparison.OrdinalIgnoreCase)) continue;
+
+            GameObject go = t.gameObject;
+            if (go == null) continue;
+            if (go == talkRoot) continue; // talkRoot 已在 DeactivateAllMutexRoots 中关闭
+
+            if (go.activeSelf)
+            {
+                go.SetActive(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 播放该场景对应的 BGM 列表
+    /// </summary>
+    private void PlayBGMForScene(SceneType sceneType)
+    {
+        if (currentBgmCoroutine != null)
+        {
+            StopCoroutine(currentBgmCoroutine);
+            currentBgmCoroutine = null;
+        }
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopBGM();
+        }
+
+        if (bgmFolderDictionary.TryGetValue(sceneType, out string folderName) && !string.IsNullOrEmpty(folderName))
+        {
+            currentBgmCoroutine = StartCoroutine(BgmRoutine(folderName));
+        }
+    }
+
+    private IEnumerator BgmRoutine(string folderName)
+    {
+        // 动态加载该文件夹下所有的音频（注意：需要将音频放在 Resources/Sound/bgm/ 对应文件夹下）
+        AudioClip[] clips = Resources.LoadAll<AudioClip>($"Sound/bgm/{folderName}");
+
+        if (clips == null || clips.Length == 0)
+        {
+            Debug.LogWarning($"[UISceneManager] 未在该文件夹找到音频文件: Sound/bgm/{folderName}");
+            yield break;
+        }
+
+        while (true)
+        {
+            // 随机挑一首歌
+            int randomIndex = Random.Range(0, clips.Length);
+            AudioClip clip = clips[randomIndex];
+
+            if (clip != null && AudioManager.Instance != null)
+            {
+                // 使用 AudioManager 播放这首 BGM（相对路径：文件夹名/音频名）
+                AudioManager.Instance.PlayBGM($"{folderName}/{clip.name}");
+                
+                // 等待这首 BGM 播放完
+                // 为了防止AudioManager的loop导致末尾重复播放，可稍微提前0.05秒切歌
+                yield return new WaitForSeconds(clip.length - 0.05f);
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 
@@ -137,6 +234,7 @@ public class UISceneManager : MonoBehaviour
         if (endRoot != null) endRoot.SetActive(false);
         if (afterclassRoot != null) afterclassRoot.SetActive(false);
         if (workRoot != null) workRoot.SetActive(false);
+        if (namingRoot != null) namingRoot.SetActive(false);
     }
 }
 
@@ -152,5 +250,13 @@ public enum SceneType
     CardFight,
     AfterClass,
     Work,
+    Naming,
     End
+}
+
+[System.Serializable]
+public struct SceneFolderConfig
+{
+    public SceneType sceneType;
+    public string folderName; // Unity 面板填入对应的文件夹名称
 }

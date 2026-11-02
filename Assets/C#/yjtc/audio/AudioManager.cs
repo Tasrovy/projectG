@@ -6,10 +6,22 @@ public class AudioManager : MonoBehaviour
 {
     #region Singleton
     private static AudioManager _instance;
+    private static bool isQuitting;
+    public static AudioManager ExistingInstance => _instance;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        _instance = null;
+        isQuitting = false;
+    }
+
+    private void OnApplicationQuit() => isQuitting = true;
     public static AudioManager Instance
     {
         get
         {
+            if (isQuitting || !Application.isPlaying) return null;
             if (_instance == null)
             {
                 GameObject go = new("AudioManager");
@@ -133,6 +145,7 @@ public class AudioManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
+            Debug.LogError($"[AudioManager] 检测到重复实例！\n  当前 this (GameObject: {gameObject.name})\n  已存在的 _instance (GameObject: {_instance.gameObject.name})\n  → 即将销毁 {gameObject.name}");
             Destroy(gameObject);
             return;
         }
@@ -435,8 +448,7 @@ public class AudioManager : MonoBehaviour
     {
         return (float)(rand.NextDouble() * (lowMaxPitch - lowMinPitch) + lowMinPitch);
     }
-    #endregion
-
+    
     /// <summary>
     /// 清理对象池（在场景切换或游戏结束时调用）
     /// </summary>
@@ -447,6 +459,8 @@ public class AudioManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_instance == this) _instance = null;
         ClearPool();
     }
+    #endregion
 }

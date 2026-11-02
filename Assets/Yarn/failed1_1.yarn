@@ -1,0 +1,20 @@
+﻿title: failed1_1
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+
+//<<play_whitenoise "bgNew_fan2">>
+<<set_background "教室-夜晚开灯">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+<<set_character_person Character "蒂娜" normal>>
+//<<set_character_sprite {$MY_NAME} saying>>
+//<<set_character_sprite "蒂娜" saying>>
+//#sfx_talkSound_school_chime
+蒂娜: 林奈，和你在一起好累，我们以后还是别联系了吧
+<<set_character_sprite {$MY_NAME} doubt>>
+{$MY_NAME}: ？！
+（。。。。。）
+（。。。。。）
+
+===

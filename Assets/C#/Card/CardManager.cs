@@ -5,8 +5,14 @@ using UnityEngine;
 public class CardManager : Singleton<CardManager>
 {
     public List<CardData> cardDatas = new List<CardData>();
+    public List<CardData> giftCards = new List<CardData>();
+    public List<CardData> funcCards = new List<CardData>();
+    public List<CardData> eventCards = new List<CardData>();
     public List<Card> cardSet = new List<Card>();
     public List<Card> cardInHand = new List<Card>();
+    [HideInInspector] public int consecutiveNonGiftCount = 0; // 礼物牌保底计数：连续未抽到礼物牌的次数
+    [HideInInspector] public int consecutiveNonFuncCount  = 0; // 功能牌保底计数：连续未抽到功能牌的次数
+    [HideInInspector] public int consecutiveNonEventCount = 0; // 事件牌保底计数：连续未抽到事件牌的次数
 
     protected override bool IsPersistent => true;
 
@@ -39,6 +45,9 @@ public class CardManager : Singleton<CardManager>
         InitializeServices();
 
         LoadAllCards();
+        FilterGiftCards();
+        FilterFuncCards();
+        FilterEventCards();
         ImplementCardSet();
         ApplyInitialHandFromExcel();
     }
@@ -52,7 +61,7 @@ public class CardManager : Singleton<CardManager>
     {
         _repositoryService = new CardRepositoryService(cardDatas, cardExcelPaths);
         _deckService = new DeckService(cardSet, cardDatas);
-        _handService = new HandService(cardInHand, cardSet);
+        _handService = new HandService(cardInHand);
         _drawService = new DrawService(cardSet, cardInHand, _rng, probRarity1, probRarity2, probRarity3);
         _initialHandService = new InitialHandService(_deckService);
     }
@@ -78,6 +87,7 @@ public class CardManager : Singleton<CardManager>
 
     public void DrawCard(int num)
     {
+        Debug.Log($"[DrawCard] 请求抽 {num} 张，当前 cardSet 数量: {cardSet.Count}");
         _drawService.DrawCard(num);
         NotifyDeckOrHandChanged();
     }
@@ -100,6 +110,54 @@ public class CardManager : Singleton<CardManager>
     }
 
     // ===================== 数据与牌堆（Repository + Deck） =====================
+    /// <summary>
+    /// 从 cardDatas 中筛选 ID 最高位（万位）为 1 的卡牌到 giftCards 列表
+    /// </summary>
+    private void FilterGiftCards()
+    {
+        giftCards.Clear();
+        foreach (var data in cardDatas)
+        {
+            if (data.id / 10000 == 1)
+            {
+                giftCards.Add(data);
+            }
+        }
+        Debug.Log($"[CardManager] FilterGiftCards 完成，共筛选到 {giftCards.Count} 张礼物卡。");
+    }
+
+    /// <summary>
+    /// 从 cardDatas 中筛选 ID 最高位（万位）为 2 的卡牌到 funcCards 列表
+    /// </summary>
+    private void FilterFuncCards()
+    {
+        funcCards.Clear();
+        foreach (var data in cardDatas)
+        {
+            if (data.id / 10000 == 2)
+            {
+                funcCards.Add(data);
+            }
+        }
+        Debug.Log($"[CardManager] FilterFuncCards 完成，共筛选到 {funcCards.Count} 张功能卡。");
+    }
+
+    /// <summary>
+    /// 从 cardDatas 中筛选 ID 最高位（万位）为 3 的卡牌到 eventCards 列表
+    /// </summary>
+    private void FilterEventCards()
+    {
+        eventCards.Clear();
+        foreach (var data in cardDatas)
+        {
+            if (data.id / 10000 == 3)
+            {
+                eventCards.Add(data);
+            }
+        }
+        Debug.Log($"[CardManager] FilterEventCards 完成，共筛选到 {eventCards.Count} 张事件卡。");
+    }
+
     public void LoadAllCards()
     {
         _repositoryService.LoadAllCards();
@@ -128,6 +186,11 @@ public class CardManager : Singleton<CardManager>
         return _repositoryService.GetCardDataById(id);
     }
 
+    public CardData GetRandomCardDataByType(int type)
+    {
+        return _repositoryService.GetRandomCardDataByType(type);
+    }
+
     public int GetCardCountInDeck(int cardId)
     {
         return _deckService.GetCardCountInDeck(cardId);
@@ -136,6 +199,11 @@ public class CardManager : Singleton<CardManager>
     public List<Card> GetCardsInDeckById(int cardId)
     {
         return _deckService.GetCardsInDeckById(cardId);
+    }
+
+    public List<List<Card>> GetGiftCardGroupsWithCountGreaterThan(int minCount)
+    {
+        return _handService.GetGiftCardGroupsWithCountGreaterThan(minCount);
     }
 
     // ===================== 手牌（Hand） =====================
@@ -156,9 +224,10 @@ public class CardManager : Singleton<CardManager>
         return _handService.GetGiftCardNum();
     }
 
-    public void ChangeHandGift()
+    public void ChangeHandGift(Card ignoredCard = null)
     {
-        _handService.ChangeHandGift(GetCardDataById);
+        Debug.Log("[CardManager] Begin Change Hand Gift");
+        _handService.ChangeHandGift(GetRandomCardDataByType, ignoredCard);
         NotifyDeckOrHandChanged();
     }
 
@@ -202,5 +271,41 @@ public class CardManager : Singleton<CardManager>
         {
             DUEL.Instance.InitCardObject();
         }
+    }
+
+    /// <summary>
+    /// 清空手牌与牌堆。游戏失败时调用。
+    /// </summary>
+    public void ClearAllCards()
+    {
+        cardInHand.Clear();
+        cardSet.Clear();
+        NotifyDeckOrHandChanged();
+    }
+
+    public void AddCardToSet(Card card)
+    {
+        _deckService.AddCardToSet(card);
+    }
+
+    // ===================== 查询函数（转发 DeckService） =====================
+    /// <summary>
+    /// 获取牌堆中相同ID卡牌的最大数量
+    /// </summary>
+    /// <returns>牌堆中出现次数最多的卡牌ID的数量，如果牌堆为空则返回0</returns>
+    public int GetMaxSameIdCardCount()
+    {
+        return _deckService.GetMaxSameIdCardCount();
+    }
+
+    /// <summary>
+    /// 获取牌堆中出现次数最多的卡牌ID及其数量
+    /// </summary>
+    /// <param name="cardId">输出出现次数最多的卡牌ID</param>
+    /// <param name="count">输出该ID的出现次数</param>
+    /// <returns>如果牌堆为空则返回false，否则返回true</returns>
+    public bool TryGetMaxSameIdCard(out int cardId, out int count)
+    {
+        return _deckService.TryGetMaxSameIdCard(out cardId, out count);
     }
 }

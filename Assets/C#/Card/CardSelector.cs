@@ -2,15 +2,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 /// <summary>
 /// 卡牌UI选择器 - 仅负责卡牌的点击变现、按钮显示，以及广播玩家的操作
 /// </summary>
 public class CardSelector : Singleton<CardSelector>
 {
+    private const string CardSubmitSfxPath = "intangibleClick/Collect star 3";
+    private const string CardCancelSfxPath = "Switch sounds/button3";
+
     [Header("UI引用")]
     [SerializeField] private Button submitButton;
-    [SerializeField] private Text submitButtonText;
+    [SerializeField] private TMP_Text submitButtonText;
     [SerializeField] private Button cancelButton;
 
     [Header("区域设置")]
@@ -32,9 +36,8 @@ public class CardSelector : Singleton<CardSelector>
         if (submitButton != null) submitButton.onClick.AddListener(OnSubmitClicked);
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
         
-        if (submitButton != null && submitButtonText == null)
-            submitButtonText = submitButton.GetComponentInChildren<Text>();
-
+        submitButtonText = submitButton.GetComponentInChildren<TMP_Text>();
+        
         DeselectCurrent();
     }
 
@@ -43,7 +46,7 @@ public class CardSelector : Singleton<CardSelector>
     /// </summary>
     public void SetSubmitButtonText(string text)
     {
-        if (submitButtonText != null) submitButtonText.text = text;
+        submitButtonText.text = text;
     }
 
     /// <summary>
@@ -91,7 +94,21 @@ public class CardSelector : Singleton<CardSelector>
             _selectedCardObject.ForceDeselect();
 
         _selectedCardObject = uiObject;
-        
+
+        // 根据卡牌类型动态更新提交按钮文字（仅在 NormalPlay 模式）
+        if (CardActionResolver.Instance != null && CardActionResolver.Instance.currentMode == CardPlayMode.NormalPlay)
+        {
+            int cardType = CardIdUtility.GetCardType(uiObject.Card.id);
+            string text = cardType switch
+            {
+                1 => "送出",
+                2 => "使用",
+                3 => "邀请",
+                _ => "打出"
+            };
+            SetSubmitButtonText(text);
+        }
+
         // 显示按钮
         if (submitButton != null) { submitButton.gameObject.SetActive(true); submitButton.interactable = true; }
         if (cancelButton != null) cancelButton.gameObject.SetActive(true);
@@ -100,6 +117,8 @@ public class CardSelector : Singleton<CardSelector>
     private void OnSubmitClicked()
     {
         if (_selectedCardObject == null) return;
+        SfxTrigger.PlaySound(CardSubmitSfxPath);
+
         Card selectedCard = _selectedCardObject.Card;
         Debug.Log($"[CardSelector][Submit] frame={Time.frameCount}, time={Time.time:F3}, selectedRef={(selectedCard != null ? selectedCard.GetHashCode() : 0)}, id={selectedCard?.id}, name={selectedCard?.name}");
 
@@ -111,6 +130,7 @@ public class CardSelector : Singleton<CardSelector>
 
     private void OnCancelClicked()
     {
+        SfxTrigger.PlaySound(CardCancelSfxPath);
         DeselectCurrent();
         OnCancelEvent?.Invoke();
     }

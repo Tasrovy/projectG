@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class DeckService
 {
@@ -18,6 +19,44 @@ public class DeckService
         {
             GenCard(data);
         }
+    }
+
+    public bool ImplementCardSetFromInitialHandExcel(string initialHandExcelPath)
+    {
+        _cardSet.Clear();
+
+        if (string.IsNullOrWhiteSpace(initialHandExcelPath))
+        {
+            Debug.LogWarning("[DeckService] initialHandExcelPath 为空，无法按配置构建牌堆。");
+            return false;
+        }
+
+        InitialHandSO initialHandSO = ExcelLoader.Instance.ReadInitialHandExcel(initialHandExcelPath);
+        if (initialHandSO == null || initialHandSO.entries == null || initialHandSO.entries.Count == 0)
+        {
+            Debug.LogWarning($"[DeckService] 牌堆配置为空或读取失败: {initialHandExcelPath}");
+            return false;
+        }
+
+        foreach (InitialHandEntry entry in initialHandSO.entries)
+        {
+            if (entry == null || entry.id == 0 || entry.num <= 0) continue;
+
+            CardData data = _cardDatas.Find(c => c.id == entry.id);
+            if (data == null)
+            {
+                Debug.LogWarning($"[DeckService] 牌堆配置中的ID不存在于CardData: {entry.id}");
+                continue;
+            }
+
+            for (int i = 0; i < entry.num; i++)
+            {
+                GenCard(data);
+            }
+        }
+
+        Debug.Log($"[DeckService] 已按配置构建牌堆: {initialHandExcelPath}, 数量={_cardSet.Count}");
+        return true;
     }
 
     public void GenCard(CardData data)
@@ -72,5 +111,116 @@ public class DeckService
             if (card.id == cardId) result.Add(card);
         }
         return result;
+    }
+
+    public List<List<Card>> GetGiftCardGroupsWithCountGreaterThan(int minCount)
+    {
+        Dictionary<int, List<Card>> giftCardGroups = new Dictionary<int, List<Card>>();
+
+        foreach (Card card in _cardSet)
+        {
+            if (card.id / 10000 != 1) continue;
+
+            if (!giftCardGroups.TryGetValue(card.id, out List<Card> cards))
+            {
+                cards = new List<Card>();
+                giftCardGroups[card.id] = cards;
+            }
+
+            cards.Add(card);
+        }
+
+        List<List<Card>> result = new List<List<Card>>();
+        foreach (List<Card> cards in giftCardGroups.Values)
+        {
+            if (cards.Count > minCount)
+            {
+                result.Add(cards);
+            }
+        }
+
+        return result;
+    }
+
+    public void AddCardToSet(Card card)
+    {
+        if(!_cardSet.Contains(card)) _cardSet.Add(card);
+    }
+
+    /// <summary>
+    /// 获取牌堆中相同ID卡牌的最大数量
+    /// </summary>
+    /// <returns>牌堆中出现次数最多的卡牌ID的数量，如果牌堆为空则返回0</returns>
+    public int GetMaxSameIdCardCount()
+    {
+        if (_cardSet == null || _cardSet.Count == 0)
+        {
+            return 0;
+        }
+
+        int maxCount = 0;
+        var idCounts = new Dictionary<int, int>();
+
+        foreach (Card card in _cardSet)
+        {
+            if (idCounts.ContainsKey(card.id))
+            {
+                idCounts[card.id]++;
+            }
+            else
+            {
+                idCounts[card.id] = 1;
+            }
+
+            if (idCounts[card.id] > maxCount)
+            {
+                maxCount = idCounts[card.id];
+            }
+        }
+
+        return maxCount;
+    }
+
+    /// <summary>
+    /// 获取牌堆中出现次数最多的卡牌ID及其数量
+    /// </summary>
+    /// <param name="cardId">输出出现次数最多的卡牌ID</param>
+    /// <param name="count">输出该ID的出现次数</param>
+    /// <returns>如果牌堆为空则返回false，否则返回true</returns>
+    public bool TryGetMaxSameIdCard(out int cardId, out int count)
+    {
+        cardId = -1;
+        count = 0;
+
+        if (_cardSet == null || _cardSet.Count == 0)
+        {
+            return false;
+        }
+
+        int maxCount = 0;
+        int maxId = -1;
+        var idCounts = new Dictionary<int, int>();
+
+        foreach (Card card in _cardSet)
+        {
+            if (idCounts.ContainsKey(card.id))
+            {
+                idCounts[card.id]++;
+            }
+            else
+            {
+                idCounts[card.id] = 1;
+            }
+
+            if (idCounts[card.id] > maxCount)
+            {
+                maxCount = idCounts[card.id];
+                maxId = card.id;
+            }
+        }
+
+        cardId = maxId;
+        count = maxCount;
+        return true;
     }
 }

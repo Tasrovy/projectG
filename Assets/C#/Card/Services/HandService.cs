@@ -4,12 +4,10 @@ using UnityEngine;
 public class HandService
 {
     private readonly List<Card> _cardInHand;
-    private readonly List<Card> _cardSet;
 
-    public HandService(List<Card> cardInHand, List<Card> cardSet)
+    public HandService(List<Card> cardInHand)
     {
         _cardInHand = cardInHand;
-        _cardSet = cardSet;
     }
 
     public void BreakCard(Card card)
@@ -30,40 +28,67 @@ public class HandService
         {
             if (CardIdUtility.GetCardType(card.id) == 1) num++;
         }
+        Debug.Log($"[HandService] {num}");
         return num;
     }
 
-    public void ChangeHandGift(System.Func<int, CardData> getCardDataById)
+    public List<List<Card>> GetGiftCardGroupsWithCountGreaterThan(int minCount)
     {
-        List<Card> cardsToReturn = _cardInHand.FindAll(c => c.id == 1);
-        if (cardsToReturn.Count > 0)
+        Dictionary<int, List<Card>> giftCardGroups = new Dictionary<int, List<Card>>();
+
+        foreach (Card card in _cardInHand)
         {
-            foreach (Card card in cardsToReturn)
+            if (card.id / 10000 != 1) continue;
+
+            if (!giftCardGroups.TryGetValue(card.id, out List<Card> cards))
             {
-                _cardSet.Add(card);
-                _cardInHand.Remove(card);
+                cards = new List<Card>();
+                giftCardGroups[card.id] = cards;
             }
-            Debug.Log($"[HandService] 已将 {cardsToReturn.Count} 张 ID 为 1 的手牌放回牌堆。");
+
+            cards.Add(card);
         }
 
-        int indexInSet = _cardSet.FindIndex(c => c.id == 1);
-        if (indexInSet != -1)
+        List<List<Card>> result = new List<List<Card>>();
+        foreach (List<Card> cards in giftCardGroups.Values)
         {
-            Card drawnCard = _cardSet[indexInSet];
-            _cardSet.RemoveAt(indexInSet);
-            _cardInHand.Add(drawnCard);
-            Debug.Log($"[HandService] 已从牌堆重新抽回一张 ID 为 1 的牌: {drawnCard.name}");
-        }
-        else
-        {
-            CardData data = getCardDataById(1);
-            if (data != null)
+            if (cards.Count >= minCount)
             {
-                Card newCard = new Card();
-                newCard.InitCard(data);
-                _cardInHand.Add(newCard);
-                Debug.Log("[HandService] 牌堆中无 ID 为 1 的牌，已直接生成一张加入手牌。");
+                result.Add(cards);
             }
         }
+
+        return result;
+    }
+
+    public void ChangeHandGift(System.Func<int, CardData> getRandomCardDataByType, Card ignoredCard = null)
+    {
+        List<Card> giftCardsInHand = _cardInHand.FindAll(c =>
+            CardIdUtility.GetCardType(c.id) == 1 && c != ignoredCard);
+        int giftCount = giftCardsInHand.Count;
+        if (giftCount <= 0) return;
+
+        foreach (Card card in giftCardsInHand)
+        {
+            _cardInHand.Remove(card);
+        }
+
+        Debug.Log($"[HandService] Destroyed {giftCount} gift cards in hand.");
+
+        CardData data = getRandomCardDataByType(1);
+        if (data == null)
+        {
+            Debug.LogWarning("[HandService] Failed to get random type 1 card data.");
+            return;
+        }
+
+        for (int i = 0; i < giftCount; i++)
+        {
+            Card newCard = new Card();
+            newCard.InitCard(data);
+            _cardInHand.Add(newCard);
+        }
+
+        Debug.Log($"[HandService] Generated {giftCount} gift cards from random data: {data.name}.");
     }
 }

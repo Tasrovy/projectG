@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7632798624890768711}
   - component: {fileID: 6100053159208833068}
   - component: {fileID: 7054602487804480667}
+  - component: {fileID: 8717295156260589022}
   m_Layer: 5
   m_Name: CradZone
   m_TagString: Untagged
@@ -77,3 +78,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &8717295156260589022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949279964512234237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9214c5cfa3a4c6eb570e35d2ea9c6fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minSpacing: -60
+  maxSpacing: 0
+  compressThreshold: 5
+  fullCompressThreshold: 10
+  enableDragging: 1
+  dragSpeed: 1
+  clampDrag: 1

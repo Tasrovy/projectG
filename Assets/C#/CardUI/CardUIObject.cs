@@ -1,38 +1,51 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class CardUIObject : MonoBehaviour,
     IPointerClickHandler,
     IPointerEnterHandler,
     IPointerExitHandler,
+    IPointerDownHandler,
+    IPointerUpHandler,
     IBeginDragHandler,
     IDragHandler,
     IEndDragHandler
 {
+    private const string CardClickSfxPath = "Switch sounds/button2";
+    private const string CardHoverSfxPath = "Switch sounds/bubbleSound";
+
     [Header("UI 组件引用")] 
     public Image baseImage;
     public Text nameText;
     public Text descriptionText;
+    public GameObject HighlightImage;
+    public Image rare;
+    public TMP_Text rareText;
+    public Image Icon;
 
     [Header("重要：动画容器")] 
     public RectTransform visualContainer;
 
     [Header("卡图资源")] 
-    public Sprite commonSprite;
-    public Sprite ShengZhi;
-    public Sprite JianZhi;
-    public Sprite ShengZhang;
+    public Sprite giftSprite;
+    public Sprite eventSprite;
+    public Sprite funcSprite;
+    public Sprite rare1;
+    public Sprite rare2;
+    public Sprite rare3;
 
     [Header("视觉反馈颜色")] 
     [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color selectedColor = Color.green;
+    //[SerializeField] private Color selectedColor = Color.green;
     [SerializeField] private Color disabledColor = Color.gray;
 
-    [Header("动画设置 (点击与悬浮)")] 
-    public float selectOffset = 50f; 
-    public float hoverOffset = 20f; 
-    public float hoverScale = 1.1f; 
+    [Header("动画设置 (点击与悬浮)")]
+    public float selectOffset = 50f;
+    public float hoverOffset = 20f;
+    public float hoverScale = 1.1f;
     public float moveSpeed = 15f;
     public float sortLerpSpeed = 15f; // 别人让位时的平滑速度
 
@@ -41,9 +54,9 @@ public class CardUIObject : MonoBehaviour,
     private Vector2 _containerTargetPos;
     private Vector2 _containerOriginalPos;
     private Vector3 _targetScale = Vector3.one;
-    
+
     // 【新增】：记录上一帧根节点的位置，用于计算 LayoutGroup 造成的瞬移
-    private Vector3 _lastRootPosition; 
+    private Vector3 _lastRootPosition;
 
     [SerializeField]private bool _isSelected = false;
     [SerializeField]private bool _isActiveMode = false;
@@ -54,6 +67,7 @@ public class CardUIObject : MonoBehaviour,
     private Transform _dragCanvasParent; 
 
     public bool IsSelected => _isSelected;
+    public bool IsDragging => _isDragging;
     public Card Card => _cardObject != null ? _cardObject.card : null;
     public bool IsValidToSelect => Card != null&&Card.id.ToString().StartsWith("1");
 
@@ -125,22 +139,54 @@ public class CardUIObject : MonoBehaviour,
     {
         if (!_isActiveMode || (!IsValidToSelect&&_isSelectMode) || _isDragging) return;
         _isHovering = true;
+        SfxTrigger.PlaySound(CardHoverSfxPath);
         UpdateVisual();
+
+        // 未选中时滑入显示卡牌详情
+        if (!_isSelected)
+        {
+            var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+            if (detailUI != null)
+                detailUI.ShowFixed(Card);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         _isHovering = false;
         UpdateVisual();
+
+        // 仅当详情面板正在显示当前卡牌时才关闭，避免竞态导致闪烁
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null && detailUI.CurrentCard == Card)
+            detailUI.Hide();
     }
 
     // ================= 鼠标点击交互 =================
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+
+        if (!_isActiveMode) return;
+
+        // 按下时关闭卡牌详情
+        var detailUI = DUELUIObjectManager.Instance.GetCardDetailUI();
+        if (detailUI != null)
+            detailUI.Hide();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        // 不再需要长按松开关闭逻辑
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!_isActiveMode || (!IsValidToSelect&&_isSelectMode) || _isDragging) return;
 
         _isSelected = !_isSelected;
+        SfxTrigger.PlaySound(CardClickSfxPath);
 
         if (CardSelector.Instance != null)
             CardSelector.Instance.SetSelectObject(_isSelected ? this : null);
@@ -155,7 +201,10 @@ public class CardUIObject : MonoBehaviour,
         if (!_isActiveMode || (!IsValidToSelect&&_isSelectMode)) return;
     
         _isDragging = true;
-        _isHovering = false; 
+        _isHovering = false;
+
+        // 拖拽时旋转归零
+        transform.localRotation = Quaternion.identity;
 
         if (baseImage != null) baseImage.raycastTarget = false;
 
@@ -190,7 +239,7 @@ public class CardUIObject : MonoBehaviour,
             for (int i = 0; i < parentZone.childCount; i++)
             {
                 Transform sibling = parentZone.GetChild(i);
-                if (sibling == transform) continue; 
+                if (sibling == transform) continue;
 
                 // 如果鼠标的 X 坐标大于某张牌的 X 坐标，说明我们应该排在它右边
                 if (localPointerPos.x > sibling.localPosition.x)
@@ -204,10 +253,13 @@ public class CardUIObject : MonoBehaviour,
             if (currentIndex != newIndex)
             {
                 transform.SetSiblingIndex(newIndex);
-                // 注意：一旦这里改变了 SiblingIndex，LayoutGroup 会瞬间移动其他兄弟节点。
-                // 但由于我们在 Update 里写了“反向位移补偿”，其他卡牌会非常丝滑地闪避让位！
+                // 通知弧线布局管理器重新计算位置
+                GetComponentInParent<ArcCardLayoutManager>()?.Refresh();
             }
         }
+
+        // 拖动时保持竖直（旋转归零）
+        transform.localRotation = Quaternion.identity;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -230,11 +282,27 @@ public class CardUIObject : MonoBehaviour,
         UpdateVisual();
 
         // ==========================================
-        // 【重要】：在这里同步后端数据！
-        // 视觉上排好序了，你需要告诉后端管理器重新排列 List<Card>
-        // 例如：
-        // CardManager.Instance.ReorderHandCard(this.Card, transform.GetSiblingIndex());
+        // 同步后端数据：按当前视觉顺序重排 cardInHand
         // ==========================================
+        Transform parent = transform.parent;
+        if (parent != null && CardManager.Instance != null)
+        {
+            List<Card> reordered = new List<Card>();
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var cardUI = parent.GetChild(i).GetComponent<CardUIObject>();
+                if (cardUI != null && cardUI.Card != null)
+                    reordered.Add(cardUI.Card);
+            }
+            if (reordered.Count == CardManager.Instance.cardInHand.Count)
+            {
+                // HandService / DrawService keep the list reference created by CardManager.
+                // Replacing the list here makes later plays remove cards from that stale list,
+                // so reorder the existing list in place instead.
+                CardManager.Instance.cardInHand.Clear();
+                CardManager.Instance.cardInHand.AddRange(reordered);
+            }
+        }
     }
 
     // ================= 状态管理 =================
@@ -283,10 +351,10 @@ public class CardUIObject : MonoBehaviour,
         _targetScale = new Vector3(currentScale, currentScale, currentScale);
         
         if (baseImage == null) return;
-
+        HighlightImage.SetActive(false);
         if (!_isActiveMode) { baseImage.color = normalColor; return; }
         if (!IsValidToSelect&&_isSelectMode) baseImage.color = disabledColor;
-        else if (_isSelected) baseImage.color = selectedColor;
+        else if (_isSelected) HighlightImage.SetActive(true);
         else baseImage.color = normalColor;
     }
 
@@ -296,14 +364,38 @@ public class CardUIObject : MonoBehaviour,
         nameText.text = card.name;
         descriptionText.text = card.GetParsedDescription();
 
-        int brokenValue = 0, addedValue = 0;
-        int.TryParse(card.broken, out brokenValue);
-        int.TryParse(card.added, out addedValue);
+        if (card.id.ToString()[0] == '1') baseImage.sprite = giftSprite;
+        if (card.id.ToString()[0] == '2') baseImage.sprite = funcSprite;
+        if (card.id.ToString()[0] == '3') baseImage.sprite = eventSprite;
+        if (card.id.ToString()[1] == '1')
+        {
+            rare.sprite = rare1;
+            rareText.text = "普通";
+        }
+        if (card.id.ToString()[1] == '2')
+        {
+            rare.sprite = rare2;
+            rareText.text = "罕见";
+        }
+        if (card.id.ToString()[1] == '3')
+        {
+            rare.sprite = rare3;
+            rareText.text = "珍贵";
+        }
 
-        if (card.id.ToString()[0] == '1') baseImage.sprite = commonSprite;
-        else if (brokenValue > 0) baseImage.sprite = JianZhi;
-        else if (addedValue > 0) baseImage.sprite = ShengZhang;
-        else baseImage.sprite = ShengZhi;
+        // 加载卡牌图标：先尝试精确ID，失败则回退到首位+0000
+        if (Icon != null)
+        {
+            string exactPath = $"Card/Icon/{card.id}";
+            Sprite iconSprite = Resources.Load<Sprite>(exactPath);
+            if (iconSprite == null)
+            {
+                string fallbackPath = $"Card/Icon/{card.id.ToString()[0]}0000";
+                iconSprite = Resources.Load<Sprite>(fallbackPath);
+            }
+            if (iconSprite != null)
+                Icon.sprite = iconSprite;
+        }
     }
 
     public void ResetState()

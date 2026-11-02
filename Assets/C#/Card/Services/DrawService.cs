@@ -42,34 +42,21 @@ public class DrawService
     // 对外公开：常规抽牌
     public void DrawCard(int num)
     {
+        Debug.Log("[DrawService] 开始抽卡");
         for (int i = 0; i < num; i++)
         {
-            if (_cardSet.Count <= 0) break;
-
-            int forcedType = -1;
-            foreach (var kvp in _pityCounters)
+            if (_cardSet.Count <= 0)
             {
-                if (kvp.Value >= 3)
-                {
-                    forcedType = kvp.Key;
-                    break;
-                }
-            }
-
-            int rolledRarity = RollRarity();
-            int targetIndex = SelectBestCardIndex(forcedType, rolledRarity);
-            if (targetIndex < 0 || targetIndex >= _cardSet.Count)
-            {
-                Debug.LogWarning($"[DrawService] 无效的卡牌索引: {targetIndex}, 牌堆数量: {_cardSet.Count}");
+                Debug.Log("[DrawService] 牌堆已被抽空");
                 break;
             }
+            int targetIndex = _rng.Next(_cardSet.Count);
 
             Card drawnCard = _cardSet[targetIndex];
             _cardSet.RemoveAt(targetIndex);
-            UpdatePityCounters(CardIdUtility.GetCardType(drawnCard.id));
             _cardInHand.Add(drawnCard);
 
-            Debug.Log($"[抽牌] 抽到:{drawnCard.name} | ID:{drawnCard.id} | 类型:{CardIdUtility.GetCardType(drawnCard.id)} | 稀有度:{CardIdUtility.GetCardRarity(drawnCard.id)}");
+            Debug.Log($"[抽牌] 随机抽到:{drawnCard.name} | ID:{drawnCard.id} | 类型:{CardIdUtility.GetCardType(drawnCard.id)} | 稀有度:{CardIdUtility.GetCardRarity(drawnCard.id)}");
         }
     }
 
@@ -89,25 +76,40 @@ public class DrawService
             return;
         }
 
+        HashSet<int> usedCardIDs = new HashSet<int>();
+
         for (int i = 0; i < num; i++)
         {
             List<Card> validCardsInSet = _cardSet.Where(c =>
                 (type == 0 || CardIdUtility.GetCardType(c.id) == type) &&
-                CardIdUtility.GetCardRarity(c.id) == level
+                CardIdUtility.GetCardRarity(c.id) == level &&
+                !usedCardIDs.Contains(c.id)
             ).ToList();
 
             if (validCardsInSet.Count > 0)
             {
                 int randomIndex = _rng.Next(validCardsInSet.Count);
                 Card selectedCard = validCardsInSet[randomIndex];
+                usedCardIDs.Add(selectedCard.id);
                 _cardSet.Remove(selectedCard);
                 _cardInHand.Add(selectedCard);
                 Debug.Log($"[DrawService] 从牌堆随机抽取了: {selectedCard.name} (ID:{selectedCard.id}) 加入手牌。");
             }
             else
             {
-                int randomIndex = _rng.Next(validDataPool.Count);
-                CardData selectedData = validDataPool[randomIndex];
+                List<CardData> remainingPool = validDataPool
+                    .Where(d => !usedCardIDs.Contains(d.id))
+                    .ToList();
+
+                if (remainingPool.Count == 0)
+                {
+                    Debug.LogWarning($"[DrawService] 该类型/稀有度的卡已全部给完，无法继续添加第 {i + 1} 张。");
+                    break;
+                }
+
+                int randomIndex = _rng.Next(remainingPool.Count);
+                CardData selectedData = remainingPool[randomIndex];
+                usedCardIDs.Add(selectedData.id);
 
                 Card newCard = new Card();
                 newCard.InitCard(selectedData);

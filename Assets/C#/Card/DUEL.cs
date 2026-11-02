@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DUEL : Singleton<DUEL>
 {
+    private const string EndFightSfxPath = "Switch sounds/button1";
+
     public GameObject DUELUI;
     public GameObject cardPrefab;
     public Transform cardParent;
@@ -25,18 +28,29 @@ public class DUEL : Singleton<DUEL>
         OnEndDUEL.AddListener(DestroyCardObject);
         endButton.onClick.AddListener(End);
         endButton.gameObject.SetActive(false);
+
+        DeckViewerUI.Instance.BindDeckButton(DUELUIObjectManager.Instance.GetCardSetGameObject());
+        DeckViewerUI.Instance.BindHandButton(DUELUIObjectManager.Instance.GetHandSetGameObject());
+
+        DUELUIObjectManager.Instance.GetEndFightButton().onClick.AddListener(() =>
+        {
+            DialogueHandler.Instance.TriggerEndDayDirectly();
+        });
     }
     
     public void Begin()
     {
+        _ = BattleDialogController.Instance;
         DUELUIObjectManager.Instance.ShowUI();
         endButton.gameObject.SetActive(true);
         Debug.Log("准备开始决斗");
         OnBeginDUEL?.Invoke();
+        CardManager.Instance.DrawCard(DayManager.Instance.daySO.dayDatas[DayManager.Instance.dayNumber].drawNum);
     }
 
     public void End()
     {
+        SfxTrigger.PlaySound(EndFightSfxPath);
         DUELUIObjectManager.Instance.HideUI();
         OnEndDUEL?.Invoke();
         Debug.Log("结束决斗");
@@ -87,7 +101,7 @@ public class DUEL : Singleton<DUEL>
                 newActiveObjects.Add(existingObject);
                 // 从映射中移除，避免后续重复使用
                 cardToObjectMap.Remove(card);
-                Debug.Log($"[DUEL] 保留卡牌物体: {card.name} (ID:{card.id})");
+                // Debug.Log($"[DUEL] 保留卡牌物体: {card.name} (ID:{card.id})");
             }
             else
             {
@@ -117,6 +131,19 @@ public class DUEL : Singleton<DUEL>
         activeObjects = newActiveObjects;
 
         Debug.Log($"[DUEL] 卡牌物体更新完成: 手牌{currentHandCards.Count}张，物体{activeObjects.Count}个");
+
+        // 6. 更新卡组数量显示
+        TMP_Text numText = DUELUIObjectManager.Instance.GetCardSetNumText();
+        if (numText != null)
+        {
+            numText.text = CardManager.Instance.cardSet.Count.ToString();
+        }
+
+        TMP_Text handNumText = DUELUIObjectManager.Instance.GetHandSetNumText();
+        if (handNumText != null)
+        {
+            handNumText.text = CardManager.Instance.cardInHand.Count.ToString();
+        }
     }
 
     public void DestroyCardObject()

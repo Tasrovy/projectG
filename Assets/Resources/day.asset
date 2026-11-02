@@ -10,101 +10,295 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3705f9fc34f848748b054049a73cac5d, type: 3}
-  m_Name: 
+  m_Name: day
   m_EditorClassIdentifier: 
   dayDatas:
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 1
-    profit: 100
+    date: 09_01
+    profit: 60
+    drawNum: 4
+    getCardNum: 2
+    skipBackground: 
+    dailyDialog: day9_2
+    specialDialog: 
+    failedDialog: 
+    target1: 20
+    target2: 24
+    target3: 18
+    target4: 50
+    targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 2
-    profit: 100
+    date: 09_02
+    profit: 60
+    drawNum: 4
+    getCardNum: 2
+    skipBackground: 
+    dailyDialog: day9_3
+    specialDialog: 
+    failedDialog: 
+    target1: 20
+    target2: 24
+    target3: 18
+    target4: 50
+    targetCharm: 300
   - probRarity1: 0.8
     probRarity2: 0.2
     probRarity3: 0
     day: 3
-    profit: 100
+    date: 09_03
+    profit: 60
+    drawNum: 4
+    getCardNum: 2
+    skipBackground: 
+    dailyDialog: day9_4
+    specialDialog: 
+    failedDialog: 
+    target1: 20
+    target2: 24
+    target3: 18
+    target4: 50
+    targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 4
-    profit: 160
+    date: 09_04
+    profit: 60
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_7
+    specialDialog: 
+    failedDialog: failed1_1
+    target1: 20
+    target2: 24
+    target3: 18
+    target4: 50
+    targetCharm: 300
   - probRarity1: 0.6
     probRarity2: 0.4
     probRarity3: 0
     day: 5
-    profit: 160
+    date: 09_07
+    profit: 100
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_8
+    specialDialog: 
+    failedDialog: 
+    target1: 80
+    target2: 120
+    target3: 40
+    target4: 200
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 6
-    profit: 160
+    date: 09_08
+    profit: 100
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_9
+    specialDialog: 
+    failedDialog: 
+    target1: 80
+    target2: 120
+    target3: 40
+    target4: 200
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 7
-    profit: 160
+    date: 09_09
+    profit: 100
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_10
+    specialDialog: 
+    failedDialog: failed1_1
+    target1: 80
+    target2: 120
+    target3: 40
+    target4: 200
+    targetCharm: 1200
   - probRarity1: 0.5
     probRarity2: 0.5
     probRarity3: 0
     day: 8
-    profit: 160
+    date: 09_10
+    profit: 100
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_11
+    specialDialog: 
+    failedDialog: 
+    target1: 120
+    target2: 160
+    target3: 120
+    target4: 300
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 9
-    profit: 300
+    date: 09_11
+    profit: 100
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_14
+    specialDialog: 
+    failedDialog: 
+    target1: 120
+    target2: 160
+    target3: 120
+    target4: 300
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 10
-    profit: 300
+    date: 09_14
+    profit: 100
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_13
+    specialDialog: 
+    failedDialog: 
+    target1: 120
+    target2: 160
+    target3: 120
+    target4: 300
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 11
-    profit: 300
+    date: 09_13
+    profit: 200
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: day9_16
+    specialDialog: 
+    failedDialog: failed1_1
+    target1: 120
+    target2: 160
+    target3: 120
+    target4: 300
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 12
-    profit: 300
+    date: 09_16
+    profit: 200
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: simpleEnd1_8
+    specialDialog: special1_4
+    failedDialog: 
+    target1: 120
+    target2: 160
+    target3: 120
+    target4: 300
+    targetCharm: 1800
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 13
-    profit: 300
+    date: 09_17
+    profit: 200
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: simpleEnd1_2
+    specialDialog: 
+    failedDialog: 
+    target1: 28
+    target2: 29
+    target3: 30
+    target4: 31
+    targetCharm: 420
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 14
-    profit: 300
+    date: 09_18
+    profit: 200
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: simpleEnd1_3
+    specialDialog: 
+    failedDialog: 
+    target1: 29
+    target2: 30
+    target3: 31
+    target4: 32
+    targetCharm: 435
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 15
-    profit: 300
+    date: 09_19
+    profit: 200
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: simpleEnd1_4
+    specialDialog: 
+    failedDialog: failed1_4
+    target1: 30
+    target2: 31
+    target3: 32
+    target4: 33
+    targetCharm: 450
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 16
-    profit: 300
+    date: 09_20
+    profit: 200
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: simpleEnd1_5
+    specialDialog: 
+    failedDialog: 
+    target1: 31
+    target2: 32
+    target3: 33
+    target4: 34
+    targetCharm: 465
   - probRarity1: 0.4
     probRarity2: 0.4
     probRarity3: 0.2
     day: 17
-    profit: 300
-  - probRarity1: 0.4
-    probRarity2: 0.4
-    probRarity3: 0.2
-    day: 18
-    profit: 300
-  - probRarity1: 0.4
-    probRarity2: 0.4
-    probRarity3: 0.2
-    day: 19
-    profit: 300
+    date: 09_21
+    profit: 200
+    drawNum: 4
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: simpleEnd1_6
+    specialDialog: 
+    failedDialog: 
+    target1: 32
+    target2: 33
+    target3: 34
+    target4: 35
+    targetCharm: 480

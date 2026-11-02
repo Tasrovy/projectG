@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 272370444}
   - component: {fileID: 272370443}
   - component: {fileID: 272370442}
+  - component: {fileID: 272370446}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -353,6 +354,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 973505230}
   - {fileID: 2143668939}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -361,6 +363,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &272370446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272370441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c51b104e5f72c4caf1d50ec67a36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &480504752
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +463,7 @@ GameObject:
   - component: {fileID: 542249197}
   - component: {fileID: 542249199}
   - component: {fileID: 542249198}
+  - component: {fileID: 542249200}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -469,8 +484,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDatas: []
+  giftCards: []
+  funcCards: []
+  eventCards: []
   cardSet: []
   cardInHand: []
+  consecutiveNonGiftCount: 0
+  consecutiveNonFuncCount: 0
+  consecutiveNonEventCount: 0
   probRarity1: 0.7
   probRarity2: 0.2
   probRarity3: 0.1
@@ -560,6 +581,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayNumber: 0
   daySO: {fileID: 0}
+  dayText: {fileID: 0}
+  weekText: {fileID: 0}
 --- !u!114 &542249194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,9 +599,14 @@ MonoBehaviour:
   nature2: 0
   nature3: 0
   MoneyNum: 0
+  extraCharm: 0
   currNature1Effect: 0
   currNature2Effect: 0
   currNature3Effect: 0
+  charmCoefficient1: 1
+  charmCoefficient2: 2
+  charmCoefficient3: 3
+  charmMoneyCoefficient: 0.1
 --- !u!114 &542249195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,11 +621,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CallerCard:
     id: 0
+    dialog: 0
     nature1: 0
     nature2: 0
     nature3: 0
     name: 
     sale: 0
+    sell: 0
     made: 
     broken: 
     added: 
@@ -605,6 +635,8 @@ MonoBehaviour:
     trigger: 
     description: 
     nextTurn: 
+    text: 
+    prompt: 
 --- !u!114 &542249196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,6 +649,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fdcaa81e62e427cb2318c06eca0db46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jianZhiString: "\u526A\u679D"
+  shengZhiString: "\u751F\u679D"
+  shengZhangString: "\u751F\u957F"
+  shengZhangToString: "\u751F\u957F"
+  addNatureString: "\u6761\u4EF6\u52A0\u5C5E\u6027"
+  addCardSaleString: "\u63D0\u4EF7"
 --- !u!114 &542249197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,7 +696,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f391c325ee5644bc887a7205efa9d47e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DUELUI: {fileID: 0}
+--- !u!114 &542249200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542249187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d5e02fc227c50448aaccd45d2580b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogExcelPath: dialog.xlsx
+  defaultShowTime: 2
+  fadeOutDuration: 0.25
+  useFadeOut: 1
+  portraitResourcePath: Portraits/BattlePortrait
+--- !u!1 &973505229
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 973505230}
+  - component: {fileID: 973505232}
+  - component: {fileID: 973505231}
+  m_Layer: 5
+  m_Name: Bac
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &973505230
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973505229}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 272370445}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &973505231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973505229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: d16fde8227507f6449ab517c7d123fd4, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &973505232
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973505229}
+  m_CullTransparentMesh: 1
 --- !u!1 &1083252779
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,7 +817,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1265c0d1492334ea3297264e737ed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardId: 11001
+  cardId: 21601
+  man: {fileID: 0}
+  posX: 0
+  posY: 0
+  multiple: 0
+  lastTime: 0
+  objectName: 
+  size: 0
+  Ypoint: 0
+  chaLastTime: 0
+  moveObjectName: 
+  axis: 
+  moveDistance: 0
+  movetime: 0
 --- !u!4 &1083252781
 Transform:
   m_ObjectHideFlags: 0
@@ -988,7 +1130,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 36107661}
+  - {fileID: 542249189}
   - {fileID: 272370445}
   - {fileID: 480504755}
-  - {fileID: 542249189}
   - {fileID: 1083252781}
