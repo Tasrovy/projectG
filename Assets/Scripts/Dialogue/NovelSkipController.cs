@@ -17,6 +17,7 @@ public sealed class NovelSkipController : DialoguePresenterBase
     public Color panelColor = new Color(.15f,.13f,.18f);
     public Color buttonColor = new Color(.35f,.25f,.4f);
     public Color textColor = Color.white;
+    public bool showModalShade = false;
     public Color dimColor = new Color(0,0,0,.65f);
     [TextArea] public string message = "是否跳过当前这段剧情？";
     public string cancelText = "取消", confirmText = "确定";
@@ -38,6 +39,27 @@ public sealed class NovelSkipController : DialoguePresenterBase
     public string loadingText = "正在跳过剧情";
     [Min(.05f)] public float fadeDuration = .25f;
     [Min(0)] public float minimumCoverTime = .5f;
+    [Header("跳过加速")]
+    public bool accelerateVisuals = true;
+    private static NovelSkipController fastOwner;
+    public static bool IsFastSkipping => fastOwner != null && fastOwner.skipping && fastOwner.accelerateVisuals;
+    private readonly System.Collections.Generic.Dictionary<LinePresenter, bool> savedFades = new System.Collections.Generic.Dictionary<LinePresenter, bool>();
+    private void BeginFastMode()
+    {
+        fastOwner = this;
+        foreach (var presenter in runner.DialoguePresenters.OfType<LinePresenter>())
+        {
+            savedFades[presenter] = presenter.useFadeEffect;
+            if (accelerateVisuals) presenter.useFadeEffect = false;
+        }
+    }
+    private void EndFastMode()
+    {
+        foreach (var entry in savedFades)
+            if (entry.Key != null) entry.Key.useFadeEffect = entry.Value;
+        savedFades.Clear();
+        if (fastOwner == this) fastOwner = null;
+    }
     private DialogueRunner runner;
     private GameObject modal;
     private CanvasGroup cover;
@@ -71,12 +93,14 @@ public sealed class NovelSkipController : DialoguePresenterBase
         yield return new WaitForEndOfFrame();
         yield return null;
         skipping = runner != null && runner.IsDialogueRunning;
+        if (skipping) BeginFastMode();
         float started = Time.unscaledTime;
         while (runner != null && runner.IsDialogueRunning && (!boundaryReached || !hasLine))
         {
             loadingLabel.text = loadingText + new string('.', (int)(Time.unscaledTime * 3) % 4);
             yield return null;
         }
+        EndFastMode();
         skipping = false;
         while (Time.unscaledTime - started < minimumCoverTime) yield return null;
         yield return new WaitForEndOfFrame();
@@ -164,12 +188,16 @@ public sealed class NovelSkipController : DialoguePresenterBase
     {
         if (runner == null || !runner.IsDialogueRunning)
         {
-            skipping = false;
+            EndFastMode();
+        skipping = false;
             if (modal != null) modal.SetActive(false);
             return;
         }
         if (skipping && hasLine && !lineToken.IsCancellationRequested && Time.frameCount > lineFrame)
+        {
+            runner.RequestHurryUpLine();
             runner.RequestNextLine();
+        }
     }
 
     public override YarnTask RunLineAsync(LocalizedLine line, LineCancellationToken token)
@@ -181,15 +209,17 @@ public sealed class NovelSkipController : DialoguePresenterBase
     }
     public override YarnTask<DialogueOption> RunOptionsAsync(DialogueOption[] options, LineCancellationToken token)
     {
+        EndFastMode();
         skipping = false;
         hasLine = true;
         boundaryReached = true;
         return DialogueRunner.NoOptionSelected;
     }
-    public override void OnNodeExit(string nodeName) { skipping = false; hasLine = false; boundaryReached = true; }
+    public override void OnNodeExit(string nodeName) { EndFastMode(); skipping = false; hasLine = false; boundaryReached = true; }
     public override YarnTask OnDialogueStartedAsync() => YarnTask.CompletedTask;
     public override YarnTask OnDialogueCompleteAsync()
     {
+        EndFastMode();
         skipping = false;
         hasLine = false;
         if (modal != null) modal.SetActive(false);
@@ -199,14 +229,14 @@ public sealed class NovelSkipController : DialoguePresenterBase
     private void BuildModal()
     {
         modal = new GameObject("Skip Confirmation", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-        modal.transform.SetParent(transform, false);
+        modal.transform.SetParent(null, false);
         var canvas = modal.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 30000;
         var scaler = modal.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
-        var shade = Box("Shade", modal.transform, Vector2.zero, Vector2.zero, dimColor);
+        var shade = Box("Shade", modal.transform, Vector2.zero, Vector2.zero, showModalShade ? dimColor : Color.clear);
         var shadeRect = (RectTransform)shade.transform;
         shadeRect.anchorMin = Vector2.zero;
         shadeRect.anchorMax = Vector2.one;
@@ -280,13 +310,21 @@ public sealed class NovelSkipController : DialoguePresenterBase
 
     private void OnDestroy()
     {
-        if (cover == null) return;
-        if (Application.isPlaying) Destroy(cover.gameObject);
-        else DestroyImmediate(cover.gameObject);
+        EndFastMode();
+        if (modal != null)
+        {
+            if (Application.isPlaying) Destroy(modal);
+            else DestroyImmediate(modal);
+        }
+        if (cover != null)
+        {
+            if (Application.isPlaying) Destroy(cover.gameObject);
+            else DestroyImmediate(cover.gameObject);
+        }
     }
-
     private void OnDisable()
     {
+        EndFastMode();
         skipping = false;
         hasLine = false;
         if (modal != null) modal.SetActive(false);

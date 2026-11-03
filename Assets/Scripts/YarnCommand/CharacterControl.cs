@@ -432,7 +432,7 @@ public class CharacterControl : MonoBehaviour
 
         Vector2 delta = axisChar == 'x' ? new Vector2(distance, 0f) : new Vector2(0f, distance);
         Vector2 targetPos = targetRect.anchoredPosition + delta;
-        float clampedDuration = Mathf.Max(0f, duration);
+        float clampedDuration = Mathf.Max(0f, NovelSkipController.IsFastSkipping ? 0f : duration);
 
         if (activePortraitMoveCoroutines.TryGetValue(normalizedObjectName, out Coroutine running) && running != null)
         {
@@ -484,7 +484,7 @@ public class CharacterControl : MonoBehaviour
             StopCoroutine(running);
         }
 
-        float clampedDuration = Mathf.Max(0f, duration);
+        float clampedDuration = Mathf.Max(0f, NovelSkipController.IsFastSkipping ? 0f : duration);
         if (clampedDuration <= 0f)
         {
             targetRect.anchoredPosition = initialPos;
@@ -537,7 +537,7 @@ public class CharacterControl : MonoBehaviour
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            elapsed = NovelSkipController.IsFastSkipping ? duration : elapsed + Time.deltaTime;
             float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
             targetRect.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
             yield return null;
@@ -658,7 +658,7 @@ public class CharacterControl : MonoBehaviour
         );
 
         Vector2 targetAnchoredPos = GetTargetAnchoredPosition(state, targetRect, sizeType, Mathf.Clamp01(yPoint), scaleFactor);
-        float clampedDuration = Mathf.Max(0f, duration);
+        float clampedDuration = Mathf.Max(0f, NovelSkipController.IsFastSkipping ? 0f : duration);
 
         if (activePortraitSizeCoroutines.TryGetValue(normalizedObjectName, out Coroutine running) && running != null)
         {
@@ -746,7 +746,7 @@ public class CharacterControl : MonoBehaviour
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            elapsed = NovelSkipController.IsFastSkipping ? duration : elapsed + Time.deltaTime;
             float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
             rect.localScale = Vector3.Lerp(startScale, targetScale, t);
             rect.anchoredPosition = Vector2.Lerp(startPos, targetAnchoredPos, t);
@@ -817,7 +817,7 @@ public class CharacterControl : MonoBehaviour
         );
 
         Vector2 targetAnchoredPos = GetTargetAnchoredPositionFade(state, targetRect, sizeType, Mathf.Clamp01(yPoint), scaleFactor);
-        float clampedDuration = Mathf.Max(0f, duration);
+        float clampedDuration = Mathf.Max(0f, NovelSkipController.IsFastSkipping ? 0f : duration);
 
         // 获取互斥锁，阻止其他指令同时操作该立绘
         busyPortraitObjects.Add(normalizedObjectName);
@@ -903,7 +903,7 @@ public class CharacterControl : MonoBehaviour
             float elapsed = 0f;
             while (elapsed < halfDuration)
             {
-                elapsed += Time.deltaTime;
+                elapsed = NovelSkipController.IsFastSkipping ? duration : elapsed + Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / halfDuration);
                 image.color = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(originalColor.a, 0f, t));
                 yield return null;
@@ -927,7 +927,7 @@ public class CharacterControl : MonoBehaviour
             float elapsed = 0f;
             while (elapsed < halfDuration)
             {
-                elapsed += Time.deltaTime;
+                elapsed = NovelSkipController.IsFastSkipping ? duration : elapsed + Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / halfDuration);
                 image.color = new Color(currentColor.r, currentColor.g, currentColor.b, Mathf.Lerp(0f, 1f, t));
                 yield return null;
@@ -970,7 +970,7 @@ public class CharacterControl : MonoBehaviour
             float elaps = 0f;
             while (elaps < duration)
             {
-                elaps += Time.deltaTime;
+                elaps = NovelSkipController.IsFastSkipping ? duration : elaps + Time.deltaTime;
                 targetImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, Mathf.Lerp(0f, targetAlpha, elaps / duration));
                 yield return null;
             }
@@ -1015,7 +1015,7 @@ public class CharacterControl : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            elapsed = NovelSkipController.IsFastSkipping ? duration : elapsed + Time.deltaTime;
             float t = elapsed / duration;
 
             tempImage.color = new Color(tempImage.color.r, tempImage.color.g, tempImage.color.b, Mathf.Lerp(originalColor.a, 0f, t));
@@ -1140,7 +1140,7 @@ public class CharacterControl : MonoBehaviour
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            elapsed = NovelSkipController.IsFastSkipping ? duration : elapsed + Time.deltaTime;
             // 缓动算法使得位移和缩放更加顺滑自然
             float t = Mathf.SmoothStep(0f, 1f, elapsed / duration);
 
@@ -1236,7 +1236,7 @@ public class CharacterControl : MonoBehaviour
 
             targetTransform.localPosition = new Vector3(originalPos.x + x, originalPos.y + y, originalPos.z);
 
-            elapsed += Time.deltaTime;
+            elapsed = NovelSkipController.IsFastSkipping ? duration : elapsed + Time.deltaTime;
             yield return null;
         }
 

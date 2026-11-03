@@ -45,6 +45,12 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public IEnumerator PlayTransition(Action onMidPoint = null)
     {
+        // 全屏加载图已遮住画面，无需等待剧情内部的黑屏转场。
+        if (NovelSkipController.IsFastSkipping)
+        {
+            onMidPoint?.Invoke();
+            yield break;
+        }
         DialogueUIAudio.Instance.PlayChangeSceneAudio();
 
         if (transitionGroup == null) Initialize();
