@@ -90,8 +90,10 @@ public class UISceneManager : MonoBehaviour
     /// </summary>
     public void SwitchToScene(SceneType sceneType)
     {
-        //隐藏卡牌详细UI
-        DUELUIObjectManager.Instance.GetCardDetailUI()?.Hide();
+        if (GameFlowController.Enabled && !GameFlowController.AllowsScene(sceneType)) return;
+        // Runtime workshop UI lives under a shared Canvas, outside cardFightRoot.
+        // Hide presentation only; do not call DUEL.End() or advance the day.
+        if (sceneType != SceneType.CardFight) DUELUIObjectManager.HideExistingWorkshopUI();
         
         // 隐藏所有的互斥场景节点
         DeactivateAllMutexRoots();

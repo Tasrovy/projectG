@@ -1,0 +1,50 @@
+title: tutorialPlaceholder
+---
+【教程占位】正式的新手教程将在后续版本制作。
+本次直接进入校园日常和玩家操作循环，测试阶段剧情与结局。
+===
+title: testFallback
+---
+【平庸剧情】没有任何小高潮满足条件，但今天仍然正常结束。
+===
+title: testFailure
+---
+【失败分支】没有任何大高潮满足条件。本轮结束，返回开始界面。
+===
+title: testSuccess
+---
+【成功分支】教程、3天日常、小高潮、大高潮均已完成。返回开始界面。
+===
+title: testTutorialIntro
+---
+【教程】先完成一次出牌，再学习生枝、剪枝、生长，最后购买和出售。
+教学资源会临时发放，教程结束后恢复正式开局资源。
+===
+title: testTutorialPlay
+---
+【出牌教程】选择一张礼物卡，点击打出。
+===
+title: testTutorialCombine
+---
+【生枝教程】打出made为正整数的功能卡，然后选择礼物卡。这里的Combine对应现有生枝复制操作。
+===
+title: testTutorialDismantle
+---
+【剪枝教程】打出broken为正整数的功能卡，然后选择需要剪枝的礼物卡。
+===
+title: testTutorialAttach
+---
+【生长教程】打出added为正整数的功能卡，然后选择礼物卡完成生长。
+===
+title: testTutorialBuy
+---
+【购买教程】选择商品并确认购买，成功一次进入下一步。
+===
+title: testTutorialSell
+---
+【出售教程】切换到出售模式，选择手牌并确认出售。
+===
+title: testTutorialEnd
+---
+【教程结束】教学资源已准备回收，接下来进入正式第1天。
+===

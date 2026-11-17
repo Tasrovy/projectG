@@ -188,6 +188,7 @@ public sealed class CardEffectLibrary
     {
         if (_owner.CallerCard == null || _owner.IsConditionFailed(_owner.CallerCard)) return;
 
+        GameFlowController.BufferOperation("CardPlayed", _owner.CallerCard.id);
         addCardNatureToDataManager();
         DayManager.Instance.GetNextDayEvent().AddListener(_owner.CallerCard.OnNextTurn);
     }

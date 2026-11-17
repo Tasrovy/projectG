@@ -1,6 +1,23 @@
 import fs from 'node:fs/promises';
-import {Workbook,SpreadsheetFile} from '@oai/artifact-tool';
-const out='D:/Documents/GitHub/projectG/Assets/Resources/FlowConfigV2';
+import {Workbook,SpreadsheetFile,FileBlob} from '@oai/artifact-tool';
+if(process.env.PROJECTG_TUTORIAL_PLACEHOLDER==='1'){
+ const backup='D:/Documents/GitHub/projectG/Assets/ProjectHandoff/DeferredTutorials';await fs.mkdir(backup,{recursive:true});
+ for(const root of ['FlowConfigTest','FlowConfigV2']){
+  const file=`D:/Documents/GitHub/projectG/Assets/Resources/${root}/tutorial.xlsx`;
+  await fs.copyFile(file,`${backup}/${root}-tutorial-before-placeholder.xlsx`,fs.constants.COPYFILE_EXCL).catch(e=>{if(e.code!=='EEXIST')throw e;});
+  const wb=await SpreadsheetFile.importXlsx(await FileBlob.load(file));const sh=wb.worksheets.getItem('tutorial');
+  sh.getRange('A2:I9').clear({applyTo:'contents'});
+  sh.getRange('A2:I2').values=[['tutorial_placeholder',1,'tutorialPlaceholder','Dialogue','None','DialogueCompleted','',1,'教程占位：仅播放对话；操作教学等待后续制作']];
+  wb.recalculate();
+  const preview=await wb.render({sheetName:'tutorial',range:'A1:I3',scale:1,format:'png'});
+  await fs.writeFile(`D:/Documents/GitHub/projectG/Assets/ProjectHandoff/TableAuthoring/${root}-placeholder.png`,new Uint8Array(await preview.arrayBuffer()));
+  await(await SpreadsheetFile.exportXlsx(wb)).save(file);
+  console.log(root+': dialogue placeholder saved; old tutorial backed up');
+ }
+ process.exit(0);
+}
+const testing=process.env.PROJECTG_FLOW_TEST==='1';
+const out='D:/Documents/GitHub/projectG/Assets/Resources/'+(testing?'FlowConfigTest':'FlowConfigV2');
 await fs.mkdir(out,{recursive:true});
 const specs=[
 ['stage',[['stageId','string','阶段唯一ID，非空且不可重复'],['stageOrder','int','阶段顺序，正整数'],['minorCheckDays','string','阶段内操作日检查点，英文分号分隔，例如3;5。教程和跳过的周末不计数'],['majorCheckDay','int','阶段内大高潮日，必须晚于小高潮；同日时大高潮替代小高潮'],['minorPoolId','string','引用story表的小高潮poolId'],['majorPoolId','string','引用story表的大高潮poolId'],['fallbackStoryId','string','小高潮无合格候选时播放的Fallback故事ID，可重复播放'],['failureNode','string','大高潮无合格候选时播放的Yarn入口；结束后失败'],['nextStageId','string','成功后下一阶段ID，最终阶段留空'],['successNode','string','最终阶段成功后播放的结局入口；非最终阶段可空']],
@@ -41,6 +58,24 @@ for(let st=1;st<=2;st++){
  for(const [day,start] of [[3,1],[5,4]])cp[2].push([`s${st}_cp_0${day}`,day,'Minor',[start,start+1,start+2].map(n=>`s${st}_minor_${n}`).join(';'),`ordinary_0${st}`,'']);
  cp[2].push([`s${st}_cp_08`,8,'Major',`major_0${st}_a;major_0${st}_b`,'',`TODO_fail_0${st}`]);
 }
+if(testing){
+ stage[2]=[['test_stage','test_cp_02;test_cp_03','','testSuccess']];
+ cp[2]=[['test_cp_02',2,'Minor','test_minor_1;test_minor_2;test_minor_3','test_fallback',''],['test_cp_03',3,'Major','test_major_1;test_major_2','','testFailure']];
+ story[2]=[
+  ['test_minor_1','测试咖啡馆','testMinor01','return stats.nature1 >= 0',true,'测试阈值，正式配置需调高'],
+  ['test_minor_2','测试同行','testMinor02','return stats.nature2 >= 0',true,''],
+  ['test_minor_3','测试图书馆','testMinor03','return stats.nature3 >= 0',true,''],
+  ['test_major_1','测试一起向前','testMajor01','return stats.nature1 >= 0',true,''],
+  ['test_major_2','测试安心陪伴','testMajor02','return stats.nature3 >= 0',true,''],
+  ['test_fallback','测试平庸','testFallback','return true',true,'可重复兜底']];
+ const tutorial=specs.find(s=>s[0]==='tutorial');
+ const prompts=['testTutorialIntro','testTutorialPlay','testTutorialCombine','testTutorialDismantle','testTutorialAttach','testTutorialBuy','testTutorialSell','testTutorialEnd'];
+ tutorial[2]=tutorial[2].map((r,i)=>r.map((v,j)=>j===2?prompts[i]:v));
+ const fields=['probRarity1','probRarity2','probRarity3','day','date','profit','drawNum','getCardNum','skipBackground','dailyDialog','specialDialog','failedDialog','target1','target2','target3','target4','targetCharm'];
+ specs.push(['day',fields.map(f=>[f,['date','skipBackground','dailyDialog','specialDialog','failedDialog'].includes(f)?'string':'number',f==='dailyDialog'?'当天Yarn节点名；第1天沿用现有testDay':f==='date'?'月_日，示例为周一至周三，避免周末跳过':'隔离测试日配置；旧day.xlsx不变']),[1,2,3].map((d)=>[0.7,0.2,0.1,d,`06_${14+d}`,10,3,1,'',d===1?'testDay':`testDay0${d}`,'','',0,0,0,0,0])]);
+}
+// Operational tutorial is deferred; future regeneration must retain dialogue-only behavior.
+specs.find(s=>s[0]==='tutorial')[2]=[['tutorial_placeholder',1,'tutorialPlaceholder','Dialogue','None','DialogueCompleted','',1,'教程占位；操作教学等待后续制作']];
 for(const [name,fields,rows] of specs){
  const wb=Workbook.create(), sh=wb.worksheets.add(name), doc=wb.worksheets.add('字段说明');
  sh.getRangeByIndexes(0,0,rows.length+1,fields.length).values=[fields.map(f=>f[0]),...rows];

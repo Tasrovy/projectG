@@ -33,10 +33,11 @@ public class DayManager : Singleton<DayManager>
 
     private void Start()
     {
-        NextDay();
+        if (!GameFlowController.Enabled) NextDay();
         Debug.Log($"[DayManager] 初始化完成，当前是第 {dayNumber} 天");
     }
     
+    public DayData CurrentDayData => daySO != null && dayNumber > 0 && dayNumber <= daySO.dayDatas.Count ? daySO.dayDatas[dayNumber - 1] : null;
     public void NextDay()
     {
         OnDayEnd();
@@ -191,8 +192,9 @@ public class DayManager : Singleton<DayManager>
 
     public UnityEvent GetNextDayEvent()
     {
-        if(!dayEvents.ContainsKey(dayNumber+1)) dayEvents[dayNumber+1] = new UnityEvent();
-        return dayEvents[dayNumber+1];
+        int next = GetPreviewNextDayNumber();
+        if(!dayEvents.ContainsKey(next)) dayEvents[next] = new UnityEvent();
+        return dayEvents[next];
     }
     
     public void AddDayEvent(int day, UnityAction func)

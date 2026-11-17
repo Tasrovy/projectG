@@ -4609,6 +4609,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cd7458705f78e3a4597bcc8af9640ad8, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 923de8628663dee40bf16067e73b9570, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 40d5cb174d8b084429a323c4de61a86e, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 956608d5fbc570d4492da6d0d7f0d998, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5053e938c46fc7a429286eb9ba5647f0, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 378c5bacc7076784e9e009a355fd1360, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[6].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 32a44c4f5cc86164dbeac326a7921730, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[7].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c00e321e108e0cf42b9165f28514e0d9, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[8].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ac4d3231f1522e74ca6b246cdb82f162, type: 3}
+    - target: {fileID: 3679607809267657885, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
+      propertyPath: characters.Array.data[0].emotionSprites.Array.data[9].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5053e938c46fc7a429286eb9ba5647f0, type: 3}
     - target: {fileID: 5336359656478553917, guid: ae7eb31197effa84a8f3d8edde6f6e18, type: 3}
       propertyPath: dialogLogButton
       value: 

@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3364e7026218c429de1679267a68da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stages:
+  - stageId: test_stage
+    checkpointIds: test_cp_02;test_cp_03
+    nextStageId: 
+    successNode: testSuccess
+  checkpoints:
+  - checkpointId: test_cp_02
+    checkpointType: Minor
+    storyIds: test_minor_1;test_minor_2;test_minor_3
+    fallbackStoryId: test_fallback
+    failureNode: 
+    stageDay: 2
+  - checkpointId: test_cp_03
+    checkpointType: Major
+    storyIds: test_major_1;test_major_2
+    fallbackStoryId: 
+    failureNode: testFailure
+    stageDay: 3
+  stories:
+  - storyId: test_minor_1
+    displayName: "\u6D4B\u8BD5\u5496\u5561\u9986"
+    entryNode: testMinor01
+    conditionLua: return stats.nature1 >= 0
+    notes: "\u6D4B\u8BD5\u9608\u503C\uFF0C\u6B63\u5F0F\u914D\u7F6E\u9700\u8C03\u9AD8"
+    enabled: 1
+  - storyId: test_minor_2
+    displayName: "\u6D4B\u8BD5\u540C\u884C"
+    entryNode: testMinor02
+    conditionLua: return stats.nature2 >= 0
+    notes: 
+    enabled: 1
+  - storyId: test_minor_3
+    displayName: "\u6D4B\u8BD5\u56FE\u4E66\u9986"
+    entryNode: testMinor03
+    conditionLua: return stats.nature3 >= 0
+    notes: 
+    enabled: 1
+  - storyId: test_major_1
+    displayName: "\u6D4B\u8BD5\u4E00\u8D77\u5411\u524D"
+    entryNode: testMajor01
+    conditionLua: return stats.nature1 >= 0
+    notes: 
+    enabled: 1
+  - storyId: test_major_2
+    displayName: "\u6D4B\u8BD5\u5B89\u5FC3\u966A\u4F34"
+    entryNode: testMajor02
+    conditionLua: return stats.nature3 >= 0
+    notes: 
+    enabled: 1
+  - storyId: test_fallback
+    displayName: "\u6D4B\u8BD5\u5E73\u5EB8"
+    entryNode: testFallback
+    conditionLua: return true
+    notes: "\u53EF\u91CD\u590D\u515C\u5E95"
+    enabled: 1
+  tutorial:
+  - stepId: tutorial_placeholder
+    entryNode: tutorialPlaceholder
+    uiMode: Dialogue
+    allowedAction: None
+    completionEvent: DialogueCompleted
+    targetId: 
+    notes: "\u6559\u7A0B\u5360\u4F4D\uFF1A\u4EC5\u64AD\u653E\u5BF9\u8BDD\uFF1B\u64CD\u4F5C\u6559\u5B66\u7B49\u5F85\u540E\u7EED\u5236\u4F5C"
+    order: 1
+    requiredCount: 1
+  days:
+  - probRarity1: 0.7
+    probRarity2: 0.2
+    probRarity3: 0.1
+    day: 1
+    date: 06_15
+    profit: 10
+    drawNum: 3
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: testDay
+    specialDialog: 
+    failedDialog: 
+    target1: 0
+    target2: 0
+    target3: 0
+    target4: 0
+    targetCharm: 0
+  - probRarity1: 0.7
+    probRarity2: 0.2
+    probRarity3: 0.1
+    day: 2
+    date: 06_16
+    profit: 10
+    drawNum: 3
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: testDay02
+    specialDialog: 
+    failedDialog: 
+    target1: 0
+    target2: 0
+    target3: 0
+    target4: 0
+    targetCharm: 0
+  - probRarity1: 0.7
+    probRarity2: 0.2
+    probRarity3: 0.1
+    day: 3
+    date: 06_17
+    profit: 10
+    drawNum: 3
+    getCardNum: 1
+    skipBackground: 
+    dailyDialog: testDay03
+    specialDialog: 
+    failedDialog: 
+    target1: 0
+    target2: 0
+    target3: 0
+    target4: 0
+    targetCharm: 0

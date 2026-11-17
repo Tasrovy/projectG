@@ -1,0 +1,7 @@
+title: testMinor01
+---
+<<set_background "家-夜晚">>
+【小高潮1】咖啡馆邀约。进入条件：友情羁绊至少0。
+蒂娜: 下次一起去咖啡馆吧？我知道一家很安静的小店。
+<<flow_flag "test_coffee" true>>
+===

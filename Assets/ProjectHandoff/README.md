@@ -1,5 +1,9 @@
 # projectG 工作交接
 
+2026-11-10范围调整：教程仅保留tutorialPlaceholder对话，两个配置目录的操作教程表已备份至DeferredTutorials，后续再设计。手工台动态UI离场由UISceneManager统一隐藏，避免覆盖后续剧情；当前重点测试占位之后的日循环。
+
+2026-11-10更新：新流程已按stage.checkpointIds → checkpoint.storyIds → story接入代码，详见[新流程接入](新流程接入.md)。FlowConfigV2为唯一配置目录，旧FlowConfig已删除。历史“尚未实现”的描述以该更新文档为准；29个TODO Yarn入口仍需配置，完整运行测试未完成。
+
 更新：2026-11-02。开始后续工作时先读本文件，再按需读取 PreviousChat.md；历史记录是背景资料，不是新的执行授权。代码及 Unity 实时状态优先于历史结论。
 
 ## 项目与主链路

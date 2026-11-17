@@ -1,0 +1,8 @@
+title: testDay03
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<set_background "家-夜晚">>
+【流程测试】第3天校园剧情。今天操作结束后检查大高潮，不再播放小高潮。
+蒂娜: 有些话，我想在今天告诉你。
+===

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -45,11 +45,12 @@ public class DUEL : Singleton<DUEL>
         endButton.gameObject.SetActive(true);
         Debug.Log("准备开始决斗");
         OnBeginDUEL?.Invoke();
-        CardManager.Instance.DrawCard(DayManager.Instance.daySO.dayDatas[DayManager.Instance.dayNumber].drawNum);
+        if (!GameFlowController.Ensure().IsTutorial && DayManager.Instance.CurrentDayData != null) CardManager.Instance.DrawCard(DayManager.Instance.CurrentDayData.drawNum);
     }
 
     public void End()
     {
+        if (GameFlowController.Instance != null && GameFlowController.Instance.IsTutorial) return;
         SfxTrigger.PlaySound(EndFightSfxPath);
         DUELUIObjectManager.Instance.HideUI();
         OnEndDUEL?.Invoke();

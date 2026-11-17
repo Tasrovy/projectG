@@ -161,6 +161,11 @@ public class DeckViewerUI : Singleton<DeckViewerUI>
     /// <summary>
     /// 关闭查看器
     /// </summary>
+    public void HideForSceneExit()
+    {
+        if (viewerPanel != null) viewerPanel.SetActive(false);
+    }
+
     public void CloseViewer()
     {
         if (viewerPanel != null && viewerPanel.activeSelf)

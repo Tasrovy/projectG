@@ -124,7 +124,21 @@ public class DUELUIObjectManager : Singleton<DUELUIObjectManager>
     public void HideUI()
     {
         Debug.Log($"[DUELUIObjectManager] HideUI() → DUELUI.SetActive(false), DUELUI instance: {(_duelUI != null ? _duelUI.GetInstanceID().ToString() : "NULL")}, caller:\n{System.Environment.StackTrace}");
-        DUELUI.SetActive(false);
+        // Cleanup must not instantiate UI merely to hide it.
+        if (_duelUI != null) _duelUI.SetActive(false);
+        if (_cardDetailUI != null) _cardDetailUI.Hide();
+    }
+
+    public static void HideExistingWorkshopUI()
+    {
+        foreach (var manager in Object.FindObjectsByType<DUELUIObjectManager>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            manager.HideUI();
+        foreach (var selector in Object.FindObjectsByType<CardSelector>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            selector.DeselectCurrent();
+        foreach (var viewer in Object.FindObjectsByType<DeckViewerUI>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            viewer.HideForSceneExit();
+        foreach (var detail in Object.FindObjectsByType<CardDetailUI>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            detail.Hide();
     }
 
     // --- 以下接口内部统一使用大写的 DUELUI 属性，以确保安全访问 ---

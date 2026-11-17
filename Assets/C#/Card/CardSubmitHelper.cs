@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class CardSubmitHelper : Singleton<CardSubmitHelper>
@@ -32,6 +32,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) =>
             {
+                GameFlowController.BufferOperation("CardCombined", selectedCard.id);
                 selectedCard.OnMade();
                 Card templateSnapshot = new Card();
                 templateSnapshot.InitCard(selectedCard);
@@ -84,6 +85,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         CardActionResolver.Instance.StartEffectSelection(
             onConfirm: (selectedCard) =>
             {
+                GameFlowController.BufferOperation("CardDismantled", selectedCard.id);
                 selectedCard.OnBroken();
                 CardManager.Instance.BreakCard(selectedCard);
 
@@ -166,6 +168,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
         selectedCard.Add(1, amount);
         selectedCard.Add(2, amount);
         selectedCard.Add(3, amount);
+        GameFlowController.BufferOperation("CardAttached", selectedCard.id);
         selectedCard.OnAdded();
         CardManager.Instance.NotifyDeckOrHandChanged();
         if (DUEL.Instance != null) DUEL.Instance.UpdateCardData();
@@ -193,6 +196,7 @@ public class CardSubmitHelper : Singleton<CardSubmitHelper>
                     selectedCard.AddTo(3, num);
                 }
 
+                GameFlowController.BufferOperation("CardAttached", selectedCard.id);
                 CardManager.Instance.NotifyDeckOrHandChanged();
                 DUEL.Instance.UpdateCardData();
 

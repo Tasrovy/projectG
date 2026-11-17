@@ -18,6 +18,7 @@ public sealed class ShopTransactionService
 
     public bool TryBuy(Card sourceCard)
     {
+        if (!GameFlowController.Allows("Buy")) return false;
         if (sourceCard == null || CardManager.Instance == null || DataManager.Instance == null)
         {
             return false;
@@ -34,11 +35,13 @@ public sealed class ShopTransactionService
 
         DataManager.Instance.Add(4, -price);
         CardManager.Instance.AddCardInHand(purchasedCard);
+        GameFlowController.Report("ItemBought", sourceCard.id.ToString());
         return true;
     }
 
     public bool TrySell(Card card)
     {
+        if (!GameFlowController.Allows("Sell")) return false;
         if (card == null || CardManager.Instance == null || DataManager.Instance == null)
         {
             return false;
@@ -52,6 +55,7 @@ public sealed class ShopTransactionService
         CardManager.Instance.cardInHand.Remove(card);
         CardManager.Instance.NotifyDeckOrHandChanged();
         DataManager.Instance.Add(4, GetSellPrice(card));
+        GameFlowController.Report("CardSold", card.id.ToString());
         return true;
     }
 }

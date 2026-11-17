@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3364e7026218c429de1679267a68da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stages:
+  - stageId: stage_01
+    checkpointIds: s1_cp_03;s1_cp_05;s1_cp_08
+    nextStageId: stage_02
+    successNode: 
+  - stageId: stage_02
+    checkpointIds: s2_cp_03;s2_cp_05;s2_cp_08
+    nextStageId: 
+    successNode: TODO_success
+  checkpoints:
+  - checkpointId: s1_cp_03
+    checkpointType: Minor
+    storyIds: s1_minor_1;s1_minor_2;s1_minor_3
+    fallbackStoryId: ordinary_01
+    failureNode: 
+    stageDay: 3
+  - checkpointId: s1_cp_05
+    checkpointType: Minor
+    storyIds: s1_minor_4;s1_minor_5;s1_minor_6
+    fallbackStoryId: ordinary_01
+    failureNode: 
+    stageDay: 5
+  - checkpointId: s1_cp_08
+    checkpointType: Major
+    storyIds: major_01_a;major_01_b
+    fallbackStoryId: 
+    failureNode: TODO_fail_01
+    stageDay: 8
+  - checkpointId: s2_cp_03
+    checkpointType: Minor
+    storyIds: s2_minor_1;s2_minor_2;s2_minor_3
+    fallbackStoryId: ordinary_02
+    failureNode: 
+    stageDay: 3
+  - checkpointId: s2_cp_05
+    checkpointType: Minor
+    storyIds: s2_minor_4;s2_minor_5;s2_minor_6
+    fallbackStoryId: ordinary_02
+    failureNode: 
+    stageDay: 5
+  - checkpointId: s2_cp_08
+    checkpointType: Major
+    storyIds: major_02_a;major_02_b
+    fallbackStoryId: 
+    failureNode: TODO_fail_02
+    stageDay: 8
+  stories:
+  - storyId: ordinary_01
+    displayName: "\u666E\u901A\u7684\u4E00\u5929"
+    entryNode: TODO_ordinary_01
+    conditionLua: return true
+    notes: "\u65E0\u5408\u683C\u5C0F\u9AD8\u6F6E\u65F6\u64AD\u653E\uFF0C\u5141\u8BB8\u91CD\u590D"
+    enabled: 1
+  - storyId: major_01_a
+    displayName: "\u7B2C\u4E00\u6B21\u5173\u7CFB\u7A81\u7834"
+    entryNode: TODO_major_01_a
+    conditionLua: return stats.nature1 >= 60
+    notes: "\u770B\u8FC7\u4ECD\u53EF\u91CD\u590D\u8FDB\u5165"
+    enabled: 1
+  - storyId: major_01_b
+    displayName: "\u4E92\u76F8\u4F9D\u9760"
+    entryNode: TODO_major_01_b
+    conditionLua: return stats.nature2 >= 50 and stats.nature3 >= 30
+    notes: "\u65E0\u5408\u683C\u5927\u9AD8\u6F6E\u5219\u5931\u8D25"
+    enabled: 1
+  - storyId: ordinary_02
+    displayName: "\u5E73\u9759\u7684\u6821\u56ED\u751F\u6D3B"
+    entryNode: TODO_ordinary_02
+    conditionLua: return true
+    notes: "\u53EF\u91CD\u590D\u515C\u5E95"
+    enabled: 1
+  - storyId: major_02_a
+    displayName: "\u5171\u540C\u7684\u672A\u6765"
+    entryNode: TODO_major_02_a
+    conditionLua: return stats.charm >= 180
+    notes: "\u6700\u7EC8\u9636\u6BB5\u793A\u4F8B"
+    enabled: 1
+  - storyId: major_02_b
+    displayName: "\u575A\u5B9A\u7684\u9009\u62E9"
+    entryNode: TODO_major_02_b
+    conditionLua: return stats.nature3 >= 100 and not flag("relationship_broken")
+    notes: "\u6807\u8BB0\u51FD\u6570\u5F85\u63A5\u5165"
+    enabled: 1
+  - storyId: s1_minor_1
+    displayName: "\u9636\u6BB51\u5C0F\u9AD8\u6F6E1"
+    entryNode: TODO_s1_minor_1
+    conditionLua: return stats.nature1 >= 20
+    notes: "\u4EC5\u9636\u6BB51\u7B2C3\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s1_minor_2
+    displayName: "\u9636\u6BB51\u5C0F\u9AD8\u6F6E2"
+    entryNode: TODO_s1_minor_2
+    conditionLua: return stats.nature2 >= 20
+    notes: "\u4EC5\u9636\u6BB51\u7B2C3\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s1_minor_3
+    displayName: "\u9636\u6BB51\u5C0F\u9AD8\u6F6E3"
+    entryNode: TODO_s1_minor_3
+    conditionLua: return stats.nature3 >= 20
+    notes: "\u4EC5\u9636\u6BB51\u7B2C3\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s1_minor_4
+    displayName: "\u9636\u6BB51\u5C0F\u9AD8\u6F6E4"
+    entryNode: TODO_s1_minor_4
+    conditionLua: return stats.nature1 >= 40
+    notes: "\u4EC5\u9636\u6BB51\u7B2C5\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s1_minor_5
+    displayName: "\u9636\u6BB51\u5C0F\u9AD8\u6F6E5"
+    entryNode: TODO_s1_minor_5
+    conditionLua: return stats.nature2 >= 40
+    notes: "\u4EC5\u9636\u6BB51\u7B2C5\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s1_minor_6
+    displayName: "\u9636\u6BB51\u5C0F\u9AD8\u6F6E6"
+    entryNode: TODO_s1_minor_6
+    conditionLua: return stats.nature3 >= 40
+    notes: "\u4EC5\u9636\u6BB51\u7B2C5\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s2_minor_1
+    displayName: "\u9636\u6BB52\u5C0F\u9AD8\u6F6E1"
+    entryNode: TODO_s2_minor_1
+    conditionLua: return stats.nature1 >= 60
+    notes: "\u4EC5\u9636\u6BB52\u7B2C3\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s2_minor_2
+    displayName: "\u9636\u6BB52\u5C0F\u9AD8\u6F6E2"
+    entryNode: TODO_s2_minor_2
+    conditionLua: return stats.nature2 >= 60
+    notes: "\u4EC5\u9636\u6BB52\u7B2C3\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s2_minor_3
+    displayName: "\u9636\u6BB52\u5C0F\u9AD8\u6F6E3"
+    entryNode: TODO_s2_minor_3
+    conditionLua: return stats.nature3 >= 60
+    notes: "\u4EC5\u9636\u6BB52\u7B2C3\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s2_minor_4
+    displayName: "\u9636\u6BB52\u5C0F\u9AD8\u6F6E4"
+    entryNode: TODO_s2_minor_4
+    conditionLua: return stats.nature1 >= 80
+    notes: "\u4EC5\u9636\u6BB52\u7B2C5\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s2_minor_5
+    displayName: "\u9636\u6BB52\u5C0F\u9AD8\u6F6E5"
+    entryNode: TODO_s2_minor_5
+    conditionLua: return stats.nature2 >= 80
+    notes: "\u4EC5\u9636\u6BB52\u7B2C5\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  - storyId: s2_minor_6
+    displayName: "\u9636\u6BB52\u5C0F\u9AD8\u6F6E6"
+    entryNode: TODO_s2_minor_6
+    conditionLua: return stats.nature3 >= 80
+    notes: "\u4EC5\u9636\u6BB52\u7B2C5\u64CD\u4F5C\u65E5\u5019\u9009\uFF0C\u793A\u4F8B\u9608\u503C"
+    enabled: 1
+  tutorial:
+  - stepId: tutorial_placeholder
+    entryNode: tutorialPlaceholder
+    uiMode: Dialogue
+    allowedAction: None
+    completionEvent: DialogueCompleted
+    targetId: 
+    notes: "\u6559\u7A0B\u5360\u4F4D\uFF1A\u4EC5\u64AD\u653E\u5BF9\u8BDD\uFF1B\u64CD\u4F5C\u6559\u5B66\u7B49\u5F85\u540E\u7EED\u5236\u4F5C"
+    order: 1
+    requiredCount: 1
+  days: []

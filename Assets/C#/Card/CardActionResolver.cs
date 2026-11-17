@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 
 public enum CardPlayMode
@@ -84,6 +84,7 @@ public class CardActionResolver : Singleton<CardActionResolver>
 
         if (currentMode == CardPlayMode.NormalPlay)
         {
+            if (!GameFlowController.AllowsCard(selectedCard)) return;
             Debug.Log($"[Resolver] 💥 玩家正常打出了卡牌: {selectedCard?.name}");
             Debug.Log($"[Resolver][Dialog] cardId={selectedCard?.id}, dialog={selectedCard?.dialog}");
             BattleDialogController.Instance.TryShowByCard(selectedCard);

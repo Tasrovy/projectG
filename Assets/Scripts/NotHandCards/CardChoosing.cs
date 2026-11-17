@@ -75,8 +75,8 @@ public class CardChoosing : MonoBehaviour
         }
 
         // 获取当天的权重配置
-        int dayNum = DayManager.Instance.dayNumber;
-        var dayData = DayManager.Instance.daySO.dayDatas[dayNum];
+        var dayData = DayManager.Instance.CurrentDayData;
+        if (dayData == null) return; // 教程/开局尚未进入正式操作日。
         float prob1 = dayData.probRarity1;
         float prob2 = dayData.probRarity2;
         float prob3 = dayData.probRarity3;

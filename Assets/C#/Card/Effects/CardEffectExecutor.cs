@@ -112,6 +112,7 @@ public sealed class CardEffectExecutor
     {
         if (!_hasSnapshot) return;
 
+        GameFlowController.EndTransaction(false);
         Debug.Log("[Snapshot] 回滚快照...");
 
         // 恢复手牌
@@ -172,6 +173,7 @@ public sealed class CardEffectExecutor
         {
             _isExecutingChain = false;
             _hasSnapshot = false;
+            GameFlowController.EndTransaction(true);
 
             if (PropertiesShow.Instance != null)
             {
@@ -284,6 +286,8 @@ public sealed class CardEffectExecutor
         {
             Debug.LogError($"[CardEffect] 执行效果 {effect.methodName} 时出错: {ex.InnerException?.Message ?? ex.Message}");
             _waitingForAsync = false;
+            RollbackImmediate();
+            return;
         }
 
         if (!_waitingForAsync)

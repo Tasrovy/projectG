@@ -1,0 +1,30 @@
+﻿title: testDay01
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+//<<play_whitenoise "bgNew_fan2">>
+
+<<set_character_person Player {$MY_NAME} normal>>
+//<<set_character_person Character "蒂娜" normal>>
+//<<set_character_sprite {$MY_NAME} saying>>
+//<<set_character_sprite "蒂娜" saying>>
+//#sfx_talkSound_school_chime
+<<play_bgm "daily_日常微风2">>
+<<set_background "家-夜晚">>
+<<set_character_person Player {$MY_NAME} normal>>
+
+"测试过天剧情，过天编号1"
+
+
+<<set_character_sprite {$MY_NAME} saying>>
+<<set_character_size Player 2 0.3 1>>
+{$MY_NAME}:"这是第一个过天对话"
+
+
+蒂娜:"这是第一个过天对话"
+
+
+<<stop_bgm>>
+
+
+===

@@ -1,0 +1,8 @@
+title: testDay02
+---
+<<clear_character_person Player>>
+<<clear_character_person Character>>
+<<set_background "家-夜晚">>
+【流程测试】第2天校园剧情。今天操作结束后，将从小高潮1、2、3中选一段。
+蒂娜: 放学以后，要不要一起走一会儿？
+===

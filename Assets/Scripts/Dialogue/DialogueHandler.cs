@@ -117,6 +117,12 @@ public class DialogueHandler : MonoBehaviour
     }
 
 
+    public bool HasFlowNode(string node) => dialogueRunner != null && dialogueRunner.YarnProject != null && dialogueRunner.YarnProject.NodeNames.Contains(node);
+    public void StartFlowDialogue(string node)
+    {
+        isHandlingDialogueSequence = true;
+        StartManagedCoroutine(StartDialogueRoutine(node));
+    }
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -163,7 +169,7 @@ public class DialogueHandler : MonoBehaviour
         }
 
         // 检测天数是否发生变化，并自动加入队列
-        if (DayManager.Instance != null)
+        if (!GameFlowController.Enabled && DayManager.Instance != null)
         {
             int currentDay = DayManager.Instance.GetDayNumber();
             if (currentDay > 0 && currentDay != lastCheckedDay) // 防止默认0天时无意义判定
@@ -216,6 +222,7 @@ public class DialogueHandler : MonoBehaviour
     private bool TryGetFailedDialogue(out string failedNode)
     {
         failedNode = null;
+        if (GameFlowController.Enabled) return false;
         if (DayManager.Instance == null || DataManager.Instance == null) return false;
 
         var daySO = DayManager.Instance.daySO;
@@ -256,6 +263,12 @@ public class DialogueHandler : MonoBehaviour
 
     public void StartDialogue(string yarnScript)
     {
+        if (GameFlowController.Enabled)
+        {
+            var flow = GameFlowController.Ensure();
+            if (flow.State == "Idle" || flow.State == "Completed" || flow.State == "Failed" || flow.State == "ConfigError") { flow.BeginRun(); return; }
+            if (flow.State != "PlayerAction") return;
+        }
         // 完整回溯出到底是谁点击/触发的：
         Debug.Log($"[DialogueHandler] 系统正在请求启动节点: {yarnScript}。当前天数为 {DayManager.Instance?.GetDayNumber()}。");
 
@@ -281,6 +294,7 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     public void TriggerEndDayWithDeal(string sceneTypeName = "Talk")
     {
+        if (GameFlowController.Enabled) { GameFlowController.Ensure().FinishDay(); return; }
         Debug.Log($"[DialogueHandler] TriggerEndDayWithDeal 被调用！sceneTypeName={sceneTypeName}, dialogueRunner={(dialogueRunner != null ? "OK" : "NULL")}, currentDay={DayManager.Instance?.GetDayNumber()}");
 
         // 记录失败检定结果，但不立刻触发 —— 等 deal 对话播完后再接着播失败对话
@@ -532,6 +546,19 @@ public class DialogueHandler : MonoBehaviour
 
     private IEnumerator EndDialogueRoutine()
     {
+        if (GameFlowController.Enabled)
+        {
+            // Allow presenter completion to apply pending property rewards before judging.
+            yield return null;
+            bool end = characterHighlightManager != null && characterHighlightManager.shouldAdvanceDayAfterDialogue;
+            if (characterHighlightManager != null) characterHighlightManager.shouldAdvanceDayAfterDialogue = false;
+            var destination = willSwitchScene ? nextSceneType : SceneType.Select;
+            willSwitchScene = false; pendingDialogues.Clear(); isHandlingDialogueSequence = false;
+            if (TransitionManager.Instance != null) yield return TransitionManager.Instance.PlayTransition(() => characterHighlightManager?.ClearVisualsOnTransitionMidpoint());
+            RefreshCalendarAndUiTexts();
+            GameFlowController.Ensure().DialogueCompleted(end, destination);
+            yield break;
+        }
         bool shouldFinishLoopNow = _isPlayingEndOfDayDailyDialog
                                    && _shouldAdvanceDayAfterDailyDialog
                                    && DayManager.Instance != null
@@ -793,6 +820,7 @@ public class DialogueHandler : MonoBehaviour
     /// </summary>
     public void TriggerEndDayDirectly(string sceneTypeName = "Talk")
     {
+        if (GameFlowController.Enabled) { GameFlowController.Ensure().FinishDay(); return; }
         // 失败检定
         if (TryGetFailedDialogue(out string failedNode))
         {

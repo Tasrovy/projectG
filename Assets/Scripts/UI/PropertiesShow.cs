@@ -79,6 +79,7 @@ public class PropertiesShow : MonoBehaviour
     /// </summary>
     public void InitializeRandomTargetByEvent()
     {
+        if (GameFlowController.Enabled) { RefreshTargetText(); return; }
         if (selectTargetText == null || selectNumText == null || charmNumText == null || dayTimeText == null)
         {
             InitializeTargetTextReference();
@@ -263,6 +264,15 @@ public class PropertiesShow : MonoBehaviour
             InitializeTargetTextReference();
         }
 
+        if (GameFlowController.Enabled)
+        {
+            var flow = GameFlowController.Instance;
+            if (selectTargetText != null) selectTargetText.text = flow?.CurrentStageId ?? "教程";
+            if (selectNumText != null) selectNumText.text = "";
+            if (charmNumText != null) charmNumText.text = "";
+            if (dayTimeText != null) dayTimeText.text = flow == null || flow.IsTutorial ? "新手教程" : $"下次剧情检查：{flow.DaysUntilCheckpoint}天";
+            return;
+        }
         int targetType = selectedTargetType;
         if (DayManager.Instance != null && DayManager.Instance.TargetType >= 1 && DayManager.Instance.TargetType <= 4)
         {
